@@ -21,7 +21,7 @@ public class SceneService : IGameService
 
     public UniTask InitializeService()
     {
-        _loadingScreenGo = GameObject.Find("LoadingScreen");
+        _loadingScreenGo = GameObject.Find("PF_LoadingScreen");
 
         if (_loadingScreenGo == null)
         {
