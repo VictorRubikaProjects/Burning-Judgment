@@ -1,3 +1,19 @@
 {
-	"name": "Project.Runtime"
+    "name": "Project.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1e30eca3cda36ec4491a256ea868075a",
+        "GUID:caca889fed6088d40b22c2d7e2909c31",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:3d330b79947bc0949a7a43f1b50b789c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
