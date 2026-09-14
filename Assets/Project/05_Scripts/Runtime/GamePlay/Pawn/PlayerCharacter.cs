@@ -1,25 +1,25 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using SwipeDirection = InputComponent.SwipeDirection;
 
 public class PlayerCharacter : Actor
 {
     [Header("References")]
     [SerializeField] private PlayerHUD hud;
     [SerializeField] private Rigidbody rb;
-    
-    public InputComponent Input {get; private set;}
 
-    private CancellationTokenSource m_ctsMove; 
+    public InputComponent Input { get; private set; }
+
+    private CancellationTokenSource m_ctsMove;
+    private bool m_isMoving;
 
     protected override void Awake()
     {
         base.Awake();
-        
+
         m_ctsMove = new CancellationTokenSource();
-        
-        Input = new InputComponent(owner: this, pivot: hud.PivotJoystick);
+
+        Input = new InputComponent(owner: this);
     }
 
     protected override void Start()
@@ -30,52 +30,50 @@ public class PlayerCharacter : Actor
 
     private void OnEnable()
     {
-        Input.OnTap += TapHandler;
-        Input.OnSwipe +=  SwipeHandler;
+        Input.OnSwipe += SwipeHandler;
     }
 
     private void OnDisable()
     {
-        Input.OnTap -= TapHandler;
-        Input.OnSwipe -=  SwipeHandler;
+        Input.OnSwipe -= SwipeHandler;
     }
-    
-    private bool isMoving;
-    
-    private void TapHandler(Vector2 moveDir)
+
+    private void OnDestroy()
+    {
+        m_ctsMove.Cancel();
+        m_ctsMove.Dispose();
+    }
+
+    private void SwipeHandler(Vector2 moveDir)
     {
         Vector3 worldDir = new Vector3(moveDir.x, 0f, moveDir.y);
         transform.rotation = Quaternion.LookRotation(worldDir);
 
-        if (isMoving) return;
+        if (m_isMoving) return;
 
-        Move().Forget();
+        Dash(m_ctsMove.Token).Forget();
     }
 
-    private async UniTask Move()
+    private async UniTask Dash(CancellationToken token)
     {
-        isMoving = true;
-        float moveDistance = 1f;
-        float moveDuration = 0.1f;
-        
+        m_isMoving = true;
+        float dashDistance = 1f;
+        float dashDuration = 0.1f;
+
         Vector3 start = rb.position;
-        Vector3 target = start + transform.forward * moveDistance;
+        Vector3 target = start + transform.forward * dashDistance;
         float elapsed = 0f;
 
-        while (elapsed < moveDuration)
+        while (elapsed < dashDuration)
         {
             elapsed += Time.fixedDeltaTime;
-            float t = elapsed / moveDuration;
+            float t = elapsed / dashDuration;
             rb.MovePosition(Vector3.Lerp(start, target, t));
-            await UniTask.Yield(PlayerLoopTiming.FixedUpdate);
+            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token).SuppressCancellationThrow();
+            if (token.IsCancellationRequested) return;
         }
 
         rb.MovePosition(target);
-        isMoving = false;
-    }
-    
-    private void SwipeHandler(SwipeDirection direction)
-    {
-        Debug.Log("Swipe Handler :  " + direction);
+        m_isMoving = false;
     }
 }

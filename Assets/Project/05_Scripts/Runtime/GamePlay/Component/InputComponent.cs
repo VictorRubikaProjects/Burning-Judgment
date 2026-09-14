@@ -6,35 +6,21 @@ public class InputComponent : ActorComponent
 {
     #region Variables
 
-    private readonly RectTransform m_pivot;
-    private readonly float m_tapThreshold;
-    private readonly float m_maxTapTime;
+    private readonly float m_swipeThreshold;
 
     private PlayerActions m_inputActions;
 
     private Vector2 m_startPos;
-    private float m_startTime;
-    
-    public event Action<SwipeDirection> OnSwipe;
-    public event Action<Vector2> OnTap;
-    
-    public enum SwipeDirection { Up, Down }
+
+    public event Action<Vector2> OnSwipe;
 
     #endregion
-    
+
     #region ActorComponent Methods
-    
-    public InputComponent(Actor owner, RectTransform pivot, float tapThreshold = 30f, float maxTapTime = 0.3f) : base(owner)
+
+    public InputComponent(Actor owner, float swipeThreshold = 50f) : base(owner)
     {
-        if (!pivot)
-        {
-            Debug.LogError("Pivot not set");
-            return;
-        }
-        
-        this.m_pivot = pivot;
-        this.m_tapThreshold = tapThreshold;
-        this.m_maxTapTime = maxTapTime;
+        m_swipeThreshold = swipeThreshold;
     }
 
     public override void Initialize()
@@ -54,7 +40,7 @@ public class InputComponent : ActorComponent
         m_inputActions.Gameplay.Disable();
         m_inputActions.Dispose();
     }
-    
+
     #endregion
 
     #region Core Methods
@@ -62,36 +48,17 @@ public class InputComponent : ActorComponent
     private void TouchStarted(InputAction.CallbackContext context)
     {
         m_startPos = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
-        m_startTime = Time.time;
     }
 
     private void TouchEnded(InputAction.CallbackContext context)
     {
         Vector2 endPos = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
         Vector2 delta = endPos - m_startPos;
-        float elapsed = Time.time - m_startTime;
 
-        if (delta.magnitude <= m_tapThreshold && elapsed <= m_maxTapTime)
-        {
-            HandleDialTap(m_startPos);
-            return;
-        }
+        if (delta.magnitude < m_swipeThreshold) return;
 
-        if (Mathf.Abs(delta.y) > Mathf.Abs(delta.x))
-            HandleSwipe(delta.y > 0 ? SwipeDirection.Up : SwipeDirection.Down);
+        OnSwipe?.Invoke(delta.normalized);
     }
-
-    private void HandleDialTap(Vector2 screenPos)
-    {
-        //cam : null because canvas overlay
-        Vector2 pivotScreenPos = RectTransformUtility.WorldToScreenPoint(null, m_pivot.position); 
-        Vector2 moveDir = (screenPos - pivotScreenPos).normalized;
-
-        OnTap?.Invoke(moveDir);
-    }
-
-    private void HandleSwipe(SwipeDirection dir) => OnSwipe?.Invoke(dir);
 
     #endregion
-    
 }

@@ -428,7 +428,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3986690944395479680, guid: 4526285afcdaa2741b4414d1af45fa5d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2801479507150331937, guid: 4526285afcdaa2741b4414d1af45fa5d, type: 3}
@@ -457,9 +458,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1be6d6ef2574c14e943e2e4c8fc0e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::PlayerHUD
-  pivotJoystick: {fileID: 6042576291592873366}
---- !u!224 &6042576291592873366 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3504347808734963816, guid: 4526285afcdaa2741b4414d1af45fa5d, type: 3}
-  m_PrefabInstance: {fileID: 7168176845069209086}
-  m_PrefabAsset: {fileID: 0}
+  pivotJoystick: {fileID: 0}
