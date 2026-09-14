@@ -15,3 +15,9 @@ MonoBehaviour:
   menuScene:
     asset: {fileID: 102900000, guid: e525610833939f844aae87a32509e442, type: 3}
     guid: e525610833939f844aae87a32509e442
+  gameplayScene:
+    asset: {fileID: 102900000, guid: f53acd42069b6704a8729e3bea22fa27, type: 3}
+    guid: f53acd42069b6704a8729e3bea22fa27
+  uiScene:
+    asset: {fileID: 102900000, guid: c0fe00ac25fe56a4f8f544647826dfc2, type: 3}
+    guid: c0fe00ac25fe56a4f8f544647826dfc2
