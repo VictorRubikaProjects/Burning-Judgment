@@ -309,6 +309,7 @@ MonoBehaviour:
   hud: {fileID: 547393410041607641}
   rb: {fileID: 6773298274157356297}
   animator: {fileID: 4279260152218026145}
+  stats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
 --- !u!136 &4374285692015904546
 CapsuleCollider:
   m_ObjectHideFlags: 0

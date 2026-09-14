@@ -9,9 +9,9 @@ public class HitState : BaseState
 
     public bool IsFinished { get; private set; }
 
-    public HitState(PlayerCharacter owner, Animator animator, float hitDuration = 0.3f) : base(owner, animator)
+    public HitState(PlayerCharacter owner, Animator animator,ConfigStatsPlayer configStats) : base(owner, animator,configStats)
     {
-        m_hitDuration = hitDuration;
+        m_hitDuration = configStats.hitDuration;
     }
 
     public override void OnEnter()

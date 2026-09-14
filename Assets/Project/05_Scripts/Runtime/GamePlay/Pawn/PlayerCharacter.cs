@@ -8,6 +8,9 @@ public class PlayerCharacter : Actor
     [SerializeField] private PlayerHUD hud;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
+    
+    [Header("Config")]
+    [SerializeField] private ConfigStatsPlayer stats;
 
     public InputComponent Input { get; private set; }
 
@@ -73,10 +76,10 @@ public class PlayerCharacter : Actor
     {
         m_stateMachine = new StateMachine();
 
-        var idleState = new IdleState(this, animator);
-        var dashState = new DashState(this, animator, rb);
-        var hitState = new HitState(this, animator);
-        var deathState = new DeathState(this, animator);
+        var idleState = new IdleState(this, animator,stats);
+        var dashState = new DashState(this, animator, rb,stats);
+        var hitState = new HitState(this, animator,stats);
+        var deathState = new DeathState(this, animator,stats);
 
         At(idleState, dashState, new FuncPredicate(() => m_wantsDash));
         At(dashState, idleState, new FuncPredicate(() => dashState.IsFinished));

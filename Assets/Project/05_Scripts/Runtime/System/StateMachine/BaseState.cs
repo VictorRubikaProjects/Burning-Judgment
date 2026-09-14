@@ -9,13 +9,17 @@ public abstract class BaseState : IState
     protected static readonly int DashHash = Animator.StringToHash("Dash");
     protected static readonly int DeathHash = Animator.StringToHash("Death");
     protected static readonly int HitHash = Animator.StringToHash("Hit");
-    
-    protected const float m_crossFadeDuration = 0.1f;
 
-    protected BaseState(PlayerCharacter owner, Animator animator)
+    protected readonly float m_crossFadeDuration;
+    
+    protected readonly ConfigStatsPlayer m_configStats; 
+
+    protected BaseState(PlayerCharacter owner, Animator animator, ConfigStatsPlayer configStats)
     {
         m_owner = owner;
         m_animator = animator;
+        m_configStats = configStats;
+        m_crossFadeDuration = configStats.crossFadeDuration;
     }
     
     public virtual void OnEnter()

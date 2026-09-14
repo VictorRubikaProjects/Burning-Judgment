@@ -12,12 +12,12 @@ public class DashState : BaseState
 
     public bool IsFinished { get; private set; }
 
-    public DashState(PlayerCharacter owner, Animator animator, Rigidbody rb, float dashDistance = 1f, float dashDuration = 0.1f)
-        : base(owner, animator)
+    public DashState(PlayerCharacter owner, Animator animator, Rigidbody rb, ConfigStatsPlayer configStats)
+        : base(owner, animator,configStats)
     {
         m_rb = rb;
-        m_dashDistance = dashDistance;
-        m_dashDuration = dashDuration;
+        m_dashDistance = configStats.dashDistance;
+        m_dashDuration = configStats.dashDuration;
     }
 
     public override void OnEnter()
