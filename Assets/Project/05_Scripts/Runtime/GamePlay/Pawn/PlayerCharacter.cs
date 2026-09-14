@@ -1,23 +1,34 @@
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
 {
+    #region Variable
+
     [Header("References")]
     [SerializeField] private PlayerHUD hud;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Animator animator;
 
     public InputComponent Input { get; private set; }
 
-    private CancellationTokenSource m_ctsMove;
-    private bool m_isMoving;
+    private StateMachine m_stateMachine;
+
+    private Vector3 m_moveDir;
+    private bool m_wantsDash;
+    private bool m_isHit;
+    private bool m_isDead;
+
+    public Vector3 MoveDir => m_moveDir;
+
+    #endregion
+
+    #region Unity Lifecycle
 
     protected override void Awake()
     {
         base.Awake();
 
-        m_ctsMove = new CancellationTokenSource();
+        SetupStateMachine();
 
         Input = new InputComponent(owner: this);
     }
@@ -38,42 +49,60 @@ public class PlayerCharacter : Actor
         Input.OnSwipe -= SwipeHandler;
     }
 
-    private void OnDestroy()
+    protected override void Update()
     {
-        m_ctsMove.Cancel();
-        m_ctsMove.Dispose();
+        base.Update();
+        
+        m_stateMachine.Update();
     }
 
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        m_stateMachine.FixedUpdate();
+    }
+
+    #endregion
+
+    #region State Machine
+
+    void At(IState from, IState to, IPredictate condition) => m_stateMachine.AddTransition(from, to, condition);
+    void Any(IState to, IPredictate condition) => m_stateMachine.AddAnyTransition(to, condition);
+    
+    private void SetupStateMachine()
+    {
+        m_stateMachine = new StateMachine();
+
+        var idleState = new IdleState(this, animator);
+        var dashState = new DashState(this, animator, rb);
+        var hitState = new HitState(this, animator);
+        var deathState = new DeathState(this, animator);
+
+        At(idleState, dashState, new FuncPredicate(() => m_wantsDash));
+        At(dashState, idleState, new FuncPredicate(() => dashState.IsFinished));
+        At(hitState, idleState, new FuncPredicate(() => hitState.IsFinished));
+
+        Any(hitState, new FuncPredicate(() => m_isHit));
+        Any(deathState, new FuncPredicate(() => m_isDead));
+
+        m_stateMachine.SetState(idleState);
+    }
+
+    #endregion
+    
     private void SwipeHandler(Vector2 moveDir)
     {
         Vector3 worldDir = new Vector3(moveDir.x, 0f, moveDir.y);
         transform.rotation = Quaternion.LookRotation(worldDir);
-
-        if (m_isMoving) return;
-
-        Dash(m_ctsMove.Token).Forget();
+        m_moveDir = worldDir;
+        m_wantsDash = true;
     }
 
-    private async UniTask Dash(CancellationToken token)
-    {
-        m_isMoving = true;
-        float dashDistance = 1f;
-        float dashDuration = 0.1f;
+    public void ConsumeDashRequest() => m_wantsDash = false;
+    public void ConsumeHitRequest() => m_isHit = false;
 
-        Vector3 start = rb.position;
-        Vector3 target = start + transform.forward * dashDistance;
-        float elapsed = 0f;
+    public void RequestHit() => m_isHit = true;
+    public void Kill() => m_isDead = true;
 
-        while (elapsed < dashDuration)
-        {
-            elapsed += Time.fixedDeltaTime;
-            float t = elapsed / dashDuration;
-            rb.MovePosition(Vector3.Lerp(start, target, t));
-            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token).SuppressCancellationThrow();
-            if (token.IsCancellationRequested) return;
-        }
-
-        rb.MovePosition(target);
-        m_isMoving = false;
-    }
+    
 }

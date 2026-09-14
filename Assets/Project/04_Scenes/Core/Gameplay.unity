@@ -503,10 +503,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 547393410041607641, guid: cc78fc27ea2866840887678b8f1ff650, type: 3}
-      propertyPath: pivotJoystick
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4455163777241542802, guid: cc78fc27ea2866840887678b8f1ff650, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

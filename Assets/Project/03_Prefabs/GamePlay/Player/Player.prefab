@@ -121,6 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8133235759402031410}
+  - component: {fileID: 4279260152218026145}
   m_Layer: 0
   m_Name: Player_Visuals
   m_TagString: Untagged
@@ -145,6 +146,28 @@ Transform:
   - {fileID: 6085852172286004767}
   m_Father: {fileID: 4455163777241542802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &4279260152218026145
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2369043677036123520}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fc1cdf46c30e05d4083a4870156e4e85, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4438261647622906377
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,6 +308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::PlayerCharacter
   hud: {fileID: 547393410041607641}
   rb: {fileID: 6773298274157356297}
+  animator: {fileID: 4279260152218026145}
 --- !u!136 &4374285692015904546
 CapsuleCollider:
   m_ObjectHideFlags: 0
