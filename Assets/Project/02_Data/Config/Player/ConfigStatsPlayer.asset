@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8401e282e98f5524a827435e8b640da9, type: 3}
   m_Name: ConfigStatsPlayer
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
-  dashDistance: 1
-  dashDuration: 0.1
+  dashDistance: 6
+  dashDuration: 0.2
   hitDuration: 0.3
   maxHealth: 3
   swipeThreshold: 50
