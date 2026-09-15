@@ -39,7 +39,10 @@ public class PlayerCharacter : Actor
     protected override void Start()
     {
         base.Start();
+        
         AddActorComponent(Input);
+        
+        ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
     }
 
     private void OnEnable()

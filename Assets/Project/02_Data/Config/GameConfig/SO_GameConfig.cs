@@ -8,5 +8,5 @@ public class SO_GameConfig : ScriptableObject
     [field:Header("Scene References"),Space(10)]
     [SerializeField] public SceneReference menuScene;
     [SerializeField] public SceneReference gameplayScene;
-    [SerializeField] public SceneReference uiScene;
+    [SerializeField] public CameraConfig  cameraConfig;
 }

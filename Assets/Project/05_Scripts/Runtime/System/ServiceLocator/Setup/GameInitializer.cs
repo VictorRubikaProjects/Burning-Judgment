@@ -8,6 +8,7 @@ public class GameInitializer
     
     private SceneService _sceneService;
     private SaveService _saveService;
+    private CameraService _cameraService;
 
     public bool IsInitialized { get; private set; } = false;
 
@@ -43,6 +44,7 @@ public class GameInitializer
     {
         _sceneService = new SceneService();
         _saveService =  new SaveService();
+        _cameraService = new CameraService(_gameConfig.cameraConfig);
     }
     
 
@@ -50,7 +52,8 @@ public class GameInitializer
     {
         UniTask sceneTaskRegister = ServiceLocator.Register(_sceneService);
         UniTask saveTaskRegister = ServiceLocator.Register(_saveService);
+        UniTask cameraTaskRegister = ServiceLocator.Register(_cameraService);
         
-        await UniTask.WhenAll(sceneTaskRegister,saveTaskRegister);
+        await UniTask.WhenAll(sceneTaskRegister,saveTaskRegister, cameraTaskRegister);
     }
 }
