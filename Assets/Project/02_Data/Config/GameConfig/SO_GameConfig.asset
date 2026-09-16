@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SO_GameConfig
   m_EditorClassIdentifier: Project.Data::SO_GameConfig
   menuScene:
-    asset: {fileID: 102900000, guid: e525610833939f844aae87a32509e442, type: 3}
-    guid: e525610833939f844aae87a32509e442
+    asset: {fileID: 102900000, guid: f53acd42069b6704a8729e3bea22fa27, type: 3}
+    guid: f53acd42069b6704a8729e3bea22fa27
   gameplayScene:
     asset: {fileID: 102900000, guid: f53acd42069b6704a8729e3bea22fa27, type: 3}
     guid: f53acd42069b6704a8729e3bea22fa27
