@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
 public class DashState : BaseState
@@ -10,6 +11,8 @@ public class DashState : BaseState
     private readonly AnimationCurve m_dashCurve;
 
     private CancellationTokenSource m_ctsDash;
+    
+    private Collider[] m_overlapBuffer = new Collider[100];
 
     public bool IsFinished { get; private set; }
 
@@ -41,6 +44,13 @@ public class DashState : BaseState
         m_ctsDash?.Dispose();
     }
 
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        
+        ExecuteStrike();
+    }
+    
     private async UniTaskVoid DashAsync(Vector3 direction, CancellationToken token)
     {
         Vector3 start = m_rb.position;
@@ -67,4 +77,35 @@ public class DashState : BaseState
 
         IsFinished = true;
     }
+    
+    private void ExecuteStrike()
+    {
+        
+        Vector3 start = m_rb.position;
+        
+        float radius = 2f;
+        
+        int count = Physics.OverlapSphereNonAlloc(start, radius, m_overlapBuffer, m_configStats.enemyLayer);
+        
+        for (int i = 0; i < count; i++)
+        {
+            Collider hit = m_overlapBuffer[i];
+            
+            if (hit == null) continue;
+
+            if (!hit.TryGetComponent(out IDamageable damageable) || !damageable.CanTakeDamage()) continue;
+            
+            damageable.TakeDamage();
+
+            m_ctsDash.Cancel();
+
+            ServiceLocator.Get<CameraService>().Shake();
+            ServiceLocator.Get<FxService>().HitStop();
+            
+            IsFinished = true;
+            
+            return;
+        }
+    }
+    
 }

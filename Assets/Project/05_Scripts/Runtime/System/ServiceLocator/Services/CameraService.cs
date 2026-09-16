@@ -8,6 +8,7 @@ public class CameraService : IGameService
     private CinemachineBrain m_cinemachineBrain;
     private Camera m_camera;
     private CameraRig m_cameraRig;
+    private CameraShake  m_cameraShake;
 
     public Camera MainCamera => m_camera;
     public CinemachineCamera CinemachineCamera => m_cameraRig.CinemachineCamera;
@@ -29,6 +30,7 @@ public class CameraService : IGameService
 
         m_camera = m_cinemachineBrain.GetComponent<Camera>();
         m_cameraRig = Object.Instantiate(m_config.CameraRigPrefab);
+        m_cameraShake = new CameraShake(CinemachineCamera, m_config);
 
         IsInitialized = true;
         return UniTask.CompletedTask;
@@ -57,4 +59,7 @@ public class CameraService : IGameService
     public void Tick() { }
 
     public bool IsInitialized { get; set; }
+
+    public void Shake() => m_cameraShake.Shake().Forget();
+    
 }

@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
 public class GameInitializer
@@ -9,6 +10,7 @@ public class GameInitializer
     private SceneService _sceneService;
     private SaveService _saveService;
     private CameraService _cameraService;
+    private FxService _fxService;
 
     public bool IsInitialized { get; private set; } = false;
 
@@ -47,6 +49,8 @@ public class GameInitializer
         _saveService =  new SaveService();
         
         _cameraService = new CameraService(_gameConfig.cameraConfig);
+
+        _fxService = new FxService();
     }
     
 
@@ -55,7 +59,12 @@ public class GameInitializer
         UniTask sceneTaskRegister = ServiceLocator.Register(_sceneService);
         UniTask saveTaskRegister = ServiceLocator.Register(_saveService);
         UniTask cameraTaskRegister = ServiceLocator.Register(_cameraService);
+        UniTask fxTaskRegister = ServiceLocator.Register(_fxService);
         
-        await UniTask.WhenAll(sceneTaskRegister,saveTaskRegister, cameraTaskRegister);
+        await UniTask.WhenAll(
+            sceneTaskRegister,
+            saveTaskRegister, 
+            cameraTaskRegister,
+            fxTaskRegister);
     }
 }

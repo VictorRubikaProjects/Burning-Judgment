@@ -42,15 +42,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Intensity_Emission: 1
+    - _Intensity_Emission: 1.75
     - _Jsp: 5
-    - _Pattern_Concentration: 5
-    - _Pattern_Number: 3
+    - _Pattern_Concentration: 3.96
+    - _Pattern_Number: 3.11
     - _Pattern_Size: 4.3
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed_Scroll: 0.01
-    - _Thickness: 1.03
+    - _Speed_Scroll: 0.0152
+    - _Thickness: 1.0451
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _Pattern_Color: {r: 0.9887359, g: 1, b: 0, a: 1}

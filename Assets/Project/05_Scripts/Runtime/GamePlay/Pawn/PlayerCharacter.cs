@@ -5,7 +5,6 @@ public class PlayerCharacter : Actor
     #region Variable
 
     [Header("References")]
-    [SerializeField] private PlayerHUD hud;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
     

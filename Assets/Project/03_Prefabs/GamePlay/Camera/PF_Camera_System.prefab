@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 2832655902525708117}
   - component: {fileID: 5387805025504164190}
   - component: {fileID: 2577483975419802839}
+  - component: {fileID: 891074830769987141}
   m_Layer: 0
   m_Name: CM_FollowCam
   m_TagString: Untagged
@@ -173,6 +174,23 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!114 &891074830769987141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5550345659360357230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
+  NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0
+  FrequencyGain: 4
+  m_NoiseOffsets: {x: 787.94714, y: -886.8806, z: -562.3331}
 --- !u!1 &7038419514841178019
 GameObject:
   m_ObjectHideFlags: 0

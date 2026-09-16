@@ -38,6 +38,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
   hitDuration: 0.3
   maxHealth: 3
   swipeThreshold: 50
