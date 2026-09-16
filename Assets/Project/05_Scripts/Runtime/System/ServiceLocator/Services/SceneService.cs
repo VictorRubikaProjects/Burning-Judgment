@@ -15,6 +15,13 @@ public class SceneService : IGameService
     public event Action<string> OnUnloadSceneFinished;
     public event Action<float> OnUnloadSceneProgress;
     
+    private SO_GameConfig _gameConfig;
+
+    public SceneService(SO_GameConfig gameConfig)
+    {
+        _gameConfig = gameConfig;
+    }
+    
     #region IGameService Core
 
     public void Dispose() { }
@@ -130,5 +137,16 @@ public class SceneService : IGameService
     {
         if (!_loadingScreenGo) throw new ArgumentNullException(nameof(on),"[SceneService.ToggleLoadingScreen] LoadingScreen object not found.");
         _loadingScreenGo.SetActive(on);
+    }
+
+    public async UniTaskVoid LoadGameSceneAsync()
+    {
+        ToggleLoadingScreen(true);
+        
+        await UnloadScene(_gameConfig.menuScene.Name);
+        
+        await LoadSceneAsync(_gameConfig.gameplayScene.Name);
+        
+        ToggleLoadingScreen(false);
     }
 }
