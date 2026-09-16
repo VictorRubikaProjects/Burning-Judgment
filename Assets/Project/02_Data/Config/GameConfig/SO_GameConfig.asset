@@ -19,3 +19,5 @@ MonoBehaviour:
     asset: {fileID: 102900000, guid: f53acd42069b6704a8729e3bea22fa27, type: 3}
     guid: f53acd42069b6704a8729e3bea22fa27
   cameraConfig: {fileID: 11400000, guid: 334938fe79640a644984f5e00ad554b3, type: 2}
+  prefabTransition: {fileID: 6257718599867509399, guid: 614c906d59907bb49bcad3a64ec7c911, type: 3}
+  prefabLoading: {fileID: 4344145118657437613, guid: 7ad6da1138c849e48a618027a4311c33, type: 3}

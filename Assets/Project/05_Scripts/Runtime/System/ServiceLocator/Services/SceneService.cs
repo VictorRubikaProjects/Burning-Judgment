@@ -1,11 +1,16 @@
 using System;
 using Cysharp.Threading.Tasks;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneService : IGameService
 {
-    private GameObject _loadingScreenGo;
+    #region Variables
+
+    private GameObject m_loadingScreenGo;
+    private GameObject m_transitionCircle;
     
     public event Action<string> OnLoadSceneStarted;
     public event Action<string> OnLoadSceneFinished;
@@ -15,25 +20,49 @@ public class SceneService : IGameService
     public event Action<string> OnUnloadSceneFinished;
     public event Action<float> OnUnloadSceneProgress;
     
-    private SO_GameConfig _gameConfig;
+    private readonly SO_GameConfig m_gameConfig;
 
-    public SceneService(SO_GameConfig gameConfig)
-    {
-        _gameConfig = gameConfig;
-    }
+    private Material m_transitionMaterialInstance;
+    
+    private const float m_transitionCircleFadeInValue = 0;
+    private const float m_transitionCircleFadeOutValue = 1;
+    
+    private int m_transitionShaderParam = Shader.PropertyToID("_Progress");
+
+    #endregion
     
     #region IGameService Core
 
-    public void Dispose() { }
+    public SceneService(SO_GameConfig gameConfig)
+    {
+        m_gameConfig = gameConfig;
+    }
+
+    public void Dispose()
+    {
+        UnityEngine.Object.Destroy(m_transitionMaterialInstance);
+    }
 
     public UniTask InitializeService()
     {
-        _loadingScreenGo = GameObject.Find("PF_LoadingScreen");
-
-        if (_loadingScreenGo == null)
+        m_loadingScreenGo = GameObject.Find("PF_LoadingScreen");
+        m_transitionCircle = GameObject.Find("PF_Transition_Circle");
+        
+        if (m_loadingScreenGo == null)
         {
             Debug.LogError("[SceneService] LoadingScreen object not found.");
         }
+        
+        if (m_transitionCircle == null)
+        {
+            Debug.LogError("[SceneService] Circle Transition object not found.");
+        }
+        
+        Image transitionCircle = m_transitionCircle.GetComponent<Image>();
+        Material transitionMaterial = transitionCircle.material;  
+        m_transitionMaterialInstance = new Material(transitionMaterial); 
+        transitionCircle.material = m_transitionMaterialInstance;
+        m_transitionMaterialInstance.SetFloat(m_transitionShaderParam, m_transitionCircleFadeOutValue);
         
         return UniTask.CompletedTask;
     }
@@ -109,8 +138,6 @@ public class SceneService : IGameService
             }
         }
     }
-
-    #endregion
     
     public async UniTask UnloadScene(string sceneName)
     {
@@ -133,20 +160,45 @@ public class SceneService : IGameService
         OnUnloadSceneFinished?.Invoke(sceneName);
     }
 
+    #endregion
+    
+
     public void ToggleLoadingScreen(bool on)
     {
-        if (!_loadingScreenGo) throw new ArgumentNullException(nameof(on),"[SceneService.ToggleLoadingScreen] LoadingScreen object not found.");
-        _loadingScreenGo.SetActive(on);
+        if (!m_loadingScreenGo) throw new ArgumentNullException(nameof(on),"[SceneService.ToggleLoadingScreen] LoadingScreen object not found.");
+        m_loadingScreenGo.SetActive(on);
     }
 
     public async UniTaskVoid LoadGameSceneAsync()
     {
+        await CircleTransitionFadeIn();
+        
         ToggleLoadingScreen(true);
         
-        await UnloadScene(_gameConfig.menuScene.Name);
+        await UnloadScene(m_gameConfig.menuScene.Name);
         
-        await LoadSceneAsync(_gameConfig.gameplayScene.Name);
+        await LoadSceneAsync(m_gameConfig.gameplayScene.Name);
         
         ToggleLoadingScreen(false);
+        
+        await CircleTransitionFadeOut();
     }
+
+    private async UniTask CircleTransition(float target)
+    {
+        float duration = 0.5f;
+        
+        await Tween.MaterialProperty(
+            m_transitionMaterialInstance,
+            m_transitionShaderParam,
+            target,
+            duration,
+            Ease.InOutQuad);
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
+    }
+
+    public async UniTask CircleTransitionFadeIn() => await CircleTransition(m_transitionCircleFadeInValue);
+    public async UniTask CircleTransitionFadeOut() => await CircleTransition(m_transitionCircleFadeOutValue);
+    
 }

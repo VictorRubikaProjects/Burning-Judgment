@@ -43,7 +43,9 @@ public class GameInitializer
     private void CreateServices()
     {
         _sceneService = new SceneService(_gameConfig);
+        
         _saveService =  new SaveService();
+        
         _cameraService = new CameraService(_gameConfig.cameraConfig);
     }
     
