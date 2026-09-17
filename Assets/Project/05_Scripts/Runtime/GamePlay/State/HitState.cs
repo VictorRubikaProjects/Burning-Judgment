@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class HitState : BaseState
 {
-    private readonly float m_hitDuration;
     private CancellationTokenSource m_ctsHit;
 
     public bool IsFinished { get; private set; }
 
     public HitState(PlayerCharacter owner, Animator animator,ConfigStatsPlayer configStats) : base(owner, animator,configStats)
     {
-        m_hitDuration = configStats.hitDuration;
     }
 
     public override void OnEnter()
@@ -33,7 +31,7 @@ public class HitState : BaseState
 
     private async UniTask Recover(CancellationToken token)
     {
-        await UniTask.Delay(System.TimeSpan.FromSeconds(m_hitDuration), cancellationToken: token).SuppressCancellationThrow();
+        await UniTask.Delay(System.TimeSpan.FromSeconds(m_configStats.HitDuration), cancellationToken: token).SuppressCancellationThrow();
         if (token.IsCancellationRequested) return;
 
         IsFinished = true;

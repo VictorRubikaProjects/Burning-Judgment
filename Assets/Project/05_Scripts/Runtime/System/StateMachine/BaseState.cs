@@ -19,7 +19,7 @@ public abstract class BaseState : IState
         m_owner = owner;
         m_animator = animator;
         m_configStats = configStats;
-        m_crossFadeDuration = configStats.crossFadeDuration;
+        m_crossFadeDuration = configStats.CrossFadeDuration;
     }
     
     public virtual void OnEnter()

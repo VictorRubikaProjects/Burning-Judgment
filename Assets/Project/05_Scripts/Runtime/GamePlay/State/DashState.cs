@@ -6,9 +6,6 @@ using UnityEngine;
 public class DashState : BaseState
 {
     private readonly Rigidbody m_rb;
-    private readonly float m_dashDistance;
-    private readonly float m_dashDuration;
-    private readonly AnimationCurve m_dashCurve;
 
     private CancellationTokenSource m_ctsDash;
     
@@ -20,9 +17,6 @@ public class DashState : BaseState
         : base(owner, animator, configStats)
     {
         m_rb = rb;
-        m_dashDistance = configStats.dashDistance;
-        m_dashDuration = configStats.dashDuration;
-        m_dashCurve = configStats.dashCurve;
     }
 
     public override void OnEnter()
@@ -53,20 +47,25 @@ public class DashState : BaseState
     
     private async UniTaskVoid DashAsync(Vector3 direction, CancellationToken token)
     {
-        await m_owner.ControllerComponent.DashAsync(direction,token,m_dashDuration,m_dashDistance,m_dashCurve);
+        await m_owner.ControllerComponent.DashAsync(direction,
+            token,
+            m_configStats.DashDuration,
+            m_configStats.DashDistance,
+            m_configStats.DashCurve);
+        
         IsFinished = true;
     }
     
     //TODO need rework OverlapSphere Gizmo + should be in front of player
     private void ExecuteStrike()
     {
-        Vector3 start = m_rb.position + m_owner.MoveDir * m_configStats.offsetDash;
+        Vector3 start = m_rb.position + m_owner.MoveDir * m_configStats.OffsetDash;
         
         int count = Physics.OverlapSphereNonAlloc(
             start,
-            m_configStats.dashRadius,
+            m_configStats.DashRadius,
             m_overlapBuffer,
-            m_configStats.enemyLayer);
+            m_configStats.EnemyLayer);
         
         for (int i = 0; i < count; i++)
         {

@@ -18,7 +18,7 @@ public class InputComponent : ActorComponent
 
     #region ActorComponent Methods
 
-    public InputComponent(Actor owner, float swipeThreshold = 50f) : base(owner)
+    public InputComponent(Actor owner, float swipeThreshold) : base(owner)
     {
         m_swipeThreshold = swipeThreshold;
     }

@@ -11,8 +11,4 @@ public class SO_GameConfig : ScriptableObject
     
     [field:Header("Other Config"),Space(10)]
     [SerializeField] public CameraConfig  cameraConfig;
-
-    [field: Header("Prefabs"), Space(10)] 
-    [SerializeField] public GameObject prefabTransition;
-    [SerializeField] public GameObject prefabLoading;
 }

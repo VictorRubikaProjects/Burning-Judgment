@@ -59,8 +59,6 @@ public class Dummy : AbstractEnemy
             3f,
             Ease.Linear);
         
-        m_canTakeDamage = true;
-        
         await RecoverFinishedAsync();
     }
 
@@ -75,5 +73,7 @@ public class Dummy : AbstractEnemy
             Ease.Linear,
             5,
             CycleMode.Yoyo);
+        
+        m_canTakeDamage = true;
     }
 }

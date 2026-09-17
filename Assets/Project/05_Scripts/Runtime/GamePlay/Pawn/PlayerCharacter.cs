@@ -46,7 +46,7 @@ public class PlayerCharacter : Actor
         
         SetupStateMachine();
 
-        Input = new InputComponent(owner: this);
+        Input = new InputComponent(owner: this,stats.SwipeThreshold);
         ControllerComponent = new PlayerControllerComponent(owner:this,rb);
     }
 
@@ -142,7 +142,7 @@ public class PlayerCharacter : Actor
         if (m_dashState.IsFinished) return;
         
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(rb.position + MoveDir * stats.offsetDash,stats.dashRadius);
+        Gizmos.DrawWireSphere(rb.position + MoveDir * stats.OffsetDash,stats.DashRadius);
     }
 
     #endregion
