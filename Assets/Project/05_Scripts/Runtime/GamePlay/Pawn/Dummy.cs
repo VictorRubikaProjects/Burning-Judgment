@@ -51,28 +51,29 @@ public class Dummy : AbstractEnemy
         m_ctsDummy =  new CancellationTokenSource();
         
         m_canTakeDamage = false;
-        
+
         await Tween.MaterialColor(
             m_materialBodyInstance,
             m_colorHit,
             m_colorNeutral,
-            5f,
-            Ease.Linear).ToUniTask(cancellationToken:m_ctsDummy.Token);
+            3f,
+            Ease.Linear);
         
         m_canTakeDamage = true;
         
-        await RecoverFinishedAsync(m_ctsDummy.Token);
+        await RecoverFinishedAsync();
     }
 
-    private async UniTask RecoverFinishedAsync(CancellationToken token)
+    private async UniTask RecoverFinishedAsync()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            await Tween.MaterialColor(m_materialBodyInstance,
-                m_colorReady,
-                m_colorNeutral,
-                0.1f,
-                Ease.Linear).ToUniTask(cancellationToken:token);
-        }
+        m_ctsDummy.Token.ThrowIfCancellationRequested();
+        
+        await Tween.MaterialColor(m_materialBodyInstance,
+            m_colorReady,
+            m_colorNeutral,
+            0.1f,
+            Ease.Linear,
+            5,
+            CycleMode.Yoyo);
     }
 }

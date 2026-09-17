@@ -57,6 +57,7 @@ public class DashState : BaseState
         IsFinished = true;
     }
     
+    //TODO need rework OverlapSphere Gizmo + should be in front of player
     private void ExecuteStrike()
     {
         
