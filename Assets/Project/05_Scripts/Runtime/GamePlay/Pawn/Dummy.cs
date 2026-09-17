@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using PrimeTween;
@@ -15,9 +16,11 @@ public class Dummy : AbstractEnemy
     [Header("Settings")] 
     [SerializeField] private Color m_colorNeutral = Color.red;
     [SerializeField] private Color m_colorHit = Color.yellow;
+    [SerializeField] private Color m_colorReady = Color.green;
     
     private Material m_materialBodyInstance;
     private bool m_canTakeDamage = true;
+    private CancellationTokenSource m_ctsDummy;
 
     protected override void Awake()
     {
@@ -37,15 +40,39 @@ public class Dummy : AbstractEnemy
         
         m_materialBodyInstance.color = m_colorHit;
         
-        Recover().Forget();
+        RecoverAsync().Forget();
     }
 
     public override bool CanTakeDamage() => m_canTakeDamage;
 
-    private async UniTask Recover()
+    private async UniTask RecoverAsync()
     {
+        m_ctsDummy?.Cancel();
+        m_ctsDummy =  new CancellationTokenSource();
+        
         m_canTakeDamage = false;
-        await Tween.MaterialColor(m_materialBodyInstance,m_colorHit,m_colorNeutral,5f);
+        
+        await Tween.MaterialColor(
+            m_materialBodyInstance,
+            m_colorHit,
+            m_colorNeutral,
+            5f,
+            Ease.Linear).ToUniTask(cancellationToken:m_ctsDummy.Token);
+        
         m_canTakeDamage = true;
+        
+        await RecoverFinishedAsync(m_ctsDummy.Token);
+    }
+
+    private async UniTask RecoverFinishedAsync(CancellationToken token)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            await Tween.MaterialColor(m_materialBodyInstance,
+                m_colorReady,
+                m_colorNeutral,
+                0.1f,
+                Ease.Linear).ToUniTask(cancellationToken:token);
+        }
     }
 }

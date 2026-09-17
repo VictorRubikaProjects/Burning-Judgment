@@ -127,6 +127,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 672824350548830812, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -337
+      objectReference: {fileID: 0}
+    - target: {fileID: 672824350548830812, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1101
+      objectReference: {fileID: 0}
     - target: {fileID: 2927075100756158780, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -210,10 +218,6 @@ PrefabInstance:
     - target: {fileID: 4684090435949026044, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
       propertyPath: m_Name
       value: PF_Canvas_BootStrap
-      objectReference: {fileID: 0}
-    - target: {fileID: 7639009292207002028, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
-      propertyPath: m_text
-      value: 'FPS : 00'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

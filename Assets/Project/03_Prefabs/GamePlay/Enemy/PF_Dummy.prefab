@@ -53,8 +53,8 @@ MonoBehaviour:
   m_animator: {fileID: 2901935809709095336}
   m_renderer: {fileID: 6357019333992082861}
   m_materialBody: {fileID: 2100000, guid: d4fa82dd98a26a24d8a4cdb55347f30e, type: 2}
-  m_colorNeutral: {r: 1, g: 0, b: 0, a: 1}
-  m_colorHit: {r: 0.015686274, g: 0.6679632, b: 1, a: 1}
+  m_colorNeutral: {r: 1, g: 1, b: 1, a: 1}
+  m_colorHit: {r: 1, g: 0.06195164, b: 0.015686274, a: 1}
 --- !u!95 &2901935809709095336
 Animator:
   serializedVersion: 7
