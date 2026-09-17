@@ -100,7 +100,6 @@ public class DashState : BaseState
             m_ctsDash.Cancel();
 
             ServiceLocator.Get<CameraService>().Shake();
-            ServiceLocator.Get<FxService>().HitStop();
             
             IsFinished = true;
             

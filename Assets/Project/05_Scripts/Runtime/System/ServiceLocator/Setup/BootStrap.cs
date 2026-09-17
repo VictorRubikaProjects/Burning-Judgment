@@ -14,6 +14,8 @@ public class BootStrap : MonoBehaviour
     private readonly GameInitializer _gameInitializer = new();
     
     public SO_GameConfig GameConfig => gameConfig;
+    
+    public int MaxFrames = 60;
 
     private void Awake()
     {
@@ -26,6 +28,8 @@ public class BootStrap : MonoBehaviour
         _gameInitializer.Initialize(gameConfig);
 
         UniTaskScheduler.UnobservedTaskException += OnUnobservedException;
+        
+        Application.targetFrameRate = MaxFrames;
     }
 
     private void OnUnobservedException(Exception exception)

@@ -51,9 +51,10 @@ Material:
     - _QueueOffset: 0
     - _Speed_Scroll: 0.0152
     - _Thickness: 1.0451
+    - _XRMotionVectorsPass: 1
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _Pattern_Color: {r: 0.9887359, g: 1, b: 0, a: 1}
+    - _Pattern_Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &742233776144608076

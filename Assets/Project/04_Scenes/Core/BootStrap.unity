@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Canvas_BootStrap
       objectReference: {fileID: 0}
+    - target: {fileID: 7639009292207002028, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
+      propertyPath: m_text
+      value: 'FPS : 00'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
