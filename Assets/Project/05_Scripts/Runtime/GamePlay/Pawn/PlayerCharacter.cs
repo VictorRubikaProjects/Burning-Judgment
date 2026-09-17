@@ -1,5 +1,3 @@
-using System;
-using Codice.CM.Common;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
