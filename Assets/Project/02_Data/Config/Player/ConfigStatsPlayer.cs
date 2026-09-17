@@ -13,6 +13,10 @@ public class ConfigStatsPlayer : ScriptableObject
     );
 
     public LayerMask enemyLayer;
+
+    public float dashRadius = 2;
+
+    public float offsetDash = 0.5f;
     
     [Header("Hit")]
     public float hitDuration = 0.3f;

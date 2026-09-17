@@ -60,12 +60,13 @@ public class DashState : BaseState
     //TODO need rework OverlapSphere Gizmo + should be in front of player
     private void ExecuteStrike()
     {
+        Vector3 start = m_rb.position + m_owner.MoveDir * m_configStats.offsetDash;
         
-        Vector3 start = m_rb.position;
-        
-        float radius = 2f;
-        
-        int count = Physics.OverlapSphereNonAlloc(start, radius, m_overlapBuffer, m_configStats.enemyLayer);
+        int count = Physics.OverlapSphereNonAlloc(
+            start,
+            m_configStats.dashRadius,
+            m_overlapBuffer,
+            m_configStats.enemyLayer);
         
         for (int i = 0; i < count; i++)
         {

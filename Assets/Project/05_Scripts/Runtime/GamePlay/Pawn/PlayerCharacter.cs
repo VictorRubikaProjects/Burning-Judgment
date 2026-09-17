@@ -1,3 +1,5 @@
+using System;
+using Codice.CM.Common;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
@@ -14,14 +16,23 @@ public class PlayerCharacter : Actor
     public InputComponent Input { get; private set; }
     public PlayerControllerComponent ControllerComponent { get; private set; }
 
+    public Vector3 MoveDir => m_moveDir;
+    public Transform TransformCache => m_transformCache;
+    
     private StateMachine m_stateMachine;
 
     private Vector3 m_moveDir;
+    
     private bool m_wantsDash;
     private bool m_isHit;
     private bool m_isDead;
-
-    public Vector3 MoveDir => m_moveDir;
+    
+    private IdleState m_idleState;
+    private DeathState m_deathState;
+    private DashState m_dashState;
+    private HitState m_hitState;
+    
+    private Transform m_transformCache;
 
     #endregion
 
@@ -31,6 +42,8 @@ public class PlayerCharacter : Actor
     {
         base.Awake();
 
+        m_transformCache = transform;
+        
         SetupStateMachine();
 
         Input = new InputComponent(owner: this);
@@ -82,19 +95,19 @@ public class PlayerCharacter : Actor
     {
         m_stateMachine = new StateMachine();
 
-        var idleState = new IdleState(this, animator,stats);
-        var dashState = new DashState(this, animator, rb,stats);
-        var hitState = new HitState(this, animator,stats);
-        var deathState = new DeathState(this, animator,stats);
+        m_idleState = new IdleState(this, animator,stats);
+        m_dashState = new DashState(this, animator, rb,stats);
+        m_hitState = new HitState(this, animator,stats);
+        m_deathState = new DeathState(this, animator,stats);
 
-        At(idleState, dashState, new FuncPredicate(() => m_wantsDash));
-        At(dashState, idleState, new FuncPredicate(() => dashState.IsFinished));
-        At(hitState, idleState, new FuncPredicate(() => hitState.IsFinished));
+        At(m_idleState, m_dashState, new FuncPredicate(() => m_wantsDash));
+        At(m_dashState, m_idleState, new FuncPredicate(() => m_dashState.IsFinished));
+        At(m_hitState, m_idleState, new FuncPredicate(() => m_hitState.IsFinished));
 
-        Any(hitState, new FuncPredicate(() => m_isHit));
-        Any(deathState, new FuncPredicate(() => m_isDead));
+        Any(m_hitState, new FuncPredicate(() => m_isHit));
+        Any(m_deathState, new FuncPredicate(() => m_isDead));
 
-        m_stateMachine.SetState(idleState);
+        m_stateMachine.SetState(m_idleState);
     }
 
     #endregion
@@ -105,11 +118,34 @@ public class PlayerCharacter : Actor
         m_wantsDash = true;
     }
 
+    #region Helpers
+
     public void ConsumeDashRequest() => m_wantsDash = false;
     public void ConsumeHitRequest() => m_isHit = false;
 
     public void RequestHit() => m_isHit = true;
     public void Kill() => m_isDead = true;
 
+    #endregion
     
+#if UNITY_EDITOR    
+    
+    #region Debug
+
+    private void OnDrawGizmosSelected()
+    {
+        DrawDashRadius();
+    }
+
+    private void DrawDashRadius()
+    {
+        if (m_dashState.IsFinished) return;
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(rb.position + MoveDir * stats.offsetDash,stats.dashRadius);
+    }
+
+    #endregion
+    
+#endif
 }
