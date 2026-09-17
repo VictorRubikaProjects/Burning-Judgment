@@ -12,6 +12,7 @@ public class PlayerCharacter : Actor
     [SerializeField] private ConfigStatsPlayer stats;
 
     public InputComponent Input { get; private set; }
+    public PlayerControllerComponent ControllerComponent { get; private set; }
 
     private StateMachine m_stateMachine;
 
@@ -33,6 +34,7 @@ public class PlayerCharacter : Actor
         SetupStateMachine();
 
         Input = new InputComponent(owner: this);
+        ControllerComponent = new PlayerControllerComponent(owner:this,rb);
     }
 
     protected override void Start()
@@ -40,6 +42,7 @@ public class PlayerCharacter : Actor
         base.Start();
         
         AddActorComponent(Input);
+        AddActorComponent(ControllerComponent);
         
         ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
     }
@@ -64,6 +67,7 @@ public class PlayerCharacter : Actor
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+        
         m_stateMachine.FixedUpdate();
     }
 
@@ -97,9 +101,7 @@ public class PlayerCharacter : Actor
     
     private void SwipeHandler(Vector2 moveDir)
     {
-        Vector3 worldDir = new Vector3(moveDir.x, 0f, moveDir.y);
-        transform.rotation = Quaternion.LookRotation(worldDir);
-        m_moveDir = worldDir;
+        m_moveDir = new Vector3(moveDir.x, 0f, moveDir.y);
         m_wantsDash = true;
     }
 

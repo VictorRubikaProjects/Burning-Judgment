@@ -22,6 +22,16 @@ public class Actor : Pawn
             
     }
 
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        foreach (ActorComponent component in m_components)
+        {
+            component.FixedUpdate();
+        }
+    }
+
     protected T AddActorComponent<T>(T component) where T : ActorComponent 
     {
         m_components.Add(component);

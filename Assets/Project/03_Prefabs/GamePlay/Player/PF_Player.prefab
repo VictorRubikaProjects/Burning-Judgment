@@ -305,7 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f0726b967cc9e4bb2198109689f9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::PlayerCharacter
-  hud: {fileID: 0}
   rb: {fileID: 6773298274157356297}
   animator: {fileID: 4279260152218026145}
   stats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
