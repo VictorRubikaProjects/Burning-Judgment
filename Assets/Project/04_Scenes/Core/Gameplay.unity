@@ -503,6 +503,54 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d6abfc3caf6ccb4898fec9a979bf50b, type: 3}
+--- !u!1 &770347991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 770347993}
+  - component: {fileID: 770347992}
+  m_Layer: 0
+  m_Name: Hud_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &770347992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770347991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c221ff3e2288d1746a3063668dc65169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::HudManager
+  optionButtons:
+  - {fileID: 3340452781338461939}
+  - {fileID: 3340452781338461942}
+  optionPanel: {fileID: 3340452781338461936}
+--- !u!4 &770347993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770347991}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 702.6461, y: 1081.5267, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &934940203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4455163777241542802, guid: cc78fc27ea2866840887678b8f1ff650, type: 3}
@@ -609,6 +657,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.23952, y: 0.35, z: -2.7477}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1082607976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1082607977}
+  m_Layer: 0
+  m_Name: '======Manager====== '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1082607977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082607976}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.23569, y: -1.39921, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -997,6 +1076,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+--- !u!1 &3340452781338461936 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 458518591581177518, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+  m_PrefabInstance: {fileID: 3340452781338461935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3340452781338461939 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5439096320233248309, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+  m_PrefabInstance: {fileID: 3340452781338461935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &3340452781338461942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6844672130175016573, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+  m_PrefabInstance: {fileID: 3340452781338461935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &7218081349094387119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1073,3 +1179,5 @@ SceneRoots:
   - {fileID: 1199715125}
   - {fileID: 2033420337}
   - {fileID: 1024381959}
+  - {fileID: 1082607977}
+  - {fileID: 770347993}

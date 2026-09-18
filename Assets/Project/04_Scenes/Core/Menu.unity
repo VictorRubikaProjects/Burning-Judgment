@@ -198,6 +198,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1482884537 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7530417168412182408, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
+  m_PrefabInstance: {fileID: 7739945428663380679}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1571967441
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,9 +254,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::MenuManager
   playButton: {fileID: 1789615970}
+  optionButtons:
+  - {fileID: 1897415421}
+  - {fileID: 1482884537}
+  optionPanel: {fileID: 7739945428663380680}
 --- !u!114 &1789615970 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4795547064455248250, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
+  m_PrefabInstance: {fileID: 7739945428663380679}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1897415421 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1200670630924756049, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
   m_PrefabInstance: {fileID: 7739945428663380679}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -262,29 +288,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1774964977592962403, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 270
-      objectReference: {fileID: 0}
-    - target: {fileID: 1774964977592962403, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 115
-      objectReference: {fileID: 0}
-    - target: {fileID: 1774964977592962403, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1774964977592962403, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3314426469778631342, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
       propertyPath: m_Name
       value: PF_Canvas_Menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 6032256593630836073, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
-      propertyPath: m_text
-      value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 7563970898857829694, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
       propertyPath: m_Pivot.x
@@ -371,6 +377,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
+--- !u!1 &7739945428663380680 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6521246383118765105, guid: a2241c31497e52c47b6695c46b5ff864, type: 3}
+  m_PrefabInstance: {fileID: 7739945428663380679}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

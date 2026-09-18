@@ -1,36 +1,25 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuManager : MonoBehaviour
+public class HudManager : MonoBehaviour
 {
-    [SerializeField] private Button playButton;
     [SerializeField] private Button[] optionButtons;
-    
     [SerializeField] private GameObject optionPanel;
     
-    private SceneService m_sceneService;
     private bool m_isOpen;
 
     private void Awake()
     {
-        m_sceneService = ServiceLocator.Get<SceneService>();
-        
-        playButton.onClick.AddListener(LoadGame);
-        
         foreach (Button button in optionButtons)
+        {
             button.onClick.AddListener(ToggleOption);
+        }
     }
-
-    private void LoadGame()
-    {
-        playButton.interactable = false;
-        m_sceneService.LoadGameSceneAsync().Forget();
-    }
-
+    
     private void ToggleOption()
     {
         m_isOpen = !m_isOpen;
         optionPanel.SetActive(m_isOpen);
+        Time.timeScale = m_isOpen ? 0 : 1;
     }
 }
