@@ -1,7 +1,10 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 internal static class TimerBootstrapper
 {
@@ -29,6 +32,7 @@ internal static class TimerBootstrapper
 #endif
     }
 
+#if UNITY_EDITOR
     static void OnPlayModeState(PlayModeStateChange state)
     {
         if (state == PlayModeStateChange.ExitingPlayMode)
@@ -40,6 +44,7 @@ internal static class TimerBootstrapper
             TimerManager.ClearTimers();
         }
     }
+#endif
 
     static void RemoveTimerManager<T>(ref PlayerLoopSystem loop)
     {
