@@ -6,11 +6,10 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] private Button playButton;
     [SerializeField] private Button[] optionButtons;
-    
-    [SerializeField] private GameObject optionPanel;
+    [SerializeField] private CanvasGroup optionPanel;
     
     private SceneService m_sceneService;
-    private bool m_isOpen;
+    private OptionController  m_optionController;
 
     private void Awake()
     {
@@ -18,19 +17,13 @@ public class MenuManager : MonoBehaviour
         
         playButton.onClick.AddListener(LoadGame);
         
-        foreach (Button button in optionButtons)
-            button.onClick.AddListener(ToggleOption);
+        m_optionController = new OptionController(optionButtons, optionPanel,false);
+        m_optionController.Init();
     }
 
     private void LoadGame()
     {
         playButton.interactable = false;
         m_sceneService.LoadGameSceneAsync().Forget();
-    }
-
-    private void ToggleOption()
-    {
-        m_isOpen = !m_isOpen;
-        optionPanel.SetActive(m_isOpen);
     }
 }

@@ -4,22 +4,15 @@ using UnityEngine.UI;
 public class HudManager : MonoBehaviour
 {
     [SerializeField] private Button[] optionButtons;
-    [SerializeField] private GameObject optionPanel;
+    [SerializeField] private CanvasGroup optionPanel;
     
-    private bool m_isOpen;
-
+    private OptionController m_optionController;
+    
     private void Awake()
     {
-        foreach (Button button in optionButtons)
-        {
-            button.onClick.AddListener(ToggleOption);
-        }
+        m_optionController = new OptionController(optionButtons, optionPanel);
+        m_optionController.Init();
     }
     
-    private void ToggleOption()
-    {
-        m_isOpen = !m_isOpen;
-        optionPanel.SetActive(m_isOpen);
-        Time.timeScale = m_isOpen ? 0 : 1;
-    }
+    
 }
