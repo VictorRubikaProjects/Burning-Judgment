@@ -22,7 +22,7 @@ public class ConfigStatsPlayer : ScriptableObject
 
     [Space] [Header("Attack")]
     [SerializeField] [Range(0f, 5f)] private float attackCastRadius = 0.5f;
-    [SerializeField] [Range(0f, 20f)] private float attackCastDistance = 5f;
+    [SerializeField] [Range(0f, 40f)] private float attackCastDistance = 5f;
     [SerializeField] private DashData attackDash = new() { Duration = 0.15f };
     [SerializeField] [Range(0f, 3f)] private float attackStopOffset = 0.5f;
 
