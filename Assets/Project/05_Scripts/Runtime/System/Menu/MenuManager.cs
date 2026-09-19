@@ -1,4 +1,5 @@
 using System;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,16 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider musicSlider;
+    
+    [Header("RectTransform")]
+    [SerializeField] private RectTransform m_playButtonRT;
+    [SerializeField] private RectTransform m_optionButtonRT;
+    [SerializeField] private RectTransform m_canvasRT;
+
+    [Header("Intro Animation")]
+    [SerializeField] private float slideDuration = 0.5f;
+    [SerializeField] private float offScreenMargin = 50f;
+    [SerializeField] private Ease slideEase = Ease.OutCubic;
     
     private SceneService m_sceneService;
     private OptionController  m_optionController;
@@ -34,7 +45,24 @@ public class MenuManager : MonoBehaviour
             pauseTime:false);
         
         m_optionController.Init();
+
+        PlayIntroAnimation();
     }
+
+    private void PlayIntroAnimation()
+    {
+        Vector2 playTarget = m_playButtonRT.anchoredPosition;
+        Vector2 optionTarget = m_optionButtonRT.anchoredPosition;
+
+        m_playButtonRT.anchoredPosition = playTarget + Vector2.left * GetOffScreenOffset(m_playButtonRT);
+        m_optionButtonRT.anchoredPosition = optionTarget + Vector2.right * GetOffScreenOffset(m_optionButtonRT);
+
+        Tween.UIAnchoredPosition(m_playButtonRT, playTarget, slideDuration, slideEase);
+        Tween.UIAnchoredPosition(m_optionButtonRT, optionTarget, slideDuration, slideEase);
+    }
+
+    private float GetOffScreenOffset(RectTransform rt) =>
+        (m_canvasRT.rect.width * 0.5f) + (rt.rect.width * 0.5f) + offScreenMargin;
 
     private void LoadGame()
     {
