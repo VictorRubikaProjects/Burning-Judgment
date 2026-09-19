@@ -130,7 +130,7 @@ public class PlayerCharacter : Actor
     
     #region Debug
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         DrawDashRadius();
     }

@@ -56,7 +56,6 @@ public class DashState : BaseState
         IsFinished = true;
     }
     
-    //TODO need rework OverlapSphere Gizmo + should be in front of player
     private void ExecuteStrike()
     {
         Vector3 start = m_rb.position + m_owner.MoveDir * m_configStats.OffsetDash;
@@ -74,12 +73,8 @@ public class DashState : BaseState
             if (hit == null) continue;
 
             if (!hit.TryGetComponent(out IDamageable damageable) || !damageable.CanTakeDamage()) continue;
-            
-            damageable.TakeDamage();
 
             m_ctsDash.Cancel();
-
-            ServiceLocator.Get<CameraService>().Shake();
             
             IsFinished = true;
             
