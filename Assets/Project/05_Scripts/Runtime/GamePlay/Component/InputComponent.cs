@@ -14,6 +14,8 @@ public class InputComponent : ActorComponent
 
     public event Action<Vector2> OnSwipe;
 
+    private float maxTimeSwipe = 0.1f;
+
     #endregion
 
     #region ActorComponent Methods
