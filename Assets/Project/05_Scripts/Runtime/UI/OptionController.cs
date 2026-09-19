@@ -6,6 +6,10 @@ public class OptionController
 {
     private Button[] m_optionButtons;
     
+    private Slider m_sliderVolume;
+    private Slider m_sliderSfx;
+    private Slider m_sliderMusic;
+    
     private CanvasGroup m_optionPanel;
     
     private bool m_isOpen;
@@ -15,19 +19,26 @@ public class OptionController
     
     Tween m_optionTween;
 
-    public OptionController(Button[] optionButtons, CanvasGroup optionPanel, bool pauseTime = true, float startingAlpha = 0)
+    public OptionController(Button[] optionButtons, CanvasGroup optionPanel,Slider sliderVolume,Slider sliderSfx,Slider sliderMusic, bool pauseTime = true, float startingAlpha = 0)
     {
         m_optionButtons =  optionButtons;
         m_optionPanel = optionPanel;
         m_pauseTime = pauseTime;
         m_optionPanel.alpha = startingAlpha;
+        
         if (startingAlpha == 0) m_optionPanel.blocksRaycasts = false;
+        
+        m_sliderVolume = sliderVolume;
+        m_sliderSfx = sliderSfx;
+        m_sliderMusic = sliderMusic;
     }
 
     public void Init()
     {
         foreach (Button button in m_optionButtons)
             button.onClick.AddListener(ToggleOption);
+        
+        //addlistener to ServiceAudio
     }
 
     private void ToggleOption()

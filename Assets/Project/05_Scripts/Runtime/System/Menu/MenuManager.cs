@@ -4,9 +4,17 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
+    [Header("Buttons")]
     [SerializeField] private Button playButton;
     [SerializeField] private Button[] optionButtons;
-    [SerializeField] private CanvasGroup optionPanel;
+    
+    [Header("Canvas Groups")]
+    [SerializeField] private CanvasGroup optionCanvasGroup;
+    
+    [Header("Slider")]
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private Slider musicSlider;
     
     private SceneService m_sceneService;
     private OptionController  m_optionController;
@@ -17,7 +25,14 @@ public class MenuManager : MonoBehaviour
         
         playButton.onClick.AddListener(LoadGame);
         
-        m_optionController = new OptionController(optionButtons, optionPanel,false);
+        m_optionController = new OptionController(
+            optionButtons,
+            optionCanvasGroup,
+            volumeSlider,
+            sfxSlider,
+            musicSlider,
+            pauseTime:false);
+        
         m_optionController.Init();
     }
 

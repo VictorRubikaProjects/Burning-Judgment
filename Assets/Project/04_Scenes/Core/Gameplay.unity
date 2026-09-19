@@ -540,7 +540,10 @@ MonoBehaviour:
   optionButtons:
   - {fileID: 3340452781338461939}
   - {fileID: 3340452781338461942}
-  optionPanel: {fileID: 444432303}
+  optionCanvasGroup: {fileID: 444432303}
+  volumeSlider: {fileID: 3340452781338461938}
+  sfxSlider: {fileID: 3340452781338461937}
+  musicSlider: {fileID: 3340452781338461936}
 --- !u!4 &770347993
 Transform:
   m_ObjectHideFlags: 0
@@ -1004,11 +1007,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Canvas_Hud
       objectReference: {fileID: 0}
+    - target: {fileID: 1047152408145533488, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3566826140521532247, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3699269573274378562, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785017787397783975, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -1032,6 +1043,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4159757997239796323, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4532102912691330848, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1050,6 +1065,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4784407591936376567, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101771335625923507, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5471972209200207991, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5942420998054825654, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
@@ -1148,11 +1171,48 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8214415865045894112, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+--- !u!114 &3340452781338461936 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3427639115273419389, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+  m_PrefabInstance: {fileID: 3340452781338461935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!114 &3340452781338461937 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7703699322853832762, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+  m_PrefabInstance: {fileID: 3340452781338461935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!114 &3340452781338461938 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7481730171682061310, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+  m_PrefabInstance: {fileID: 3340452781338461935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!114 &3340452781338461939 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5439096320233248309, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
