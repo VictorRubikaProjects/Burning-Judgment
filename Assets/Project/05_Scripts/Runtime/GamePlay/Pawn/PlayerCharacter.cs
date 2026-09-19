@@ -20,8 +20,10 @@ public class PlayerCharacter : Actor
     private StateMachine m_stateMachine;
 
     private Vector3 m_moveDir;
+    private Vector3 m_attackDirection;
     
     private bool m_wantsDash;
+    private bool m_wantsAttack;
     private bool m_isHit;
     private bool m_isDead;
     
@@ -29,6 +31,7 @@ public class PlayerCharacter : Actor
     private DeathState m_deathState;
     private DashState m_dashState;
     private HitState m_hitState;
+    private AttackState m_attackState;
     
     private Transform m_transformCache;
 
@@ -44,7 +47,7 @@ public class PlayerCharacter : Actor
         
         SetupStateMachine();
 
-        Input = new InputComponent(owner: this,stats.SwipeThreshold);
+        Input = new InputComponent(owner: this,stats);
         ControllerComponent = new PlayerControllerComponent(owner:this,rb);
     }
 
@@ -61,11 +64,13 @@ public class PlayerCharacter : Actor
     private void OnEnable()
     {
         Input.OnSwipe += SwipeHandler;
+        Input.OnPressSwipeSuccess += AttackHandler;
     }
 
     private void OnDisable()
     {
         Input.OnSwipe -= SwipeHandler;
+        Input.OnPressSwipeSuccess -= AttackHandler;
     }
 
     protected override void Update()
@@ -97,10 +102,13 @@ public class PlayerCharacter : Actor
         m_dashState = new DashState(this, animator, rb,stats);
         m_hitState = new HitState(this, animator,stats);
         m_deathState = new DeathState(this, animator,stats);
+        m_attackState = new AttackState(this, animator, stats);
 
         At(m_idleState, m_dashState, new FuncPredicate(() => m_wantsDash));
         At(m_dashState, m_idleState, new FuncPredicate(() => m_dashState.IsFinished));
         At(m_hitState, m_idleState, new FuncPredicate(() => m_hitState.IsFinished));
+        At(m_idleState, m_attackState, new FuncPredicate(() => m_wantsAttack));
+        At(m_attackState, m_idleState, new FuncPredicate(() => m_attackState.IsFinished));
 
         Any(m_hitState, new FuncPredicate(() => m_isHit));
         Any(m_deathState, new FuncPredicate(() => m_isDead));
@@ -116,9 +124,17 @@ public class PlayerCharacter : Actor
         m_wantsDash = true;
     }
 
+    private void AttackHandler(Vector2 dir)
+    {
+        m_attackDirection = new Vector3(dir.x, 0f, dir.y);
+        m_attackState.SetAttackDirection(m_attackDirection);
+        m_wantsAttack = true;
+    }
+
     #region Helpers
 
     public void ConsumeDashRequest() => m_wantsDash = false;
+    public void ConsumeAttackRequest() => m_wantsAttack = false;
     public void ConsumeHitRequest() => m_isHit = false;
 
     public void RequestHit() => m_isHit = true;
@@ -133,14 +149,25 @@ public class PlayerCharacter : Actor
     private void OnDrawGizmos()
     {
         DrawDashRadius();
+        DrawAttackCast();
     }
 
     private void DrawDashRadius()
     {
         if (m_dashState.IsFinished) return;
-        
+    
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(rb.position + MoveDir * stats.OffsetDash,stats.DashRadius);
+    }
+
+    private void DrawAttackCast()
+    {
+        if (m_attackState.IsFinished) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(rb.position, stats.AttackCastRadius);
+        Gizmos.DrawWireSphere(rb.position + m_attackDirection * stats.AttackCastDistance, stats.AttackCastRadius);
+        Gizmos.DrawLine(rb.position, rb.position + m_attackDirection * stats.AttackCastDistance);
     }
 
     #endregion

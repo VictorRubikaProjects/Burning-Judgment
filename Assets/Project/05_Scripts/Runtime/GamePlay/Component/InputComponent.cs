@@ -6,23 +6,27 @@ public class InputComponent : ActorComponent
 {
     #region Variables
 
-    private readonly float m_swipeThreshold;
-
     private PlayerActions m_inputActions;
 
     private Vector2 m_startPos;
+    private float m_touchStartTime;
+    private bool m_isTouching;
+    private bool m_isInAttackWindow;
+
+    private readonly ConfigStatsPlayer m_stats;
 
     public event Action<Vector2> OnSwipe;
-
-    private float maxTimeSwipe = 0.1f;
+    public event Action<Vector2> OnPressSwipeSuccess;
+    public event Action OnAttackWindowEnter;
+    public event Action OnAttackWindowExit;
 
     #endregion
 
     #region ActorComponent Methods
 
-    public InputComponent(Actor owner, float swipeThreshold) : base(owner)
+    public InputComponent(Actor owner, ConfigStatsPlayer stats) : base(owner)
     {
-        m_swipeThreshold = swipeThreshold;
+        m_stats = stats;
     }
 
     public override void Initialize()
@@ -43,6 +47,25 @@ public class InputComponent : ActorComponent
         m_inputActions.Dispose();
     }
 
+    public override void Update()
+    {
+        if (!m_isTouching) return;
+
+        float heldDuration = Time.time - m_touchStartTime;
+        bool inWindow = IsInAttackWindow(heldDuration);
+
+        if (inWindow && !m_isInAttackWindow)
+        {
+            m_isInAttackWindow = true;
+            OnAttackWindowEnter?.Invoke();
+        }
+        else if (!inWindow && m_isInAttackWindow)
+        {
+            m_isInAttackWindow = false;
+            OnAttackWindowExit?.Invoke();
+        }
+    }
+
     #endregion
 
     #region Core Methods
@@ -50,17 +73,41 @@ public class InputComponent : ActorComponent
     private void TouchStarted(InputAction.CallbackContext context)
     {
         m_startPos = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
+        m_touchStartTime = Time.time;
+        m_isTouching = true;
+        m_isInAttackWindow = false;
     }
 
     private void TouchEnded(InputAction.CallbackContext context)
     {
+        m_isTouching = false;
+
+        if (m_isInAttackWindow)
+        {
+            m_isInAttackWindow = false;
+            OnAttackWindowExit?.Invoke();
+        }
+
         Vector2 endPos = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
         Vector2 delta = endPos - m_startPos;
 
-        if (delta.magnitude < m_swipeThreshold) return;
+        if (delta.magnitude < m_stats.SwipeThreshold) return;
 
-        OnSwipe?.Invoke(delta.normalized);
+        float heldDuration = Time.time - m_touchStartTime;
+
+        if (IsInAttackWindow(heldDuration))
+        {
+            OnPressSwipeSuccess?.Invoke(delta.normalized);
+        }
+        else if (heldDuration <= m_stats.MaxTimeSwipe)
+        {
+            OnSwipe?.Invoke(delta.normalized);
+        }
     }
+
+    private bool IsInAttackWindow(float heldDuration) =>
+        heldDuration >= m_stats.TimerAttack - m_stats.ThresholdTimerAttack &&
+        heldDuration <= m_stats.TimerAttack + m_stats.ThresholdTimerAttack;
 
     #endregion
 }

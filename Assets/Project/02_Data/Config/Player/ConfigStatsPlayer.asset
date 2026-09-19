@@ -41,9 +41,44 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  dashRadius: 2
-  offsetDash: 2
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  dashRadius: 1.2
+  offsetDash: 1.4
+  attackCastRadius: 1
+  attackCastDistance: 20
+  attackDash:
+    Duration: 0.15
+    Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2.179945
+        outSlope: 2.179945
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.04914934
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: -0.057251453
+        outSlope: -0.057251453
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.08317578
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  attackStopOffset: 0.5
   hitDuration: 0.3
   maxHealth: 3
   swipeThreshold: 50
+  maxTimeSwipe: 0.25
+  thresholdTimerAttack: 0.25
+  timerAttack: 0.5
   crossFadeDuration: 0.1

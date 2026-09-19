@@ -14,10 +14,17 @@ public class ConfigStatsPlayer : ScriptableObject
     );
     
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask obstacleLayer;
     
     [SerializeField] [Range(0f, 5f)] private float dashRadius = 2f;
     
     [SerializeField] [Range(0f, 3f)] private float offsetDash = 2f;
+
+    [Space] [Header("Attack")]
+    [SerializeField] [Range(0f, 5f)] private float attackCastRadius = 0.5f;
+    [SerializeField] [Range(0f, 20f)] private float attackCastDistance = 5f;
+    [SerializeField] private DashData attackDash = new() { Duration = 0.15f };
+    [SerializeField] [Range(0f, 3f)] private float attackStopOffset = 0.5f;
 
     [Space] [Header("Hit")]
     [SerializeField] [Range(0f, 2f)] private float hitDuration = 0.3f;
@@ -26,6 +33,9 @@ public class ConfigStatsPlayer : ScriptableObject
 
     [Space] [Header("Input")]
     [SerializeField] [Range(0f, 150f)] private float swipeThreshold = 50f;
+    [SerializeField] [Range(0f, 0.3f)] private float maxTimeSwipe = 0.25f;
+    [SerializeField] [Range(0f, 0.25f)] private float thresholdTimerAttack = 0.1f;
+    [SerializeField] [Range(0f, 1f)] private float timerAttack = 0.5f;
 
     [Space] [Header("Animation")]
     [SerializeField] [Range(0f, 0.9f)] private float crossFadeDuration = 0.1f;
@@ -33,16 +43,32 @@ public class ConfigStatsPlayer : ScriptableObject
 
     public float DashDistance => dashDistance;
     public float DashDuration => dashDuration;
+    
     public AnimationCurve DashCurve => dashCurve;
+    
     public LayerMask EnemyLayer => enemyLayer;
+    public LayerMask ObstacleLayer => obstacleLayer;
+    public LayerMask AttackStateLayer() => EnemyLayer | ObstacleLayer;
+    
     public float DashRadius => dashRadius;
     public float OffsetDash => offsetDash;
+
+    public float AttackCastRadius => attackCastRadius;
+    public float AttackCastDistance => attackCastDistance;
+    public DashData AttackDash => attackDash;
+    public float AttackStopOffset => attackStopOffset;
+
     public float HitDuration => hitDuration;
+    
     public int MaxHealth => maxHealth;
+    
     public float SwipeThreshold => swipeThreshold;
+    public float MaxTimeSwipe => maxTimeSwipe;
+    public float ThresholdTimerAttack => thresholdTimerAttack;
+    public float TimerAttack => timerAttack;
+    
     public float CrossFadeDuration => crossFadeDuration;
-
-
+    
 #if UNITY_EDITOR
     private void OnValidate()
     {
