@@ -307,6 +307,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::PlayerCharacter
   rb: {fileID: 6773298274157356297}
   animator: {fileID: 4279260152218026145}
+  playerMaterial: {fileID: 2100000, guid: 560af941f648858428da39ccc0b31931, type: 2}
+  playerRenderer: {fileID: 8333355547142426742}
   stats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
 --- !u!136 &4374285692015904546
 CapsuleCollider:

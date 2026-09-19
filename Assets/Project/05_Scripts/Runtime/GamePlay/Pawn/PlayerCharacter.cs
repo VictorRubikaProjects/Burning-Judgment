@@ -8,11 +8,16 @@ public class PlayerCharacter : Actor
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
     
+    [Header("Aspect")]
+    [SerializeField] private Material playerMaterial;
+    [SerializeField] private MeshRenderer playerRenderer;
+    
     [Header("Config")]
     [SerializeField] private ConfigStatsPlayer stats;
 
     public InputComponent Input { get; private set; }
-    public PlayerControllerComponent ControllerComponent { get; private set; }
+    public PlayerControllerComponent Controller { get; private set; }
+    public PlayerAspectComponent Aspect { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
     public Transform TransformCache => m_transformCache;
@@ -48,7 +53,8 @@ public class PlayerCharacter : Actor
         SetupStateMachine();
 
         Input = new InputComponent(owner: this,stats);
-        ControllerComponent = new PlayerControllerComponent(owner:this,rb);
+        Controller = new PlayerControllerComponent(owner:this,rb);
+        Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
     }
 
     protected override void Start()
@@ -56,7 +62,8 @@ public class PlayerCharacter : Actor
         base.Start();
         
         AddActorComponent(Input);
-        AddActorComponent(ControllerComponent);
+        AddActorComponent(Controller);
+        AddActorComponent(Aspect);
         
         ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
     }
@@ -65,12 +72,16 @@ public class PlayerCharacter : Actor
     {
         Input.OnSwipe += SwipeHandler;
         Input.OnPressSwipeSuccess += AttackHandler;
+        Input.OnAttackWindowEnter += Aspect.AttackReadyVisuals;
+        Input.OnAttackWindowExit += Aspect.CancelAttackReadyVisuals;
     }
 
     private void OnDisable()
     {
         Input.OnSwipe -= SwipeHandler;
         Input.OnPressSwipeSuccess -= AttackHandler;
+        Input.OnAttackWindowEnter -= Aspect.AttackReadyVisuals;
+        Input.OnAttackWindowExit -= Aspect.CancelAttackReadyVisuals;
     }
 
     protected override void Update()
@@ -155,7 +166,7 @@ public class PlayerCharacter : Actor
     private void DrawDashRadius()
     {
         if (m_dashState.IsFinished) return;
-    
+     
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(rb.position + MoveDir * stats.OffsetDash,stats.DashRadius);
     }

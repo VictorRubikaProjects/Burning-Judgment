@@ -55,7 +55,7 @@ public class AttackState : BaseState
         {
             DashData attackDash = m_configStats.AttackDash;
 
-            await m_owner.ControllerComponent.DashAsync(
+            await m_owner.Controller.DashAsync(
                 m_attackDirection,
                 token,
                 attackDash.Duration,

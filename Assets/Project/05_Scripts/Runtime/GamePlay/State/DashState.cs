@@ -46,7 +46,7 @@ public class DashState : BaseState
     
     private async UniTaskVoid DashAsync(Vector3 direction, CancellationToken token)
     {
-        await m_owner.ControllerComponent.DashAsync(direction,
+        await m_owner.Controller.DashAsync(direction,
             token,
             m_configStats.DashDuration,
             m_configStats.DashDistance,
