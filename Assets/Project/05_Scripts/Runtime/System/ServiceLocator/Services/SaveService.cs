@@ -149,9 +149,16 @@ public class SaveService : IGameService
         string tempPath = path + ".tmp";
         File.WriteAllText(tempPath, json);
 
+#if UNITY_STANDALONE || UNITY_EDITOR
         if (File.Exists(path))
             File.Replace(tempPath, path, null);
         else
             File.Move(tempPath, path);
+#else
+        if (File.Exists(path))
+            File.Delete(path);
+
+        File.Move(tempPath, path);
+#endif
     }
 }
