@@ -78,7 +78,7 @@ public class MenuManager : MonoBehaviour
     private void LoadGame()
     {
         playButton.interactable = false;
-        m_audioService.PlaySfx(audioUI.NewGameFx, Vector3.zero);
+        m_audioService.PlaySfx(audioUI.NewGameFx);
         m_sceneService.LoadGameSceneAsync().Forget();
     }
 }

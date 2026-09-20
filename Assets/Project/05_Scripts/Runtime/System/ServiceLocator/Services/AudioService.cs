@@ -87,6 +87,11 @@ public class AudioService : IGameService
         RuntimeManager.PlayOneShot(sound, position);
     }
 
+    public void PlaySfx(EventReference sound)
+    {
+        RuntimeManager.PlayOneShot(sound);
+    }
+
     public EventInstance CreateInstance(EventReference eventReference, bool addToList = true)
     {
         var eventInstance = RuntimeManager.CreateInstance(eventReference);
