@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,9 @@ public class HudManager : MonoBehaviour
         
         m_optionController.Init();
     }
-    
-    
+
+    private void OnDestroy()
+    {
+        m_optionController.Clean();
+    }
 }

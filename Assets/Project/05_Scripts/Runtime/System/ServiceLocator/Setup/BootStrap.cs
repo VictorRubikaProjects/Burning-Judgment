@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using FMODUnity;
 using UnityEngine;
 
 /// <summary>
@@ -10,10 +11,12 @@ using UnityEngine;
 public class BootStrap : MonoBehaviour
 {
     [SerializeField] private SO_GameConfig gameConfig;
+    [SerializeField] private SO_AudioConfig audioConfig;
     
     private readonly GameInitializer _gameInitializer = new();
     
     public SO_GameConfig GameConfig => gameConfig;
+    public SO_AudioConfig AudioConfig => audioConfig;
     
     public int MaxFrames = 60;
 
@@ -25,7 +28,7 @@ public class BootStrap : MonoBehaviour
             return;
         }
         
-        _gameInitializer.Initialize(gameConfig);
+        _gameInitializer.Initialize(gameConfig,audioConfig);
 
         UniTaskScheduler.UnobservedTaskException += OnUnobservedException;
         

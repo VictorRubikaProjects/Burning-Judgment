@@ -49,6 +49,11 @@ public class MenuManager : MonoBehaviour
         PlayIntroAnimation();
     }
 
+    private void OnDestroy()
+    {
+        m_optionController.Clean();
+    }
+
     private void PlayIntroAnimation()
     {
         Vector2 playTarget = m_playButtonRT.anchoredPosition;

@@ -24,7 +24,7 @@ internal static class TimerBootstrapper
             }
             
             PlayerLoop.SetPlayerLoop(currentPlayerLoop);
-            PlayerLoopUtils.PrintPlayerLoop(currentPlayerLoop);
+            //PlayerLoopUtils.PrintPlayerLoop(currentPlayerLoop);
             
 #if UNITY_EDITOR
         EditorApplication.playModeStateChanged -= OnPlayModeState;

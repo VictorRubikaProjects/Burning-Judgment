@@ -5,18 +5,21 @@ using UnityEngine;
 
 public class GameInitializer
 {
-    private SO_GameConfig _gameConfig;
+    private SO_GameConfig m_gameConfig;
+    private SO_AudioConfig m_audioConfig;
     
-    private SceneService _sceneService;
-    private SaveService _saveService;
-    private CameraService _cameraService;
-    private FxService _fxService;
+    private SceneService m_sceneService;
+    private SaveService m_saveService;
+    private CameraService m_cameraService;
+    private FxService m_fxService;
+    private AudioService m_audioService;
 
     public bool IsInitialized { get; private set; } = false;
 
-    public void Initialize(SO_GameConfig gameConfig)
+    public void Initialize(SO_GameConfig gameConfig, SO_AudioConfig audioConfig)
     {
-        _gameConfig = gameConfig;
+        m_gameConfig = gameConfig;
+        m_audioConfig = audioConfig;
         
         CreateServices();
         
@@ -29,9 +32,9 @@ public class GameInitializer
         {
             await RegisterServices();
 
-            await _sceneService.LoadSceneAsync(_gameConfig.menuScene.Name, setAsActiveScene: true);
+            await m_sceneService.LoadSceneAsync(m_gameConfig.menuScene.Name, setAsActiveScene: true);
         
-            _sceneService.ToggleLoadingScreen(on : false);
+            m_sceneService.ToggleLoadingScreen(on : false);
             
             IsInitialized = true;
         }
@@ -44,27 +47,31 @@ public class GameInitializer
 
     private void CreateServices()
     {
-        _sceneService = new SceneService(_gameConfig);
+        m_sceneService = new SceneService(m_gameConfig);
         
-        _saveService =  new SaveService();
+        m_saveService =  new SaveService();
         
-        _cameraService = new CameraService(_gameConfig.cameraConfig);
+        m_cameraService = new CameraService(m_gameConfig.cameraConfig);
 
-        _fxService = new FxService();
+        m_fxService = new FxService();
+
+        m_audioService = new AudioService(m_audioConfig);
     }
     
 
     private async UniTask RegisterServices()
     {
-        UniTask sceneTaskRegister = ServiceLocator.Register(_sceneService);
-        UniTask saveTaskRegister = ServiceLocator.Register(_saveService);
-        UniTask cameraTaskRegister = ServiceLocator.Register(_cameraService);
-        UniTask fxTaskRegister = ServiceLocator.Register(_fxService);
+        UniTask sceneTaskRegister = ServiceLocator.Register(m_sceneService);
+        UniTask saveTaskRegister = ServiceLocator.Register(m_saveService);
+        UniTask cameraTaskRegister = ServiceLocator.Register(m_cameraService);
+        UniTask fxTaskRegister = ServiceLocator.Register(m_fxService);
+        UniTask audioTaskRegister = ServiceLocator.Register(m_audioService);
         
         await UniTask.WhenAll(
             sceneTaskRegister,
             saveTaskRegister, 
             cameraTaskRegister,
-            fxTaskRegister);
+            fxTaskRegister,
+            audioTaskRegister);
     }
 }
