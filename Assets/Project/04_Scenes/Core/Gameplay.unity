@@ -430,6 +430,7 @@ MonoBehaviour:
   volumeSlider: {fileID: 3340452781338461938}
   sfxSlider: {fileID: 3340452781338461937}
   musicSlider: {fileID: 3340452781338461936}
+  audioUI: {fileID: 11400000, guid: 23fb5f01ebddd694689db6834714e0e4, type: 2}
 --- !u!4 &770347993
 Transform:
   m_ObjectHideFlags: 0
@@ -775,10 +776,6 @@ PrefabInstance:
       propertyPath: m_player
       value: 
       objectReference: {fileID: 934940203}
-    - target: {fileID: 4282855993526599763, guid: 3cfbcf2843d25d44393cbd3478362354, type: 3}
-      propertyPath: m_poolSize
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 4660176177670220741, guid: 3cfbcf2843d25d44393cbd3478362354, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.8

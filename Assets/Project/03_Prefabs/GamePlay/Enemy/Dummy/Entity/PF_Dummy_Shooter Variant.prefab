@@ -45,7 +45,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8368126723690100392, guid: 1d6abfc3caf6ccb4898fec9a979bf50b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.52
+      value: -4.8
       objectReference: {fileID: 0}
     - target: {fileID: 8368126723690100392, guid: 1d6abfc3caf6ccb4898fec9a979bf50b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8368126723690100392, guid: 1d6abfc3caf6ccb4898fec9a979bf50b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.55
+      value: -5.12
       objectReference: {fileID: 0}
     - target: {fileID: 8368126723690100392, guid: 1d6abfc3caf6ccb4898fec9a979bf50b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -126,7 +126,9 @@ MonoBehaviour:
   frequencyShoot: 2
   m_projectilePrefab: {fileID: 1649441772210790108, guid: 290646f9cbab990408201eefebaad586, type: 3}
   m_shootPoint: {fileID: 6813378178183014435}
-  m_poolSize: 10
+  m_poolSize: 5
+  m_player: {fileID: 0}
+  m_rotationSpeed: 5
 --- !u!4 &4660176177670220741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8368126723690100392, guid: 1d6abfc3caf6ccb4898fec9a979bf50b, type: 3}

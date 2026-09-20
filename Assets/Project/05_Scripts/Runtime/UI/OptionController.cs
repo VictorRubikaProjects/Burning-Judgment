@@ -22,9 +22,14 @@ public class OptionController
     
     private AudioService m_audioService;
     private SaveService m_saveService;
+    
+    [Header("Sound")] 
+    private SO_AudioUI m_audioUI;
 
-    public OptionController(Button[] optionButtons, CanvasGroup optionPanel,Slider sliderMaster,Slider sliderSfx,Slider sliderMusic, bool pauseTime = true, float startingAlpha = 0)
+    public OptionController(SO_AudioUI audioUI, Button[] optionButtons, CanvasGroup optionPanel,Slider sliderMaster,Slider sliderSfx,Slider sliderMusic, bool pauseTime = true, float startingAlpha = 0)
     {
+        m_audioUI = audioUI;
+        
         m_optionButtons =  optionButtons;
         m_optionPanel = optionPanel;
         m_pauseTime = pauseTime;
@@ -71,6 +76,8 @@ public class OptionController
         if (m_pauseTime) Time.timeScale = 0;
 
         m_optionTween = Tween.Alpha(m_optionPanel, 1f, m_durationOptionTween, Ease.Linear, useUnscaledTime: true);
+        
+        m_audioService.PlaySfx(m_audioUI.OptionToggleFx,Vector3.zero);
     }
 
     private void CloseOptions()
@@ -81,6 +88,7 @@ public class OptionController
         if (m_pauseTime) Time.timeScale = 1;
 
         m_optionTween = Tween.Alpha(m_optionPanel, 0f, m_durationOptionTween, Ease.Linear, useUnscaledTime: true);
+        m_audioService.PlaySfx(m_audioUI.OptionToggleFx,Vector3.zero);
     }
     
     private void UpdateUIFromSave()
@@ -108,6 +116,7 @@ public class OptionController
 
         m_saveService.Settings.MasterVolume = value;
         m_audioService.SetVolume(AudioService.BusEnum.MASTER, value);
+        m_audioService.PlaySfx(m_audioUI.SliderFx, Vector3.zero);
     }
 
     private void OnMusicVolumeChanged(float value)
@@ -117,6 +126,7 @@ public class OptionController
 
         m_saveService.Settings.MusicVolume = value;
         m_audioService.SetVolume(AudioService.BusEnum.MUSIC, value);
+        m_audioService.PlaySfx(m_audioUI.SliderFx, Vector3.zero);
     }
 
     private void OnSfxVolumeChanged(float value)
@@ -126,6 +136,7 @@ public class OptionController
 
         m_saveService.Settings.SfxVolume = value;
         m_audioService.SetVolume(AudioService.BusEnum.SFX, value);
+        m_audioService.PlaySfx(m_audioUI.SliderFx, Vector3.zero);
     }
     
     

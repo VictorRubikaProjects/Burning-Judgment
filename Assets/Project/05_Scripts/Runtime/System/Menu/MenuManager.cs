@@ -27,16 +27,22 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private float offScreenMargin = 50f;
     [SerializeField] private Ease slideEase = Ease.OutCubic;
     
+    [Header("Sound")] 
+    [SerializeField] private SO_AudioUI audioUI;
+    
     private SceneService m_sceneService;
+    private AudioService m_audioService;
     private OptionController  m_optionController;
 
     private void Awake()
     {
         m_sceneService = ServiceLocator.Get<SceneService>();
+        m_audioService = ServiceLocator.Get<AudioService>();
         
         playButton.onClick.AddListener(LoadGame);
         
         m_optionController = new OptionController(
+            audioUI,
             optionButtons,
             optionCanvasGroup,
             volumeSlider,
@@ -72,6 +78,7 @@ public class MenuManager : MonoBehaviour
     private void LoadGame()
     {
         playButton.interactable = false;
+        m_audioService.PlaySfx(audioUI.NewGameFx, Vector3.zero);
         m_sceneService.LoadGameSceneAsync().Forget();
     }
 }

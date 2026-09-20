@@ -12,12 +12,16 @@ public class HudManager : MonoBehaviour
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider musicSlider;
+
+    [Header("Sound")] 
+    [SerializeField] private SO_AudioUI audioUI;
     
     private OptionController m_optionController;
     
     private void Awake()
     {
         m_optionController = new OptionController(
+            audioUI,
             optionButtons,
             optionCanvasGroup,
             volumeSlider,
