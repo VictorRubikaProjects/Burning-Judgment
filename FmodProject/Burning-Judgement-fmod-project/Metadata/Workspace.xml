@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Workspace" id="{c01be101-9f09-4742-9e8e-c41241f2a09c}">
+		<property name="builtBanksOutputDirectory">
+			<value>../../../../../Work/Unity Projets/Burning-Judgment/FMODBuild</value>
+		</property>
+		<relationship name="masterEventFolder">
+			<destination>{96f38193-d222-491d-afc2-fe0e3fbf1845}</destination>
+		</relationship>
+		<relationship name="masterTagFolder">
+			<destination>{975c408c-87b0-4f4b-a188-42493c479527}</destination>
+		</relationship>
+		<relationship name="masterEffectPresetFolder">
+			<destination>{78bf1971-37b6-4207-908c-4c0899d2bf83}</destination>
+		</relationship>
+		<relationship name="masterParameterPresetFolder">
+			<destination>{0de24d28-63f8-422b-9ba3-48bf51956cb0}</destination>
+		</relationship>
+		<relationship name="masterBankFolder">
+			<destination>{c3c6a8c1-c302-4d44-ba27-287d058e27d2}</destination>
+		</relationship>
+		<relationship name="masterSandboxFolder">
+			<destination>{b929e806-8392-419c-bd33-fbd3c36c74b5}</destination>
+		</relationship>
+		<relationship name="masterAssetFolder">
+			<destination>{ccc40e56-597a-43ae-b5e3-791c38971c1a}</destination>
+		</relationship>
+		<relationship name="mixer">
+			<destination>{91a2d655-634d-440f-b50c-efefc7bda8dc}</destination>
+		</relationship>
+		<relationship name="profilerSessionFolder">
+			<destination>{2cf75ecf-9b06-46db-9bfd-bebd116a9618}</destination>
+		</relationship>
+		<relationship name="platforms">
+			<destination>{8a26f756-b33d-4606-ab1c-82ebd7bcf90b}</destination>
+		</relationship>
+	</object>
+</objects>
