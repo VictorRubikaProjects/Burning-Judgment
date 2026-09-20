@@ -55,6 +55,7 @@ MonoBehaviour:
   m_materialBody: {fileID: 2100000, guid: d4fa82dd98a26a24d8a4cdb55347f30e, type: 2}
   m_colorNeutral: {r: 1, g: 1, b: 1, a: 1}
   m_colorHit: {r: 1, g: 0.06195164, b: 0.015686274, a: 1}
+  m_colorReady: {r: 0, g: 1, b: 0, a: 1}
 --- !u!95 &2901935809709095336
 Animator:
   serializedVersion: 7
@@ -123,7 +124,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 2.05
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.29, z: 0}

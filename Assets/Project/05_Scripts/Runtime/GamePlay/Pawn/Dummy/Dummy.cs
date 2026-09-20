@@ -45,7 +45,7 @@ public class Dummy : AbstractEnemy
 
     public override bool CanTakeDamage() => m_canTakeDamage;
 
-    private async UniTask RecoverAsync()
+    protected virtual async UniTask RecoverAsync()
     {
         m_ctsDummy?.Cancel();
         m_ctsDummy =  new CancellationTokenSource();

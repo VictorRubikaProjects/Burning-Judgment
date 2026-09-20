@@ -9,10 +9,10 @@ public static class TimerManager
 
         public static void UpdateTimers()
         {
-                foreach (Timer timer in m_timers)
+                for (int i = 0; i < m_timers.Count; i++)
                 {
-                        timer.Tick();
-                }        
+                        m_timers[i].Tick();
+                }
         }
         
         public static void ClearTimers() => m_timers.Clear();

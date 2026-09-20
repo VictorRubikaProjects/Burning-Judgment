@@ -165,7 +165,7 @@ public class PlayerCharacter : Actor
 
     private void DrawDashRadius()
     {
-        if (m_dashState.IsFinished) return;
+        if (Application.isPlaying && m_dashState.IsFinished) return;
      
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(rb.position + MoveDir * stats.OffsetDash,stats.DashRadius);
@@ -173,7 +173,7 @@ public class PlayerCharacter : Actor
 
     private void DrawAttackCast()
     {
-        if (m_attackState.IsFinished) return;
+        if (Application.isPlaying && m_attackState.IsFinished) return;
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(rb.position, stats.AttackCastRadius);

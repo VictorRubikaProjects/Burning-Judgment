@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4679724753887030654}
   - component: {fileID: 7804986969017900200}
   - component: {fileID: 8766034183091410418}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8133235759402031410}
   - component: {fileID: 4279260152218026145}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 1574957836495830874}
   - component: {fileID: 5720193576483949519}
   - component: {fileID: 8333355547142426742}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,9 +270,9 @@ GameObject:
   - component: {fileID: 1563943224991897210}
   - component: {fileID: 4374285692015904546}
   - component: {fileID: 6773298274157356297}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PF_Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
