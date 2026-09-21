@@ -26,11 +26,6 @@ public class DummyShooter : Dummy
         m_timerShoot.Start();
 
         ObjectPooler.SetupPool(m_projectilePrefab, m_poolSize, ProjectilePoolKey);
-
-        if (m_player == null)
-        {
-            m_player = GameObject.FindWithTag("Player")?.transform;
-        }
     }
 
     private void OnEnable()
