@@ -5,7 +5,9 @@ using UnityEngine;
 public class StateMachine 
 {
     private StateNode m_current;
+    
     Dictionary<Type,StateNode> m_nodes = new();
+    
     HashSet<ITransition> m_anyTransitions = new();
 
     public void Update()
@@ -82,4 +84,6 @@ public class StateMachine
         
         return node;
     }
+    
+    public IState GetCurrentState() =>  m_current.State;
 }

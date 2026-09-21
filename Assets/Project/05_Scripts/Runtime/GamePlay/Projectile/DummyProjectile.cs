@@ -6,7 +6,7 @@ public class DummyProjectile : AbstractProjectile
     {
         if (!other.CompareTag("Player") || !other.TryGetComponent(out PlayerCharacter pc)) return false;
         
-        pc.RequestHit();
+        pc.Health.TakeDamage();
         return true;
 
     }

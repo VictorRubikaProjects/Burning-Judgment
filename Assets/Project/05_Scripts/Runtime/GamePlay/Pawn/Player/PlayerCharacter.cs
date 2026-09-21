@@ -18,6 +18,7 @@ public class PlayerCharacter : Actor
     public InputComponent Input { get; private set; }
     public PlayerControllerComponent Controller { get; private set; }
     public PlayerAspectComponent Aspect { get; private set; }
+    public HealthComponent Health { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
     public Transform TransformCache => m_transformCache;
@@ -29,13 +30,11 @@ public class PlayerCharacter : Actor
     
     private bool m_wantsDash;
     private bool m_wantsAttack;
-    private bool m_isHit;
     private bool m_isDead;
     
     private IdleState m_idleState;
     private DeathState m_deathState;
     private DashState m_dashState;
-    private HitState m_hitState;
     private AttackState m_attackState;
     
     private Transform m_transformCache;
@@ -55,6 +54,7 @@ public class PlayerCharacter : Actor
         Input = new InputComponent(owner: this,stats);
         Controller = new PlayerControllerComponent(owner:this,rb);
         Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
+        Health = new HealthComponent(this);
     }
 
     protected override void Start()
@@ -64,6 +64,7 @@ public class PlayerCharacter : Actor
         AddActorComponent(Input);
         AddActorComponent(Controller);
         AddActorComponent(Aspect);
+        AddActorComponent(Health);
         
         ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
     }
@@ -111,17 +112,14 @@ public class PlayerCharacter : Actor
 
         m_idleState = new IdleState(this, animator,stats);
         m_dashState = new DashState(this, animator, rb,stats);
-        m_hitState = new HitState(this, animator,stats);
         m_deathState = new DeathState(this, animator,stats);
         m_attackState = new AttackState(this, animator, stats);
 
         At(m_idleState, m_dashState, new FuncPredicate(() => m_wantsDash));
         At(m_dashState, m_idleState, new FuncPredicate(() => m_dashState.IsFinished));
-        At(m_hitState, m_idleState, new FuncPredicate(() => m_hitState.IsFinished));
         At(m_idleState, m_attackState, new FuncPredicate(() => m_wantsAttack));
         At(m_attackState, m_idleState, new FuncPredicate(() => m_attackState.IsFinished));
-
-        Any(m_hitState, new FuncPredicate(() => m_isHit));
+        
         Any(m_deathState, new FuncPredicate(() => m_isDead));
 
         m_stateMachine.SetState(m_idleState);
@@ -146,9 +144,6 @@ public class PlayerCharacter : Actor
 
     public void ConsumeDashRequest() => m_wantsDash = false;
     public void ConsumeAttackRequest() => m_wantsAttack = false;
-    public void ConsumeHitRequest() => m_isHit = false;
-
-    public void RequestHit() => m_isHit = true;
     public void Kill() => m_isDead = true;
 
     #endregion
@@ -184,4 +179,5 @@ public class PlayerCharacter : Actor
     #endregion
     
 #endif
+    
 }
