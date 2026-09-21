@@ -10,9 +10,14 @@ public class AttackState : BaseState
     private bool m_isFinished;
 
     public bool IsFinished => m_isFinished;
+    
+    private CameraService m_cameraService;
+    private AudioService m_audioService;
 
     public AttackState(PlayerCharacter owner, Animator animator, ConfigStatsPlayer configStats) : base(owner, animator, configStats)
     {
+        m_cameraService = ServiceLocator.Get<CameraService>();
+        m_audioService = ServiceLocator.Get<AudioService>();
     }
 
     public void SetAttackDirection(Vector3 direction) => m_attackDirection = direction;
@@ -57,6 +62,8 @@ public class AttackState : BaseState
             return;
         }
         
+        m_audioService.PlaySfx(m_configStats.AttackDashEvent);
+        
         Vector3 dashOrigin = m_owner.TransformCache.position;
         float rawDistance = Vector3.Distance(dashOrigin, target.position);
         float dashDistance = rawDistance - m_configStats.AttackStopOffset;
@@ -78,7 +85,8 @@ public class AttackState : BaseState
 
         if (targetDamageable.TakeDamage())
         {
-            ServiceLocator.Get<CameraService>().Shake();
+            m_cameraService.Shake();
+            m_audioService.PlaySfx(m_configStats.HitEvent);
         }
         
         m_isFinished = true;

@@ -9,6 +9,8 @@ public class DashState : BaseState
     private CancellationTokenSource m_ctsDash;
     
     private Collider[] m_overlapBuffer = new Collider[100];
+    
+    private AudioService m_audioService;
 
     public bool IsFinished { get; private set; }
 
@@ -16,6 +18,7 @@ public class DashState : BaseState
         : base(owner, animator, configStats)
     {
         m_rb = rb;
+        m_audioService = ServiceLocator.Get<AudioService>();
     }
 
     public override void OnEnter()
@@ -46,6 +49,8 @@ public class DashState : BaseState
     
     private async UniTaskVoid DashAsync(Vector3 direction, CancellationToken token)
     {
+        m_audioService.PlaySfx(m_configStats.DashEvent);
+        
         await m_owner.Controller.DashAsync(direction,
             token,
             m_configStats.DashDuration,

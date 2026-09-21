@@ -82,3 +82,24 @@ MonoBehaviour:
   thresholdTimerAttack: 0.25
   timerAttack: 0.5
   crossFadeDuration: 0.1
+  <HitEvent>k__BackingField:
+    Guid:
+      Data1: -614538973
+      Data2: 1100481243
+      Data3: -1331975033
+      Data4: -799232545
+    Path: event:/GamePlay/Player/Hit_Sfx
+  <DashEvent>k__BackingField:
+    Guid:
+      Data1: 1342469454
+      Data2: 1152851515
+      Data3: -970574174
+      Data4: 231883612
+    Path: event:/GamePlay/Player/Dash_Sfx
+  <AttackDashEvent>k__BackingField:
+    Guid:
+      Data1: 706297759
+      Data2: 1289015306
+      Data3: 314374548
+      Data4: -1349771360
+    Path: event:/GamePlay/Player/Attack_Dash_Sfx

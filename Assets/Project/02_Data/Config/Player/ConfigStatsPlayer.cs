@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ConfigStatsPlayer", menuName = "Config/Player Stats")]
@@ -39,6 +40,10 @@ public class ConfigStatsPlayer : ScriptableObject
 
     [Space] [Header("Animation")]
     [SerializeField] [Range(0f, 0.9f)] private float crossFadeDuration = 0.1f;
+    
+    [field:SerializeField] public EventReference HitEvent {get; private set;}
+    [field:SerializeField] public EventReference DashEvent {get; private set;}
+    [field:SerializeField] public EventReference AttackDashEvent {get; private set;}
 
 
     public float DashDistance => dashDistance;
