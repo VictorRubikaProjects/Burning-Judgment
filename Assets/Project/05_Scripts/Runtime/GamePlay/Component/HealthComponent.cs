@@ -16,12 +16,13 @@ public class HealthComponent : ActorComponent, IDamageable
         m_pc = owner as PlayerCharacter;
     }
 
-    public void TakeDamage()
+    public bool TakeDamage()
     {
-        if (!CanTakeDamage()) return;
+        if (!CanTakeDamage()) return false;
         
         m_pc.Aspect.HurtVisuals();
         StartInvincibility();
+        return true;
     }
 
     public bool CanTakeDamage() => !m_isInvincible;

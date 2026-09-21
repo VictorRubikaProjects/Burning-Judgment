@@ -47,7 +47,16 @@ public class AttackState : BaseState
             m_owner.RequestDash();
             return;
         }
+        
+        IDamageable targetDamageable = target.GetComponent<IDamageable>();
 
+        if (targetDamageable == null || !targetDamageable.CanTakeDamage())
+        {
+            m_isFinished = true;
+            m_owner.RequestDash();
+            return;
+        }
+        
         Vector3 dashOrigin = m_owner.TransformCache.position;
         float rawDistance = Vector3.Distance(dashOrigin, target.position);
         float dashDistance = rawDistance - m_configStats.AttackStopOffset;
@@ -67,9 +76,11 @@ public class AttackState : BaseState
             if (token.IsCancellationRequested) return;
         }
 
-        target.GetComponent<IDamageable>().TakeDamage();
-        ServiceLocator.Get<CameraService>().Shake();
-
+        if (targetDamageable.TakeDamage())
+        {
+            ServiceLocator.Get<CameraService>().Shake();
+        }
+        
         m_isFinished = true;
     }
 

@@ -19,7 +19,7 @@ public class Dummy : AbstractEnemy
     [SerializeField] private Color m_colorReady = Color.green;
     
     private Material m_materialBodyInstance;
-    private bool m_canTakeDamage = true;
+    protected bool m_canTakeDamage = true;
     private CancellationTokenSource m_ctsDummy;
 
     protected override void Awake()
@@ -32,8 +32,10 @@ public class Dummy : AbstractEnemy
         ServiceLocator.Get<CameraService>().AddTarget(transform, 0.1f);
     }
 
-    public override void TakeDamage()
+    public override bool TakeDamage()
     {
+        if (!CanTakeDamage()) return false;
+        
         base.TakeDamage();
         
         m_animator.Play("Hit");
@@ -41,6 +43,8 @@ public class Dummy : AbstractEnemy
         m_materialBodyInstance.color = m_colorHit;
         
         RecoverAsync().Forget();
+        
+        return true;
     }
 
     public override bool CanTakeDamage() => m_canTakeDamage;

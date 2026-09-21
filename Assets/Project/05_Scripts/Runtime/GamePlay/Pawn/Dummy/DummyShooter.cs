@@ -44,14 +44,13 @@ public class DummyShooter : Dummy
         FacePlayer();
     }
 
-    public override void TakeDamage()
+    public override bool TakeDamage()
     {
-        if (CanTakeDamage())
-        {
-            m_timerShoot.Pause();
-        }
+        if (!CanTakeDamage()) return false;
         
+        m_timerShoot.Pause();
         base.TakeDamage();
+        return true;
     }
 
     protected override async UniTask RecoverAsync()
