@@ -119,6 +119,7 @@ public class PlayerCharacter : Actor
         At(m_dashState, m_idleState, new FuncPredicate(() => m_dashState.IsFinished));
         At(m_idleState, m_attackState, new FuncPredicate(() => m_wantsAttack));
         At(m_attackState, m_idleState, new FuncPredicate(() => m_attackState.IsFinished));
+        At(m_attackState, m_dashState, new FuncPredicate(() => m_attackState.IsFinished && m_wantsDash));
         
         Any(m_deathState, new FuncPredicate(() => m_isDead));
 
@@ -130,21 +131,28 @@ public class PlayerCharacter : Actor
     private void SwipeHandler(Vector2 moveDir)
     {
         m_moveDir = new Vector3(moveDir.x, 0f, moveDir.y);
-        m_wantsDash = true;
+        
+        RequestDash();
     }
 
     private void AttackHandler(Vector2 dir)
     {
         m_attackDirection = new Vector3(dir.x, 0f, dir.y);
+        m_moveDir = new Vector3(dir.x, 0f, dir.y);
+        
         m_attackState.SetAttackDirection(m_attackDirection);
-        m_wantsAttack = true;
+        
+        RequestAttack();
     }
 
     #region Helpers
 
     public void ConsumeDashRequest() => m_wantsDash = false;
     public void ConsumeAttackRequest() => m_wantsAttack = false;
+    public void RequestDash()=> m_wantsDash = true;
+    public void RequestAttack()=> m_wantsAttack = true;
     public void Kill() => m_isDead = true;
+    
 
     #endregion
     

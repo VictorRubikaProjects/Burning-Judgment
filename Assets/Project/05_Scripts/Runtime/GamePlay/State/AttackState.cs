@@ -44,6 +44,7 @@ public class AttackState : BaseState
         if (target == null)
         {
             m_isFinished = true;
+            m_owner.RequestDash();
             return;
         }
 
