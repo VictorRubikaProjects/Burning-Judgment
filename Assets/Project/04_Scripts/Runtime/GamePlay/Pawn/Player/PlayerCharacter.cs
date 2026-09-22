@@ -106,6 +106,7 @@ public class PlayerCharacter : Actor
         base.Update();
         
         m_stateMachine.Update();
+        
     }
 
     protected override void FixedUpdate()

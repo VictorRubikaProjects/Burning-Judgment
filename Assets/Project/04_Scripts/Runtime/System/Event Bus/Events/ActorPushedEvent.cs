@@ -5,13 +5,16 @@ namespace Event_Bus
     public readonly struct ActorPushedEvent : IEvent
     {
         public readonly Actor Target;
-        public readonly Vector3 Position;
-        public readonly Vector3 Direction;
+        public readonly Actor From;
         public readonly float Force;
+        public readonly Vector3 Direction;
 
-        public ActorPushedEvent(Actor target, Vector3 position, Vector3 direction, float force)
+        public ActorPushedEvent(Actor target, Actor from, float force)
         {
-            Target = target; Position = position; Direction = direction; Force = force;
+            Target = target; 
+            From = from;
+            Force = force;
+            Direction = (target.transform.position - from.transform.position).normalized;
         }
     }
 }
