@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerAttackState : BaseState
+public class PlayerAttackState : PlayerBaseState
 {
     private CancellationTokenSource m_cts;
 

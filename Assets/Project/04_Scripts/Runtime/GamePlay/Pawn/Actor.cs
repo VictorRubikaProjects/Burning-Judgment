@@ -5,6 +5,7 @@ public class Actor : Pawn
 {
     private readonly List<ActorComponent> m_components = new();
     
+    public virtual void Kill() { }
 
     protected override void Awake()
     {

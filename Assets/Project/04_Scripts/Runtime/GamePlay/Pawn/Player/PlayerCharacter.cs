@@ -172,7 +172,7 @@ public class PlayerCharacter : Actor
         if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
 
         m_pendingKnockbackDirection = e.Direction;
-        m_pendingKnockbackForce = e.Force / stats.KnockbackResistance;
+        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, stats.Weight, stats.KnockbackResistance);
         RequestHit();
     }
 
@@ -182,7 +182,7 @@ public class PlayerCharacter : Actor
     public void ConsumeAttackRequest() => m_wantsAttack = false;
     public void RequestDash()=> m_wantsDash = true;
     public void RequestAttack()=> m_wantsAttack = true;
-    public void Kill() => m_isDead = true;
+    public override void Kill() => m_isDead = true;
 
     public void RequestHit() => m_hitRequested = true;
     

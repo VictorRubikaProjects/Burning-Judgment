@@ -18,6 +18,8 @@ public class StateMachine
         {
             ChangeState(transition.To);
         }
+        
+        m_current.State?.Update();
     }
 
     public void FixedUpdate()

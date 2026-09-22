@@ -28,13 +28,7 @@ public class SO_PlayerStats : SO_ActorsStats
     [SerializeField] [Range(0f, 40f)] private float attackCastDistance = 5f;
     [SerializeField] private DashData attackDash = new() { Duration = 0.15f };
     [SerializeField] [Range(0f, 3f)] private float attackStopOffset = 0.5f;
-
-    [Space] [Header("Hit")]
-    [SerializeField] [Range(0f, 2f)] private float hitDuration = 0.3f;
-    [SerializeField] private AnimationCurve hitKnockbackCurve = new(
-        new Keyframe(0f, 0f, 0f, 2f),
-        new Keyframe(1f, 1f, 0f, 0f)
-    );
+    
 
     [Space] [Header("Input")]
     [SerializeField] [Range(0f, 150f)] private float swipeThreshold = 50f;
@@ -70,8 +64,7 @@ public class SO_PlayerStats : SO_ActorsStats
     public DashData AttackDash => attackDash;
     public float AttackStopOffset => attackStopOffset;
 
-    public float HitDuration => hitDuration;
-    public AnimationCurve HitKnockbackCurve => hitKnockbackCurve;
+    
     
     public float SwipeThreshold => swipeThreshold;
     public float MaxTimeSwipe => maxTimeSwipe;
@@ -81,10 +74,11 @@ public class SO_PlayerStats : SO_ActorsStats
     public float CrossFadeDuration => crossFadeDuration;
     
 #if UNITY_EDITOR
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         if (dashDuration <= 0f) dashDuration = 0.01f;
-        if (hitDuration < 0f) hitDuration = 0.01f; 
+        
     }
 #endif
 }

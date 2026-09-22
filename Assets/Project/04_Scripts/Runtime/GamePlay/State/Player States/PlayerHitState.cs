@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerHitState : BaseState
+public class PlayerHitState : PlayerBaseState
 {
     private CancellationTokenSource m_cts;
     private bool m_isFinished;

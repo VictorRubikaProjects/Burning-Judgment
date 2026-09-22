@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BaseState : IState
+public abstract class PlayerBaseState : IState
 {
     protected readonly PlayerCharacter m_owner;
     protected readonly Animator m_animator;
@@ -14,7 +14,7 @@ public abstract class BaseState : IState
     
     protected readonly SO_PlayerStats m_stats; 
 
-    protected BaseState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats)
+    protected PlayerBaseState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats)
     {
         m_owner = owner;
         m_animator = animator;

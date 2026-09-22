@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerDashState : BaseState
+public class PlayerDashState : PlayerBaseState
 {
     private readonly Rigidbody m_rb;
 
