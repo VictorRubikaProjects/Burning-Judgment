@@ -52,7 +52,7 @@ public class AttackState : BaseState
             m_owner.RequestDash();
             return;
         }
-        
+
         IDamageable targetDamageable = target.GetComponent<IDamageable>();
 
         if (targetDamageable == null || !targetDamageable.CanTakeDamage())
@@ -61,9 +61,9 @@ public class AttackState : BaseState
             m_owner.RequestDash();
             return;
         }
-        
+
         m_audioService.PlaySfx(m_configStats.AttackDashEvent);
-        
+
         Vector3 dashOrigin = m_owner.TransformCache.position;
         float rawDistance = Vector3.Distance(dashOrigin, target.position);
         float dashDistance = rawDistance - m_configStats.AttackStopOffset;
@@ -72,15 +72,23 @@ public class AttackState : BaseState
         {
             DashData attackDash = m_configStats.AttackDash;
 
-            await m_owner.Controller.DashAsync(
+            bool dashSucceeded = await m_owner.Controller.DashAsync(
                 m_attackDirection,
                 token,
                 attackDash.Duration,
                 dashDistance,
-                attackDash.Curve
-            );
+                attackDash.Curve,
+                m_configStats.GroundLayer,
+                m_configStats.GroundCheckHeight,
+                m_configStats.GroundCheckDistance);
 
             if (token.IsCancellationRequested) return;
+
+            if (!dashSucceeded)
+            {
+                m_isFinished = true;
+                return;
+            }
         }
 
         if (targetDamageable.TakeDamage())
@@ -88,7 +96,7 @@ public class AttackState : BaseState
             m_cameraService.Shake();
             m_audioService.PlaySfx(m_configStats.HitEvent);
         }
-        
+
         m_isFinished = true;
     }
 

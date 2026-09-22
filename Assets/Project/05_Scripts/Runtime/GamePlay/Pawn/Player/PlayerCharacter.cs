@@ -52,7 +52,7 @@ public class PlayerCharacter : Actor
         SetupStateMachine();
 
         Input = new InputComponent(owner: this,stats);
-        Controller = new PlayerControllerComponent(owner:this,rb);
+        Controller = new PlayerControllerComponent(owner:this,rb,stats);
         Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
         Health = new HealthComponent(this);
     }

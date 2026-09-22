@@ -46,6 +46,11 @@ MonoBehaviour:
     m_Bits: 0
   dashRadius: 1.2
   offsetDash: 1.4
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  groundCheckHeight: 0.5
+  groundCheckDistance: 1
   attackCastRadius: 1
   attackCastDistance: 40
   attackDash:

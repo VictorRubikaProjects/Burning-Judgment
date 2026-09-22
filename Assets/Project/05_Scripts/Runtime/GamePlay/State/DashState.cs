@@ -50,13 +50,17 @@ public class DashState : BaseState
     private async UniTaskVoid DashAsync(Vector3 direction, CancellationToken token)
     {
         m_audioService.PlaySfx(m_configStats.DashEvent);
-        
-        await m_owner.Controller.DashAsync(direction,
+
+        bool dashSucceeded = await m_owner.Controller.DashAsync(
+            direction,
             token,
             m_configStats.DashDuration,
             m_configStats.DashDistance,
-            m_configStats.DashCurve);
-        
+            m_configStats.DashCurve,
+            m_configStats.GroundLayer,
+            m_configStats.GroundCheckHeight,
+            m_configStats.GroundCheckDistance);
+
         IsFinished = true;
     }
     

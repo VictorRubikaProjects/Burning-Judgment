@@ -20,6 +20,9 @@ public class ConfigStatsPlayer : ScriptableObject
     [SerializeField] [Range(0f, 5f)] private float dashRadius = 2f;
     
     [SerializeField] [Range(0f, 3f)] private float offsetDash = 2f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] [Range(0f, 3f)] private float groundCheckHeight = 0.5f;
+    [SerializeField] [Range(0f, 3f)] private float groundCheckDistance = 1f;
 
     [Space] [Header("Attack")]
     [SerializeField] [Range(0f, 5f)] private float attackCastRadius = 0.5f;
@@ -57,6 +60,9 @@ public class ConfigStatsPlayer : ScriptableObject
     
     public float DashRadius => dashRadius;
     public float OffsetDash => offsetDash;
+    public LayerMask GroundLayer => groundLayer;
+    public float GroundCheckHeight => groundCheckHeight;
+    public float GroundCheckDistance => groundCheckDistance;
 
     public float AttackCastRadius => attackCastRadius;
     public float AttackCastDistance => attackCastDistance;

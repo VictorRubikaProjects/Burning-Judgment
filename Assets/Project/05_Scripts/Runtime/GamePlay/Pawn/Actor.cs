@@ -48,5 +48,13 @@ public class Actor : Pawn
         
         return null;
     }
+    
+    protected virtual void OnDrawGizmosSelected()
+    {
+        foreach (ActorComponent component in m_components)
+        {
+            component.OnDrawGizmosSelected();
+        }
+    }
 
 }
