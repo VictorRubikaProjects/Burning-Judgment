@@ -48,7 +48,7 @@ public class PlayerCharacter : Actor
     
     private float m_pendingKnockbackForce;
     
-    private EventBinding<PlayerDamagedEvent> m_playerDamagedBinding;
+    private EventBinding<ActorPushedEvent> m_playerPushedBinding;
 
     #endregion
 
@@ -87,8 +87,8 @@ public class PlayerCharacter : Actor
         Input.OnAttackWindowEnter += Aspect.AttackReadyVisuals;
         Input.OnAttackWindowExit += Aspect.CancelAttackReadyVisuals;
 
-        m_playerDamagedBinding = new EventBinding<PlayerDamagedEvent>(OnPlayerDamaged);
-        EventBus<PlayerDamagedEvent>.Register(m_playerDamagedBinding);
+        m_playerPushedBinding = new EventBinding<ActorPushedEvent>(OnActorPushed);
+        EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
     }
 
     private void OnDisable()
@@ -98,7 +98,7 @@ public class PlayerCharacter : Actor
         Input.OnAttackWindowEnter -= Aspect.AttackReadyVisuals;
         Input.OnAttackWindowExit -= Aspect.CancelAttackReadyVisuals;
 
-        EventBus<PlayerDamagedEvent>.Unregister(m_playerDamagedBinding);
+        EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
 
     protected override void Update()
@@ -165,13 +165,15 @@ public class PlayerCharacter : Actor
         RequestAttack();
     }
     
-    private void OnPlayerDamaged(PlayerDamagedEvent e)
+    private void OnActorPushed(ActorPushedEvent e)
     {
+        if (e.Target != this) return;
+        
         if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
 
-        m_pendingKnockbackDirection = e.KnockbackDirection;
-        m_pendingKnockbackForce = e.KnockbackForce;
-        m_hitRequested = true;
+        m_pendingKnockbackDirection = e.Direction;
+        m_pendingKnockbackForce = e.Force / stats.KnockbackResistance;
+        RequestHit();
     }
 
     #region Helpers
@@ -181,6 +183,8 @@ public class PlayerCharacter : Actor
     public void RequestDash()=> m_wantsDash = true;
     public void RequestAttack()=> m_wantsAttack = true;
     public void Kill() => m_isDead = true;
+
+    public void RequestHit() => m_hitRequested = true;
     
     public void ConsumeHitRequest() => m_hitRequested = false;
 

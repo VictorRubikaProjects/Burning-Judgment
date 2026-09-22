@@ -32,6 +32,7 @@ public class ConfigStatsPlayer : ScriptableObject
 
     [Space] [Header("Hit")]
     [SerializeField] [Range(0f, 2f)] private float hitDuration = 0.3f;
+    [SerializeField] [Range(0f, 2f)] private float knockbackResistance = 1f;
     [SerializeField] private AnimationCurve hitKnockbackCurve = new(
         new Keyframe(0f, 0f, 0f, 2f),
         new Keyframe(1f, 1f, 0f, 0f)
@@ -72,6 +73,7 @@ public class ConfigStatsPlayer : ScriptableObject
     public float AttackStopOffset => attackStopOffset;
 
     public float HitDuration => hitDuration;
+    public float KnockbackResistance => knockbackResistance;
     public AnimationCurve HitKnockbackCurve => hitKnockbackCurve;
     
     public float SwipeThreshold => swipeThreshold;

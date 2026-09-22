@@ -22,7 +22,10 @@ public class PlayerHitState : BaseState
 
         m_animator.CrossFade(HitHash, m_crossFadeDuration);
 
+        m_owner.HitGate.TakeDamage();
+
         m_cts = new CancellationTokenSource();
+        
         RunHitAsync(m_cts.Token).Forget();
     }
 
@@ -35,15 +38,12 @@ public class PlayerHitState : BaseState
 
     private async UniTaskVoid RunHitAsync(CancellationToken token)
     {
-        await m_owner.Controller.DashAsync(
+        await m_owner.Controller.HitAsync(
             m_owner.PendingKnockbackDirection,
             token,
             m_configStats.HitDuration,
             m_owner.PendingKnockbackForce,
-            m_configStats.HitKnockbackCurve,
-            m_configStats.GroundLayer,
-            m_configStats.GroundCheckHeight,
-            m_configStats.GroundCheckDistance);
+            m_configStats.HitKnockbackCurve);
 
         if (token.IsCancellationRequested) return;
 
