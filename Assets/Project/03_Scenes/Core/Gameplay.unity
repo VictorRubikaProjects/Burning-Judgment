@@ -1621,6 +1621,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8689620246049609038, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: audioUI
+      value: 
+      objectReference: {fileID: 11400000, guid: bcd8faf7da659fc4091cb9e8bc5456ce, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

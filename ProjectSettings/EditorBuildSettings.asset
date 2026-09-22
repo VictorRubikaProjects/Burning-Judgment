@@ -6,13 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Project/04_Scenes/Core/BootStrap.unity
+    path: Assets/Project/03_Scenes/Core/BootStrap.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Project/04_Scenes/Core/Menu.unity
+    path: Assets/Project/03_Scenes/Core/Menu.unity
     guid: e525610833939f844aae87a32509e442
   - enabled: 1
-    path: Assets/Project/04_Scenes/Core/Gameplay.unity
+    path: Assets/Project/03_Scenes/Core/Gameplay.unity
     guid: f53acd42069b6704a8729e3bea22fa27
   - enabled: 0
     path: Assets/Project/04_Scenes/Core/UI.unity

@@ -6,7 +6,7 @@ using UnityToolbarExtender;
 [InitializeOnLoad]
 public static class BootstrapPlayToolbar
 {
-    private const string BootstrapScenePath = "Assets/Project/04_Scenes/Core/BootStrap.unity";
+    private const string BootstrapScenePath = "Assets/Project/03_Scenes/Core/BootStrap.unity";
 
     static BootstrapPlayToolbar()
     {

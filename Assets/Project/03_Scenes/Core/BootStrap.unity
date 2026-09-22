@@ -332,7 +332,7 @@ PrefabInstance:
     - target: {fileID: 2421695428002651684, guid: 00be32ccb822f2148a75a19c48e39f81, type: 3}
       propertyPath: audioConfig
       value: 
-      objectReference: {fileID: 11400000, guid: 64b470d669875bd488fb709afb6968ef, type: 2}
+      objectReference: {fileID: 11400000, guid: 707a1f418f384e54187055a2c5a2e79f, type: 2}
     - target: {fileID: 8918887504490836716, guid: 00be32ccb822f2148a75a19c48e39f81, type: 3}
       propertyPath: m_Name
       value: PF_BootStrap
