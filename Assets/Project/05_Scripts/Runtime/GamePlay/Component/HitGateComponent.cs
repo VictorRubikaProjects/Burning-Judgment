@@ -2,25 +2,19 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-public class HealthComponent : ActorComponent, IDamageable
+public class HitGateComponent : ActorComponent, IDamageable
 {
-    private readonly PlayerCharacter m_pc;
-
     private const float InvincibilityDuration = 0.5f;
 
     private bool m_isInvincible;
     private CancellationTokenSource m_invincibilityCts;
 
-    public HealthComponent(Actor owner) : base(owner)
-    {
-        m_pc = owner as PlayerCharacter;
-    }
+    public HitGateComponent(Actor owner) : base(owner) { }
 
     public bool TakeDamage()
     {
         if (!CanTakeDamage()) return false;
-        
-        m_pc.Aspect.HurtVisuals();
+
         StartInvincibility();
         return true;
     }

@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class DashState : BaseState
+public class PlayerDashState : BaseState
 {
     private readonly Rigidbody m_rb;
 
@@ -14,7 +14,7 @@ public class DashState : BaseState
 
     public bool IsFinished { get; private set; }
 
-    public DashState(PlayerCharacter owner, Animator animator, Rigidbody rb, ConfigStatsPlayer configStats)
+    public PlayerDashState(PlayerCharacter owner, Animator animator, Rigidbody rb, ConfigStatsPlayer configStats)
         : base(owner, animator, configStats)
     {
         m_rb = rb;

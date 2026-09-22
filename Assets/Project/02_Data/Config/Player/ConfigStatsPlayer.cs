@@ -32,8 +32,10 @@ public class ConfigStatsPlayer : ScriptableObject
 
     [Space] [Header("Hit")]
     [SerializeField] [Range(0f, 2f)] private float hitDuration = 0.3f;
-    
-    [SerializeField] [Range(1, 20)] private int maxHealth = 3;
+    [SerializeField] private AnimationCurve hitKnockbackCurve = new(
+        new Keyframe(0f, 0f, 0f, 2f),
+        new Keyframe(1f, 1f, 0f, 0f)
+    );
 
     [Space] [Header("Input")]
     [SerializeField] [Range(0f, 150f)] private float swipeThreshold = 50f;
@@ -70,8 +72,7 @@ public class ConfigStatsPlayer : ScriptableObject
     public float AttackStopOffset => attackStopOffset;
 
     public float HitDuration => hitDuration;
-    
-    public int MaxHealth => maxHealth;
+    public AnimationCurve HitKnockbackCurve => hitKnockbackCurve;
     
     public float SwipeThreshold => swipeThreshold;
     public float MaxTimeSwipe => maxTimeSwipe;

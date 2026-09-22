@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class AttackState : BaseState
+public class PlayerAttackState : BaseState
 {
     private CancellationTokenSource m_cts;
 
@@ -14,7 +14,7 @@ public class AttackState : BaseState
     private CameraService m_cameraService;
     private AudioService m_audioService;
 
-    public AttackState(PlayerCharacter owner, Animator animator, ConfigStatsPlayer configStats) : base(owner, animator, configStats)
+    public PlayerAttackState(PlayerCharacter owner, Animator animator, ConfigStatsPlayer configStats) : base(owner, animator, configStats)
     {
         m_cameraService = ServiceLocator.Get<CameraService>();
         m_audioService = ServiceLocator.Get<AudioService>();

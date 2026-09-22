@@ -1,3 +1,4 @@
+using Event_Bus;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
@@ -18,26 +19,36 @@ public class PlayerCharacter : Actor
     public InputComponent Input { get; private set; }
     public PlayerControllerComponent Controller { get; private set; }
     public PlayerAspectComponent Aspect { get; private set; }
-    public HealthComponent Health { get; private set; }
+    public HitGateComponent HitGate { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
     public Transform TransformCache => m_transformCache;
+    public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
+    public float PendingKnockbackForce => m_pendingKnockbackForce;
+    public bool HasHitRequest => m_hitRequested;
     
     private StateMachine m_stateMachine;
 
     private Vector3 m_moveDir;
     private Vector3 m_attackDirection;
+    private Vector3 m_pendingKnockbackDirection;
     
     private bool m_wantsDash;
     private bool m_wantsAttack;
     private bool m_isDead;
+    private bool m_hitRequested;
     
-    private IdleState m_idleState;
-    private DeathState m_deathState;
-    private DashState m_dashState;
-    private AttackState m_attackState;
+    private PlayerIdleState m_playerIdleState;
+    private PlayerDeathState m_playerDeathState;
+    private PlayerDashState m_playerDashState;
+    private PlayerAttackState m_playerAttackState;
+    private PlayerHitState m_playerHitState;
     
     private Transform m_transformCache;
+    
+    private float m_pendingKnockbackForce;
+    
+    private EventBinding<PlayerDamagedEvent> m_playerDamagedBinding;
 
     #endregion
 
@@ -54,7 +65,7 @@ public class PlayerCharacter : Actor
         Input = new InputComponent(owner: this,stats);
         Controller = new PlayerControllerComponent(owner:this,rb,stats);
         Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
-        Health = new HealthComponent(this);
+        HitGate = new HitGateComponent(this);
     }
 
     protected override void Start()
@@ -64,7 +75,7 @@ public class PlayerCharacter : Actor
         AddActorComponent(Input);
         AddActorComponent(Controller);
         AddActorComponent(Aspect);
-        AddActorComponent(Health);
+        AddActorComponent(HitGate);
         
         ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
     }
@@ -75,6 +86,9 @@ public class PlayerCharacter : Actor
         Input.OnPressSwipeSuccess += AttackHandler;
         Input.OnAttackWindowEnter += Aspect.AttackReadyVisuals;
         Input.OnAttackWindowExit += Aspect.CancelAttackReadyVisuals;
+
+        m_playerDamagedBinding = new EventBinding<PlayerDamagedEvent>(OnPlayerDamaged);
+        EventBus<PlayerDamagedEvent>.Register(m_playerDamagedBinding);
     }
 
     private void OnDisable()
@@ -83,6 +97,8 @@ public class PlayerCharacter : Actor
         Input.OnPressSwipeSuccess -= AttackHandler;
         Input.OnAttackWindowEnter -= Aspect.AttackReadyVisuals;
         Input.OnAttackWindowExit -= Aspect.CancelAttackReadyVisuals;
+
+        EventBus<PlayerDamagedEvent>.Unregister(m_playerDamagedBinding);
     }
 
     protected override void Update()
@@ -110,20 +126,24 @@ public class PlayerCharacter : Actor
     {
         m_stateMachine = new StateMachine();
 
-        m_idleState = new IdleState(this, animator,stats);
-        m_dashState = new DashState(this, animator, rb,stats);
-        m_deathState = new DeathState(this, animator,stats);
-        m_attackState = new AttackState(this, animator, stats);
+        m_playerIdleState = new PlayerIdleState(this, animator,stats);
+        m_playerDashState = new PlayerDashState(this, animator, rb,stats);
+        m_playerDeathState = new PlayerDeathState(this, animator,stats);
+        m_playerAttackState = new PlayerAttackState(this, animator, stats);
+        m_playerHitState = new PlayerHitState(this, animator, stats);
 
-        At(m_idleState, m_dashState, new FuncPredicate(() => m_wantsDash));
-        At(m_dashState, m_idleState, new FuncPredicate(() => m_dashState.IsFinished));
-        At(m_idleState, m_attackState, new FuncPredicate(() => m_wantsAttack));
-        At(m_attackState, m_idleState, new FuncPredicate(() => m_attackState.IsFinished));
-        At(m_attackState, m_dashState, new FuncPredicate(() => m_attackState.IsFinished && m_wantsDash));
+        At(m_playerIdleState, m_playerDashState, new FuncPredicate(() => m_wantsDash));
+        At(m_playerDashState, m_playerIdleState, new FuncPredicate(() => m_playerDashState.IsFinished));
+        At(m_playerIdleState, m_playerAttackState, new FuncPredicate(() => m_wantsAttack));
+        At(m_playerAttackState, m_playerIdleState, new FuncPredicate(() => m_playerAttackState.IsFinished));
+        At(m_playerAttackState, m_playerDashState, new FuncPredicate(() => m_playerAttackState.IsFinished && m_wantsDash));
+        At(m_playerHitState, m_playerIdleState, new FuncPredicate(() => m_playerHitState.IsFinished));
         
-        Any(m_deathState, new FuncPredicate(() => m_isDead));
-
-        m_stateMachine.SetState(m_idleState);
+        Any(m_playerDeathState, new FuncPredicate(() => m_isDead));
+        Any(m_playerHitState, new FuncPredicate(() => HasHitRequest));
+        
+        
+        m_stateMachine.SetState(m_playerIdleState);
     }
 
     #endregion
@@ -140,9 +160,18 @@ public class PlayerCharacter : Actor
         m_attackDirection = new Vector3(dir.x, 0f, dir.y);
         m_moveDir = new Vector3(dir.x, 0f, dir.y);
         
-        m_attackState.SetAttackDirection(m_attackDirection);
+        m_playerAttackState.SetAttackDirection(m_attackDirection);
         
         RequestAttack();
+    }
+    
+    private void OnPlayerDamaged(PlayerDamagedEvent e)
+    {
+        if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
+
+        m_pendingKnockbackDirection = e.KnockbackDirection;
+        m_pendingKnockbackForce = e.KnockbackForce;
+        m_hitRequested = true;
     }
 
     #region Helpers
@@ -153,6 +182,7 @@ public class PlayerCharacter : Actor
     public void RequestAttack()=> m_wantsAttack = true;
     public void Kill() => m_isDead = true;
     
+    public void ConsumeHitRequest() => m_hitRequested = false;
 
     #endregion
     
@@ -168,7 +198,7 @@ public class PlayerCharacter : Actor
 
     private void DrawDashRadius()
     {
-        if (Application.isPlaying && m_dashState.IsFinished) return;
+        if (Application.isPlaying && m_playerDashState.IsFinished) return;
      
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(rb.position + MoveDir * stats.OffsetDash,stats.DashRadius);
@@ -176,7 +206,7 @@ public class PlayerCharacter : Actor
 
     private void DrawAttackCast()
     {
-        if (Application.isPlaying && m_attackState.IsFinished) return;
+        if (Application.isPlaying && m_playerAttackState.IsFinished) return;
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(rb.position, stats.AttackCastRadius);

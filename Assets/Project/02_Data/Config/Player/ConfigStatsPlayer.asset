@@ -49,8 +49,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  groundCheckHeight: 0.5
-  groundCheckDistance: 1
+  groundCheckHeight: 0
+  groundCheckDistance: 1.5
   attackCastRadius: 1
   attackCastDistance: 40
   attackDash:
@@ -81,7 +81,30 @@ MonoBehaviour:
       m_RotationOrder: 4
   attackStopOffset: 0.5
   hitDuration: 0.3
-  maxHealth: 3
+  hitKnockbackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   swipeThreshold: 50
   maxTimeSwipe: 0.25
   thresholdTimerAttack: 0.25
