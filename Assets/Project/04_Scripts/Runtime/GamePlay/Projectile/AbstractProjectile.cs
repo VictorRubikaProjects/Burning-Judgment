@@ -10,11 +10,15 @@ public abstract class AbstractProjectile : MonoBehaviour
     [SerializeField] protected int m_damage = 1;
 
     protected Vector3 m_direction;
+    
     protected string m_poolKey;
+    
     private CancellationTokenSource m_ctsLifetime;
-
-    public virtual void Launch(Vector3 direction, string poolKey)
+    protected Enemy m_owner;
+    
+    public virtual void Launch(Vector3 direction, string poolKey, Enemy owner)
     {
+        m_owner = owner;
         m_direction = direction.normalized;
         m_poolKey = poolKey;
 

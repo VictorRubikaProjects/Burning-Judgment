@@ -16,10 +16,10 @@ public class PlayerCharacter : Actor
     [Header("Config")]
     [SerializeField] private SO_PlayerStats stats;
 
-    public InputComponent Input { get; private set; }
+    public PlayerInputComponent Input { get; private set; }
     public PlayerControllerComponent Controller { get; private set; }
     public PlayerAspectComponent Aspect { get; private set; }
-    public HitGateComponent HitGate { get; private set; }
+    public PlayerHitGateComponent HitGate { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
     public Transform TransformCache => m_transformCache;
@@ -62,10 +62,10 @@ public class PlayerCharacter : Actor
         
         SetupStateMachine();
 
-        Input = new InputComponent(owner: this,stats);
+        Input = new PlayerInputComponent(owner: this,stats);
         Controller = new PlayerControllerComponent(owner:this,rb,stats);
         Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
-        HitGate = new HitGateComponent(this);
+        HitGate = new PlayerHitGateComponent(this);
     }
 
     protected override void Start()

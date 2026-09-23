@@ -2,14 +2,14 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-public class HitGateComponent : ActorComponent, IDamageable
+public class PlayerHitGateComponent : ActorComponent, IDamageable
 {
     private const float InvincibilityDuration = 0.5f;
 
     private bool m_isInvincible;
     private CancellationTokenSource m_invincibilityCts;
 
-    public HitGateComponent(Actor owner) : base(owner) { }
+    public PlayerHitGateComponent(Actor owner) : base(owner) { }
 
     public bool TakeDamage()
     {

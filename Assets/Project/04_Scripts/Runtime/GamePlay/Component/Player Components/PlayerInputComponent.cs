@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputComponent : ActorComponent
+public class PlayerInputComponent : ActorComponent
 {
     #region Variables
 
@@ -24,7 +24,7 @@ public class InputComponent : ActorComponent
 
     #region ActorComponent Methods
 
-    public InputComponent(Actor owner, SO_PlayerStats stats) : base(owner)
+    public PlayerInputComponent(Actor owner, SO_PlayerStats stats) : base(owner)
     {
         m_stats = stats;
     }
