@@ -6,6 +6,7 @@ public class EnemyShooter : Enemy
 {
     [field:SerializeField] public Transform ShootPoint { get; private set; }
     [field:SerializeField] public SO_ConfigEnemyShoot Stats { get; private set; }
+    [field:SerializeField] public Rigidbody Rigidbody { get; private set; }
     
     private EnemyShooterChaseState m_chaseState;
     private EnemyShooterFleeState m_fleeState;
@@ -18,21 +19,24 @@ public class EnemyShooter : Enemy
 
     private EventBinding<ActorPushedEvent> m_eventBindingPushActor;
 
-    private EnemyShootComponent Shoot;
+    public EnemyShootComponent Shoot { get;private set; }
     
     public Vector3 PendingKnockbackDirection {get; private set;}
     public float PendingKnockbackForce {get; private set;}
 
     protected override void Awake()
     {
-        base.Awake();
         Shoot = new EnemyShootComponent(this);
+        Agent.speed = Stats.Speed;
+        Agent.updateRotation = false;
+        base.Awake();
     }
 
     protected override void Start()
     {
-        base.Start();
         AddActorComponent(Shoot);
+        
+        base.Start();
     }
 
     private void OnEnable()
@@ -50,7 +54,7 @@ public class EnemyShooter : Enemy
     {
         m_chaseState = new EnemyShooterChaseState(this);
         m_fleeState = new EnemyShooterFleeState(this);
-        m_hitState = new EnemyShooterHitState(this);
+        m_hitState = new EnemyShooterHitState(this,Rigidbody);
         m_idleState = new EnemyShooterIdleState(this);
         
         return m_idleState;
@@ -59,6 +63,8 @@ public class EnemyShooter : Enemy
     protected override void SetupTransitions()
     {
         At(m_hitState, m_idleState, new FuncPredicate(() => m_hitState.IsFinished));
+        At(m_fleeState, m_idleState, new FuncPredicate(() => m_fleeState.IsFinished));
+        At(m_chaseState, m_idleState, new FuncPredicate(() => m_chaseState.IsFinished));
         
         Any(m_fleeState,new FuncPredicate(() => m_fleeRequested));
         
@@ -68,28 +74,38 @@ public class EnemyShooter : Enemy
     }
     
     
-    public void RequestHit() => m_hitRequested = true;
-    
     public void ConsumeHitRequest() => m_hitRequested = false;
-    
-    public void RequestFlee() => m_fleeRequested = true;
-    
     public void ConsumeFleeRequest() => m_fleeRequested = false;
-    
-    public void RequestChase() => m_chaseRequested = true;
-    
     public void ConsumeChaseRequest() => m_chaseRequested = false;
+    public void RequestHit() { Debug.Log($"[{name}] RequestHit"); m_hitRequested = true; }
+    public void RequestFlee() { Debug.Log($"[{name}] RequestFlee"); m_fleeRequested = true; }
+    public void RequestChase() { Debug.Log($"[{name}] RequestChase"); m_chaseRequested = true; }
+    
     
     private void OnActorPushed(ActorPushedEvent e)
     {
         if (e.Target != this) return;
-        
-        if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
+        Debug.Log($"[{name}] OnActorPushed, currentState={m_stateMachine.GetCurrentState()?.GetType().Name}");
+
+        if (m_stateMachine.GetCurrentState() is EnemyShooterHitState) return;
 
         PendingKnockbackDirection = e.Direction;
-        
         PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, Stats.Weight, Stats.KnockbackResistance);
-        
         RequestHit();
+    }
+    
+    public void LookAtPlayer()
+    {
+        Vector3 direction = Player.TransformCache.position - TransformCache.position;
+        
+        direction.y = 0f;
+        
+        if (direction.sqrMagnitude < 0.0001f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        TransformCache.rotation = Quaternion.RotateTowards(
+            TransformCache.rotation,
+            targetRotation,
+            Stats.RotationSpeed * Time.deltaTime); 
     }
 }

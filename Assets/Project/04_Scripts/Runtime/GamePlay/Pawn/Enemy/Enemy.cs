@@ -12,6 +12,8 @@ public class Enemy : Actor
     
     protected StateMachine m_stateMachine;
 
+    [field: SerializeField] public PlayerCharacter Player;
+
     #endregion
 
     protected override void Awake()
@@ -21,6 +23,17 @@ public class Enemy : Actor
         SetupStateMachine();
         
         TransformCache = transform;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        m_stateMachine.Update();
+    }
+    
+    protected override void FixedUpdate()
+    {
+        m_stateMachine.FixedUpdate();
     }
 
     #region StateMachine

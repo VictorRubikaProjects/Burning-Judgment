@@ -42,5 +42,7 @@ public class EnemyShootComponent : ActorComponent
     private void Shoot()
     {
         Debug.Log("Shoot");
+        m_timerShoot.Reset();
+        m_timerShoot.Start();
     }
 }

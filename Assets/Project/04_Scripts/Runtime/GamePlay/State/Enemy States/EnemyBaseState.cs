@@ -1,10 +1,9 @@
 public class EnemyBaseState : IState
 {
-    private Enemy m_owner;
 
-    public EnemyBaseState(Enemy owner)
+    public EnemyBaseState()
     {
-        m_owner = owner;
+        
     }
     
     public virtual void OnEnter()

@@ -10,10 +10,12 @@ public class SO_ConfigEnemyShoot : ScriptableObject
     [field : SerializeField] public float KnockbackResistance {get; private set;}
     
     [field : SerializeField] public float Speed {get; private set;}
+    [field : SerializeField] public float RotationSpeed {get; private set;}
     
     [field : SerializeField] public float DistanceMax {get; private set;}
     
     [field : SerializeField] public float DistanceMin {get; private set;}
     [field : SerializeField] public float Force {get; private set;}
     [field : SerializeField] public float FrequencyShoot {get; private set;}
+    [field : SerializeField] public AnimationCurve HitCurve {get; private set;}
 }

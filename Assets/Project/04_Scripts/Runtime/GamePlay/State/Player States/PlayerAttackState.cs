@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Event_Bus;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerBaseState
@@ -53,9 +54,9 @@ public class PlayerAttackState : PlayerBaseState
             return;
         }
 
-        IDamageable targetDamageable = target.GetComponent<IDamageable>();
+        Actor targetActor = target.GetComponent<Actor>();
 
-        if (targetDamageable == null || !targetDamageable.CanTakeDamage())
+        if (targetActor == null)
         {
             m_isFinished = true;
             m_owner.RequestDash();
@@ -91,11 +92,10 @@ public class PlayerAttackState : PlayerBaseState
             }
         }
 
-        if (targetDamageable.TakeDamage())
-        {
-            m_cameraService.Shake();
-            m_audioService.PlaySfx(m_stats.HitEvent);
-        }
+        EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(targetActor,m_owner, 5f));
+        
+        m_cameraService.Shake();
+        m_audioService.PlaySfx(m_stats.HitEvent);
 
         m_isFinished = true;
     }
