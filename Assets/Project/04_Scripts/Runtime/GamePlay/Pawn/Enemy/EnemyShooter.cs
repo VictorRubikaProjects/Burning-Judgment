@@ -5,17 +5,35 @@ using UnityEngine;
 public class EnemyShooter : Enemy
 {
     [field:SerializeField] public Transform ShootPoint { get; private set; }
+    [field:SerializeField] public SO_ConfigEnemyShoot Stats { get; private set; }
     
-    private EnemyChaseState m_chaseState;
-    private EnemyFleeState m_fleeState;
-    private EnemyHitState m_hitState;
-    private EnemyIdleState m_idleState;
+    private EnemyShooterChaseState m_chaseState;
+    private EnemyShooterFleeState m_fleeState;
+    private EnemyShooterHitState m_hitState;
+    private EnemyShooterIdleState m_idleState;
     
     private bool m_hitRequested;
     private bool m_chaseRequested;
     private bool m_fleeRequested;
 
     private EventBinding<ActorPushedEvent> m_eventBindingPushActor;
+
+    private EnemyShootComponent Shoot;
+    
+    public Vector3 PendingKnockbackDirection {get; private set;}
+    public float PendingKnockbackForce {get; private set;}
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Shoot = new EnemyShootComponent(this);
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        AddActorComponent(Shoot);
+    }
 
     private void OnEnable()
     {
@@ -30,10 +48,10 @@ public class EnemyShooter : Enemy
 
     protected override IState SetupStates()
     {
-        m_chaseState = new EnemyChaseState(this);
-        m_fleeState = new EnemyFleeState(this);
-        m_hitState = new EnemyHitState(this);
-        m_idleState = new EnemyIdleState(this);
+        m_chaseState = new EnemyShooterChaseState(this);
+        m_fleeState = new EnemyShooterFleeState(this);
+        m_hitState = new EnemyShooterHitState(this);
+        m_idleState = new EnemyShooterIdleState(this);
         
         return m_idleState;
     }
@@ -68,8 +86,10 @@ public class EnemyShooter : Enemy
         
         if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
 
-        //m_pendingKnockbackDirection = e.Direction;
-        //m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, stats.Weight, stats.KnockbackResistance);
+        PendingKnockbackDirection = e.Direction;
+        
+        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, Stats.Weight, Stats.KnockbackResistance);
+        
         RequestHit();
     }
 }

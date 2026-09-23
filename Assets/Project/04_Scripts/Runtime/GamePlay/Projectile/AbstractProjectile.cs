@@ -14,9 +14,10 @@ public abstract class AbstractProjectile : MonoBehaviour
     protected string m_poolKey;
     
     private CancellationTokenSource m_ctsLifetime;
-    protected Enemy m_owner;
     
-    public virtual void Launch(Vector3 direction, string poolKey, Enemy owner)
+    protected EnemyShooter m_owner;
+    
+    public virtual void Launch(Vector3 direction, string poolKey, EnemyShooter owner)
     {
         m_owner = owner;
         m_direction = direction.normalized;

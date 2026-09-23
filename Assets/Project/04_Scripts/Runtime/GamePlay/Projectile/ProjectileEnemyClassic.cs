@@ -11,8 +11,7 @@ public class ProjectileEnemyClassic : AbstractProjectile
         
         if (playerActor == null) return false;
         
-        //TODO FIX MAGIC NUMBER
-        EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(playerActor,m_owner,5f));
+        EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(playerActor,m_owner,m_owner.Stats.Force));
         
         return true;
     }
