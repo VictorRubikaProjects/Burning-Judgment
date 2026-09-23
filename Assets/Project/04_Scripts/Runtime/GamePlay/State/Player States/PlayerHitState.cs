@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerHitState : PlayerBaseState
 {
-    private CancellationTokenSource m_cts;
     private bool m_isFinished;
 
     public bool IsFinished => m_isFinished;
@@ -23,30 +22,27 @@ public class PlayerHitState : PlayerBaseState
         m_animator.CrossFade(HitHash, m_crossFadeDuration);
 
         m_owner.HitGate.TakeDamage();
-
-        m_cts = new CancellationTokenSource();
         
-        RunHitAsync(m_cts.Token).Forget();
+        RunHitAsync().Forget();
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        m_cts?.Cancel();
-        m_cts?.Dispose();
+        m_owner.KnockBack.Cancel();
     }
 
-    private async UniTaskVoid RunHitAsync(CancellationToken token)
+    private async UniTaskVoid RunHitAsync()
     {
-        await m_owner.Controller.HitAsync(
+        await m_owner.KnockBack.HitAsync(
             m_owner.PendingKnockbackDirection,
-            token,
             m_stats.HitDuration,
             m_owner.PendingKnockbackForce,
             m_stats.HitKnockbackCurve);
 
-        if (token.IsCancellationRequested) return;
-
-        m_isFinished = true;
+        if (!m_owner.KnockBack.IsActive)
+        {
+            m_isFinished = true;
+        }
     }
 }

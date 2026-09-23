@@ -16,10 +16,12 @@ public class PlayerCharacter : Actor
     [Header("Config")]
     [SerializeField] private SO_PlayerStats stats;
 
-    public PlayerInputComponent Input { get; private set; }
     public PlayerControllerComponent Controller { get; private set; }
+    public PlayerInputComponent Input { get; private set; }
     public PlayerAspectComponent Aspect { get; private set; }
-    public PlayerHitGateComponent HitGate { get; private set; }
+    public HitGateComponent HitGate { get; private set; }
+    public KnockbackComponent KnockBack { get; private set; }
+    public GroundCheckComponent GroundCheck { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
     public Transform TransformCache => m_transformCache;
@@ -59,24 +61,35 @@ public class PlayerCharacter : Actor
         base.Awake();
 
         m_transformCache = transform;
-        
+    
         SetupStateMachine();
 
+        GroundCheck = new GroundCheckComponent(
+            this,
+            transform,
+            stats.GroundLayer,
+            stats.GroundCheckHeight,
+            stats.GroundCheckDistance);
+
+        KnockBack = new KnockbackComponent(this, rb);
+        HitGate = new HitGateComponent(this, stats.InvincibilityDuration);
+
         Input = new PlayerInputComponent(owner: this,stats);
-        Controller = new PlayerControllerComponent(owner:this,rb,stats);
+        Controller = new PlayerControllerComponent(owner:this,rb,stats, GroundCheck);
         Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
-        HitGate = new PlayerHitGateComponent(this);
     }
 
     protected override void Start()
     {
         base.Start();
-        
+    
+        AddActorComponent(GroundCheck);
+        AddActorComponent(KnockBack);
+        AddActorComponent(HitGate);
         AddActorComponent(Input);
         AddActorComponent(Controller);
         AddActorComponent(Aspect);
-        AddActorComponent(HitGate);
-        
+    
         ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
     }
 

@@ -78,10 +78,7 @@ public class PlayerAttackState : PlayerBaseState
                 token,
                 attackDash.Duration,
                 dashDistance,
-                attackDash.Curve,
-                m_stats.GroundLayer,
-                m_stats.GroundCheckHeight,
-                m_stats.GroundCheckDistance);
+                attackDash.Curve);
 
             if (token.IsCancellationRequested) return;
 

@@ -24,7 +24,6 @@ public class EnemyShooterChaseState : EnemyBaseState
     public override void OnExit()
     {
         base.OnExit();
-        Debug.Log($"[{m_owner.name}] Exit Chase");
         m_owner.Shoot.Enable(false);
     }
 

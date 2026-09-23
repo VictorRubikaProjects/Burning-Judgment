@@ -24,7 +24,6 @@ public class EnemyShooterFleeState : EnemyBaseState
     public override void OnExit()
     {
         base.OnExit();
-        Debug.Log($"[{m_owner.name}] Exit Flee");
         m_owner.Shoot.Enable(false);
     }
 
@@ -49,7 +48,6 @@ public class EnemyShooterFleeState : EnemyBaseState
     
         if (distance > m_owner.Stats.DistanceMin)
         {
-            Debug.Log($"[{m_owner.name}] Flee finished, distance={distance}");
             IsFinished = true;
             return;
         }

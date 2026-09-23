@@ -11,7 +11,6 @@ public class EnemyShooterIdleState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        Debug.Log($"[{m_owner.name}] Enter Idle");
         m_owner.Shoot.Enable(true);
         m_owner.Agent.ResetPath();
     }
@@ -19,7 +18,6 @@ public class EnemyShooterIdleState : EnemyBaseState
     public override void OnExit()
     {
         base.OnExit();
-        Debug.Log($"[{m_owner.name}] Exit Idle");
         m_owner.Shoot.Enable(false);
     }
 
@@ -38,14 +36,12 @@ public class EnemyShooterIdleState : EnemyBaseState
     
         if (distance > m_owner.Stats.DistanceMax)
         {
-            Debug.Log($"[{m_owner.name}] RequestChase");
             m_owner.RequestChase();
             return;
         }
 
         if (distance < m_owner.Stats.DistanceMin)
         {
-            Debug.Log($"[{m_owner.name}] RequestFlee");
             m_owner.RequestFlee();
             return;
         }

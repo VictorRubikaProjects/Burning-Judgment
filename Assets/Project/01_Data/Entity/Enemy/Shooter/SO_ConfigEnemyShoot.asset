@@ -12,22 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7169e92f0cb91504a97284f6a054bb1c, type: 3}
   m_Name: SO_ConfigEnemyShoot
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyShoot
-  <projectilePrefabs>k__BackingField: {fileID: 0}
-  <Weight>k__BackingField: 1
-  <KnockbackResistance>k__BackingField: 1
-  <Speed>k__BackingField: 15
-  <RotationSpeed>k__BackingField: 100
-  <DistanceMax>k__BackingField: 16
-  <DistanceMin>k__BackingField: 6
-  <Force>k__BackingField: 3
-  <FrequencyShoot>k__BackingField: 1
-  <HitCurve>k__BackingField:
+  weight: 1
+  knockbackResistance: 1
+  hitDuration: 0.3
+  hitKnockbackCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
+      inSlope: 0
       outSlope: 2
       tangentMode: 0
       weightedMode: 0
@@ -45,3 +39,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  invincibilityDuration: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  groundCheckHeight: 0
+  groundCheckDistance: 1.5
+  deathDelay: 1.5
+  <projectilePrefabs>k__BackingField: {fileID: 0}
+  <Speed>k__BackingField: 15
+  <RotationSpeed>k__BackingField: 300
+  <DistanceMax>k__BackingField: 16
+  <DistanceMin>k__BackingField: 6
+  <Force>k__BackingField: 3
+  <FrequencyShoot>k__BackingField: 1

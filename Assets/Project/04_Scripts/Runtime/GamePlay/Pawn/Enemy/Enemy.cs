@@ -33,6 +33,7 @@ public class Enemy : Actor
     
     protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         m_stateMachine.FixedUpdate();
     }
 
