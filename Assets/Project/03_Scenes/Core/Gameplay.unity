@@ -1811,6 +1811,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_EnemyShooter
       objectReference: {fileID: 0}
+    - target: {fileID: 9187877147992933300, guid: cdd0c2ffb6d503948b6ef9405661884a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

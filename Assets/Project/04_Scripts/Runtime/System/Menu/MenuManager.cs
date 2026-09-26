@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
@@ -79,6 +80,6 @@ public class MenuManager : MonoBehaviour
     {
         playButton.interactable = false;
         m_audioService.PlaySfx(audioUI.NewGameFx);
-        m_sceneService.LoadGameSceneAsync().Forget();
+        ServiceLocator.Get<GameService>().StartGame().Forget();
     }
 }

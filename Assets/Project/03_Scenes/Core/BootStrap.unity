@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 1101
       objectReference: {fileID: 0}
+    - target: {fileID: 813297417723617126, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 81
+      objectReference: {fileID: 0}
     - target: {fileID: 2927075100756158780, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -218,6 +222,14 @@ PrefabInstance:
     - target: {fileID: 4684090435949026044, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
       propertyPath: m_Name
       value: PF_Canvas_BootStrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 7767749124294631303, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7842747694399647851, guid: 0c5984e2a7b06af4d8054147acb41c33, type: 3}
+      propertyPath: m_Alpha
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -92,7 +92,7 @@ public class PlayerAttackState : PlayerBaseState
         EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
             targetActor,
             m_attackDirection,
-            5f));
+            m_stats.Force));
         
         m_cameraService.Shake();
         m_audioService.PlaySfx(m_stats.HitEvent);

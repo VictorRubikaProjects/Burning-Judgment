@@ -10,6 +10,5 @@ public class SO_ConfigEnemyShoot : SO_ActorsStats
 
     [field : SerializeField] public float DistanceMax {get; private set;}
     [field : SerializeField] public float DistanceMin {get; private set;}
-    [field : SerializeField] public float Force {get; private set;}
     [field : SerializeField] public float FrequencyShoot {get; private set;}
 }

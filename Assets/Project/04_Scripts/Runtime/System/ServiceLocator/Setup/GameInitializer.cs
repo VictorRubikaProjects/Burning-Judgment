@@ -13,6 +13,8 @@ public class GameInitializer
     private CameraService m_cameraService;
     private FxService m_fxService;
     private AudioService m_audioService;
+    private GameService m_gameService;
+    private TransitionService m_transitionService;
 
     public bool IsInitialized { get; private set; } = false;
 
@@ -34,7 +36,7 @@ public class GameInitializer
 
             await m_sceneService.LoadSceneAsync(m_gameConfig.menuScene.Name, setAsActiveScene: true);
         
-            m_sceneService.ToggleLoadingScreen(on : false);
+            m_transitionService.ToggleLoadingScreen(on : false);
             
             IsInitialized = true;
         }
@@ -47,6 +49,8 @@ public class GameInitializer
 
     private void CreateServices()
     {
+        m_transitionService = new TransitionService();
+        
         m_sceneService = new SceneService(m_gameConfig);
         
         m_saveService =  new SaveService();
@@ -56,22 +60,28 @@ public class GameInitializer
         m_fxService = new FxService();
 
         m_audioService = new AudioService(m_audioConfig);
+
+        m_gameService = new GameService();
     }
     
 
     private async UniTask RegisterServices()
     {
+        UniTask transitionTaskRegister = ServiceLocator.Register(m_transitionService);
         UniTask sceneTaskRegister = ServiceLocator.Register(m_sceneService);
         UniTask saveTaskRegister = ServiceLocator.Register(m_saveService);
         UniTask cameraTaskRegister = ServiceLocator.Register(m_cameraService);
         UniTask fxTaskRegister = ServiceLocator.Register(m_fxService);
         UniTask audioTaskRegister = ServiceLocator.Register(m_audioService);
+        UniTask gameTaskRegister = ServiceLocator.Register(m_gameService);
         
         await UniTask.WhenAll(
             sceneTaskRegister,
             saveTaskRegister, 
             cameraTaskRegister,
             fxTaskRegister,
-            audioTaskRegister);
+            audioTaskRegister,
+            gameTaskRegister,
+            transitionTaskRegister);
     }
 }

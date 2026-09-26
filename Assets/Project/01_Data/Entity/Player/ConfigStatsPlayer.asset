@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   weight: 1
   knockbackResistance: 1
+  <Force>k__BackingField: 6
   hitDuration: 0.3
   hitKnockbackCurve:
     serializedVersion: 2

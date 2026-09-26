@@ -7,73 +7,33 @@ using UnityEngine.UI;
 
 public class SceneService : IGameService
 {
-    #region Variables
-
-    private GameObject m_loadingScreenGo;
-    private GameObject m_transitionCircle;
-    
     public event Action<string> OnLoadSceneStarted;
     public event Action<string> OnLoadSceneFinished;
     public event Action<float> OnLoadSceneProgress;
-    
+
     public event Action<string> OnUnloadSceneStarted;
     public event Action<string> OnUnloadSceneFinished;
     public event Action<float> OnUnloadSceneProgress;
-    
+
     private readonly SO_GameConfig m_gameConfig;
-
-    private Material m_transitionMaterialInstance;
-    
-    private const float m_transitionCircleFadeInValue = 0;
-    private const float m_transitionCircleFadeOutValue = 1;
-    
-    private int m_transitionShaderParam = Shader.PropertyToID("_Progress");
-
-    #endregion
-    
-    #region IGameService Core
+    private TransitionService m_transitionService;
 
     public SceneService(SO_GameConfig gameConfig)
     {
         m_gameConfig = gameConfig;
     }
 
-    public void Dispose()
-    {
-        UnityEngine.Object.Destroy(m_transitionMaterialInstance);
-    }
+    public void Dispose() { }
 
     public UniTask InitializeService()
     {
-        m_loadingScreenGo = GameObject.Find("PF_LoadingScreen");
-        m_transitionCircle = GameObject.Find("PF_Transition_Circle");
-        
-        if (m_loadingScreenGo == null)
-        {
-            Debug.LogError("[SceneService] LoadingScreen object not found.");
-        }
-        
-        if (m_transitionCircle == null)
-        {
-            Debug.LogError("[SceneService] Circle Transition object not found.");
-        }
-        
-        Image transitionCircle = m_transitionCircle.GetComponent<Image>();
-        Material transitionMaterial = transitionCircle.material;  
-        m_transitionMaterialInstance = new Material(transitionMaterial); 
-        transitionCircle.material = m_transitionMaterialInstance;
-        m_transitionMaterialInstance.SetFloat(m_transitionShaderParam, m_transitionCircleFadeOutValue);
-        
+        m_transitionService = ServiceLocator.Get<TransitionService>();
         return UniTask.CompletedTask;
     }
 
     public void ShutDownService() { }
-
     public void Tick() { }
-
     public bool IsInitialized { get; set; }
-
-    #endregion
 
     #region Load Scene Core
 
@@ -161,44 +121,12 @@ public class SceneService : IGameService
     }
 
     #endregion
-    
 
-    public void ToggleLoadingScreen(bool on)
+    public async UniTask LoadGameSceneAsync()
     {
-        if (!m_loadingScreenGo) throw new ArgumentNullException(nameof(on),"[SceneService.ToggleLoadingScreen] LoadingScreen object not found.");
-        m_loadingScreenGo.SetActive(on);
-    }
-
-    public async UniTaskVoid LoadGameSceneAsync()
-    {
-        await CircleTransitionFadeIn();
-        
-        ToggleLoadingScreen(true);
-        
         await UnloadScene(m_gameConfig.menuScene.Name);
         
         await LoadSceneAsync(m_gameConfig.gameplayScene.Name);
-        
-        ToggleLoadingScreen(false);
-        
-        await CircleTransitionFadeOut();
     }
-
-    private async UniTask CircleTransition(float target)
-    {
-        float duration = 0.5f;
-        
-        await Tween.MaterialProperty(
-            m_transitionMaterialInstance,
-            m_transitionShaderParam,
-            target,
-            duration,
-            Ease.InOutQuad);
-        
-        await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
-    }
-
-    public async UniTask CircleTransitionFadeIn() => await CircleTransition(m_transitionCircleFadeInValue);
-    public async UniTask CircleTransitionFadeOut() => await CircleTransition(m_transitionCircleFadeOutValue);
     
 }

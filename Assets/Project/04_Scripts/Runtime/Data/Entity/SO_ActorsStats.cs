@@ -6,6 +6,7 @@ public abstract class SO_ActorsStats : ScriptableObject
     [Header("Base Physic")]
     [SerializeField] protected float weight = 1f;
     [SerializeField] protected float knockbackResistance = 1f;
+    [field : SerializeField] public float Force {get; private set;}
     
     [Space] [Header("Hit")]
     [SerializeField] [Range(0f, 2f)] private float hitDuration = 0.3f;
