@@ -46,7 +46,7 @@ MonoBehaviour:
   groundCheckHeight: 0
   groundCheckDistance: 1.5
   deathDelay: 1.5
-  <projectilePrefabs>k__BackingField: {fileID: 0}
+  <projectilePrefabs>k__BackingField: {fileID: 6037552884587399102, guid: 013ef184a4f80eb4794a8374db29234e, type: 3}
   <Speed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 300
   <DistanceMax>k__BackingField: 16

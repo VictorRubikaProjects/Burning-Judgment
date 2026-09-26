@@ -30,7 +30,12 @@ public class EnemyShooter : Enemy
 
     protected override void Awake()
     {
-        Shoot = new EnemyShootComponent(this);
+        Shoot = new EnemyShootComponent(
+            this,
+            Stats.projectilePrefabs,
+            Stats.FrequencyShoot,
+            ShootPoint
+            );
         
         GroundCheck = new GroundCheckComponent(
             this,

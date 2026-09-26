@@ -23,6 +23,8 @@ public class Enemy : Actor
         SetupStateMachine();
         
         TransformCache = transform;
+        
+        ServiceLocator.Get<CameraService>().AddTarget(TransformCache,0.1f);
     }
 
     protected override void Update()
@@ -35,6 +37,15 @@ public class Enemy : Actor
     {
         base.FixedUpdate();
         m_stateMachine.FixedUpdate();
+    }
+
+    public override void Kill()
+    {
+        base.Kill();
+        
+        ServiceLocator.Get<CameraService>().RemoveTarget(TransformCache);
+        
+        Destroy(gameObject);
     }
 
     #region StateMachine

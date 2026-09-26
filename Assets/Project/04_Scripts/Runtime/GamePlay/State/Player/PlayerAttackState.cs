@@ -89,7 +89,10 @@ public class PlayerAttackState : PlayerBaseState
             }
         }
 
-        EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(targetActor,m_owner, 5f));
+        EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
+            targetActor,
+            m_attackDirection,
+            5f));
         
         m_cameraService.Shake();
         m_audioService.PlaySfx(m_stats.HitEvent);
@@ -97,7 +100,6 @@ public class PlayerAttackState : PlayerBaseState
         m_isFinished = true;
     }
 
-    //TODO SphereCastAll n'est pas alloc et donc très couteux dans le futur réfléchir à une meilleur solution.
     private Transform FindEnemyInDirection()
     {
         RaycastHit[] hits = Physics.SphereCastAll(
