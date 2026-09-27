@@ -45,6 +45,7 @@ public class PlayerCharacter : Actor
     private PlayerDashState m_playerDashState;
     private PlayerAttackState m_playerAttackState;
     private PlayerHitState m_playerHitState;
+    private PlayerFallState m_playerFallState;
     
     private Transform m_transformCache;
     
@@ -145,6 +146,7 @@ public class PlayerCharacter : Actor
         m_playerDeathState = new PlayerDeathState(this, animator,stats);
         m_playerAttackState = new PlayerAttackState(this, animator, stats);
         m_playerHitState = new PlayerHitState(this, animator, stats);
+        m_playerFallState = new PlayerFallState(this, animator, stats,rb);
 
         At(m_playerIdleState, m_playerDashState, new FuncPredicate(() => m_wantsDash));
         At(m_playerDashState, m_playerIdleState, new FuncPredicate(() => m_playerDashState.IsFinished));
@@ -155,6 +157,7 @@ public class PlayerCharacter : Actor
         
         Any(m_playerDeathState, new FuncPredicate(() => m_isDead));
         Any(m_playerHitState, new FuncPredicate(() => HasHitRequest));
+        Any(m_playerFallState, new FuncPredicate(() => !GroundCheck.IsGrounded()));
         
         
         m_stateMachine.SetState(m_playerIdleState);

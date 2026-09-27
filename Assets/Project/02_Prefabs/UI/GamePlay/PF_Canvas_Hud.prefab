@@ -62,7 +62,7 @@ MonoBehaviour:
   volumeSlider: {fileID: 7481730171682061310}
   sfxSlider: {fileID: 7703699322853832762}
   musicSlider: {fileID: 3427639115273419389}
-  audioUI: {fileID: 11400000, guid: 23fb5f01ebddd694689db6834714e0e4, type: 2}
+  audioUI: {fileID: 11400000, guid: bcd8faf7da659fc4091cb9e8bc5456ce, type: 2}
 --- !u!223 &234158369408530662
 Canvas:
   m_ObjectHideFlags: 0

@@ -43,8 +43,6 @@ public class PlayerDashState : PlayerBaseState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        
-        ExecuteStrike();
     }
     
     private async UniTaskVoid DashAsync(Vector3 direction, CancellationToken token)

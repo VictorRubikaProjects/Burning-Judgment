@@ -1,12 +1,11 @@
-namespace Event_Bus
-{
-    public struct EnemyDiedEvent
-    {
-        public readonly Actor Enemy;
+using Event_Bus;
 
-        public EnemyDiedEvent(Actor enemy)
-        {
-            Enemy = enemy;
-        }
+public struct EnemyDiedEvent : IEvent
+{
+    public readonly Actor Enemy;
+
+    public EnemyDiedEvent(Actor enemy)
+    {
+        Enemy = enemy;
     }
 }

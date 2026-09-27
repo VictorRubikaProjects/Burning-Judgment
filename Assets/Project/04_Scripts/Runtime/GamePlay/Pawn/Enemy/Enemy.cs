@@ -1,3 +1,4 @@
+using Event_Bus;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,7 +13,7 @@ public class Enemy : Actor
     
     protected StateMachine m_stateMachine;
 
-    [field: SerializeField] public PlayerCharacter Player;
+    public PlayerCharacter Player {get; private set;}
 
     #endregion
 
@@ -42,9 +43,8 @@ public class Enemy : Actor
     public override void Kill()
     {
         base.Kill();
-        
         ServiceLocator.Get<CameraService>().RemoveTarget(TransformCache);
-        
+        EventBus<EnemyDiedEvent>.Raise(new EnemyDiedEvent(this));
         Destroy(gameObject);
     }
 
@@ -73,6 +73,8 @@ public class Enemy : Actor
     {
         
     }
+
+    public void SetupPlayerRef(PlayerCharacter player) => Player =  player;
 
     #endregion
 }
