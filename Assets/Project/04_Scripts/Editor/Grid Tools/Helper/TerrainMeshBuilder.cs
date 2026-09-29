@@ -31,10 +31,10 @@ public static class TerrainMeshBuilder
         List<Vector3> vertices = new();
         List<Vector3> normals = new();
         List<Vector2> uvs = new();
+        
         Dictionary<Material, List<int>> trianglesByMaterial = new();
+        
         HashSet<GameObject> warnedPrefabs = new();
-
-        float half = gridCellSize * 0.5f;
 
         foreach (SO_TerrainData.Cell cell in data.Cells)
         {
@@ -52,7 +52,7 @@ public static class TerrainMeshBuilder
             {
                 if (data.IsOccupied(cell.position + face.normal)) continue;
 
-                AddFace(face, center, half, vertices, normals, uvs, triangles);
+                AddFace(face, cell.position, center, gridCellSize, vertices, normals, uvs, triangles);
             }
         }
 
@@ -77,25 +77,29 @@ public static class TerrainMeshBuilder
         return mesh;
     }
 
-    private static void AddFace(Face face, Vector3 center, float half, List<Vector3> vertices,
-                                List<Vector3> normals, List<Vector2> uvs, List<int> triangles)
+    private static void AddFace(Face face, Vector3Int cellPosition, Vector3 center, float gridCellSize,
+                                List<Vector3> vertices, List<Vector3> normals, List<Vector2> uvs, List<int> triangles)
     {
+        float half = gridCellSize * 0.5f;
         Vector3 faceCenter = center + (Vector3)face.normal * half;
         Vector3 u = face.u * half;
         Vector3 v = face.v * half;
         int start = vertices.Count;
 
-        vertices.Add(faceCenter - u - v);
-        vertices.Add(faceCenter - u + v);
-        vertices.Add(faceCenter + u + v);
-        vertices.Add(faceCenter + u - v);
+        Vector3[] corners =
+        {
+            faceCenter - u - v,
+            faceCenter - u + v,
+            faceCenter + u + v,
+            faceCenter + u - v
+        };
 
-        for (int i = 0; i < 4; i++) normals.Add(face.normal);
-
-        uvs.Add(new Vector2(0f, 0f));
-        uvs.Add(new Vector2(0f, 1f));
-        uvs.Add(new Vector2(1f, 1f));
-        uvs.Add(new Vector2(1f, 0f));
+        foreach (Vector3 corner in corners)
+        {
+            vertices.Add(corner);
+            normals.Add(face.normal);
+            uvs.Add(GetPlanarUV(corner, center, cellPosition, face, gridCellSize));
+        }
 
         triangles.Add(start);
         triangles.Add(start + 1);
@@ -103,6 +107,13 @@ public static class TerrainMeshBuilder
         triangles.Add(start);
         triangles.Add(start + 2);
         triangles.Add(start + 3);
+    }
+
+    private static Vector2 GetPlanarUV(Vector3 vertex, Vector3 center, Vector3Int cellPosition, Face face, float gridCellSize)
+    {
+        Vector3 gridSpace = (vertex - center) / gridCellSize + new Vector3(0.5f, 0.5f, 0.5f) + (Vector3)cellPosition;
+
+        return new Vector2(Vector3.Dot(gridSpace, face.u), Vector3.Dot(gridSpace, face.v));
     }
 
     private static bool TryGetCubeInfo(GameObject prefab, HashSet<GameObject> warnedPrefabs,
