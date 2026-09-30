@@ -11,7 +11,7 @@ public class PlayerCharacter : Actor
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
-    [SerializeField] private MeshRenderer playerRenderer;
+    [SerializeField] private SkinnedMeshRenderer playerRenderer;
     
     [Header("Config")]
     [SerializeField] private SO_PlayerStats stats;
