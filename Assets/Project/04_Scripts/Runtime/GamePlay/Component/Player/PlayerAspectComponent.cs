@@ -4,22 +4,27 @@ using PrimeTween;
 
 public class PlayerAspectComponent : ActorComponent
 {
-    private readonly Color m_playerColorNeutral = Color.white;
+    private readonly Color m_playerColorNeutral;
     private readonly Color m_playerColorAttackReady = Color.green;
     private readonly Color m_playerColorHurt = Color.red;
 
     private readonly SO_PlayerStats m_stats;
-    private readonly MeshRenderer m_playerRenderer;
+    private readonly SkinnedMeshRenderer m_playerRenderer;
     private Material m_playerMaterialInstance;
 
     private Tween m_currentTween;
 
-    public PlayerAspectComponent(Actor owner, Material playerMaterial, MeshRenderer playerRenderer, SO_PlayerStats stats) : base(owner)
+    public PlayerAspectComponent(Actor owner, Material playerMaterial, SkinnedMeshRenderer playerRenderer, SO_PlayerStats stats) : base(owner)
     {
         m_playerMaterialInstance = new Material(playerMaterial);
+        
         m_playerRenderer = playerRenderer;
+        
         m_playerRenderer.material = m_playerMaterialInstance;
+        
         m_stats = stats;
+        
+        m_playerColorNeutral = m_playerMaterialInstance.color;
     }
 
     public void AttackReadyVisuals() => AttackReadyVisualsAsync().Forget();

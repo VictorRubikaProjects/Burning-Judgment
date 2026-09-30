@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 560af941f648858428da39ccc0b31931, type: 2}
+  - {fileID: 2100000, guid: 55ae2d5efdc6449449c719454e9d543c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -148,7 +148,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 560af941f648858428da39ccc0b31931, type: 2}
+  - {fileID: 2100000, guid: 55ae2d5efdc6449449c719454e9d543c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -295,7 +295,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyShooter
   agent: {fileID: 2270392152395672166}
-  Player: {fileID: 0}
   <ShootPoint>k__BackingField: {fileID: 8997999950144454901}
   <Stats>k__BackingField: {fileID: 11400000, guid: aebb328231d49b748bc44e014ee6f533, type: 2}
   <Rigidbody>k__BackingField: {fileID: 4428776988191383783}
