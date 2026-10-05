@@ -189,7 +189,7 @@ public class PlayerCharacter : Actor
         if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
 
         m_pendingKnockbackDirection = e.Direction;
-        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, stats.Weight, stats.KnockbackResistance);
+        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, stats.Weight);
         RequestHit();
     }
 

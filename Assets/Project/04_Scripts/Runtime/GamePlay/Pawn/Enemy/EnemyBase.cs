@@ -134,7 +134,7 @@ public abstract class EnemyBase : Actor
         if (m_stateMachine.GetCurrentState() is EnemyHitState) return;
 
         PendingKnockbackDirection = e.Direction;
-        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, StatsBase.Weight, StatsBase.KnockbackResistance);
+        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, StatsBase.Weight);
         RequestHit();
     }
 
