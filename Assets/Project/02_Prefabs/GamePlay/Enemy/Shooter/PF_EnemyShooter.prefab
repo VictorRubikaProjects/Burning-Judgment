@@ -295,9 +295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyShooter
   agent: {fileID: 2270392152395672166}
-  <ShootPoint>k__BackingField: {fileID: 8997999950144454901}
-  <Stats>k__BackingField: {fileID: 11400000, guid: aebb328231d49b748bc44e014ee6f533, type: 2}
   <Rigidbody>k__BackingField: {fileID: 4428776988191383783}
+  stats: {fileID: 11400000, guid: aebb328231d49b748bc44e014ee6f533, type: 2}
+  <ShootPoint>k__BackingField: {fileID: 8997999950144454901}
 --- !u!195 &2270392152395672166
 NavMeshAgent:
   m_ObjectHideFlags: 0

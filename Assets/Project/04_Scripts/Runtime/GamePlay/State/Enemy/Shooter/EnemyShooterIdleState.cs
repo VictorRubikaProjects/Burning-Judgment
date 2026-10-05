@@ -1,49 +1,21 @@
-using UnityEngine;
-
-public class EnemyShooterIdleState : EnemyBaseState
+public class EnemyShooterIdleState : EnemyIdleState
 {
-    private EnemyShooter m_owner;
-    public EnemyShooterIdleState(EnemyShooter owner)
+    private readonly EnemyShooter m_shooter;
+
+    public EnemyShooterIdleState(EnemyShooter owner) : base(owner)
     {
-        m_owner = owner;
+        m_shooter = owner;
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
-        m_owner.Shoot.Enable(true);
-        m_owner.Agent.ResetPath();
+        m_shooter.Shoot.Enable(true);
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        m_owner.Shoot.Enable(false);
-    }
-
-    public override void Update()
-    {
-        base.Update();
-        m_owner.LookAtPlayer();
-        EvaluateSituation();
-    }
-
-    private void EvaluateSituation()
-    {
-        float distance = Vector3.Distance(m_owner.TransformCache.position,m_owner.Player.TransformCache.position);
-
-        if (distance < m_owner.Stats.DistanceMax && distance > m_owner.Stats.DistanceMin) return;
-    
-        if (distance > m_owner.Stats.DistanceMax)
-        {
-            m_owner.RequestChase();
-            return;
-        }
-
-        if (distance < m_owner.Stats.DistanceMin)
-        {
-            m_owner.RequestFlee();
-            return;
-        }
+        m_shooter.Shoot.Enable(false);
     }
 }

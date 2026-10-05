@@ -1,55 +1,21 @@
-using UnityEngine;
-
-public class EnemyShooterFleeState : EnemyBaseState
+public class EnemyShooterFleeState : EnemyFleeState
 {
-    public bool IsFinished {get; private set;}
-    
-    private EnemyShooter m_owner;
-    
-    public EnemyShooterFleeState(EnemyShooter owner)
+    private readonly EnemyShooter m_shooter;
+
+    public EnemyShooterFleeState(EnemyShooter owner) : base(owner)
     {
-        m_owner = owner;
+        m_shooter = owner;
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
-        m_owner.Shoot.Enable(true);
-        m_owner.ConsumeFleeRequest();
-        IsFinished = false;
-        m_owner.Agent.stoppingDistance = 0f;
-        CalculateFleePosition();
+        m_shooter.Shoot.Enable(true);
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        m_owner.Shoot.Enable(false);
-    }
-
-    public override void Update()
-    {
-        base.Update();
-        m_owner.LookAtPlayer();
-        CalculateFleePosition();
-        EvaluateFleeSuccess();
-    }
-
-    private void CalculateFleePosition()
-    {
-        Vector3 directionAwayFromPlayer = (m_owner.TransformCache.position - m_owner.Player.TransformCache.position).normalized;
-        Vector3 fleeTarget = m_owner.TransformCache.position + directionAwayFromPlayer * m_owner.Stats.DistanceMax;
-        m_owner.Agent.SetDestination(fleeTarget);
-    }
-
-    private void EvaluateFleeSuccess()
-    {
-        float distance = Vector3.Distance(m_owner.TransformCache.position,m_owner.Player.TransformCache.position);
-    
-        if (distance > m_owner.Stats.DistanceMin)
-        {
-            IsFinished = true;
-            return;
-        }
+        m_shooter.Shoot.Enable(false);
     }
 }

@@ -6,11 +6,11 @@ public class EnemySystem
 {
     private readonly List<Actor> m_aliveEnemies = new();
     
-    private readonly Enemy m_enemyPrefab;
+    private readonly EnemyBase m_enemyPrefab;
     
     EventBinding<EnemyDiedEvent> m_eventBindingEnemyDied;
 
-    public EnemySystem(Enemy enemyPrefab)
+    public EnemySystem(EnemyBase enemyPrefab)
     {
         m_enemyPrefab = enemyPrefab;
     }
@@ -32,7 +32,7 @@ public class EnemySystem
 
         foreach (Vector3 spawnPosition in spawnPositions)
         {
-            Enemy enemyGo = Object.Instantiate(m_enemyPrefab, spawnPosition, Quaternion.identity);
+            EnemyBase enemyGo = Object.Instantiate(m_enemyPrefab, spawnPosition, Quaternion.identity);
             
             enemyGo.SetupPlayerRef(player);
             

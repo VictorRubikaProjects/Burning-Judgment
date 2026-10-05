@@ -4,7 +4,7 @@ using UnityEngine;
 public class SO_EntityPooling : ScriptableObject
 {
     [field: SerializeField] public PlayerCharacter Player {get; private set;}
-    [field: SerializeField] public Enemy EnemyTest {get; private set;}
+    [field: SerializeField] public EnemyBase EnemyTest {get; private set;}
     [field: SerializeField] public Vector3 PlayerSpawnPosition {get; private set;}
     [field: SerializeField] public Vector3[] EnemySpawningPositions {get; private set;}
     [field: SerializeField] public float PositionRadius {get; private set;}
