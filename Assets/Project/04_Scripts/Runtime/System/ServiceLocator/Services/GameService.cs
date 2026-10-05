@@ -64,9 +64,9 @@ public class GameService : IGameService
     {
         CurrentFloor++;
         
-        await m_transitionService.ShowFloorAsync(CurrentFloor);
-        
         await SpawnPlayer();
+        
+        await m_transitionService.ShowFloorAsync(CurrentFloor);
 
         m_enemySystem.SetupFloor(m_entityConfig.EnemySpawningPositions,m_playerCharacter);
 
