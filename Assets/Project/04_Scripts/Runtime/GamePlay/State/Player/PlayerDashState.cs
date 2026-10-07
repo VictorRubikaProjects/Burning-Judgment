@@ -49,7 +49,7 @@ public class PlayerDashState : PlayerBaseState
     {
         m_audioService.PlaySfx(m_stats.DashEvent);
 
-        bool dashSucceeded = await m_owner.Controller.DashAsync(
+        bool dashSucceeded = await m_owner.Dash.DashAsync(
             direction,
             token,
             m_stats.DashDuration,

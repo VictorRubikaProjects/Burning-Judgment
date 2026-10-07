@@ -22,6 +22,7 @@ public class PlayerCharacter : Actor
     public HitGateComponent HitGate { get; private set; }
     public KnockbackComponent KnockBack { get; private set; }
     public GroundCheckComponent GroundCheck { get; private set; }
+    public DashComponent Dash { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
     public Transform TransformCache => m_transformCache;
@@ -74,9 +75,9 @@ public class PlayerCharacter : Actor
 
         KnockBack = new KnockbackComponent(this, rb);
         HitGate = new HitGateComponent(this, stats.InvincibilityDuration);
-
+        Dash = new DashComponent(this, rb, GroundCheck);
         Input = new PlayerInputComponent(owner: this,stats);
-        Controller = new PlayerControllerComponent(owner:this,rb,stats, GroundCheck);
+        Controller = new PlayerControllerComponent(owner:this,rb);
         Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
     }
 
@@ -87,6 +88,7 @@ public class PlayerCharacter : Actor
         AddActorComponent(GroundCheck);
         AddActorComponent(KnockBack);
         AddActorComponent(HitGate);
+        AddActorComponent(KnockBack);
         AddActorComponent(Input);
         AddActorComponent(Controller);
         AddActorComponent(Aspect);

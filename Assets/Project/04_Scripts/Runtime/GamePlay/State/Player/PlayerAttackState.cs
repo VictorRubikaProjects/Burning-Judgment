@@ -73,7 +73,7 @@ public class PlayerAttackState : PlayerBaseState
         {
             DashData attackDash = m_stats.AttackDash;
 
-            bool dashSucceeded = await m_owner.Controller.DashAsync(
+            bool dashSucceeded = await m_owner.Dash.DashAsync(
                 m_attackDirection,
                 token,
                 attackDash.Duration,
