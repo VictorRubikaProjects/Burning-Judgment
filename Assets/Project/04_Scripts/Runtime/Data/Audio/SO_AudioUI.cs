@@ -1,7 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_AudioUI", menuName = "Config/UI Audio")]
+[CreateAssetMenu(menuName = "Config/Audio/UI Audio", fileName = "SO_AudioUI")]
 public class SO_AudioUI : ScriptableObject
 {
     [field: SerializeField] public EventReference SliderFx {get; private set;}

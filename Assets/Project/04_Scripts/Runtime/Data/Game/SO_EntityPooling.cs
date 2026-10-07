@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Entity Pool System", fileName = "SO_EntityPoolSystem")]
+[CreateAssetMenu(menuName = "Config/Game/Entity Pooling", fileName = "SO_EntityPooling")]
 public class SO_EntityPooling : ScriptableObject
 {
     [field: SerializeField] public PlayerCharacter Player {get; private set;}

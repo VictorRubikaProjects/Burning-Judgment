@@ -1,7 +1,7 @@
 using UnityEngine;
 using FMOD;
 
-[CreateAssetMenu(fileName = "SO_AudioConfig", menuName = "Config/Audio Config")]
+[CreateAssetMenu(menuName = "Config/Audio/Audio Config", fileName = "SO_AudioConfig")]
 public class SO_AudioConfig : ScriptableObject
 {
     public AnimationCurve VolumeCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);

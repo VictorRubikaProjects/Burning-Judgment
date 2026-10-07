@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Grid/Terrain Data", fileName = "TerrainData")]
+[CreateAssetMenu(menuName = "Config/Level/Terrain Data", fileName = "SO_TerrainData")]
 public class SO_TerrainData : ScriptableObject,ISerializationCallbackReceiver
 {
     [Serializable]

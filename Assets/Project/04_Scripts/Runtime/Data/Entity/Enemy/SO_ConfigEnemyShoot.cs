@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_ConfigEnemyShoot", menuName = "Config/Enemy/Shooter")]
+[CreateAssetMenu(menuName = "Config/Actors/Enemy/Shooter", fileName = "SO_ConfigEnemyShoot")]
 public class SO_ConfigEnemyShoot : SO_ConfigEnemy
 {
     [field: SerializeField] public ProjectileEnemyClassic ProjectilePrefabs {get; private set;}

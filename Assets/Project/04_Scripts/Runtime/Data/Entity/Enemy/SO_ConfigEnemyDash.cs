@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_ConfigEnemyDash", menuName = "Config/Enemy/Dasher")]
+[CreateAssetMenu(menuName = "Config/Actors/Enemy/Dasher", fileName = "SO_ConfigEnemyDash")]
 public class SO_ConfigEnemyDash : SO_ConfigEnemy
 {
     [field: SerializeField] public float DashDuration { get; private set; } = 0.3f;

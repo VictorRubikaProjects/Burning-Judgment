@@ -1,7 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConfigStatsPlayer", menuName = "Config/Player Stats")]
+[CreateAssetMenu(menuName = "Config/Actors/Player Stats", fileName = "SO_PlayerStats")]
 public class SO_PlayerStats : SO_ActorsStats
 {
     [Header("Dash")]
