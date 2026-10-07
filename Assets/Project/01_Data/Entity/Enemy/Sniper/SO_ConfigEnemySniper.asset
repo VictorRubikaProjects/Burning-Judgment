@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0cb78cf1f66ff24e9f3286626bb74f4, type: 3}
+  m_Name: SO_ConfigEnemySniper
+  m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemySniper
+  weight: 3
+  <Force>k__BackingField: 1
+  hitDuration: 0.3
+  hitKnockbackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  invincibilityDuration: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  groundCheckHeight: 0
+  groundCheckDistance: 1.5
+  deathDelay: 1.5
+  <Speed>k__BackingField: 15
+  <RotationSpeed>k__BackingField: 600
+  <DistanceMax>k__BackingField: 20
+  <DistanceMin>k__BackingField: 10
+  <Cooldown>k__BackingField: 3
+  <ShotRange>k__BackingField: 25
+  <AimTrackingTime>k__BackingField: 1.5
+  <AimFrozenTime>k__BackingField: 0.7
+  <TargetLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 128

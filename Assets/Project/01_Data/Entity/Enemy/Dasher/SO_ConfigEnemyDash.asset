@@ -43,8 +43,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  groundCheckHeight: 0.5
-  groundCheckDistance: 1
+  groundCheckHeight: 0
+  groundCheckDistance: 1.5
   deathDelay: 1.5
   <Speed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 300
