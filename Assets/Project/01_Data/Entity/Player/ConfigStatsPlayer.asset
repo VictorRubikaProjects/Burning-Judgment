@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: ConfigStatsPlayer
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   weight: 1
-  knockbackResistance: 1
   <Force>k__BackingField: 6
   hitDuration: 0.3
   hitKnockbackCurve:
@@ -115,6 +114,8 @@ MonoBehaviour:
   thresholdTimerAttack: 0.25
   timerAttack: 0.5
   crossFadeDuration: 0.1
+  recoverDuration: 0.5
+  recoverCancelThreshold: 0.2
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973

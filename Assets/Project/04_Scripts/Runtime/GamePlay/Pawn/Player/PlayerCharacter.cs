@@ -1,4 +1,5 @@
 using Event_Bus;
+using Helpers.Runtime.Math;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
@@ -40,6 +41,8 @@ public class PlayerCharacter : Actor
     private bool m_wantsAttack;
     private bool m_isDead;
     private bool m_hitRequested;
+    private bool m_canCancelRecover;
+    private bool m_recoverCancelRequested;
     
     private PlayerIdleState m_playerIdleState;
     private PlayerDeathState m_playerDeathState;
@@ -47,6 +50,7 @@ public class PlayerCharacter : Actor
     private PlayerAttackState m_playerAttackState;
     private PlayerHitState m_playerHitState;
     private PlayerFallState m_playerFallState;
+    private PlayerRecoverState m_playerRecoverState;
     
     private Transform m_transformCache;
     
@@ -88,7 +92,6 @@ public class PlayerCharacter : Actor
         AddActorComponent(GroundCheck);
         AddActorComponent(KnockBack);
         AddActorComponent(HitGate);
-        AddActorComponent(KnockBack);
         AddActorComponent(Input);
         AddActorComponent(Controller);
         AddActorComponent(Aspect);
@@ -143,25 +146,112 @@ public class PlayerCharacter : Actor
     {
         m_stateMachine = new StateMachine();
 
-        m_playerIdleState = new PlayerIdleState(this, animator,stats);
-        m_playerDashState = new PlayerDashState(this, animator, rb,stats);
-        m_playerDeathState = new PlayerDeathState(this, animator,stats);
+        m_playerIdleState = new PlayerIdleState(this, animator, stats);
+        m_playerDashState = new PlayerDashState(this, animator, rb, stats);
+        m_playerDeathState = new PlayerDeathState(this, animator, stats);
         m_playerAttackState = new PlayerAttackState(this, animator, stats);
         m_playerHitState = new PlayerHitState(this, animator, stats);
-        m_playerFallState = new PlayerFallState(this, animator, stats,rb);
+        m_playerFallState = new PlayerFallState(this, animator, stats, rb);
+        m_playerRecoverState = new PlayerRecoverState(this, animator, stats);
 
-        At(m_playerIdleState, m_playerDashState, new FuncPredicate(() => m_wantsDash));
-        At(m_playerDashState, m_playerIdleState, new FuncPredicate(() => m_playerDashState.IsFinished));
-        At(m_playerIdleState, m_playerAttackState, new FuncPredicate(() => m_wantsAttack));
-        At(m_playerAttackState, m_playerIdleState, new FuncPredicate(() => m_playerAttackState.IsFinished));
-        At(m_playerAttackState, m_playerDashState, new FuncPredicate(() => m_playerAttackState.IsFinished && m_wantsDash));
-        At(m_playerHitState, m_playerIdleState, new FuncPredicate(() => m_playerHitState.IsFinished));
-        
-        Any(m_playerDeathState, new FuncPredicate(() => m_isDead));
-        Any(m_playerHitState, new FuncPredicate(() => HasHitRequest));
-        Any(m_playerFallState, new FuncPredicate(() => !GroundCheck.IsGrounded()));
-        
-        
+        // Idle
+        At(
+            m_playerIdleState,
+            m_playerDashState,
+            new FuncPredicate(() => m_wantsDash)
+        );
+
+        At(
+            m_playerIdleState,
+            m_playerAttackState,
+            new FuncPredicate(() => m_wantsAttack)
+        );
+
+        // Dash
+        At(
+            m_playerDashState,
+            m_playerIdleState,
+            new FuncPredicate(() => m_playerDashState.IsFinished)
+        );
+
+        // Attack
+        At(
+            m_playerAttackState,
+            m_playerRecoverState,
+            new FuncPredicate(() =>
+                m_playerAttackState.IsFinished &&
+                m_playerAttackState.HasHit &&
+                !m_recoverCancelRequested
+            )
+        );
+
+        At(
+            m_playerAttackState,
+            m_playerDashState,
+            new FuncPredicate(() =>
+                m_playerAttackState.IsFinished &&
+                (
+                    !m_playerAttackState.HasHit ||
+                    m_recoverCancelRequested
+                ) &&
+                m_wantsDash
+            )
+        );
+
+        At(
+            m_playerAttackState,
+            m_playerIdleState,
+            new FuncPredicate(() =>
+                m_playerAttackState.IsFinished &&
+                !m_playerAttackState.HasHit &&
+                !m_recoverCancelRequested
+            )
+        );
+
+        // Recover
+        At(
+            m_playerRecoverState,
+            m_playerDashState,
+            new FuncPredicate(() =>
+                m_recoverCancelRequested &&
+                m_wantsDash
+            )
+        );
+
+        At(
+            m_playerRecoverState,
+            m_playerIdleState,
+            new FuncPredicate(() =>
+                m_playerRecoverState.IsFinished &&
+                !m_recoverCancelRequested
+            )
+        );
+
+        // Hit
+        At(
+            m_playerHitState,
+            m_playerIdleState,
+            new FuncPredicate(() =>
+                m_playerHitState.IsFinished
+            )
+        );
+
+        // Any
+        Any(
+            m_playerDeathState,
+            new FuncPredicate(() => m_isDead)
+        );
+
+        Any(
+            m_playerHitState,
+            new FuncPredicate(() => HasHitRequest)
+        );
+
+        Any(
+            m_playerFallState,
+            new FuncPredicate(() => !GroundCheck.IsGrounded())
+        );
+
         m_stateMachine.SetState(m_playerIdleState);
     }
 
@@ -169,13 +259,29 @@ public class PlayerCharacter : Actor
     
     private void SwipeHandler(Vector2 moveDir)
     {
-        m_moveDir = new Vector3(moveDir.x, 0f, moveDir.y);
-        
+        Vector3 swipeDirection = new Vector3(moveDir.x, 0f, moveDir.y);
+
+        if (m_canCancelRecover && swipeDirection.IsVectorInOppositeDirection(m_attackDirection))
+        {
+            m_moveDir = swipeDirection;
+
+            RequestRecoverCancel();
+            RequestDash();
+
+            return;
+        }
+
+        if (!CanSwipe()) return;
+
+        m_moveDir = swipeDirection;
+
         RequestDash();
     }
 
     private void AttackHandler(Vector2 dir)
     {
+        if (!CanAttack()) return;
+        
         m_attackDirection = new Vector3(dir.x, 0f, dir.y);
         m_moveDir = new Vector3(dir.x, 0f, dir.y);
         
@@ -206,6 +312,18 @@ public class PlayerCharacter : Actor
     public void RequestHit() => m_hitRequested = true;
     
     public void ConsumeHitRequest() => m_hitRequested = false;
+    
+    public void RequestRecoverCancel() => m_recoverCancelRequested = true;
+    public void SetCanCancelRecover(bool value) => m_canCancelRecover = value;
+    
+    public void ResetRecoverCancel()
+    {
+        m_canCancelRecover = false;
+        m_recoverCancelRequested = false;
+    }
+
+    private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState;
+    private bool CanSwipe() => m_stateMachine.GetCurrentState() is PlayerIdleState;
 
     #endregion
     

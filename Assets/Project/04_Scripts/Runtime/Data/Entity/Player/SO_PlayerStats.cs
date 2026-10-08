@@ -36,11 +36,18 @@ public class SO_PlayerStats : SO_ActorsStats
     [Space] [Header("Animation")]
     [SerializeField] [Range(0f, 0.9f)] private float crossFadeDuration = 0.1f;
     
+    [Space] [Header("Recover")]
+    [SerializeField] [Range(0f, 0.5f)] private float recoverDuration = 0.2f;
+    [SerializeField] [Range(0f, 0.5f)] private float recoverCancelThreshold = 0.1f;
+    
     [field:SerializeField] public EventReference HitEvent {get; private set;}
     [field:SerializeField] public EventReference DashEvent {get; private set;}
     [field:SerializeField] public EventReference AttackDashEvent {get; private set;}
 
 
+    public float RecoverDuration => recoverDuration;
+    public float RecoverCancelThreshold => recoverCancelThreshold;
+    
     public float DashDistance => dashDistance;
     public float DashDuration => dashDuration;
     
