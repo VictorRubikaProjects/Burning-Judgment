@@ -7,4 +7,6 @@ public class SO_ConfigEnemy: SO_ActorsStats
 
     [field : SerializeField] public float DistanceMax {get; private set;}
     [field : SerializeField] public float DistanceMin {get; private set;}
+    [field: SerializeField] public float HitRadius { get; private set; } = 1f;
+    [field: SerializeField] public LayerMask EnemyLayer { get; private set; }
 }

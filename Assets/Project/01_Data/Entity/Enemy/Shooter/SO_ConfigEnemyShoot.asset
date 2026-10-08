@@ -50,5 +50,9 @@ MonoBehaviour:
   <RotationSpeed>k__BackingField: 300
   <DistanceMax>k__BackingField: 16
   <DistanceMin>k__BackingField: 6
+  <HitRadius>k__BackingField: 1
+  <EnemyLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
   <ProjectilePrefabs>k__BackingField: {fileID: 6037552884587399102, guid: 013ef184a4f80eb4794a8374db29234e, type: 3}
   <FrequencyShoot>k__BackingField: 1

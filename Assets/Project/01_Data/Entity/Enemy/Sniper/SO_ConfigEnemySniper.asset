@@ -50,6 +50,10 @@ MonoBehaviour:
   <RotationSpeed>k__BackingField: 600
   <DistanceMax>k__BackingField: 20
   <DistanceMin>k__BackingField: 10
+  <HitRadius>k__BackingField: 1
+  <EnemyLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
   <Cooldown>k__BackingField: 3
   <ShotRange>k__BackingField: 25
   <AimTrackingTime>k__BackingField: 1.5
