@@ -55,5 +55,10 @@ namespace Helpers.Runtime.Math
             float rnd = Mathf.Deg2Rad * Random.Range(0, 360);
             return new Vector2(Mathf.Cos(rnd), Mathf.Sin(rnd));
         }
+
+        public static bool IsVectorInOppositeDirection(this Vector3 from, Vector3 to)
+        {
+            return Vector3.Dot(from,to) is < -0.5f and > -1f;
+        }
     }
 }
