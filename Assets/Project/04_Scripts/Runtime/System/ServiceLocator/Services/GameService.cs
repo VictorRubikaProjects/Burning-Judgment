@@ -57,11 +57,18 @@ public class GameService : IGameService
     {
         CurrentFloor++;
 
-        if (!isFirstFloor) await m_sceneService.UnloadScene(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
+        UniTask taskDeloadGameplay = new UniTask();
+        
+        if (!isFirstFloor)
+        {
+            taskDeloadGameplay = m_sceneService.UnloadScene(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
+        }
         
         m_enemySystem.SetupRound();
         
-        await m_sceneService.LoadSceneAsync(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
+        UniTask taskLoadGameplay =  m_sceneService.LoadSceneAsync(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
+
+        await UniTask.WhenAll(taskLoadGameplay,taskDeloadGameplay);
         
         await SpawnPlayer();
         
