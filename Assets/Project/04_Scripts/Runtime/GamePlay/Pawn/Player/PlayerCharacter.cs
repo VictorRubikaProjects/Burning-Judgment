@@ -1,5 +1,6 @@
 using Event_Bus;
 using Helpers.Runtime.Math;
+using TMPro;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
@@ -322,6 +323,8 @@ public class PlayerCharacter : Actor
         m_recoverCancelRequested = false;
     }
 
+    public void SetIdle() => m_stateMachine.SetState(m_playerIdleState);
+    
     private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState;
     private bool CanSwipe() => m_stateMachine.GetCurrentState() is PlayerIdleState;
 
@@ -353,6 +356,25 @@ public class PlayerCharacter : Actor
         Gizmos.DrawWireSphere(rb.position, stats.AttackCastRadius);
         Gizmos.DrawWireSphere(rb.position + m_attackDirection * stats.AttackCastDistance, stats.AttackCastRadius);
         Gizmos.DrawLine(rb.position, rb.position + m_attackDirection * stats.AttackCastDistance);
+    }
+    
+    void OnGUI()
+    {
+        Rect rect = new Rect(Screen.width - 400, 10, 200, 40);
+        
+        string text = $"{m_stateMachine.GetCurrentState()}";
+        
+        GUIStyle style = new GUIStyle
+        {
+            fontSize = 40,
+            fontStyle = FontStyle.Bold,
+            normal =
+            {
+                textColor = Color.white
+            }
+        };
+
+        GUI.Box(rect,text,style);
     }
 
     #endregion

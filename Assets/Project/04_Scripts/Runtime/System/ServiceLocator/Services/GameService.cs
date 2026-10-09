@@ -111,6 +111,7 @@ public class GameService : IGameService
         {
             m_playerCharacter = Object.Instantiate(m_entityConfig.Player);
         }
+        m_playerCharacter.SetIdle();
         
         m_playerCharacter.gameObject.SetActive(false);
 

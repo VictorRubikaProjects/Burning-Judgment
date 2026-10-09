@@ -321,10 +321,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2421695428002651684, guid: 00be32ccb822f2148a75a19c48e39f81, type: 3}
-      propertyPath: entityPoolConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: 7fb707a09f242d04898251a1893a8bc9, type: 2}
     - target: {fileID: 8918887504490836716, guid: 00be32ccb822f2148a75a19c48e39f81, type: 3}
       propertyPath: m_Name
       value: PF_BootStrap
