@@ -122,11 +122,5 @@ public class SceneService : IGameService
 
     #endregion
 
-    public async UniTask LoadGameSceneAsync()
-    {
-        await UnloadScene(m_gameConfig.menuScene.Name);
-        
-        await LoadSceneAsync(m_gameConfig.gameplayScene.Name);
-    }
-    
+    public async UniTask UnloadMenu() => await UnloadScene(m_gameConfig.menuScene.Name);
 }

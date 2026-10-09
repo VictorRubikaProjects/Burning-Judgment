@@ -10,11 +10,8 @@ public class GameService : IGameService
 
     private SceneService m_sceneService;
     private TransitionService m_transitionService;
-
     private EnemySystem m_enemySystem;
-
     private SO_EntityPooling m_entityConfig;
-    
     private PlayerCharacter m_playerCharacter;
 
     public GameService(SO_EntityPooling entityConfig)
@@ -29,7 +26,7 @@ public class GameService : IGameService
         m_sceneService = ServiceLocator.Get<SceneService>();
         m_transitionService = ServiceLocator.Get<TransitionService>();
 
-        m_enemySystem = new EnemySystem(m_entityConfig.EnemyTest); 
+        m_enemySystem = new EnemySystem(m_entityConfig); 
         m_enemySystem.Initialize();
 
         return UniTask.CompletedTask;
@@ -49,26 +46,28 @@ public class GameService : IGameService
 
         await m_transitionService.CircleTransitionFadeIn();
 
-        m_transitionService.ToggleLoadingScreen(true);
+        await m_sceneService.UnloadMenu();
         
-        await m_sceneService.LoadGameSceneAsync();
-
-        m_transitionService.ToggleLoadingScreen(false);
-        
-        await StartFloor();
+        await StartFloor(true);
         
         await m_transitionService.CircleTransitionFadeOut();
     }
 
-    public async UniTask StartFloor()
+    public async UniTask StartFloor(bool isFirstFloor = false)
     {
         CurrentFloor++;
+
+        if (!isFirstFloor) await m_sceneService.UnloadScene(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
+        
+        m_enemySystem.SetupRound();
+        
+        await m_sceneService.LoadSceneAsync(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
         
         await SpawnPlayer();
         
         await m_transitionService.ShowFloorAsync(CurrentFloor);
 
-        m_enemySystem.SetupFloor(m_entityConfig.EnemySpawningPositions,m_playerCharacter);
+        m_enemySystem.SetupFloor(m_playerCharacter);
 
         EventBus<FloorStartedEvent>.Raise(new FloorStartedEvent(CurrentFloor));
     }
@@ -110,7 +109,7 @@ public class GameService : IGameService
 
         await UniTask.WaitForFixedUpdate();
         
-        m_playerCharacter.TransformCache.position = m_entityConfig.PlayerSpawnPosition;
+        m_playerCharacter.TransformCache.position = m_enemySystem.ConfigCurrentRound.PlayerSpawnPosition;
         m_playerCharacter.TransformCache.rotation = Quaternion.identity;
         
         await UniTask.WaitForFixedUpdate();

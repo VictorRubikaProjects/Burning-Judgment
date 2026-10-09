@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class EnemySystem
 {
-    private readonly List<Actor> m_aliveEnemies = new();
+    public SO_ConfigRound ConfigCurrentRound => m_configCurrentRound;
     
-    private readonly EnemyBase m_enemyPrefab;
+    private readonly List<EnemyBase> m_aliveEnemies = new();
+    private readonly SO_EntityPooling m_entityPooling;
     
-    EventBinding<EnemyDiedEvent> m_eventBindingEnemyDied;
+    private SO_ConfigRound m_configCurrentRound;
+    
+    private EventBinding<EnemyDiedEvent> m_eventBindingEnemyDied;
 
-    public EnemySystem(EnemyBase enemyPrefab)
+    public EnemySystem(SO_EntityPooling entityPoolingData)
     {
-        m_enemyPrefab = enemyPrefab;
+        m_entityPooling = entityPoolingData;
     }
 
     public void Initialize()
@@ -26,19 +29,22 @@ public class EnemySystem
         EventBus<EnemyDiedEvent>.Unregister(m_eventBindingEnemyDied);
     }
 
-    public void SetupFloor(Vector3[] spawnPositions, PlayerCharacter player)
+    
+    public void SetupFloor(PlayerCharacter player)
     {
         m_aliveEnemies.Clear();
 
-        foreach (Vector3 spawnPosition in spawnPositions)
-        {
-            EnemyBase enemyGo = Object.Instantiate(m_enemyPrefab, spawnPosition, Quaternion.identity);
-            
-            enemyGo.SetupPlayerRef(player);
-            
-            Actor enemyActor = enemyGo.GetComponent<Actor>();
+        List<EnemyBase> enemyBases = m_configCurrentRound.RoundData.GetRandomEnemiesPalette().TeamEnemies;
 
-            m_aliveEnemies.Add(enemyActor);
+        foreach (var @base in enemyBases)
+        {
+            Vector3 spawnPos = m_configCurrentRound.GetRandomPosition();
+            
+            EnemyBase enemyObj = Object.Instantiate(@base, spawnPos, Quaternion.identity);
+            
+            enemyObj.SetupPlayerRef(player);
+
+            m_aliveEnemies.Add(enemyObj);
         }
     }
 
@@ -51,4 +57,6 @@ public class EnemySystem
             EventBus<FloorClearedEvent>.Raise(new FloorClearedEvent());
         }
     }
+
+    public void SetupRound() => m_configCurrentRound = m_entityPooling.GetRandomRound();
 }

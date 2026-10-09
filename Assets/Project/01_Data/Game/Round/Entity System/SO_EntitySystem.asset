@@ -13,11 +13,5 @@ MonoBehaviour:
   m_Name: SO_EntitySystem
   m_EditorClassIdentifier: Project.Runtime::SO_EnemyPoolSystem
   <Player>k__BackingField: {fileID: 1563943224991897210, guid: cc78fc27ea2866840887678b8f1ff650, type: 3}
-  <EnemyTest>k__BackingField: {fileID: 8927638961183659385, guid: c23a720c7149237409098ed793b0353d, type: 3}
-  <PlayerSpawnPosition>k__BackingField: {x: 0, y: 1.5, z: 0}
-  <EnemySpawningPositions>k__BackingField:
-  - {x: 10, y: 0, z: 10}
-  - {x: 10, y: 0, z: -10}
-  - {x: -10, y: 0, z: 10}
-  - {x: -10, y: 0, z: -10}
-  <PositionRadius>k__BackingField: 1
+  <ConfigRounds>k__BackingField:
+  - {fileID: 11400000, guid: 2700a66988822594c86807926490790d, type: 2}
