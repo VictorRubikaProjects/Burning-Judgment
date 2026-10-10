@@ -1,6 +1,5 @@
 using Event_Bus;
 using Helpers.Runtime.Math;
-using TMPro;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
@@ -44,6 +43,7 @@ public class PlayerCharacter : Actor
     private bool m_hitRequested;
     private bool m_canCancelRecover;
     private bool m_recoverCancelRequested;
+    private bool m_isAttackReadyShown;
     
     private PlayerIdleState m_playerIdleState;
     private PlayerDeathState m_playerDeathState;
@@ -104,8 +104,8 @@ public class PlayerCharacter : Actor
     {
         Input.OnSwipe += SwipeHandler;
         Input.OnPressSwipeSuccess += AttackHandler;
-        Input.OnAttackWindowEnter += Aspect.AttackReadyVisuals;
-        Input.OnAttackWindowExit += Aspect.CancelAttackReadyVisuals;
+        Input.OnAttackWindowEnter += AttackWindowEnterHandler;
+        Input.OnAttackWindowExit += AttackWindowExitHandler;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(OnActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
@@ -115,8 +115,8 @@ public class PlayerCharacter : Actor
     {
         Input.OnSwipe -= SwipeHandler;
         Input.OnPressSwipeSuccess -= AttackHandler;
-        Input.OnAttackWindowEnter -= Aspect.AttackReadyVisuals;
-        Input.OnAttackWindowExit -= Aspect.CancelAttackReadyVisuals;
+        Input.OnAttackWindowEnter -= AttackWindowEnterHandler;
+        Input.OnAttackWindowExit -= AttackWindowExitHandler;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
@@ -258,6 +258,8 @@ public class PlayerCharacter : Actor
 
     #endregion
     
+    #region Input Handlers
+
     private void SwipeHandler(Vector2 moveDir)
     {
         Vector3 swipeDirection = new Vector3(moveDir.x, 0f, moveDir.y);
@@ -282,25 +284,47 @@ public class PlayerCharacter : Actor
     private void AttackHandler(Vector2 dir)
     {
         if (!CanAttack()) return;
-        
+
         m_attackDirection = new Vector3(dir.x, 0f, dir.y);
         m_moveDir = new Vector3(dir.x, 0f, dir.y);
-        
+
         m_playerAttackState.SetAttackDirection(m_attackDirection);
-        
+
         RequestAttack();
     }
-    
+
+    private void AttackWindowEnterHandler()
+    {
+        if (!CanAttack()) return;
+
+        m_isAttackReadyShown = true;
+        Aspect.AttackReadyVisuals();
+    }
+
+    private void AttackWindowExitHandler()
+    {
+        if (!m_isAttackReadyShown) return;
+
+        m_isAttackReadyShown = false;
+        Aspect.CancelAttackReadyVisuals();
+    }
+
+    #endregion
+
+    #region Event Bus Handlers
+
     private void OnActorPushed(ActorPushedEvent e)
     {
         if (e.Target != this) return;
-        
+
         if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
 
         m_pendingKnockbackDirection = e.Direction;
         m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, stats.Weight);
         RequestHit();
     }
+
+    #endregion
 
     #region Helpers
 

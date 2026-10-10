@@ -37,7 +37,7 @@ public class SO_PlayerStats : SO_ActorsStats
     [SerializeField] [Range(0f, 0.9f)] private float crossFadeDuration = 0.1f;
     
     [Space] [Header("Recover")]
-    [SerializeField] [Range(0f, 0.5f)] private float recoverDuration = 0.2f;
+    [SerializeField] [Range(0f, 2f)] private float recoverDuration = 0.2f;
     [SerializeField] [Range(0f, 0.5f)] private float recoverCancelThreshold = 0.1f;
     
     [field:SerializeField] public EventReference HitEvent {get; private set;}

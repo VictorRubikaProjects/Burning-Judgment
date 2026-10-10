@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Event_Bus;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameService : IGameService
 {
@@ -65,8 +66,8 @@ public class GameService : IGameService
         }
         
         m_enemySystem.SetupRound();
-        
-        UniTask taskLoadGameplay =  m_sceneService.LoadSceneAsync(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
+
+        UniTask taskLoadGameplay = m_sceneService.LoadSceneAsync(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name,true);
 
         await UniTask.WhenAll(taskLoadGameplay,taskDeloadGameplay);
         

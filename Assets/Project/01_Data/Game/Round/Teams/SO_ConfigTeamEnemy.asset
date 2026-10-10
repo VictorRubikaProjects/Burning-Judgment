@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SO_ConfigTeamEnemy
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigTeamEnemy
   <TeamEnemies>k__BackingField:
-  - {fileID: 2959229638710504226, guid: 95454868679c69f4dbe7e4f4db3ee788, type: 3}
-  - {fileID: 434553737504614989, guid: cdd0c2ffb6d503948b6ef9405661884a, type: 3}
-  - {fileID: 434553737504614989, guid: cdd0c2ffb6d503948b6ef9405661884a, type: 3}
-  - {fileID: 8927638961183659385, guid: c23a720c7149237409098ed793b0353d, type: 3}
+  - {fileID: 2147446832788465838, guid: f826ae6787afd7944ade27174d20d6e2, type: 3}
+  - {fileID: 6412494920678223553, guid: 3238dccc316659c46af3962067813dd0, type: 3}
+  - {fileID: 6412494920678223553, guid: 3238dccc316659c46af3962067813dd0, type: 3}
+  - {fileID: 3512228309614343052, guid: a69554605e41f1f408b3f552b8b2dfe5, type: 3}

@@ -777,6 +777,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6832288885468813833, guid: c95955e91daa07a4da87b79bcced2006, type: 3}
+      propertyPath: m_Size.x
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832288885468813833, guid: c95955e91daa07a4da87b79bcced2006, type: 3}
+      propertyPath: m_Size.z
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -830,6 +838,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2078546002786910704, guid: bfafea9cd4bf58d4886e4a702454e5e4, type: 3}
+      propertyPath: m_AgentTypeID
+      value: -1372625422
+      objectReference: {fileID: 0}
+    - target: {fileID: 2078546002786910704, guid: bfafea9cd4bf58d4886e4a702454e5e4, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 4b3de8893c9ac984ebab52705969df4e, type: 2}
     - target: {fileID: 4829761141877644180, guid: bfafea9cd4bf58d4886e4a702454e5e4, type: 3}
       propertyPath: m_Name
       value: PF_Ground_PH
