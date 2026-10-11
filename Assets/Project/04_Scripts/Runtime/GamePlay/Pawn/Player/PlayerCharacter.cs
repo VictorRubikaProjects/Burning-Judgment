@@ -24,9 +24,9 @@ public class PlayerCharacter : Actor
     public KnockbackComponent KnockBack { get; private set; }
     public GroundCheckComponent GroundCheck { get; private set; }
     public DashComponent Dash { get; private set; }
+    public PlayerBounceComponent Bounce { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
-    public Transform TransformCache => m_transformCache;
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
     public bool HasHitRequest => m_hitRequested;
@@ -52,6 +52,7 @@ public class PlayerCharacter : Actor
     private PlayerHitState m_playerHitState;
     private PlayerFallState m_playerFallState;
     private PlayerRecoverState m_playerRecoverState;
+    private PLayerTransitionBounceState m_playerTransitionBounceState;
     
     private Transform m_transformCache;
     
@@ -66,8 +67,6 @@ public class PlayerCharacter : Actor
     protected override void Awake()
     {
         base.Awake();
-
-        m_transformCache = transform;
     
         SetupStateMachine();
 
@@ -84,6 +83,7 @@ public class PlayerCharacter : Actor
         Input = new PlayerInputComponent(owner: this,stats);
         Controller = new PlayerControllerComponent(owner:this,rb);
         Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
+        Bounce = new PlayerBounceComponent(this, stats);
     }
 
     protected override void Start()
@@ -96,6 +96,7 @@ public class PlayerCharacter : Actor
         AddActorComponent(Input);
         AddActorComponent(Controller);
         AddActorComponent(Aspect);
+        AddActorComponent(Bounce);
     
         ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
     }
@@ -126,7 +127,6 @@ public class PlayerCharacter : Actor
         base.Update();
         
         m_stateMachine.Update();
-        
     }
 
     protected override void FixedUpdate()
@@ -154,7 +154,22 @@ public class PlayerCharacter : Actor
         m_playerHitState = new PlayerHitState(this, animator, stats);
         m_playerFallState = new PlayerFallState(this, animator, stats, rb);
         m_playerRecoverState = new PlayerRecoverState(this, animator, stats);
+        m_playerTransitionBounceState = new PLayerTransitionBounceState(this, animator, stats);
 
+        //Bounce
+        
+        At(m_playerAttackState,
+            m_playerTransitionBounceState,
+            new FuncPredicate(() => m_playerAttackState.IsFinished && Bounce.Target != null));
+        
+        At(m_playerTransitionBounceState,
+            m_playerAttackState,
+            new FuncPredicate(() => m_playerTransitionBounceState.IsFinished));
+        
+        At(m_playerRecoverState,
+            m_playerTransitionBounceState,
+            new FuncPredicate(() => Bounce.Target != null));
+        
         // Idle
         At(
             m_playerIdleState,
@@ -283,12 +298,20 @@ public class PlayerCharacter : Actor
 
     private void AttackHandler(Vector2 dir)
     {
+        Vector3 direction = new Vector3(dir.x, 0f, dir.y);
+
+        if (m_stateMachine.GetCurrentState() is PlayerAttackState or PlayerRecoverState)
+        {
+            Bounce.TryBounce(direction);
+            return;
+        }
+
         if (!CanAttack()) return;
 
-        m_attackDirection = new Vector3(dir.x, 0f, dir.y);
-        m_moveDir = new Vector3(dir.x, 0f, dir.y);
+        m_attackDirection = direction;
+        m_moveDir = direction;
 
-        m_playerAttackState.SetAttackDirection(m_attackDirection);
+        m_playerAttackState.SetAttackDirection(direction);
 
         RequestAttack();
     }
@@ -349,7 +372,7 @@ public class PlayerCharacter : Actor
 
     public void SetIdle() => m_stateMachine.SetState(m_playerIdleState);
     
-    private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState;
+    private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState || Bounce.CanBounce;
     private bool CanSwipe() => m_stateMachine.GetCurrentState() is PlayerIdleState;
 
     #endregion

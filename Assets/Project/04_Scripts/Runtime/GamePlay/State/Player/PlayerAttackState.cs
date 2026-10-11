@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Event_Bus;
+using Helpers.Runtime.Physics;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerBaseState
@@ -71,59 +72,105 @@ public class PlayerAttackState : PlayerBaseState
 
     private async UniTaskVoid RunAttackAsync(CancellationToken token)
     {
-        Transform target = FindEnemyInDirection();
+        Transform target = ResolveTarget();
 
-        if (target == null)
+        if (!TryGetTargetActor(target, out Actor targetActor))
         {
-            m_isFinished = true;
-            m_owner.RequestDash();
-            return;
-        }
-
-        Actor targetActor = target.GetComponent<Actor>();
-
-        if (targetActor == null)
-        {
-            m_isFinished = true;
-            m_owner.RequestDash();
+            FinishWithoutHit();
             return;
         }
 
         m_hasHit = true;
-
         m_audioService.PlaySfx(m_stats.AttackDashEvent);
 
-        Vector3 dashOrigin = m_owner.TransformCache.position;
+        bool completed = await DashToTargetAsync(target, token);
 
-        float rawDistance = Vector3.Distance(
-            dashOrigin,
-            target.position);
+        if (!completed) return;
 
-        float dashDistance =
-            rawDistance - m_stats.AttackStopOffset;
+        ApplyImpact(targetActor);
+        Finish();
+    }
 
-        if (dashDistance > 0f)
+    private Transform ResolveTarget()
+    {
+        if (m_owner.Bounce.Target != null)
         {
-            DashData attackDash = m_stats.AttackDash;
-
-            float threshold = Mathf.Min(
-                m_stats.RecoverCancelThreshold,
-                attackDash.Duration);
-
-            StartRecoverCancelTimer(
-                attackDash.Duration - threshold);
-
-            await m_owner.Dash.DashAsync(
-                m_attackDirection,
-                token,
-                attackDash.Duration,
-                dashDistance,
-                attackDash.Curve);
-
-            if (token.IsCancellationRequested)
-                return;
+            Transform bounceTarget = m_owner.Bounce.ClearBufferBouncy();
+            AimAt(bounceTarget);
+            return bounceTarget;
         }
 
+        m_owner.Bounce.Break();
+
+        return PhysicsHelper.FindElementInDirectionByLayer(
+            m_owner.TransformCache.position,
+            m_stats.AttackCastRadius,
+            m_attackDirection,
+            m_stats.AttackCastDistance,
+            m_stats.EnemyLayer,
+            m_stats.ObstacleLayer);
+    }
+    
+    private void AimAt(Transform target)
+    {
+        Vector3 toTarget = target.position - m_owner.TransformCache.position;
+        toTarget.y = 0f;
+
+        if (toTarget.sqrMagnitude > 0.0001f)
+            m_attackDirection = toTarget.normalized;
+    }
+
+    private static bool TryGetTargetActor(Transform target, out Actor targetActor)
+    {
+        targetActor = target ? target.GetComponent<Actor>() : null;
+        return targetActor != null;
+    }
+
+    private async UniTask<bool> DashToTargetAsync(Transform target, CancellationToken token)
+    {
+        float dashDistance = GetDashDistance(target);
+        DashData attackDash = m_stats.AttackDash;
+
+        float threshold = m_stats.BounceThresholdTimer;
+        float frontThreshold = Mathf.Min(threshold, attackDash.Duration);
+        
+        if (dashDistance <= 0f)
+        {
+            m_owner.Bounce.StartBounceSequence(0f, threshold,target);
+            return true;
+        }
+        
+        m_owner.Bounce.StartBounceSequence(
+            attackDash.Duration - frontThreshold,
+            frontThreshold + threshold,
+            target);
+
+        StartRecoverCancelTimer(GetRecoverCancelDelay(attackDash));
+
+        await m_owner.Dash.DashAsync(
+            m_attackDirection,
+            token,
+            attackDash.Duration,
+            dashDistance,
+            attackDash.Curve);
+
+        return !token.IsCancellationRequested;
+    }
+
+    private float GetDashDistance(Transform target)
+    {
+        float rawDistance = Vector3.Distance(m_owner.TransformCache.position, target.position);
+        return rawDistance - m_stats.AttackStopOffset;
+    }
+
+    private float GetRecoverCancelDelay(DashData attackDash)
+    {
+        float threshold = Mathf.Min(m_stats.RecoverCancelThreshold, attackDash.Duration);
+        return attackDash.Duration - threshold;
+    }
+
+    private void ApplyImpact(Actor targetActor)
+    {
         EventBus<ActorPushedEvent>.Raise(
             new ActorPushedEvent(
                 targetActor,
@@ -132,9 +179,16 @@ public class PlayerAttackState : PlayerBaseState
 
         m_cameraService.Shake();
         m_audioService.PlaySfx(m_stats.HitEvent);
-
-        m_isFinished = true;
     }
+
+    private void FinishWithoutHit()
+    {
+        m_isFinished = true;
+        m_owner.RequestDash();
+    }
+
+    private void Finish() => m_isFinished = true;
+
 
     private void StartRecoverCancelTimer(float duration)
     {
@@ -146,35 +200,5 @@ public class PlayerAttackState : PlayerBaseState
     }
 
     private void EnableRecoverCancel() => m_owner.SetCanCancelRecover(true);
-
-    private Transform FindEnemyInDirection()
-    {
-        RaycastHit[] hits = Physics.SphereCastAll(
-            m_owner.TransformCache.position,
-            m_stats.AttackCastRadius,
-            m_attackDirection,
-            m_stats.AttackCastDistance,
-            m_stats.AttackStateLayer());
-
-        System.Array.Sort(
-            hits,
-            (a, b) => a.distance.CompareTo(b.distance));
-
-        foreach (RaycastHit hit in hits)
-        {
-            if (((1 << hit.collider.gameObject.layer) &
-                 m_stats.ObstacleLayer.value) != 0)
-            {
-                return null;
-            }
-
-            if (((1 << hit.collider.gameObject.layer) &
-                 m_stats.EnemyLayer.value) != 0)
-            {
-                return hit.collider.transform;
-            }
-        }
-
-        return null;
-    }
+    
 }

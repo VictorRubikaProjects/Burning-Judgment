@@ -46,9 +46,9 @@ MonoBehaviour:
   groundCheckHeight: 0
   groundCheckDistance: 1.5
   deathDelay: 1.5
-  dashDistance: 7
-  dashDuration: 0.2
-  dashCurve:
+  <DashDistance>k__BackingField: 7
+  <DashDuration>k__BackingField: 0.2
+  <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -72,17 +72,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  enemyLayer:
+  <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  obstacleLayer:
+  <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 0
-  dashRadius: 1.2
-  offsetDash: 1.4
-  attackCastRadius: 1
-  attackCastDistance: 40
-  attackDash:
+  <DashRadius>k__BackingField: 1.2
+  <OffsetDash>k__BackingField: 1.4
+  <AttackCastRadius>k__BackingField: 1
+  <AttackCastDistance>k__BackingField: 40
+  <AttackDash>k__BackingField:
     Duration: 0.15
     Curve:
       serializedVersion: 2
@@ -108,14 +108,15 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  attackStopOffset: 0.5
-  swipeThreshold: 50
-  maxTimeSwipe: 0.25
-  thresholdTimerAttack: 0.25
-  timerAttack: 0.5
-  crossFadeDuration: 0.1
-  recoverDuration: 1
-  recoverCancelThreshold: 0.25
+  <AttackStopOffset>k__BackingField: 0
+  <SwipeThreshold>k__BackingField: 50
+  <MaxTimeSwipe>k__BackingField: 0.25
+  <ThresholdTimerAttack>k__BackingField: 0.25
+  <TimerAttack>k__BackingField: 0.5
+  <CrossFadeDuration>k__BackingField: 0.1
+  <RecoverDuration>k__BackingField: 1
+  <RecoverCancelThreshold>k__BackingField: 0.25
+  <BounceThresholdTimer>k__BackingField: 1
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973

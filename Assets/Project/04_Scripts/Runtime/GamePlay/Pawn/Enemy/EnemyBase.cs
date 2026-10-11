@@ -2,8 +2,9 @@ using System;
 using Event_Bus;
 using UnityEngine;
 using UnityEngine.AI;
+using Object = UnityEngine.Object;
 
-public abstract class EnemyBase : Actor
+public abstract class EnemyBase : Actor , IBouncy
 {
     #region Variables
 
@@ -11,8 +12,6 @@ public abstract class EnemyBase : Actor
     [field:SerializeField] public Rigidbody Rigidbody { get; protected set; }
 
     public abstract SO_ConfigEnemy StatsBase { get; }
-
-    public Transform TransformCache { get; private set; }
 
     public NavMeshAgent Agent => agent;
 
@@ -43,8 +42,6 @@ public abstract class EnemyBase : Actor
     protected override void Awake()
     {
         base.Awake();
-
-        TransformCache = transform;
 
         ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.1f);
 
@@ -162,4 +159,6 @@ public abstract class EnemyBase : Actor
 
     public void RequestFlee() => m_fleeRequested = true;
     public void ConsumeFleeRequest() => m_fleeRequested = false;
+    public Transform TargetTransform => TransformCache;
+    
 }
