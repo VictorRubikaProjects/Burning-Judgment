@@ -10,6 +10,8 @@ public class PlayerBounceComponent : ActorComponent
     private int m_combo;
 
     public IBouncy Target { get; private set; }
+    public int Combo => m_combo;
+    
     private Transform m_currentTarget;
 
     public bool CanBounce =>

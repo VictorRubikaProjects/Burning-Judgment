@@ -69,6 +69,7 @@ public class SO_PlayerStats : SO_ActorsStats
     
     [field: Space, Header("Bounce")]
     [field:SerializeField, Range(0.1f,1)] public float BounceThresholdTimer { get; private set; } = 0.1f;
+    [field:SerializeField, Range(1f,2f)] public float BounceMultiplier  { get; private set; } = 1.15f;
 
     [field: Space, Header("Audio")]
     [field: SerializeField] public EventReference HitEvent { get; private set; }

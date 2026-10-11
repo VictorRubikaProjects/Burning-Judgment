@@ -9,8 +9,10 @@ public class PlayerAttackState : PlayerBaseState
     private CancellationTokenSource m_cts;
 
     private Vector3 m_attackDirection;
+    
     private bool m_isFinished;
     private bool m_hasHit;
+    private bool m_isBouncing;
 
     private CameraService m_cameraService;
     private AudioService m_audioService;
@@ -40,6 +42,7 @@ public class PlayerAttackState : PlayerBaseState
     {
         m_isFinished = false;
         m_hasHit = false;
+        m_isBouncing = false;
 
         m_owner.ResetRecoverCancel();
         m_owner.SetCanCancelRecover(false);
@@ -97,6 +100,7 @@ public class PlayerAttackState : PlayerBaseState
         {
             Transform bounceTarget = m_owner.Bounce.ClearBufferBouncy();
             AimAt(bounceTarget);
+            m_isBouncing = true;
             return bounceTarget;
         }
 
@@ -171,11 +175,17 @@ public class PlayerAttackState : PlayerBaseState
 
     private void ApplyImpact(Actor targetActor)
     {
+        float finalForce = 0;
+
+        finalForce = m_isBouncing
+            ? m_stats.Force * Mathf.Max(1f, m_owner.Bounce.Combo) * m_stats.BounceMultiplier
+            : m_stats.Force;
+
         EventBus<ActorPushedEvent>.Raise(
             new ActorPushedEvent(
                 targetActor,
                 m_attackDirection,
-                m_stats.Force));
+                finalForce));
 
         m_cameraService.Shake();
         m_audioService.PlaySfx(m_stats.HitEvent);
