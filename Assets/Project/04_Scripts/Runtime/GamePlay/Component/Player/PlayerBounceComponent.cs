@@ -56,6 +56,8 @@ public class PlayerBounceComponent : ActorComponent
 
         if (!found) return;
 
+        if (!bouncy.CanBeBounced) return;
+        
         Target = bouncy;
     }
 

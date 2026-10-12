@@ -160,5 +160,5 @@ public abstract class EnemyBase : Actor , IBouncy
     public void RequestFlee() => m_fleeRequested = true;
     public void ConsumeFleeRequest() => m_fleeRequested = false;
     public Transform TargetTransform => TransformCache;
-    
+    public bool CanBeBounced => m_stateMachine.GetCurrentState() is not EnemyHitState or EnemyFallState;
 }

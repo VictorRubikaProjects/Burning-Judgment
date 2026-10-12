@@ -42,7 +42,7 @@ MonoBehaviour:
   invincibilityDuration: 0.5
   groundLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   groundCheckHeight: 0
   groundCheckDistance: 1.5
   deathDelay: 1.5
@@ -117,6 +117,7 @@ MonoBehaviour:
   <RecoverDuration>k__BackingField: 1
   <RecoverCancelThreshold>k__BackingField: 0.25
   <BounceThresholdTimer>k__BackingField: 1
+  <BounceMultiplier>k__BackingField: 1.15
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973
