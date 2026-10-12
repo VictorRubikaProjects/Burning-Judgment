@@ -355,7 +355,12 @@ public class PlayerCharacter : Actor
     public void ConsumeAttackRequest() => m_wantsAttack = false;
     public void RequestDash()=> m_wantsDash = true;
     public void RequestAttack()=> m_wantsAttack = true;
-    public override void Kill() => m_isDead = true;
+
+    public override void Kill()
+    {
+        m_isDead = true;
+        ServiceLocator.Get<GameService>().EndRun();
+    }
 
     public void RequestHit() => m_hitRequested = true;
     

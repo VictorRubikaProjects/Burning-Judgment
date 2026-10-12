@@ -41,7 +41,7 @@ public class BootStrap : MonoBehaviour
 
     private void OnUnobservedException(Exception exception)
     {
-        Debug.LogException(exception);
+         Debug.LogException(exception);
     }
 
     private void OnDestroy()

@@ -1,3 +1,5 @@
+using System;
+using Event_Bus;
 using UnityEngine;
 
 public class EnemyShooter : Enemy<SO_ConfigEnemyShoot>
@@ -9,6 +11,8 @@ public class EnemyShooter : Enemy<SO_ConfigEnemyShoot>
     private EnemyHitState m_hitState;
     private EnemyIdleState m_idleState;
     private EnemyFallState m_fallState;
+    
+    private EventBinding<RunEndedEvent> m_runEndedEventBinding;
 
     public EnemyShootComponent Shoot { get; private set; }
 
@@ -25,9 +29,10 @@ public class EnemyShooter : Enemy<SO_ConfigEnemyShoot>
 
     protected override void Start()
     {
-        AddActorComponent(Shoot);
         base.Start();
+        AddActorComponent(Shoot);
     }
+
 
     protected override IState SetupStates()
     {

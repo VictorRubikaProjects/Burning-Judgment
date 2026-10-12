@@ -87,11 +87,11 @@ public class GameService : IGameService
         StartFloor().Forget();
     }
 
-    public void EndRun(bool victory)
+    public void EndRun()
     {
-        CurrentState = victory ? GameState.Victory : GameState.GameOver;
+        CurrentState = GameState.GameOver;
 
-        EventBus<RunEndedEvent>.Raise(new RunEndedEvent(victory, CurrentFloor));
+        EventBus<RunEndedEvent>.Raise(new RunEndedEvent(CurrentFloor));
     }
 
     public void Pause()
@@ -125,6 +125,36 @@ public class GameService : IGameService
         
         m_playerCharacter.gameObject.SetActive(true);
     }
+
+    public async UniTask LoadMenuFromGameplay()
+    {
+        CurrentState = GameState.MainMenu;
+        
+        await m_transitionService.CircleTransitionFadeIn();
+        
+        await m_sceneService.UnloadScene(SceneManager.GetActiveScene().name);
+        
+        await m_sceneService.LoadMenu();
+        
+        await m_transitionService.CircleTransitionFadeOut();
+    }
+    
+    public async UniTask StartGameFromGameOver()
+    {
+        CurrentFloor = 0;
+        
+        CurrentState = GameState.Playing;
+
+        EventBus<RunStartedEvent>.Raise(new RunStartedEvent());
+        
+        await m_transitionService.CircleTransitionFadeIn();
+        
+        await m_sceneService.UnloadScene(SceneManager.GetActiveScene().name);
+        
+        await StartFloor(true);
+        
+        await m_transitionService.CircleTransitionFadeOut();
+    }
 }
 
 public enum GameState
@@ -133,5 +163,4 @@ public enum GameState
     Playing,
     Paused,
     GameOver,
-    Victory
 }
