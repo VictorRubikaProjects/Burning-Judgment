@@ -48,13 +48,14 @@ MonoBehaviour:
   deathDelay: 1.5
   <Speed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 300
-  <DistanceMax>k__BackingField: 7
+  <DistanceMax>k__BackingField: 6
   <DistanceMin>k__BackingField: 3
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
   <DashDuration>k__BackingField: 0.3
+  <DashDistance>k__BackingField: 10
   <LockTime>k__BackingField: 0.6
   <CurveDash>k__BackingField:
     serializedVersion: 2

@@ -1,7 +1,13 @@
+using System;
 using UnityEngine;
 
 public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
 {
+    [SerializeField] private Material materialIndicatorDash;
+    [SerializeField] private MeshRenderer rendererDash;
+    
+    private Material m_materialIndicatorInstance;
+    
     private EnemyChaseState m_chaseState;
     private EnemyFleeState m_fleeState;
     private EnemyHitState m_hitState;
@@ -13,11 +19,16 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
     private float m_nextDashTime;
 
     public DashComponent Dash { get; private set; }
+    public Material MaterialIndicatorDash => m_materialIndicatorInstance;
 
     protected override void Awake()
     {
         base.Awake();
+        
         Dash = new DashComponent(this, Rigidbody, GroundCheck);
+        
+        m_materialIndicatorInstance = new Material(materialIndicatorDash);
+        rendererDash.material = m_materialIndicatorInstance;
     }
 
     protected override void Start()
@@ -72,5 +83,11 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
         float max = Stats.DistanceMax;
 
         return sqrDistance >= min * min && sqrDistance <= max * max;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(m_materialIndicatorInstance);
+        m_materialIndicatorInstance = null; 
     }
 }
