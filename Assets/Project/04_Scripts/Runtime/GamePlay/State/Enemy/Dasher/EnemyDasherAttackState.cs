@@ -15,8 +15,6 @@ public class EnemyDashAttackState : EnemyBaseState
     private readonly CountdownTimer m_timerChargeAttack;
     
     private CancellationTokenSource m_cts;
-
-    private Vector3 m_targetPosition;
     
     private readonly Collider[] m_strikeHits = new Collider[4];
     
@@ -74,7 +72,6 @@ public class EnemyDashAttackState : EnemyBaseState
         if (!m_timerChargeAttack.IsRunning) return;
 
         m_dasher.LookAtPlayer();
-        m_targetPosition = m_dasher.Player.TransformCache.position;
     }
 
     public override void FixedUpdate()
@@ -88,31 +85,30 @@ public class EnemyDashAttackState : EnemyBaseState
 
     private async UniTask AttackAsync(CancellationToken token)
     {
-        Vector3 toTarget = m_targetPosition - m_dasher.TransformCache.position;
-        toTarget.y = 0f;
-
-        float distance = m_dasher.Stats.DashDistance;
-        
-        Vector3 toTargetDirection = toTarget.normalized;
-        
         try
         {
             await UniTask.Delay(TimeSpan.FromSeconds(m_dasher.Stats.LockToDashDelay), cancellationToken: token);
-            
+
+            Vector3 direction = m_dasher.TransformCache.forward;
+            direction.y = 0f;
+            direction.Normalize();
+
             m_isAttacking = true;
-            
+
             await m_dasher.Dash.DashAsync(
-                toTargetDirection,
+                direction,
                 token,
                 m_dasher.Stats.DashDuration,
-                distance,
+                m_dasher.Stats.DashDistance,
                 m_dasher.Stats.DashCurve);
+
+            m_isAttacking = false;
         }
         catch (OperationCanceledException)
         {
             return;
         }
-        
+
         IsFinished = true;
     }
 
@@ -137,8 +133,9 @@ public class EnemyDashAttackState : EnemyBaseState
                 player,
                 Owner.TransformCache.forward,
                 m_dasher.Stats.PushForce));
-            
+
             m_cameraService.Shake();
+            m_isAttacking = false;
             
             return;
         }
