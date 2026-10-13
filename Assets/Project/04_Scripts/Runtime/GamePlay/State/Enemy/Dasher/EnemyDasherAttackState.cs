@@ -63,6 +63,8 @@ public class EnemyDashAttackState : EnemyBaseState
         m_cts?.Dispose();
         
         m_cts = null;
+        
+        m_dasher.MaterialIndicatorDash.SetFloat(m_idPropMaterialProgressionHash, 0f);
     }
 
     public override void Update()
@@ -96,8 +98,6 @@ public class EnemyDashAttackState : EnemyBaseState
         try
         {
             await UniTask.Delay(TimeSpan.FromSeconds(m_dasher.Stats.TimeTransitionLockToAttack), cancellationToken: token);
-            
-            FeedBackAttack(m_cts.Token, 0f, 0.05f);
             
             m_isAttacking = true;
             
