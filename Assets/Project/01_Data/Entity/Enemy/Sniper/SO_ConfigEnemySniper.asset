@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0cb78cf1f66ff24e9f3286626bb74f4, type: 3}
   m_Name: SO_ConfigEnemySniper
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemySniper
-  weight: 10
-  <Force>k__BackingField: 90
-  hitDuration: 0.3
-  hitKnockbackCurve:
+  <Weight>k__BackingField: 10
+  <PushForce>k__BackingField: 90
+  <HitDuration>k__BackingField: 0.3
+  <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -39,26 +39,26 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  invincibilityDuration: 0.5
-  groundLayer:
+  <InvincibilityDuration>k__BackingField: 0.5
+  <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 55
-  groundCheckHeight: 0
-  groundCheckDistance: 1.5
-  deathDelay: 1.5
+  <GroundCheckHeight>k__BackingField: 0
+  <GroundCheckDistance>k__BackingField: 1.5
+  <DeathDelay>k__BackingField: 1.5
   <Speed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 600
-  <DistanceMax>k__BackingField: 20
   <DistanceMin>k__BackingField: 10
+  <DistanceMax>k__BackingField: 20
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <Cooldown>k__BackingField: 3
+  <ShotCooldown>k__BackingField: 3
   <ShotRange>k__BackingField: 25
-  <AimTrackingTime>k__BackingField: 1.5
-  <AimFrozenTime>k__BackingField: 0.7
-  <ConeAngle>k__BackingField: 30
   <TargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
+  <AimTrackingTime>k__BackingField: 1.5
+  <AimFrozenTime>k__BackingField: 0.7
+  <ConeAngle>k__BackingField: 30

@@ -25,8 +25,8 @@ public class CameraShake
 
       try
       {
-         m_perlin.AmplitudeGain = m_config.IntensityShake;
-         await UniTask.Delay(TimeSpan.FromSeconds(m_config.DurationShake),cancellationToken: m_ctsShake.Token);
+         m_perlin.AmplitudeGain = m_config.ShakeIntensity;
+         await UniTask.Delay(TimeSpan.FromSeconds(m_config.ShakeDuration),cancellationToken: m_ctsShake.Token);
          m_perlin.AmplitudeGain = 0;
       }
       catch (OperationCanceledException ) { }

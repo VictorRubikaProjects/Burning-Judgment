@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64a95ba5f0a1e944bbb639ecef440db5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Data::CameraRig
-  m_cinemachineCamera: {fileID: 2832655902525708117}
-  m_targetGroup: {fileID: 3999412665101214197}
+  <CinemachineCamera>k__BackingField: {fileID: 2832655902525708117}
+  <TargetGroup>k__BackingField: {fileID: 3999412665101214197}
 --- !u!1 &5550345659360357230
 GameObject:
   m_ObjectHideFlags: 0

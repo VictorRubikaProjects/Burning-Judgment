@@ -14,7 +14,7 @@ public class ProjectileEnemyClassic : AbstractProjectile
         EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
             playerActor,
             transform.forward,
-            m_owner.Stats.Force));
+            m_owner.Stats.PushForce));
         
         return true;
     }

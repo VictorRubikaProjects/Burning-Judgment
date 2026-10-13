@@ -34,7 +34,7 @@ public class EnemySystem
     {
         m_aliveEnemies.Clear();
 
-        List<EnemyBase> enemyBases = m_configCurrentRound.RoundData.GetRandomEnemiesPalette().TeamEnemies;
+        List<EnemyBase> enemyBases = m_configCurrentRound.RoundData.GetRandomEnemyTeam().TeamEnemies;
 
         foreach (var @base in enemyBases)
         {

@@ -43,7 +43,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _InnerRing: 0.7
-    - _Progression: 1
+    - _Progression: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _XRMotionVectorsPass: 1

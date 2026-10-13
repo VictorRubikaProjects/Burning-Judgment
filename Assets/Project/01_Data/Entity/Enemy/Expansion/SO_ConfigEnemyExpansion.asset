@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c104b66d825a4db88e0399a5ab74ab14, type: 3}
   m_Name: SO_ConfigEnemyExpansion
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyExpansion
-  weight: 10
-  <Force>k__BackingField: 40
-  hitDuration: 0.3
-  hitKnockbackCurve:
+  <Weight>k__BackingField: 10
+  <PushForce>k__BackingField: 40
+  <HitDuration>k__BackingField: 0.3
+  <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -39,24 +39,48 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  invincibilityDuration: 0.5
-  groundLayer:
+  <InvincibilityDuration>k__BackingField: 0.5
+  <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 55
-  groundCheckHeight: 0
-  groundCheckDistance: 1.5
-  deathDelay: 1.5
+  <GroundCheckHeight>k__BackingField: 0
+  <GroundCheckDistance>k__BackingField: 1.5
+  <DeathDelay>k__BackingField: 1.5
   <Speed>k__BackingField: 20
   <RotationSpeed>k__BackingField: 300
-  <DistanceMax>k__BackingField: 6
   <DistanceMin>k__BackingField: 0
+  <DistanceMax>k__BackingField: 6
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <CooldownAttack>k__BackingField: 1
-  <TimerChargeAttack>k__BackingField: 1
-  <RadiusAttack>k__BackingField: 8.5
+  <ChargeDuration>k__BackingField: 1
+  <AttackCooldown>k__BackingField: 1
+  <AttackRadius>k__BackingField: 8.5
   <PlayerLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
+  <FalloffCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -0.75
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.25
+      inSlope: -0.75
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
