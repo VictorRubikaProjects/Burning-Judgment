@@ -385,12 +385,7 @@ public class PlayerCharacter : Actor
 #if UNITY_EDITOR    
     
     #region Debug
-
-    private void OnDrawGizmos()
-    {
-        DrawDashRadius();
-        DrawAttackCast();
-    }
+    
 
     private void DrawDashRadius()
     {

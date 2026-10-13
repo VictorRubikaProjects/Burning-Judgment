@@ -42,7 +42,7 @@ MonoBehaviour:
   invincibilityDuration: 0.5
   groundLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   groundCheckHeight: 0
   groundCheckDistance: 1.5
   deathDelay: 1.5

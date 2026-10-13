@@ -1,4 +1,4 @@
-public class EnemyExpansionIdleState : EnemyBaseState
+public class EnemyExpansionIdleState : EnemyIdleState
 {
     private readonly EnemyExpansion m_expansion;
     

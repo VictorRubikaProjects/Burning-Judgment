@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
 {
+    [SerializeField] private Material materialChargeAttack;
+    [SerializeField] private Renderer rendererEnemy;
+
+    public Material MaterialChargeAttackInstance { get; private set; }
+
     private EnemyChaseState m_chaseState;
     private EnemyFleeState m_fleeState;
     private EnemyHitState m_hitState;
@@ -10,9 +15,21 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
     private EnemyExpansionAttackState m_attackState;
 
     private bool m_attackRequested;
+    private float m_nextAttackTime;
 
-    private float m_nextAttackAttack;
-    
+    protected override void Awake()
+    {
+        base.Awake();
+        MaterialChargeAttackInstance = new Material(materialChargeAttack);
+        rendererEnemy.material = MaterialChargeAttackInstance;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(MaterialChargeAttackInstance);
+        MaterialChargeAttackInstance = null;
+    }
+
     protected override IState SetupStates()
     {
         m_chaseState = new EnemyChaseState(this);
@@ -21,7 +38,7 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
         m_fallState = new EnemyFallState(this);
         m_idleState = new EnemyExpansionIdleState(this);
         m_attackState = new EnemyExpansionAttackState(this);
-        
+
         return m_idleState;
     }
 
@@ -41,24 +58,34 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
     }
 
     public void EvaluateAttackRequest() => m_attackRequested = CanAttack();
-    
+
     public void ClearAttackRequest() => m_attackRequested = false;
 
     public void ConsumeAttackRequest()
     {
         m_attackRequested = false;
-        m_nextAttackAttack = Time.time + Stats.CooldownAttack;
+        m_nextAttackTime = Time.time + Stats.CooldownAttack;
     }
-    
+
     private bool CanAttack()
     {
-        if (Time.time < m_nextAttackAttack) return false;
+        if (Time.time < m_nextAttackTime) return false;
         if (!GroundCheck.IsGrounded()) return false;
-        
+
         float sqrDistance = (Player.TransformCache.position - TransformCache.position).sqrMagnitude;
         float min = Stats.DistanceMin;
         float max = Stats.DistanceMax;
 
         return sqrDistance >= min * min && sqrDistance <= max * max;
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (!Stats) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, Stats.RadiusAttack);
+    }
+#endif
 }
