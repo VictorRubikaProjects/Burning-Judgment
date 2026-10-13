@@ -64,7 +64,7 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
     public void ConsumeAttackRequest()
     {
         m_attackRequested = false;
-        m_nextAttackTime = Time.time + Stats.CooldownAttack;
+        m_nextAttackTime = Time.time + Stats.AttackCooldown;
     }
 
     private bool CanAttack()
@@ -85,7 +85,7 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
         if (!Stats) return;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, Stats.RadiusAttack);
+        Gizmos.DrawWireSphere(transform.position, Stats.AttackRadius);
     }
 #endif
 }

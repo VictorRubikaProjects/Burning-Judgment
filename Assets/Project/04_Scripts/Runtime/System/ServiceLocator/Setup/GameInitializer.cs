@@ -36,7 +36,7 @@ public class GameInitializer
         {
             await RegisterServices();
 
-            await m_sceneService.LoadSceneAsync(m_gameConfig.menuScene.Name, setAsActiveScene: true);
+            await m_sceneService.LoadSceneAsync(m_gameConfig.MenuScene.Name, setAsActiveScene: true);
         
             m_transitionService.ToggleLoadingScreen(on : false);
             
@@ -57,7 +57,7 @@ public class GameInitializer
         
         m_saveService =  new SaveService();
         
-        m_cameraService = new CameraService(m_gameConfig.cameraConfig);
+        m_cameraService = new CameraService(m_gameConfig.CameraConfig);
 
         m_fxService = new FxService();
 

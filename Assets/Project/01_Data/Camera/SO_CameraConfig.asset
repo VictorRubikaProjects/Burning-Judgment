@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd854c6525bf19498f8c0fd1e53ec6e, type: 3}
   m_Name: SO_CameraConfig
   m_EditorClassIdentifier: Project.Data::CameraConfig
-  m_cameraRigPrefab: {fileID: 3930138173106012911, guid: 663f19b3e3a78fe4ab65b22897128887, type: 3}
-  intensityShake: 5
-  durationShake: 0.15
+  <CameraRigPrefab>k__BackingField: {fileID: 3930138173106012911, guid: 663f19b3e3a78fe4ab65b22897128887, type: 3}
+  <ShakeIntensity>k__BackingField: 5
+  <ShakeDuration>k__BackingField: 0.15

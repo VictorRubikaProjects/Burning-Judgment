@@ -1,18 +1,19 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Config/Game/Camera Config", fileName = "SO_CameraConfig")]
 public class CameraConfig : ScriptableObject
 {
-    [Header("Camera Config")]
-    [SerializeField] private CameraRig m_cameraRigPrefab;
+    [field: Header("Camera")]
+    [field: SerializeField, Tooltip("Prefab de la caméra instancié au lancement du gameplay. Il contient la caméra Cinemachine et le groupe de cibles.")]
+    public CameraRig CameraRigPrefab {get; private set;}
 
-    [Space][Header("Camera Shake Config")]
-    [SerializeField] [Range(0f, 10f)] private float intensityShake = 1.0f;
-    
-    [SerializeField] [Min(0f)] private float durationShake = 1.0f;
+    [field: Space, Header("Camera Shake")]
+    [field: SerializeField, Range(0f, 10f), FormerlySerializedAs("intensityShake")]
+    [Tooltip("Intensité du tremblement de caméra. 0 = aucun tremblement.")]
+    public float ShakeIntensity {get; private set;} = 1f;
 
-
-    public CameraRig CameraRigPrefab => m_cameraRigPrefab;
-    public float IntensityShake => intensityShake;
-    public float DurationShake => durationShake;
+    [field: SerializeField, Min(0f), FormerlySerializedAs("durationShake")]
+    [Tooltip("Durée du tremblement de caméra, en secondes.")]
+    public float ShakeDuration {get; private set;} = 1f;
 }

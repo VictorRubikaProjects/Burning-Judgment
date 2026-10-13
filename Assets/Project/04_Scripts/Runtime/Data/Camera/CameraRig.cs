@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class CameraRig : MonoBehaviour
 {
-    [SerializeField] private CinemachineCamera m_cinemachineCamera;
-    [SerializeField] private CinemachineTargetGroup m_targetGroup;
+    [field: SerializeField, Tooltip("Caméra Cinemachine pilotée par le CameraService.")]
+    public CinemachineCamera CinemachineCamera {get; private set;}
 
-    public CinemachineCamera CinemachineCamera => m_cinemachineCamera;
-    public CinemachineTargetGroup TargetGroup => m_targetGroup;
+    [field: SerializeField, Tooltip("Groupe de cibles cadrées par la caméra.")]
+    public CinemachineTargetGroup TargetGroup {get; private set;}
+
 }

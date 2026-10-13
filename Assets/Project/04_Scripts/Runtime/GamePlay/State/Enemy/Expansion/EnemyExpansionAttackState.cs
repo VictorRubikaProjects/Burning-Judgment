@@ -48,7 +48,7 @@ public class EnemyExpansionAttackState : EnemyBaseState
 
     private async UniTask AttackAsync(CancellationToken token)
     {
-        float duration = m_expansion.Stats.TimerChargeAttack;
+        float duration = m_expansion.Stats.ChargeDuration;
 
         StartChargeFeedback(duration);
 
@@ -70,7 +70,7 @@ public class EnemyExpansionAttackState : EnemyBaseState
 
         int count = Physics.OverlapSphereNonAlloc(
             center,
-            m_expansion.Stats.RadiusAttack,
+            m_expansion.Stats.AttackRadius,
             m_strikeHits,
             m_expansion.Stats.PlayerLayer,
             QueryTriggerInteraction.Ignore);
@@ -93,7 +93,7 @@ public class EnemyExpansionAttackState : EnemyBaseState
             EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
                 player,
                 direction,
-                m_expansion.Stats.Force * multiplier));
+                m_expansion.Stats.PushForce * multiplier));
 
             m_cameraService ??= ServiceLocator.Get<CameraService>();
             m_cameraService.Shake();

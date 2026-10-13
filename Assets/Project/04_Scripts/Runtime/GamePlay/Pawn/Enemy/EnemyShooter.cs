@@ -20,7 +20,7 @@ public class EnemyShooter : Enemy<SO_ConfigEnemyShoot>
     {
         Shoot = new EnemyShootComponent(
             this,
-            Stats.ProjectilePrefabs,
+            Stats.ProjectilePrefab,
             Stats.FrequencyShoot,
             ShootPoint);
 

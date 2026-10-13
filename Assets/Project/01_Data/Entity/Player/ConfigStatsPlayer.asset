@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8401e282e98f5524a827435e8b640da9, type: 3}
   m_Name: ConfigStatsPlayer
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
-  weight: 10
-  <Force>k__BackingField: 60
-  hitDuration: 0.3
-  hitKnockbackCurve:
+  <Weight>k__BackingField: 10
+  <PushForce>k__BackingField: 60
+  <HitDuration>k__BackingField: 0.3
+  <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -39,13 +39,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  invincibilityDuration: 0.5
-  groundLayer:
+  <InvincibilityDuration>k__BackingField: 0.5
+  <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 55
-  groundCheckHeight: 0
-  groundCheckDistance: 1.5
-  deathDelay: 1.5
+  <GroundCheckHeight>k__BackingField: 0
+  <GroundCheckDistance>k__BackingField: 1.5
+  <DeathDelay>k__BackingField: 1.5
   <DashDistance>k__BackingField: 7
   <DashDuration>k__BackingField: 0.2
   <DashCurve>k__BackingField:

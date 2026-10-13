@@ -55,7 +55,7 @@ public class EnemySniper : Enemy<SO_ConfigEnemySniper>
     public void ConsumeShootRequest()
     {
         m_shotRequest = false;
-        m_nextShotTime = Time.time + Stats.Cooldown;
+        m_nextShotTime = Time.time + Stats.ShotCooldown;
     }
 
     private bool CanShoot()

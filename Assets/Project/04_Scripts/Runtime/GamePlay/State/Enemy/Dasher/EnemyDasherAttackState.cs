@@ -97,7 +97,7 @@ public class EnemyDashAttackState : EnemyBaseState
         
         try
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(m_dasher.Stats.TimeTransitionLockToAttack), cancellationToken: token);
+            await UniTask.Delay(TimeSpan.FromSeconds(m_dasher.Stats.LockToDashDelay), cancellationToken: token);
             
             m_isAttacking = true;
             
@@ -106,7 +106,7 @@ public class EnemyDashAttackState : EnemyBaseState
                 token,
                 m_dasher.Stats.DashDuration,
                 distance,
-                m_dasher.Stats.CurveDash);
+                m_dasher.Stats.DashCurve);
         }
         catch (OperationCanceledException)
         {
@@ -136,7 +136,7 @@ public class EnemyDashAttackState : EnemyBaseState
             EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
                 player,
                 Owner.TransformCache.forward,
-                m_dasher.Stats.Force));
+                m_dasher.Stats.PushForce));
             
             m_cameraService.Shake();
             
