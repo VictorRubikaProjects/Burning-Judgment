@@ -2,6 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Event_Bus;
 using Helpers.Runtime.Physics;
+using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerBaseState
@@ -188,6 +189,7 @@ public class PlayerAttackState : PlayerBaseState
                 finalForce));
 
         m_cameraService.Shake();
+        ServiceLocator.Get<FxService>()?.HitStop();
         m_audioService.PlaySfx(m_stats.HitEvent);
     }
 

@@ -43,7 +43,7 @@ public abstract class EnemyBase : Actor , IBouncy
     {
         base.Awake();
 
-        ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.1f);
+        ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.5f);
 
         GroundCheck = new GroundCheckComponent(
             this,

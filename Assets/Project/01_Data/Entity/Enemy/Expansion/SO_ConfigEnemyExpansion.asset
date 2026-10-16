@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SO_ConfigEnemyExpansion
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyExpansion
   <Weight>k__BackingField: 10
-  <PushForce>k__BackingField: 40
+  <PushForce>k__BackingField: 100
   <HitDuration>k__BackingField: 0.3
   <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2

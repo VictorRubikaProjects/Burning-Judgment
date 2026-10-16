@@ -20,8 +20,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5cdf5834699cfda43af13af1c37ca45b, type: 2}
   <PlayerSpawnPosition>k__BackingField: {x: 0, y: 0.78, z: 0}
   <EnemySpawnPositions>k__BackingField:
-  - {x: 10, y: 1.1, z: 10}
-  - {x: 10, y: 1.1, z: -10}
-  - {x: -10, y: 1.1, z: 10}
-  - {x: -10, y: 1.1, z: -10}
+  - {x: -7.97, y: 1.1, z: 11.07}
+  - {x: 6.46, y: 1.1, z: 11.37}
+  - {x: -6.33, y: 1.1, z: -1.72}
+  - {x: 3.72, y: 1.1, z: -3.49}
   <SpawnRadius>k__BackingField: 1
