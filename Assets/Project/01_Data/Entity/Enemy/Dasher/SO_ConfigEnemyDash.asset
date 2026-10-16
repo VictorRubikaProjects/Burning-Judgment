@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SO_ConfigEnemyDash
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyDash
   <Weight>k__BackingField: 10
-  <PushForce>k__BackingField: 30
+  <PushForce>k__BackingField: 50
   <HitDuration>k__BackingField: 0.3
   <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2

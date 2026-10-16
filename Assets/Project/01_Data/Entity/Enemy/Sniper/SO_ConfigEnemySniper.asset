@@ -48,7 +48,7 @@ MonoBehaviour:
   <DeathDelay>k__BackingField: 1.5
   <Speed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 600
-  <DistanceMin>k__BackingField: 10
+  <DistanceMin>k__BackingField: 0
   <DistanceMax>k__BackingField: 20
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:

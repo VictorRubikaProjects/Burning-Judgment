@@ -98,7 +98,7 @@ public class PlayerCharacter : Actor
         AddActorComponent(Aspect);
         AddActorComponent(Bounce);
     
-        ServiceLocator.Get<CameraService>().AddTarget(transform,0.5f);
+        ServiceLocator.Get<CameraService>().AddTarget(transform,1f);
     }
 
     private void OnEnable()

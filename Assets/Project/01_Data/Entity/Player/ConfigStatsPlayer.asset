@@ -74,7 +74,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 0
