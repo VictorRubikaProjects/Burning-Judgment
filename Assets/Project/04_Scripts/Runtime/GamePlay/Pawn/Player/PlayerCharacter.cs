@@ -278,6 +278,12 @@ public class PlayerCharacter : Actor
     private void SwipeHandler(Vector2 moveDir)
     {
         Vector3 swipeDirection = new Vector3(moveDir.x, 0f, moveDir.y);
+        
+        if (m_stateMachine.GetCurrentState() is PlayerAttackState or PlayerRecoverState)
+        {
+            Bounce.TryBounce(swipeDirection);
+            return;
+        }
 
         if (m_canCancelRecover && swipeDirection.IsVectorInOppositeDirection(m_attackDirection))
         {
@@ -299,12 +305,6 @@ public class PlayerCharacter : Actor
     private void AttackHandler(Vector2 dir)
     {
         Vector3 direction = new Vector3(dir.x, 0f, dir.y);
-
-        if (m_stateMachine.GetCurrentState() is PlayerAttackState or PlayerRecoverState)
-        {
-            Bounce.TryBounce(direction);
-            return;
-        }
 
         if (!CanAttack()) return;
 
