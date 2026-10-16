@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: SO_ConfigRound
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigRound
   <RoundData>k__BackingField:
-    Map:
+    <Map>k__BackingField:
       asset: {fileID: 102900000, guid: f53acd42069b6704a8729e3bea22fa27, type: 3}
       guid: f53acd42069b6704a8729e3bea22fa27
-    EnemiesPalettes:
+    <EnemyTeams>k__BackingField:
     - {fileID: 11400000, guid: 5cdf5834699cfda43af13af1c37ca45b, type: 2}
-  <PlayerSpawnPosition>k__BackingField: {x: 0, y: 1.5, z: 0}
-  <EnemySpawningPositions>k__BackingField:
-  - {x: 10, y: 1.5, z: 10}
-  - {x: 10, y: 1.5, z: -10}
-  - {x: -10, y: 1.5, z: 10}
-  - {x: -10, y: 1.5, z: -10}
-  <PositionRadius>k__BackingField: 1
+  <PlayerSpawnPosition>k__BackingField: {x: 0, y: 0.78, z: 0}
+  <EnemySpawnPositions>k__BackingField:
+  - {x: 10, y: 1.1, z: 10}
+  - {x: 10, y: 1.1, z: -10}
+  - {x: -10, y: 1.1, z: 10}
+  - {x: -10, y: 1.1, z: -10}
+  <SpawnRadius>k__BackingField: 1
