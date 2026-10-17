@@ -78,6 +78,8 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
         if (Time.time < m_nextDashTime) return false;
         if (!GroundCheck.IsGrounded()) return false;
 
+        if (!IsPlayerInSight()) return false;
+
         float sqrDistance = (Player.TransformCache.position - TransformCache.position).sqrMagnitude;
         float min = Stats.DistanceMin;
         float max = Stats.DistanceMax;

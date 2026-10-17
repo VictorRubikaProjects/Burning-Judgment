@@ -157,7 +157,8 @@ public class PlayerAttackState : PlayerBaseState
             token,
             attackDash.Duration,
             dashDistance,
-            attackDash.Curve);
+            attackDash.Curve,
+            m_stats.ObstacleLayer);
 
         return !token.IsCancellationRequested;
     }

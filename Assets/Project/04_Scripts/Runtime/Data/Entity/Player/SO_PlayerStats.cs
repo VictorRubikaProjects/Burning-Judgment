@@ -25,10 +25,6 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Layers des ennemis que le joueur peut toucher avec le dash et l'attaque.")]
     public LayerMask EnemyLayer { get; private set; }
 
-    [field: SerializeField, FormerlySerializedAs("obstacleLayer")]
-    [field: Tooltip("Layers des obstacles qui bloquent le dash et l'attaque.")]
-    public LayerMask ObstacleLayer { get; private set; }
-
     [field: SerializeField, Range(0f, 5f), FormerlySerializedAs("dashRadius")]
     [field: Tooltip("Rayon de la zone de détection autour du joueur pendant le dash.")]
     public float DashRadius { get; private set; } = 2f;

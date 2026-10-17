@@ -29,4 +29,9 @@ public class SO_ConfigEnemy : SO_ActorsStats
     [field: SerializeField, FormerlySerializedAs("<EnemyLayer>k__BackingField")]
     [field: Tooltip("Layer des ennemis. Sert à détecter les autres ennemis autour de celui-ci.")]
     public LayerMask EnemyLayer { get; private set; }
+    
+    [field: Space, Header("Sight")]
+    [field: SerializeField]
+    [field: Tooltip("Hauteur au-dessus des pieds d'où part le rayon de vue vers le joueur. Un obstacle plus bas que cette hauteur ne bloque pas la vue.")]
+    public float SightHeight { get; private set; } = 0.5f;
 }

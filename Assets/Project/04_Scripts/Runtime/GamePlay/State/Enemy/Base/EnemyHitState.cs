@@ -21,7 +21,8 @@ public class EnemyHitState : EnemyBaseState
             Owner.PendingKnockbackDirection,
             Owner.StatsBase.HitDuration,
             Owner.PendingKnockbackForce,
-            Owner.StatsBase.HitKnockbackCurve).Forget();
+            Owner.StatsBase.HitKnockbackCurve,
+            Owner.StatsBase.ObstacleLayer).Forget();
     }
 
     public override void OnExit()

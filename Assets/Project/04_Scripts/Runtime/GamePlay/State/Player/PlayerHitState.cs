@@ -1,4 +1,3 @@
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -22,29 +21,27 @@ public class PlayerHitState : PlayerBaseState
         m_animator.CrossFade(HitHash, m_crossFadeDuration);
 
         m_owner.HitGate.TakeDamage();
-        
+
         m_owner.Bounce.Break();
-        
-        RunHitAsync().Forget();
+
+        m_owner.KnockBack.HitAsync(
+            m_owner.PendingKnockbackDirection,
+            m_stats.HitDuration,
+            m_owner.PendingKnockbackForce,
+            m_stats.HitKnockbackCurve,
+            m_stats.ObstacleLayer).Forget();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (!m_owner.KnockBack.IsActive) m_isFinished = true;
     }
 
     public override void OnExit()
     {
         base.OnExit();
         m_owner.KnockBack.Cancel();
-    }
-
-    private async UniTaskVoid RunHitAsync()
-    {
-        await m_owner.KnockBack.HitAsync(
-            m_owner.PendingKnockbackDirection,
-            m_stats.HitDuration,
-            m_owner.PendingKnockbackForce,
-            m_stats.HitKnockbackCurve);
-
-        if (!m_owner.KnockBack.IsActive)
-        {
-            m_isFinished = true;
-        }
     }
 }

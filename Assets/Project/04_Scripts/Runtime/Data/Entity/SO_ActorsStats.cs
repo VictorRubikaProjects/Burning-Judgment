@@ -10,6 +10,11 @@ public abstract class SO_ActorsStats : ScriptableObject
     [field: SerializeField, FormerlySerializedAs("<Force>k__BackingField")]
     [field: Tooltip("Force de poussée appliquée aux autres acteurs quand celui-ci les repousse (attaque, impact).")]
     public float PushForce { get; private set; } = 10f;
+    
+    [field: Space, Header("Obstacles")]
+    [field: SerializeField]
+    [field: Tooltip("Layers des obstacles qui bloquent les déplacements forcés de l'ennemi (dash).")]
+    public LayerMask ObstacleLayer { get; private set; }
 
     [field:Space, Header("Hit")]
     [field: SerializeField, Range(0f, 2f), Tooltip("Durée en secondes pendant laquelle l'acteur est étourdi et repoussé après avoir pris un coup.")]

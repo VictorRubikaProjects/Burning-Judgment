@@ -54,7 +54,8 @@ public class PlayerDashState : PlayerBaseState
             token,
             m_stats.DashDuration,
             m_stats.DashDistance,
-            m_stats.DashCurve);
+            m_stats.DashCurve,
+            m_stats.ObstacleLayer);
 
         IsFinished = true;
     }
