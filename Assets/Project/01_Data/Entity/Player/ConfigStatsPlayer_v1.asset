@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   <Weight>k__BackingField: 10
   <PushForce>k__BackingField: 50
+  <ObstacleLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 768
   <HitDuration>k__BackingField: 0.3
   <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2
@@ -75,9 +78,6 @@ MonoBehaviour:
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <ObstacleLayer>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 0
   <DashRadius>k__BackingField: 1.2
   <OffsetDash>k__BackingField: 1.4
   <AttackCastRadius>k__BackingField: 1

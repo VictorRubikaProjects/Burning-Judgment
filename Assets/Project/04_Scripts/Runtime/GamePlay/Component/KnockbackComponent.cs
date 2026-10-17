@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class KnockbackComponent : ActorComponent
 {
     private readonly Rigidbody m_rb;
+    private readonly Collider m_collider;
     private CancellationTokenSource m_cts;
 
     public bool IsActive { get; private set; }
@@ -12,6 +14,7 @@ public class KnockbackComponent : ActorComponent
     public KnockbackComponent(Actor owner, Rigidbody rb) : base(owner)
     {
         m_rb = rb;
+        m_collider = rb.GetComponentInChildren<Collider>();
     }
 
     public override void Dispose()
@@ -32,40 +35,38 @@ public class KnockbackComponent : ActorComponent
 
     public async UniTask<bool> HitAsync(
         Vector3 direction,
-        float dashDuration,
-        float dashDistance,
-        AnimationCurve curve)
+        float duration,
+        float distance,
+        AnimationCurve curve,
+        LayerMask obstacleLayer)
     {
         Cancel();
 
-        m_cts = new CancellationTokenSource();
-        var token = m_cts.Token;
-
+        CancellationTokenSource cts = new CancellationTokenSource();
+        m_cts = cts;
         IsActive = true;
-        Vector3 start = m_rb.position;
-        float elapsed = 0f;
 
-        while (elapsed < dashDuration)
+        bool completed;
+
+        try
         {
-            float t = elapsed / dashDuration;
-            float curveValue = curve.Evaluate(t);
-            Vector3 targetPosition = start + direction * (dashDistance * curveValue);
-
-            m_rb.MovePosition(targetPosition);
-
-            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
-
-            if (token.IsCancellationRequested)
-            {
-                IsActive = false;
-                return false;
-            }
-
-            elapsed += Time.fixedDeltaTime;
+            completed = await ForcedMovement.MoveAsync(
+                m_rb,
+                m_collider,
+                direction,
+                cts.Token,
+                duration,
+                distance,
+                curve,
+                obstacleLayer);
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
         }
 
-        m_rb.MovePosition(start + direction * dashDistance);
-        IsActive = false;
-        return true;
+        if (m_cts == cts) IsActive = false;
+
+        return completed;
     }
 }

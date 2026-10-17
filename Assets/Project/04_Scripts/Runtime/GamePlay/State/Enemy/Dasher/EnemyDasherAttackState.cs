@@ -100,7 +100,8 @@ public class EnemyDashAttackState : EnemyBaseState
                 token,
                 m_dasher.Stats.DashDuration,
                 m_dasher.Stats.DashDistance,
-                m_dasher.Stats.DashCurve);
+                m_dasher.Stats.DashCurve,
+                m_dasher.Stats.ObstacleLayer);
 
             m_isAttacking = false;
         }

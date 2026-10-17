@@ -160,5 +160,16 @@ public abstract class EnemyBase : Actor , IBouncy
     public void RequestFlee() => m_fleeRequested = true;
     public void ConsumeFleeRequest() => m_fleeRequested = false;
     public Transform TargetTransform => TransformCache;
-    public bool CanBeBounced => m_stateMachine.GetCurrentState() is not EnemyHitState or EnemyFallState;
+    public bool CanBeBounced => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState);
+    
+    public bool IsPlayerInSight()
+    {
+        if (!Player) return false;
+
+        Vector3 offset = Vector3.up * StatsBase.SightHeight;
+        Vector3 origin = TransformCache.position + offset;
+        Vector3 target = Player.TransformCache.position + offset;
+
+        return !Physics.Linecast(origin, target, StatsBase.ObstacleLayer, QueryTriggerInteraction.Ignore);
+    }
 }
