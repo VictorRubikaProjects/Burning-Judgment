@@ -90,6 +90,10 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Multiplicateur appliqué à chaque rebond réussi. 1 = aucun bonus, 2 = double.")]
     public float BounceMultiplier { get; private set; } = 1.15f;
 
+    [field: SerializeField, Range(0.1f, 3f)]
+    [field: Tooltip("Rayon de la zone de frappe à l'arrivée du dash. Elle est centrée à la distance d'arrêt devant le joueur : plus c'est grand, plus l'attaque pardonne un dash raccourci.")]
+    public float AttackStrikeRadius { get; private set; } = 0.75f;
+    
     [field: Space, Header("Audio")]
     [field: SerializeField, Tooltip("Son joué quand le joueur prend un coup.")]
     public EventReference HitEvent { get; private set; }

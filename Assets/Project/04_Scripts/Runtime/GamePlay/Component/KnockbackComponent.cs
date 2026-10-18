@@ -50,7 +50,7 @@ public class KnockbackComponent : ActorComponent
 
         try
         {
-            completed = await ForcedMovement.MoveAsync(
+            completed = await MovementComponentExtension.MoveAsync(
                 m_rb,
                 m_collider,
                 direction,
@@ -58,7 +58,8 @@ public class KnockbackComponent : ActorComponent
                 duration,
                 distance,
                 curve,
-                obstacleLayer);
+                obstacleLayer,
+                MovementComponentExtension.CollisionMode.Slide);
         }
         catch (OperationCanceledException)
         {

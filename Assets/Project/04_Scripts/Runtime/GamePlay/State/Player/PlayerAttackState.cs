@@ -19,6 +19,8 @@ public class PlayerAttackState : PlayerBaseState
     private AudioService m_audioService;
 
     private readonly CountdownTimer m_recoverCancelTimer;
+    
+    private readonly Collider[] m_strikeHits = new Collider[8];
 
     public bool IsFinished => m_isFinished;
     public bool HasHit => m_hasHit;
@@ -84,14 +86,24 @@ public class PlayerAttackState : PlayerBaseState
             return;
         }
 
-        m_hasHit = true;
         m_audioService.PlaySfx(m_stats.AttackDashEvent);
 
-        bool completed = await DashToTargetAsync(target, token);
+        await DashToTargetAsync(target, token);
+        
+        await UniTask.WaitForFixedUpdate(token);
 
-        if (!completed) return;
+        if (token.IsCancellationRequested) return;
 
-        ApplyImpact(targetActor);
+        if (TryStrike(targetActor))
+        {
+            m_hasHit = true;
+            ApplyImpact(targetActor);
+        }
+        else
+        {
+            m_owner.Bounce.Break();
+        }
+
         Finish();
     }
 
@@ -131,20 +143,20 @@ public class PlayerAttackState : PlayerBaseState
         return targetActor != null;
     }
 
-    private async UniTask<bool> DashToTargetAsync(Transform target, CancellationToken token)
+    private async UniTask DashToTargetAsync(Transform target, CancellationToken token)
     {
         float dashDistance = GetDashDistance(target);
         DashData attackDash = m_stats.AttackDash;
 
         float threshold = m_stats.BounceThresholdTimer;
         float frontThreshold = Mathf.Min(threshold, attackDash.Duration);
-        
+
         if (dashDistance <= 0f)
         {
-            m_owner.Bounce.StartBounceSequence(0f, threshold,target);
-            return true;
+            m_owner.Bounce.StartBounceSequence(0f, threshold, target);
+            return;
         }
-        
+
         m_owner.Bounce.StartBounceSequence(
             attackDash.Duration - frontThreshold,
             frontThreshold + threshold,
@@ -159,9 +171,27 @@ public class PlayerAttackState : PlayerBaseState
             dashDistance,
             attackDash.Curve,
             m_stats.ObstacleLayer);
-
-        return !token.IsCancellationRequested;
     }
+    
+    private bool TryStrike(Actor targetActor)
+    {
+        Vector3 center = m_owner.TransformCache.position + m_attackDirection * m_stats.AttackStopOffset;
+
+        int count = Physics.OverlapSphereNonAlloc(
+            center,
+            m_stats.AttackStrikeRadius,
+            m_strikeHits,
+            m_stats.EnemyLayer,
+            QueryTriggerInteraction.Ignore);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (m_strikeHits[i].GetComponentInParent<Actor>() == targetActor) return true;
+        }
+
+        return false;
+    }
+
 
     private float GetDashDistance(Transform target)
     {

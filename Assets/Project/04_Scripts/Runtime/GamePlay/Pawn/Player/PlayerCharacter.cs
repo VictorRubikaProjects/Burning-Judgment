@@ -47,7 +47,7 @@ public class PlayerCharacter : Actor
     
     private PlayerIdleState m_playerIdleState;
     private PlayerDeathState m_playerDeathState;
-    private PlayerDashState m_playerDashState;
+    private PlayerRollState m_playerRollState;
     private PlayerAttackState m_playerAttackState;
     private PlayerHitState m_playerHitState;
     private PlayerFallState m_playerFallState;
@@ -148,7 +148,7 @@ public class PlayerCharacter : Actor
         m_stateMachine = new StateMachine();
 
         m_playerIdleState = new PlayerIdleState(this, animator, stats);
-        m_playerDashState = new PlayerDashState(this, animator, rb, stats);
+        m_playerRollState = new PlayerRollState(this, animator, rb, stats);
         m_playerDeathState = new PlayerDeathState(this, animator, stats);
         m_playerAttackState = new PlayerAttackState(this, animator, stats);
         m_playerHitState = new PlayerHitState(this, animator, stats);
@@ -173,7 +173,7 @@ public class PlayerCharacter : Actor
         // Idle
         At(
             m_playerIdleState,
-            m_playerDashState,
+            m_playerRollState,
             new FuncPredicate(() => m_wantsDash)
         );
 
@@ -185,9 +185,9 @@ public class PlayerCharacter : Actor
 
         // Dash
         At(
-            m_playerDashState,
+            m_playerRollState,
             m_playerIdleState,
-            new FuncPredicate(() => m_playerDashState.IsFinished)
+            new FuncPredicate(() => m_playerRollState.IsFinished)
         );
 
         // Attack
@@ -203,7 +203,7 @@ public class PlayerCharacter : Actor
 
         At(
             m_playerAttackState,
-            m_playerDashState,
+            m_playerRollState,
             new FuncPredicate(() =>
                 m_playerAttackState.IsFinished &&
                 (
@@ -227,7 +227,7 @@ public class PlayerCharacter : Actor
         // Recover
         At(
             m_playerRecoverState,
-            m_playerDashState,
+            m_playerRollState,
             new FuncPredicate(() =>
                 m_recoverCancelRequested &&
                 m_wantsDash
@@ -389,7 +389,7 @@ public class PlayerCharacter : Actor
 
     private void DrawDashRadius()
     {
-        if (Application.isPlaying && m_playerDashState.IsFinished) return;
+        if (Application.isPlaying && m_playerRollState.IsFinished) return;
      
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(rb.position + MoveDir * stats.OffsetDash,stats.DashRadius);
