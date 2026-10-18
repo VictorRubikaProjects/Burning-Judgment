@@ -17,13 +17,36 @@ public class DashComponent : ActorComponent
         m_collider = rb.GetComponentInChildren<Collider>();
     }
 
-    public async UniTask<bool> DashAsync(
+    public UniTask<bool> DashAsync(
         Vector3 direction,
         CancellationToken token,
-        float dashDuration,
-        float dashDistance,
+        float duration,
+        float distance,
         AnimationCurve curve,
         LayerMask obstacleLayer)
+    {
+        return RunAsync(direction, token, duration, distance, curve, obstacleLayer, MovementComponentExtension.CollisionMode.Stop);
+    }
+
+    public UniTask<bool> RollAsync(
+        Vector3 direction,
+        CancellationToken token,
+        float duration,
+        float distance,
+        AnimationCurve curve,
+        LayerMask obstacleLayer)
+    {
+        return RunAsync(direction, token, duration, distance, curve, obstacleLayer, MovementComponentExtension.CollisionMode.Slide);
+    }
+
+    private async UniTask<bool> RunAsync(
+        Vector3 direction,
+        CancellationToken token,
+        float duration,
+        float distance,
+        AnimationCurve curve,
+        LayerMask obstacleLayer,
+        MovementComponentExtension.CollisionMode mode)
     {
         if (IsDashing) return false;
 
@@ -31,15 +54,16 @@ public class DashComponent : ActorComponent
 
         try
         {
-            return await ForcedMovement.MoveAsync(
+            return await MovementComponentExtension.MoveAsync(
                 m_rb,
                 m_collider,
                 direction,
                 token,
-                dashDuration,
-                dashDistance,
+                duration,
+                distance,
                 curve,
                 obstacleLayer,
+                mode,
                 m_groundCheck);
         }
         finally
