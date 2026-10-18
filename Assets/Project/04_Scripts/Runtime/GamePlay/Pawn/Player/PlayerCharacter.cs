@@ -279,12 +279,6 @@ public class PlayerCharacter : Actor
     {
         Vector3 swipeDirection = new Vector3(moveDir.x, 0f, moveDir.y);
         
-        if (m_stateMachine.GetCurrentState() is PlayerAttackState or PlayerRecoverState)
-        {
-            Bounce.TryBounce(swipeDirection);
-            return;
-        }
-
         if (m_canCancelRecover && swipeDirection.IsVectorInOppositeDirection(m_attackDirection))
         {
             m_moveDir = swipeDirection;
@@ -294,7 +288,13 @@ public class PlayerCharacter : Actor
 
             return;
         }
-
+        
+        if (m_stateMachine.GetCurrentState() is PlayerAttackState or PlayerRecoverState)
+        {
+            Bounce.TryBounce(swipeDirection);
+            return;
+        }
+        
         if (!CanSwipe()) return;
 
         m_moveDir = swipeDirection;
