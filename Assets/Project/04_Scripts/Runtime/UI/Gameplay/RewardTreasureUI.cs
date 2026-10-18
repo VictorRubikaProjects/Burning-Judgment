@@ -12,16 +12,39 @@ public class RewardTreasureUI : MonoBehaviour
     [SerializeField] private HorizontalLayoutGroup layoutGroup;
     [SerializeField, Min(0f)] private float spawnDuration = 0.5f;
 
+    private AugmentService m_augmentService;
+    private List<CardUI> m_spawned = new();
+
     private void Awake()
+    {
+        m_augmentService = ServiceLocator.Get<AugmentService>();
+    }
+
+    private void OnEnable()
     {
         Setup();
     }
 
+    private void OnDisable()
+    {
+        Clear();
+    }
+
     private void Setup()
     {
-        List<SO_Card> pool = new List<SO_Card>(cards);
+        List<SO_Card> pool = new List<SO_Card>();
+
+        m_augmentService.FillAvailableCards(cards, pool);
+
         int count = Mathf.Min(pool.Count, numberCards);
-        List<CardUI> spawned = new List<CardUI>(count);
+
+        if (count == 0)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        m_spawned = new List<CardUI>(count);
 
         for (int i = 0; i < count; i++)
         {
@@ -30,13 +53,36 @@ public class RewardTreasureUI : MonoBehaviour
             pool.RemoveAt(index);
 
             CardUI cardUI = Instantiate(cardUIPrefab, layoutGroup.transform);
+
             cardUI.transform.localScale = Vector3.zero;
             cardUI.Setup(card);
+            cardUI.OnChosen += HandleCardChosen;
 
-            spawned.Add(cardUI);
+            m_spawned.Add(cardUI);
         }
 
-        AnimateSpawnAsync(spawned).Forget();
+        AnimateSpawnAsync(m_spawned).Forget();
+    }
+
+    private void Clear()
+    {
+        foreach (CardUI card in m_spawned)
+        {
+            if (card) Destroy(card.gameObject);
+        }
+
+        m_spawned = new List<CardUI>();
+    }
+
+    private void HandleCardChosen(SO_Card card)
+    {
+        foreach (CardUI spawned in m_spawned)
+        {
+            if (spawned) spawned.SetInteractable(false);
+        }
+
+        m_augmentService.AddCard(card);
+        gameObject.SetActive(false);
     }
 
     private async UniTaskVoid AnimateSpawnAsync(List<CardUI> spawned)
@@ -46,6 +92,11 @@ public class RewardTreasureUI : MonoBehaviour
             if (!card) return;
 
             await Tween.Scale(card.transform, Vector3.one, spawnDuration);
+        }
+
+        foreach (CardUI card in spawned)
+        {
+            if (card) card.SetInteractable(true);
         }
     }
 }
