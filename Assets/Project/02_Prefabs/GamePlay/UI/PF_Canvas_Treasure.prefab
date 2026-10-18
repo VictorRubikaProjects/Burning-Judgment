@@ -61,7 +61,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 8
   m_TargetDisplay: 0
 --- !u!114 &1176747711824224341
 MonoBehaviour:
@@ -115,10 +115,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945cfac2159ad6a4baf9ee2f83923d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::RewardTreasureUI
-  cards: []
+  cards:
+  - {fileID: 11400000, guid: f80b28c7ed03c9f4191360821d2683b4, type: 2}
+  - {fileID: 11400000, guid: 47f57a9353a19834c9a1b471e1dcbaad, type: 2}
   cardUIPrefab: {fileID: 71655837406293977, guid: 96887fd7b723b7849bbf77338434c739, type: 3}
   numberCards: 2
   layoutGroup: {fileID: 1058602764179593268}
+  spawnDuration: 0.5
 --- !u!1 &3534275692468699320
 GameObject:
   m_ObjectHideFlags: 0

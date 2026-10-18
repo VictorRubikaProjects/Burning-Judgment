@@ -5,6 +5,10 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "Config/Actors/Player Stats", fileName = "SO_PlayerStats")]
 public class SO_PlayerStats : SO_ActorsStats
 {
+    private const float MinGain = 0.1f;
+    private const float MaxGain = 4f;
+    private const float MinDuration = 0.01f;
+    
     [field: Header("Dash")]
     [field: SerializeField, Range(0f, 20f), FormerlySerializedAs("dashDistance")]
     [field: Tooltip("Distance parcourue par le dash, en unités.")]
@@ -105,4 +109,31 @@ public class SO_PlayerStats : SO_ActorsStats
     public EventReference AttackDashEvent { get; private set; }
 
     public LayerMask AttackStateLayer() => EnemyLayer | ObstacleLayer;
+
+    public SO_PlayerStats CreateRuntimeCopy(in AugmentDeltas deltas)
+    {
+        SO_PlayerStats copy = Instantiate(this);
+        copy.name = $"{name} (Runtime)";
+        copy.Apply(deltas);
+        return copy;
+    }
+
+    private void Apply(in AugmentDeltas deltas)
+    {
+        DashDistance *= Gain(deltas.DashDistance);
+        AttackCastDistance *= Gain(deltas.AttackRange);
+        PushForce *= Gain(deltas.PushForce);
+        InvincibilityDuration *= Gain(deltas.Invincibility);
+
+        DashDuration = Mathf.Max(MinDuration, DashDuration / Gain(deltas.DashSpeed));
+        RecoverDuration = Mathf.Max(0f, RecoverDuration / Gain(deltas.RecoverSpeed));
+
+        DashData attackDash = AttackDash;
+        attackDash.Duration = Mathf.Max(MinDuration, attackDash.Duration / Gain(deltas.AttackSpeed));
+        AttackDash = attackDash;
+
+        BounceMultiplier = 1f + (BounceMultiplier - 1f) * Gain(deltas.BounceMultiplier);
+    }
+
+    private static float Gain(float percent) => Mathf.Clamp(1f + percent / 100f, MinGain, MaxGain);
 }

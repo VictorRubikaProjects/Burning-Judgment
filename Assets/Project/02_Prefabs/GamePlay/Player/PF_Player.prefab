@@ -51,7 +51,7 @@ MonoBehaviour:
   animator: {fileID: 572675347358506932}
   playerMaterial: {fileID: 2100000, guid: 560af941f648858428da39ccc0b31931, type: 2}
   playerRenderer: {fileID: 973267823528567192}
-  stats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
+  baseStats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
 --- !u!136 &4374285692015904546
 CapsuleCollider:
   m_ObjectHideFlags: 0

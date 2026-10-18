@@ -16,6 +16,7 @@ public class GameInitializer
     private AudioService m_audioService;
     private GameService m_gameService;
     private TransitionService m_transitionService;
+    private AugmentService m_augmentService;
 
     public bool IsInitialized { get; private set; } = false;
 
@@ -63,7 +64,10 @@ public class GameInitializer
 
         m_audioService = new AudioService(m_audioConfig);
 
-        m_gameService = new GameService(m_entityPoolConfig);
+        m_augmentService =  new AugmentService();
+        
+        m_gameService = new GameService(m_entityPoolConfig, m_augmentService);
+        
     }
     
 
@@ -75,6 +79,7 @@ public class GameInitializer
         UniTask cameraTaskRegister = ServiceLocator.Register(m_cameraService);
         UniTask fxTaskRegister = ServiceLocator.Register(m_fxService);
         UniTask audioTaskRegister = ServiceLocator.Register(m_audioService);
+        UniTask augmentTaskRegister = ServiceLocator.Register(m_augmentService);
         UniTask gameTaskRegister = ServiceLocator.Register(m_gameService);
         
         await UniTask.WhenAll(
@@ -84,6 +89,7 @@ public class GameInitializer
             fxTaskRegister,
             audioTaskRegister,
             gameTaskRegister,
-            transitionTaskRegister);
+            transitionTaskRegister,
+            augmentTaskRegister);
     }
 }

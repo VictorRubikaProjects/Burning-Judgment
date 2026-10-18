@@ -210,7 +210,7 @@ public class PlayerAttackState : PlayerBaseState
         float finalForce = 0;
 
         finalForce = m_isBouncing
-            ? m_stats.PushForce * Mathf.Max(1f, m_owner.Bounce.Combo) * m_stats.BounceMultiplier
+            ? m_stats.PushForce + m_owner.Bounce.Combo * (m_stats.BounceMultiplier - 1) * m_stats.PushForce
             : m_stats.PushForce;
 
         EventBus<ActorPushedEvent>.Raise(

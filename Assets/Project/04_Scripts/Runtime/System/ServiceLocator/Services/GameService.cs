@@ -14,10 +14,13 @@ public class GameService : IGameService
     private EnemySystem m_enemySystem;
     private SO_EntityPooling m_entityConfig;
     private PlayerCharacter m_playerCharacter;
+    
+    private AugmentService m_augmentService;
 
-    public GameService(SO_EntityPooling entityConfig)
+    public GameService(SO_EntityPooling entityConfig, AugmentService augmentService)
     {
         m_entityConfig = entityConfig;
+        m_augmentService = augmentService;
     }
 
     public void Dispose() { }
@@ -40,6 +43,8 @@ public class GameService : IGameService
     public async UniTask StartGame()
     {
         CurrentFloor = 0;
+        
+        m_augmentService.Reset();
         
         CurrentState = GameState.Playing;
 
