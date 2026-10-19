@@ -11,6 +11,7 @@ public class PlayerCharacter : Actor
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
     [SerializeField] private Transform feetTransform;
+    [SerializeField] private SpriteRenderer dashIndicatorSprite;
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
@@ -27,8 +28,10 @@ public class PlayerCharacter : Actor
     public GroundCheckComponent GroundCheck { get; private set; }
     public DashComponent Dash { get; private set; }
     public PlayerBounceComponent Bounce { get; private set; }
+    public DashIndicatorComponent DashIndicator { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
+    public float DashDistance => m_dashDistance;
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
     public bool HasHitRequest => m_hitRequested;
@@ -39,6 +42,7 @@ public class PlayerCharacter : Actor
     private Vector3 m_moveDir;
     private Vector3 m_attackDirection;
     private Vector3 m_pendingKnockbackDirection;
+    private float m_dashDistance;
     
     private bool m_wantsDash;
     private bool m_wantsAttack;
@@ -51,11 +55,9 @@ public class PlayerCharacter : Actor
     private PlayerIdleState m_playerIdleState;
     private PlayerDeathState m_playerDeathState;
     private PlayerRollState m_playerRollState;
-    private PlayerAttackState m_playerAttackState;
     private PlayerHitState m_playerHitState;
     private PlayerFallState m_playerFallState;
     private PlayerRecoverState m_playerRecoverState;
-    private PLayerTransitionBounceState m_playerTransitionBounceState;
     
     private Transform m_transformCache;
     
@@ -107,6 +109,7 @@ public class PlayerCharacter : Actor
         Controller = new PlayerControllerComponent(owner: this, rb);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
         Bounce = new PlayerBounceComponent(this, ActiveStats);
+        DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
     }
 
     protected override void Start()
@@ -120,28 +123,27 @@ public class PlayerCharacter : Actor
         AddActorComponent(Controller);
         AddActorComponent(Aspect);
         AddActorComponent(Bounce);
+        AddActorComponent(DashIndicator);
     
         ServiceLocator.Get<CameraService>().AddTarget(transform,1f);
     }
 
     private void OnEnable()
     {
-        Input.OnSwipe += SwipeHandler;
-        Input.OnPressSwipeSuccess += AttackHandler;
-        Input.OnAttackWindowEnter += AttackWindowEnterHandler;
-        Input.OnAttackWindowExit += AttackWindowExitHandler;
-
+        Input.OnJoystickRelease += JoyStickRelease;
+        Input.OnChargeUpdate += OnChargeUpdate;
+        Input.OnChargeEnd += OnChargeEnd;
+        
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(OnActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
     }
 
     private void OnDisable()
     {
-        Input.OnSwipe -= SwipeHandler;
-        Input.OnPressSwipeSuccess -= AttackHandler;
-        Input.OnAttackWindowEnter -= AttackWindowEnterHandler;
-        Input.OnAttackWindowExit -= AttackWindowExitHandler;
-
+        Input.OnJoystickRelease -= JoyStickRelease;
+        Input.OnChargeUpdate -= OnChargeUpdate;
+        Input.OnChargeEnd -= OnChargeEnd;
+        
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
 
@@ -178,27 +180,10 @@ public class PlayerCharacter : Actor
         m_playerIdleState = new PlayerIdleState(this, animator, ActiveStats);
         m_playerRollState = new PlayerRollState(this, animator, rb, ActiveStats);
         m_playerDeathState = new PlayerDeathState(this, animator, ActiveStats);
-        m_playerAttackState = new PlayerAttackState(this, animator, ActiveStats);
         m_playerHitState = new PlayerHitState(this, animator, ActiveStats);
         m_playerFallState = new PlayerFallState(this, animator, ActiveStats, rb);
         m_playerRecoverState = new PlayerRecoverState(this, animator, ActiveStats);
-        m_playerTransitionBounceState = new PLayerTransitionBounceState(this, animator, ActiveStats);
 
-        //Bounce
-        
-        At(m_playerAttackState,
-            m_playerTransitionBounceState,
-            new FuncPredicate(() => m_playerAttackState.IsFinished && Bounce.Target != null));
-        
-        At(m_playerTransitionBounceState,
-            m_playerAttackState,
-            new FuncPredicate(() => m_playerTransitionBounceState.IsFinished));
-        
-        At(m_playerRecoverState,
-            m_playerTransitionBounceState,
-            new FuncPredicate(() => Bounce.Target != null));
-        
-        // Idle
         At(
             m_playerIdleState,
             m_playerRollState,
@@ -206,53 +191,23 @@ public class PlayerCharacter : Actor
         );
 
         At(
-            m_playerIdleState,
-            m_playerAttackState,
-            new FuncPredicate(() => m_wantsAttack)
-        );
-
-        // Dash
-        At(
             m_playerRollState,
-            m_playerIdleState,
-            new FuncPredicate(() => m_playerRollState.IsFinished)
-        );
-
-        // Attack
-        At(
-            m_playerAttackState,
             m_playerRecoverState,
             new FuncPredicate(() =>
-                m_playerAttackState.IsFinished &&
-                m_playerAttackState.HasHit &&
-                !m_recoverCancelRequested
+                m_playerRollState.IsFinished &&
+                m_playerRollState.HasHit
             )
         );
 
         At(
-            m_playerAttackState,
             m_playerRollState,
-            new FuncPredicate(() =>
-                m_playerAttackState.IsFinished &&
-                (
-                    !m_playerAttackState.HasHit ||
-                    m_recoverCancelRequested
-                ) &&
-                m_wantsDash
-            )
-        );
-
-        At(
-            m_playerAttackState,
             m_playerIdleState,
             new FuncPredicate(() =>
-                m_playerAttackState.IsFinished &&
-                !m_playerAttackState.HasHit &&
-                !m_recoverCancelRequested
+                m_playerRollState.IsFinished &&
+                !m_playerRollState.HasHit
             )
         );
 
-        // Recover
         At(
             m_playerRecoverState,
             m_playerRollState,
@@ -271,16 +226,12 @@ public class PlayerCharacter : Actor
             )
         );
 
-        // Hit
         At(
             m_playerHitState,
             m_playerIdleState,
-            new FuncPredicate(() =>
-                m_playerHitState.IsFinished
-            )
+            new FuncPredicate(() => m_playerHitState.IsFinished)
         );
 
-        // Any
         Any(
             m_playerDeathState,
             new FuncPredicate(() => m_isDead)
@@ -303,62 +254,43 @@ public class PlayerCharacter : Actor
     
     #region Input Handlers
 
-    private void SwipeHandler(Vector2 moveDir)
+    private void JoyStickRelease(Vector2 dir, float ratio)
     {
-        Vector3 swipeDirection = new Vector3(moveDir.x, 0f, moveDir.y);
-        
-        if (m_canCancelRecover && swipeDirection.IsVectorInOppositeDirection(m_attackDirection))
-        {
-            m_moveDir = swipeDirection;
-
-            RequestRecoverCancel();
-            RequestDash();
-
-            return;
-        }
-        
-        if (m_stateMachine.GetCurrentState() is PlayerAttackState or PlayerRecoverState)
-        {
-            Bounce.TryBounce(swipeDirection);
-            return;
-        }
-        
         if (!CanSwipe()) return;
 
-        m_moveDir = swipeDirection;
+        m_moveDir = new Vector3(dir.x, 0f, dir.y);
+        m_dashDistance = ComputeDashDistance(ratio);
 
         RequestDash();
     }
-
-    private void AttackHandler(Vector2 dir)
+    
+    private void OnChargeUpdate(Vector2 dir, float ratio)
     {
+        if (dir == Vector2.zero || !CanSwipe())
+        {
+            DashIndicator.Hide();
+            return;
+        }
+
         Vector3 direction = new Vector3(dir.x, 0f, dir.y);
+        Vector3 origin = feetTransform.position;
+        float distance = ComputeDashDistance(ratio);
 
-        if (!CanAttack()) return;
-        
-        m_attackDirection = direction;
-        m_moveDir = direction;
+        if (Physics.Raycast(
+                origin + Vector3.up * 0.5f,
+                direction,
+                out RaycastHit hit,
+                distance,
+                ActiveStats.ObstacleLayer,
+                QueryTriggerInteraction.Ignore))
+        {
+            distance = hit.distance;
+        }
 
-        m_playerAttackState.SetAttackDirection(direction);
-
-        RequestAttack();
+        DashIndicator.Show(origin, origin + direction * distance);
     }
 
-    private void AttackWindowEnterHandler()
-    {
-        if (!CanAttack()) return;
-
-        m_isAttackReadyShown = true;
-        Aspect.AttackReadyVisuals();
-    }
-
-    private void AttackWindowExitHandler()
-    {
-        if (!m_isAttackReadyShown) return;
-
-        m_isAttackReadyShown = false;
-        Aspect.CancelAttackReadyVisuals();
-    }
+    private void OnChargeEnd() => DashIndicator.Hide();
 
     #endregion
 
@@ -408,30 +340,15 @@ public class PlayerCharacter : Actor
     private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState || Bounce.CanBounce;
     private bool CanSwipe() => m_stateMachine.GetCurrentState() is PlayerIdleState;
     
+    private float ComputeDashDistance(float ratio) => ActiveStats.DashDistance * Mathf.Clamp01(ratio);
+    
+    public void ResetDashDistance() => m_dashDistance = ActiveStats.DashDistance;
+    
     #endregion
     
 #if UNITY_EDITOR    
     
     #region Debug
-    
-
-    private void DrawDashRadius()
-    {
-        if (Application.isPlaying && m_playerRollState.IsFinished) return;
-     
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(rb.position + MoveDir * baseStats.OffsetDash,baseStats.DashRadius);
-    }
-
-    private void DrawAttackCast()
-    {
-        if (Application.isPlaying && m_playerAttackState.IsFinished) return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(rb.position, baseStats.AttackCastRadius);
-        Gizmos.DrawWireSphere(rb.position + m_attackDirection * baseStats.AttackCastDistance, baseStats.AttackCastRadius);
-        Gizmos.DrawLine(rb.position, rb.position + m_attackDirection * baseStats.AttackCastDistance);
-    }
     
     void OnGUI()
     {
