@@ -49,8 +49,8 @@ MonoBehaviour:
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <DashDistance>k__BackingField: 7
-  <DashDuration>k__BackingField: 0.3
+  <DashDistance>k__BackingField: 5
+  <DashDuration>k__BackingField: 0.15
   <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -109,13 +109,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   <AttackStopOffset>k__BackingField: 0
-  <SwipeThreshold>k__BackingField: 50
+  <SwipeThreshold>k__BackingField: 30
   <MaxTimeSwipe>k__BackingField: 0.25
   <ThresholdTimerAttack>k__BackingField: 0.25
   <TimerAttack>k__BackingField: 0.5
   <CrossFadeDuration>k__BackingField: 0.1
-  <RecoverDuration>k__BackingField: 0.8
-  <RecoverCancelThreshold>k__BackingField: 0.3
+  <RecoverDuration>k__BackingField: 1
+  <RecoverCancelThreshold>k__BackingField: 0.5
   <BounceThresholdTimer>k__BackingField: 1
   <BounceMultiplier>k__BackingField: 1.2
   <HitEvent>k__BackingField:
