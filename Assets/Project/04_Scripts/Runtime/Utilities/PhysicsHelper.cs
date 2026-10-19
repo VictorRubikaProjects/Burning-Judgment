@@ -30,23 +30,29 @@ namespace Helpers.Runtime.Physics
         }
         
         public static Transform FindElementInDirectionByLayer(
-            Vector3 position,
-            float radius,
-            Vector3 direction,
-            float distance,
-            LayerMask targetLayerMask,
-            LayerMask obstacleLayerMask)
+            Vector3 position, float radius, Vector3 direction, float distance, 
+            LayerMask targetLayerMask, LayerMask obstacleLayerMask, 
+            QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.Ignore)
         {
             LayerMask combinedMask = targetLayerMask | obstacleLayerMask;
+            
+            RaycastHit[] hits = UnityEngine.Physics.SphereCastAll(position, radius, direction.normalized, distance, combinedMask, triggerInteraction);
+            
+            if (hits.Length == 0) return null;
 
-            if (!UnityEngine.Physics.SphereCast(position, radius, direction, out RaycastHit hit, distance, combinedMask))
-                return null;
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
-            int hitLayerBit = 1 << hit.collider.gameObject.layer;
+            foreach (var hit in hits)
+            {
+                int hitLayerBit = 1 << hit.collider.gameObject.layer;
+                bool isTarget = (targetLayerMask.value & hitLayerBit) != 0;
+                bool isObstacle = (obstacleLayerMask.value & hitLayerBit) != 0;
 
-            if ((obstacleLayerMask.value & hitLayerBit) != 0) return null;
+                if (isTarget)  return hit.collider.transform;
+                if (isObstacle) return null;
+            }
 
-            return (targetLayerMask.value & hitLayerBit) != 0 ? hit.collider.transform : null;
+            return null;
         }
         
         public static bool TryFindElementInDirection<T>(

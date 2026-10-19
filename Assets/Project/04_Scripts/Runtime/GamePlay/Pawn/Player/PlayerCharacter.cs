@@ -1,3 +1,4 @@
+using System;
 using Event_Bus;
 using Helpers.Runtime.Math;
 using UnityEngine;
@@ -9,13 +10,14 @@ public class PlayerCharacter : Actor
     [Header("References")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
+    [SerializeField] private Transform feetTransform;
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
     [SerializeField] private SkinnedMeshRenderer playerRenderer;
     
     [Header("Config")]
-    [SerializeField] private SO_PlayerStats stats;
+    [SerializeField] private SO_PlayerStats baseStats;
 
     public PlayerControllerComponent Controller { get; private set; }
     public PlayerInputComponent Input { get; private set; }
@@ -30,6 +32,7 @@ public class PlayerCharacter : Actor
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
     public bool HasHitRequest => m_hitRequested;
+    public Transform FeetTransform => feetTransform;
     
     private StateMachine m_stateMachine;
 
@@ -59,6 +62,10 @@ public class PlayerCharacter : Actor
     private float m_pendingKnockbackForce;
     
     private EventBinding<ActorPushedEvent> m_playerPushedBinding;
+    
+    private SO_PlayerStats m_runtimeStats;
+    
+    private SO_PlayerStats ActiveStats => m_runtimeStats ? m_runtimeStats : baseStats;
 
     #endregion
 
@@ -67,23 +74,39 @@ public class PlayerCharacter : Actor
     protected override void Awake()
     {
         base.Awake();
-    
+
+        AugmentService augmentService = ServiceLocator.Get<AugmentService>();
+        
+        AugmentDeltas deltas = default;
+        
+        if (augmentService == null)
+        {
+            Debug.LogError("Augment Service null in PlayerCharacter Awake");
+            
+        }
+        else
+        {
+            deltas = augmentService.Total;
+        }
+
+        m_runtimeStats = baseStats.CreateRuntimeCopy(deltas);
+
         SetupStateMachine();
 
         GroundCheck = new GroundCheckComponent(
             this,
             transform,
-            stats.GroundLayer,
-            stats.GroundCheckHeight,
-            stats.GroundCheckDistance);
+            ActiveStats.GroundLayer,
+            ActiveStats.GroundCheckHeight,
+            ActiveStats.GroundCheckDistance);
 
         KnockBack = new KnockbackComponent(this, rb);
-        HitGate = new HitGateComponent(this, stats.InvincibilityDuration);
+        HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
         Dash = new DashComponent(this, rb, GroundCheck);
-        Input = new PlayerInputComponent(owner: this,stats);
-        Controller = new PlayerControllerComponent(owner:this,rb);
-        Aspect = new PlayerAspectComponent(owner:this, playerMaterial, playerRenderer,stats);
-        Bounce = new PlayerBounceComponent(this, stats);
+        Input = new PlayerInputComponent(owner: this, ActiveStats);
+        Controller = new PlayerControllerComponent(owner: this, rb);
+        Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
+        Bounce = new PlayerBounceComponent(this, ActiveStats);
     }
 
     protected override void Start()
@@ -136,6 +159,11 @@ public class PlayerCharacter : Actor
         m_stateMachine.FixedUpdate();
     }
 
+    private void OnDestroy()
+    {
+        if (m_runtimeStats) Destroy(m_runtimeStats);
+    }
+
     #endregion
 
     #region State Machine
@@ -147,14 +175,14 @@ public class PlayerCharacter : Actor
     {
         m_stateMachine = new StateMachine();
 
-        m_playerIdleState = new PlayerIdleState(this, animator, stats);
-        m_playerRollState = new PlayerRollState(this, animator, rb, stats);
-        m_playerDeathState = new PlayerDeathState(this, animator, stats);
-        m_playerAttackState = new PlayerAttackState(this, animator, stats);
-        m_playerHitState = new PlayerHitState(this, animator, stats);
-        m_playerFallState = new PlayerFallState(this, animator, stats, rb);
-        m_playerRecoverState = new PlayerRecoverState(this, animator, stats);
-        m_playerTransitionBounceState = new PLayerTransitionBounceState(this, animator, stats);
+        m_playerIdleState = new PlayerIdleState(this, animator, ActiveStats);
+        m_playerRollState = new PlayerRollState(this, animator, rb, ActiveStats);
+        m_playerDeathState = new PlayerDeathState(this, animator, ActiveStats);
+        m_playerAttackState = new PlayerAttackState(this, animator, ActiveStats);
+        m_playerHitState = new PlayerHitState(this, animator, ActiveStats);
+        m_playerFallState = new PlayerFallState(this, animator, ActiveStats, rb);
+        m_playerRecoverState = new PlayerRecoverState(this, animator, ActiveStats);
+        m_playerTransitionBounceState = new PLayerTransitionBounceState(this, animator, ActiveStats);
 
         //Bounce
         
@@ -307,7 +335,7 @@ public class PlayerCharacter : Actor
         Vector3 direction = new Vector3(dir.x, 0f, dir.y);
 
         if (!CanAttack()) return;
-
+        
         m_attackDirection = direction;
         m_moveDir = direction;
 
@@ -343,7 +371,7 @@ public class PlayerCharacter : Actor
         if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
 
         m_pendingKnockbackDirection = e.Direction;
-        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, stats.Weight);
+        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, baseStats.Weight);
         RequestHit();
     }
 
@@ -379,7 +407,7 @@ public class PlayerCharacter : Actor
     
     private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState || Bounce.CanBounce;
     private bool CanSwipe() => m_stateMachine.GetCurrentState() is PlayerIdleState;
-
+    
     #endregion
     
 #if UNITY_EDITOR    
@@ -392,7 +420,7 @@ public class PlayerCharacter : Actor
         if (Application.isPlaying && m_playerRollState.IsFinished) return;
      
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(rb.position + MoveDir * stats.OffsetDash,stats.DashRadius);
+        Gizmos.DrawWireSphere(rb.position + MoveDir * baseStats.OffsetDash,baseStats.DashRadius);
     }
 
     private void DrawAttackCast()
@@ -400,9 +428,9 @@ public class PlayerCharacter : Actor
         if (Application.isPlaying && m_playerAttackState.IsFinished) return;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(rb.position, stats.AttackCastRadius);
-        Gizmos.DrawWireSphere(rb.position + m_attackDirection * stats.AttackCastDistance, stats.AttackCastRadius);
-        Gizmos.DrawLine(rb.position, rb.position + m_attackDirection * stats.AttackCastDistance);
+        Gizmos.DrawWireSphere(rb.position, baseStats.AttackCastRadius);
+        Gizmos.DrawWireSphere(rb.position + m_attackDirection * baseStats.AttackCastDistance, baseStats.AttackCastRadius);
+        Gizmos.DrawLine(rb.position, rb.position + m_attackDirection * baseStats.AttackCastDistance);
     }
     
     void OnGUI()

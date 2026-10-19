@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7331495877963478764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4256807357542900472}
+  m_Layer: 7
+  m_Name: Feet Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4256807357542900472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7331495877963478764}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4455163777241542802}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7976233887079919446
 GameObject:
   m_ObjectHideFlags: 0
@@ -33,6 +64,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7786076329362778425}
+  - {fileID: 4256807357542900472}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1563943224991897210
@@ -49,9 +81,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::PlayerCharacter
   rb: {fileID: 6773298274157356297}
   animator: {fileID: 572675347358506932}
+  feetTransform: {fileID: 4256807357542900472}
   playerMaterial: {fileID: 2100000, guid: 560af941f648858428da39ccc0b31931, type: 2}
   playerRenderer: {fileID: 973267823528567192}
-  stats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
+  baseStats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
 --- !u!136 &4374285692015904546
 CapsuleCollider:
   m_ObjectHideFlags: 0

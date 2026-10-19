@@ -118,6 +118,7 @@ MonoBehaviour:
   <RecoverCancelThreshold>k__BackingField: 0.25
   <BounceThresholdTimer>k__BackingField: 1
   <BounceMultiplier>k__BackingField: 1.15
+  <AttackStrikeRadius>k__BackingField: 0.75
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973

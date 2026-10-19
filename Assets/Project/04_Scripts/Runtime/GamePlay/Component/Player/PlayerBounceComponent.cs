@@ -40,9 +40,9 @@ public class PlayerBounceComponent : ActorComponent
         m_currentTarget = null;
     }
 
-    public void TryBounce(Vector3 direction)
+    public bool TryBounce(Vector3 direction)
     {
-        if (!CanBounce) return;
+        if (!CanBounce) return false;
 
         bool found = PhysicsHelper.TryFindElementInDirection(
             Owner.TransformCache.position,
@@ -54,11 +54,12 @@ public class PlayerBounceComponent : ActorComponent
             out _,
             m_currentTarget);
 
-        if (!found) return;
+        if (!found) return false;
 
-        if (!bouncy.CanBeBounced) return;
+        if (!bouncy.CanBeBounced) return false;
         
         Target = bouncy;
+        return true;
     }
 
     public Transform ClearBufferBouncy()
