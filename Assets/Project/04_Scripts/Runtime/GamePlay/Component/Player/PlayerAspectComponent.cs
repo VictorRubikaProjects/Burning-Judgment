@@ -27,7 +27,6 @@ public class PlayerAspectComponent : ActorComponent
         m_playerColorNeutral = m_playerMaterialInstance.color;
     }
 
-    public void AttackReadyVisuals() => AttackReadyVisualsAsync().Forget();
 
     public void CancelAttackReadyVisuals()
     {
@@ -50,27 +49,7 @@ public class PlayerAspectComponent : ActorComponent
         Object.Destroy(m_playerMaterialInstance);
         m_playerMaterialInstance = null;
     }
-
-    private async UniTaskVoid AttackReadyVisualsAsync()
-    {
-        m_currentTween.Stop();
-
-        int cycle = 5;
-        float duration = (m_stats.TimerAttack + m_stats.ThresholdTimerAttack) / cycle;
-
-        m_currentTween = Tween.MaterialColor(m_playerMaterialInstance,
-            m_playerColorNeutral,
-            m_playerColorAttackReady,
-            duration,
-            Ease.Linear,
-            cycle,
-            CycleMode.Yoyo);
-
-        await m_currentTween;
-
-        m_playerMaterialInstance.color = m_playerColorNeutral;
-    }
-
+    
     private async UniTaskVoid HurtVisualsAsync()
     {
         m_currentTween.Stop();

@@ -55,21 +55,21 @@ public class SO_PlayerStats : SO_ActorsStats
     public float AttackStopOffset { get; private set; } = 0.5f;
 
     [field: Space, Header("Input")]
-    [field: SerializeField, Range(0f, 150f), FormerlySerializedAs("swipeThreshold")]
-    [field: Tooltip("Longueur minimale d'un swipe pour être reconnu comme un geste, en pixels.")]
-    public float SwipeThreshold { get; private set; } = 50f;
+    [field: SerializeField, Range(0.1f, 3f)]
+    [field: Tooltip("Durée en secondes pour atteindre la charge maximale du joystick. Au-delà, la distance du dash ne augmente plus.")]
+    public float MaxChargeTime { get; private set; } = 1.5f;
 
-    [field: SerializeField, Range(0f, 0.3f), FormerlySerializedAs("maxTimeSwipe")]
-    [field: Tooltip("Durée maximale d'un swipe en secondes. Un geste plus lent n'est pas reconnu comme un swipe.")]
-    public float MaxTimeSwipe { get; private set; } = 0.25f;
+    [field: SerializeField, Range(0f, 1f)]
+    [field: Tooltip("Ratio minimal de charge appliqué même pour un relâchement immédiat. 0.2 = 20% de la distance de dash maximale.")]
+    public float MinChargeRatio { get; private set; } = 0.2f;
 
-    [field: SerializeField, Range(0f, 0.25f), FormerlySerializedAs("thresholdTimerAttack")]
-    [field: Tooltip("Durée minimale d'appui en secondes avant que l'appui compte comme une attaque.")]
-    public float ThresholdTimerAttack { get; private set; } = 0.1f;
-
-    [field: SerializeField, Range(0f, 1f), FormerlySerializedAs("timerAttack")]
-    [field: Tooltip("Durée maximale d'appui en secondes pour déclencher une attaque.")]
-    public float TimerAttack { get; private set; } = 0.5f;
+    [field: SerializeField, Range(0f, 1f)]
+    [field: Tooltip("Inclinaison minimale du joystick pour que la direction soit prise en compte.")]
+    public float MinStickMagnitude { get; private set; } = 0.3f;
+    
+    [field: SerializeField]
+    [field: Tooltip("Inverse la direction du dash : tirer le joystick vers l'arrière lance le dash vers l'avant, comme un lance-pierre.")]
+    public bool InvertStickDirection { get; private set; } = false;
 
     [field: Space, Header("Animation")]
     [field: SerializeField, Range(0f, 0.9f), FormerlySerializedAs("crossFadeDuration")]
