@@ -20,6 +20,8 @@ public class PlayerInputComponent : ActorComponent
     public event Action OnAttackWindowEnter;
     public event Action OnAttackWindowExit;
 
+    public event Action<Vector2> OnMoveEvent; 
+
     #endregion
 
     #region ActorComponent Methods
@@ -36,12 +38,18 @@ public class PlayerInputComponent : ActorComponent
 
         m_inputActions.Gameplay.Contact.started += TouchStarted;
         m_inputActions.Gameplay.Contact.canceled += TouchEnded;
+        
+        m_inputActions.Gameplay.Move.performed += OnMove;
+        m_inputActions.Gameplay.Move.canceled += OnMove;
     }
 
     public override void Dispose()
     {
         m_inputActions.Gameplay.Contact.started -= TouchStarted;
         m_inputActions.Gameplay.Contact.canceled -= TouchEnded;
+        
+        m_inputActions.Gameplay.Move.performed -= OnMove;
+        m_inputActions.Gameplay.Move.canceled -= OnMove;
 
         m_inputActions.Gameplay.Disable();
         m_inputActions.Dispose();
@@ -109,5 +117,11 @@ public class PlayerInputComponent : ActorComponent
         heldDuration >= m_stats.TimerAttack - m_stats.ThresholdTimerAttack &&
         heldDuration <= m_stats.TimerAttack + m_stats.ThresholdTimerAttack;
 
+    
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        Vector2 value = ctx.ReadValue<Vector2>();
+        OnMoveEvent?.Invoke(value);
+    }
     #endregion
 }
