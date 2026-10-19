@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SO_ConfigEnemyExpansion
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyExpansion
   <Weight>k__BackingField: 10
-  <PushForce>k__BackingField: 100
+  <PushForce>k__BackingField: 125
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
@@ -57,9 +57,10 @@ MonoBehaviour:
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
+  <SightHeight>k__BackingField: 0.5
   <ChargeDuration>k__BackingField: 1
-  <AttackCooldown>k__BackingField: 1
-  <AttackRadius>k__BackingField: 8.5
+  <AttackCooldown>k__BackingField: 2
+  <AttackRadius>k__BackingField: 5
   <PlayerLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
