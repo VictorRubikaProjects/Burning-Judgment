@@ -8,6 +8,7 @@ public class GameInitializer
     private SO_GameConfig m_gameConfig;
     private SO_AudioConfig m_audioConfig;
     private SO_EntityPooling m_entityPoolConfig;
+    private SO_ConfigVfx m_configVfx;
     
     private SceneService m_sceneService;
     private SaveService m_saveService;
@@ -20,11 +21,12 @@ public class GameInitializer
 
     public bool IsInitialized { get; private set; } = false;
 
-    public void Initialize(SO_GameConfig gameConfig, SO_AudioConfig audioConfig, SO_EntityPooling entityPoolConfig)
+    public void Initialize(SO_GameConfig gameConfig, SO_AudioConfig audioConfig, SO_EntityPooling entityPoolConfig, SO_ConfigVfx configVfx)
     {
         m_gameConfig = gameConfig;
         m_audioConfig = audioConfig;
         m_entityPoolConfig = entityPoolConfig;
+        m_configVfx =  configVfx;
         
         CreateServices();
         
@@ -60,7 +62,7 @@ public class GameInitializer
         
         m_cameraService = new CameraService(m_gameConfig.CameraConfig);
 
-        m_fxService = new FxService();
+        m_fxService = new FxService(m_configVfx);
 
         m_audioService = new AudioService(m_audioConfig);
 

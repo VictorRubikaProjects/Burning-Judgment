@@ -10,6 +10,7 @@ public class PlayerCharacter : Actor
     [Header("References")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
+    [SerializeField] private Transform feetTransform;
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
@@ -31,6 +32,7 @@ public class PlayerCharacter : Actor
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
     public bool HasHitRequest => m_hitRequested;
+    public Transform FeetTransform => feetTransform;
     
     private StateMachine m_stateMachine;
 
@@ -333,7 +335,7 @@ public class PlayerCharacter : Actor
         Vector3 direction = new Vector3(dir.x, 0f, dir.y);
 
         if (!CanAttack()) return;
-
+        
         m_attackDirection = direction;
         m_moveDir = direction;
 

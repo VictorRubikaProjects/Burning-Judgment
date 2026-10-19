@@ -13,6 +13,7 @@ public class BootStrap : MonoBehaviour
     [SerializeField] private SO_GameConfig gameConfig;
     [SerializeField] private SO_AudioConfig audioConfig;
     [SerializeField] private SO_EntityPooling entityPoolConfig;
+    [SerializeField] private SO_ConfigVfx configVfx;
     
     private readonly GameInitializer _gameInitializer = new();
     
@@ -32,7 +33,8 @@ public class BootStrap : MonoBehaviour
         _gameInitializer.Initialize(
             gameConfig,
             audioConfig,
-            entityPoolConfig);
+            entityPoolConfig,
+            configVfx);
 
         UniTaskScheduler.UnobservedTaskException += OnUnobservedException;
         
