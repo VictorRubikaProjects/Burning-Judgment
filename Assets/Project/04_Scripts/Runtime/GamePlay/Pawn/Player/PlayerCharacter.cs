@@ -13,6 +13,7 @@ public class PlayerCharacter : Actor
     [SerializeField] private Transform feetTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
     [SerializeField] private RectTransform joystickRectT;
+    [SerializeField] private RectTransform anchorPointRectT;
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
@@ -32,10 +33,12 @@ public class PlayerCharacter : Actor
     public DashIndicatorComponent DashIndicator { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
-    public float DashDistance => m_dashDistance;
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
+    
+    public float DashDistance => m_dashDistance;
+    public float RollRatio => m_rollRatio;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
-    public bool HasHitRequest => m_hitRequested;
+    
     public Transform FeetTransform => feetTransform;
     
     private StateMachine m_stateMachine;
@@ -43,7 +46,10 @@ public class PlayerCharacter : Actor
     private Vector3 m_moveDir;
     private Vector3 m_attackDirection;
     private Vector3 m_pendingKnockbackDirection;
+    
     private float m_dashDistance;
+    private float m_pendingKnockbackForce;
+    private float m_rollRatio;
     
     private bool m_wantsDash;
     private bool m_wantsAttack;
@@ -52,17 +58,16 @@ public class PlayerCharacter : Actor
     private bool m_canCancelRecover;
     private bool m_recoverCancelRequested;
     private bool m_isAttackReadyShown;
+    private bool m_wantsRoll;
     
     private PlayerIdleState m_playerIdleState;
     private PlayerDeathState m_playerDeathState;
-    private PlayerRollState m_playerRollState;
+    private PlayerDashState m_playerDashState;
     private PlayerHitState m_playerHitState;
     private PlayerFallState m_playerFallState;
-    //private PlayerRecoverState m_playerRecoverState;
+    private PlayerRollState m_playerRollState;
     
     private Transform m_transformCache;
-    
-    private float m_pendingKnockbackForce;
     
     private EventBinding<ActorPushedEvent> m_playerPushedBinding;
     
@@ -106,7 +111,7 @@ public class PlayerCharacter : Actor
         KnockBack = new KnockbackComponent(this, rb);
         HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
         Dash = new DashComponent(this, rb, GroundCheck);
-        Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT);
+        Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT,anchorPointRectT);
         Controller = new PlayerControllerComponent(owner: this, rb);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
         Bounce = new PlayerBounceComponent(this, ActiveStats);
@@ -134,6 +139,7 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease += JoyStickRelease;
         Input.OnChargeUpdate += OnChargeUpdate;
         Input.OnChargeEnd += OnChargeEnd;
+        Input.OnTap += OnTap;
         
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(OnActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
@@ -144,6 +150,7 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease -= JoyStickRelease;
         Input.OnChargeUpdate -= OnChargeUpdate;
         Input.OnChargeEnd -= OnChargeEnd;
+        Input.OnTap -= OnTap;
         
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
@@ -179,33 +186,33 @@ public class PlayerCharacter : Actor
         m_stateMachine = new StateMachine();
 
         m_playerIdleState = new PlayerIdleState(this, animator, ActiveStats);
-        m_playerRollState = new PlayerRollState(this, animator, rb, ActiveStats);
+        m_playerDashState = new PlayerDashState(this, animator, rb, ActiveStats);
         m_playerDeathState = new PlayerDeathState(this, animator, ActiveStats);
         m_playerHitState = new PlayerHitState(this, animator, ActiveStats);
         m_playerFallState = new PlayerFallState(this, animator, ActiveStats, rb);
-        //m_playerRecoverState = new PlayerRecoverState(this, animator, ActiveStats);
+        m_playerRollState = new PlayerRollState(this, animator, ActiveStats);
 
         At(
             m_playerIdleState,
-            m_playerRollState,
+            m_playerDashState,
             new FuncPredicate(() => m_wantsDash)
         );
 
         At(
-            m_playerRollState,
+            m_playerDashState,
             m_playerIdleState,
             new FuncPredicate(() =>
-                m_playerRollState.IsFinished &&
-                m_playerRollState.HasHit
+                m_playerDashState.IsFinished &&
+                m_playerDashState.HasHit
             )
         );
 
         At(
-            m_playerRollState,
+            m_playerDashState,
             m_playerIdleState,
             new FuncPredicate(() =>
-                m_playerRollState.IsFinished &&
-                !m_playerRollState.HasHit
+                m_playerDashState.IsFinished &&
+                !m_playerDashState.HasHit
             )
         );
         
@@ -215,6 +222,18 @@ public class PlayerCharacter : Actor
             m_playerIdleState,
             new FuncPredicate(() => m_playerHitState.IsFinished)
         );
+        
+        At(
+            m_playerIdleState,
+            m_playerRollState,
+            new FuncPredicate(() => m_wantsRoll)
+        );
+
+        At(
+            m_playerRollState,
+            m_playerIdleState,
+            new FuncPredicate(() => m_playerRollState.IsFinished)
+        );
 
         Any(
             m_playerDeathState,
@@ -223,7 +242,7 @@ public class PlayerCharacter : Actor
 
         Any(
             m_playerHitState,
-            new FuncPredicate(() => HasHitRequest)
+            new FuncPredicate(() => m_hitRequested)
         );
 
         Any(
@@ -275,6 +294,16 @@ public class PlayerCharacter : Actor
     }
 
     private void OnChargeEnd() => DashIndicator.Hide();
+    
+    private void OnTap(Vector2 dir, float ratio)
+    {
+        if (!CanSwipe() || dir == Vector2.zero) return;
+
+        m_moveDir = new Vector3(dir.x, 0f, dir.y);
+        m_rollRatio = Mathf.Clamp01(ratio);
+
+        RequestRoll();
+    }
 
     #endregion
 
@@ -327,6 +356,9 @@ public class PlayerCharacter : Actor
     private float ComputeDashDistance(float ratio) => ActiveStats.DashDistance * Mathf.Clamp01(ratio);
     
     public void ResetDashDistance() => m_dashDistance = ActiveStats.DashDistance;
+    
+    public void RequestRoll() => m_wantsRoll = true;
+    public void ConsumeRollRequest() => m_wantsRoll = false;
     
     #endregion
     
