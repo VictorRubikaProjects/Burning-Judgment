@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Threading;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -38,25 +39,31 @@ namespace Project._05_Scripts.Runtime.System.ServiceLocator.Services
 
         private async UniTaskVoid LaunchEffect(ParticleSystem effect, Transform targetTransform, float duration)
         {
-            ParticleSystem ps = Object.Instantiate(effect, targetTransform);
-            
-            float elapsedTime = 0;
+            if (effect == null || targetTransform == null) return;
 
-            while (elapsedTime < duration)
+            ParticleSystem ps = Object.Instantiate(effect, Vector3.zero, Quaternion.identity, targetTransform);
+            
+            ps.transform.localPosition = Vector3.zero;
+            ps.transform.localRotation = Quaternion.identity;
+            ps.transform.localScale = Vector3.one;
+
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            
+            ps.Play();
+            
+            CancellationToken token = ps.GetCancellationTokenOnDestroy();
+
+            try
             {
-                elapsedTime += Time.deltaTime;
+                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
                 
-                if (targetTransform == null) break;
+                ps.transform.SetParent(null);
                 
-                ps.transform.position = targetTransform.position;
-                ps.transform.rotation = targetTransform.rotation;
-                
-                await UniTask.Yield(PlayerLoopTiming.Update);
+                await UniTask.Delay(TimeSpan.FromSeconds(ps.main.startLifetime.constantMax), cancellationToken: token);
             }
+            catch (OperationCanceledException) { return; }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
-            
-            GameObject.Destroy(ps);
+            if (ps != null) Object.Destroy(ps.gameObject);
         }
 
         public void PlayEjectionEffect(Transform targetTransform, float duration)
