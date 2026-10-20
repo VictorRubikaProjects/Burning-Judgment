@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Event_Bus;
+using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
 public class EnemyHitState : EnemyBaseState
@@ -23,6 +24,7 @@ public class EnemyHitState : EnemyBaseState
             Owner.PendingKnockbackForce,
             Owner.StatsBase.HitKnockbackCurve,
             Owner.StatsBase.ObstacleLayer).Forget();
+
     }
 
     public override void OnExit()

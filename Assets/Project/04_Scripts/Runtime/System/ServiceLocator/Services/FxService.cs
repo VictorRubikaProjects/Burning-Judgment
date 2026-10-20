@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -52,8 +53,10 @@ namespace Project._05_Scripts.Runtime.System.ServiceLocator.Services
                 
                 await UniTask.Yield(PlayerLoopTiming.Update);
             }
+
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
             
-            Object.Destroy(ps);
+            GameObject.Destroy(ps);
         }
 
         public void PlayEjectionEffect(Transform targetTransform, float duration)

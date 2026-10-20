@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89161a0b61d2e0a4ead9604ce9e6ffb0, type: 3}
   m_Name: SO_ConfigVfx
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigVfx
-  <VfxPrefabPushed>k__BackingField: {fileID: 5679756299361436471, guid: fc9a2f08994a36d439b1a6d3f74d9a7d, type: 3}
+  <VfxPrefabPushed>k__BackingField: {fileID: 6632970447897807731, guid: c1479855215624c4aaa191d5b980dd99, type: 3}
