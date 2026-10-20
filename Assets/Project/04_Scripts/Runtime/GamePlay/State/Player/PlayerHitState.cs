@@ -32,7 +32,7 @@ public class PlayerHitState : PlayerBaseState
             m_stats.HitKnockbackCurve,
             m_stats.ObstacleLayer).Forget();
         
-        ServiceLocator.Get<FxService>().PlayEjectionEffect(m_owner.FeetTransform,m_stats.HitDuration);
+        ServiceLocator.Get<FxService>().PlayEjectionEffect(m_owner.TransformCache,m_stats.HitDuration);
     }
 
     public override void Update()
