@@ -107,7 +107,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Dotesize: -0.04
+    - _Dotesize: 0
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
@@ -138,6 +138,7 @@ Material:
     - _ZWrite: 1
     - _test: -293.1
     - _test_1: -167.8
+    - _test_dithyer: 5
     m_Colors:
     - _BaseColor: {r: 0.8305301, g: 1.5298012, b: 3.912719, a: 1}
     - _BottomColor: {r: 0.13381095, g: 0.259429, b: 0.9150943, a: 1}

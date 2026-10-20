@@ -2049,10 +2049,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1206.0001220703125,
-            "y": -15.999999046325684,
+            "x": -1224.0001220703125,
+            "y": 16.999996185302736,
             "width": 56.0,
-            "height": 24.00002098083496
+            "height": 24.00002670288086
         }
     },
     "m_Slots": [
@@ -2628,8 +2628,8 @@
     "m_ObjectId": "3a319a7d5bd94978afb60f6e5d09840e",
     "m_Title": "Position normalisée dans la BB du mesh",
     "m_Position": {
-        "x": -3877.0,
-        "y": 286.0
+        "x": -3876.999755859375,
+        "y": 285.9999694824219
     }
 }
 
@@ -3253,8 +3253,8 @@
     "m_ObjectId": "4d2672f2937e472b86d0255e853007df",
     "m_Title": "Color gradient",
     "m_Position": {
-        "x": -275.00006103515627,
-        "y": 333.0
+        "x": -274.9999694824219,
+        "y": 332.9999694824219
     }
 }
 
@@ -3287,7 +3287,7 @@
     "m_ObjectId": "4e29cfb636904a81baf41cc69ff571eb",
     "m_Title": "Récupération de la screen position pour générer une courbe euh voilà",
     "m_Position": {
-        "x": -2934.0,
+        "x": -2933.999755859375,
         "y": 779.0
     }
 }
@@ -4149,7 +4149,7 @@
     "m_Title": "Dithering",
     "m_Position": {
         "x": -1245.9998779296875,
-        "y": 125.0
+        "y": 125.00001525878906
     }
 }
 
@@ -4214,10 +4214,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -798.0001831054688,
-            "y": -15.999999046325684,
-            "width": 56.0,
-            "height": 24.00002098083496
+            "x": -816.0,
+            "y": 16.999996185302736,
+            "width": 55.99993896484375,
+            "height": 24.00002670288086
         }
     },
     "m_Slots": [
@@ -4849,7 +4849,7 @@
     "m_ObjectId": "82944d450c394d0a910a741dae8f39e2",
     "m_Title": "Fade sur le haut du mesh",
     "m_Position": {
-        "x": -3153.0,
+        "x": -3152.999755859375,
         "y": 210.0
     }
 }
@@ -6447,7 +6447,7 @@
     "m_ObjectId": "ba1e5681578a4b4090461e36eb82ad69",
     "m_Title": "Variation de noise sur la normale",
     "m_Position": {
-        "x": -4333.0,
+        "x": -4332.99951171875,
         "y": -182.0
     }
 }
@@ -6744,10 +6744,10 @@
         "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -957.0001220703125,
-            "y": -51.9999885559082,
-            "width": 116.99993896484375,
-            "height": 76.00001525878906
+            "x": -975.0000610351563,
+            "y": -18.999988555908204,
+            "width": 127.0,
+            "height": 77.0
         }
     },
     "m_Slots": [
@@ -6925,9 +6925,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -510.9999694824219,
-            "y": -237.00001525878907,
-            "width": 207.99996948242188,
+            "x": -575.0,
+            "y": -198.0,
+            "width": 208.0,
             "height": 277.9999694824219
         }
     },
@@ -6958,10 +6958,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1220.0001220703125,
-            "y": 32.0,
-            "width": 100.0,
-            "height": 34.0
+            "x": -1238.0001220703125,
+            "y": 65.00001525878906,
+            "width": 105.0,
+            "height": 34.00000762939453
         }
     },
     "m_Slots": [
@@ -7072,7 +7072,7 @@
     "m_ObjectId": "d2557f8c97224eaab48f19097d318f67",
     "m_Title": "Calcul du lighting",
     "m_Position": {
-        "x": -1992.0,
+        "x": -1991.9998779296875,
         "y": -96.0
     }
 }
@@ -7476,10 +7476,10 @@
         "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -3841.0,
-            "y": 480.0,
-            "width": 153.0,
-            "height": 100.0
+            "x": -3806.0,
+            "y": 476.0,
+            "width": 160.0,
+            "height": 101.00006103515625
         }
     },
     "m_Slots": [
@@ -8214,10 +8214,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1115.0001220703125,
-            "y": -51.9999885559082,
-            "width": 148.0,
-            "height": 117.99998474121094
+            "x": -1133.0001220703125,
+            "y": -18.999988555908204,
+            "width": 158.00006103515626,
+            "height": 118.00001525878906
         }
     },
     "m_Slots": [
@@ -8330,8 +8330,8 @@
     "m_ObjectId": "fd775dbbdd964012b39f5e4b9347b2be",
     "m_Title": "Postérisation",
     "m_Position": {
-        "x": -1244.9998779296875,
-        "y": -110.99992370605469
+        "x": -1262.9998779296875,
+        "y": -78.0
     }
 }
 
