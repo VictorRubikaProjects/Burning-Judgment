@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConfigStatsPlayer_v1
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   <Weight>k__BackingField: 10
-  <PushForce>k__BackingField: 50
+  <PushForce>k__BackingField: 55
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
@@ -80,7 +80,7 @@ MonoBehaviour:
     m_Bits: 320
   <DashRadius>k__BackingField: 1.2
   <OffsetDash>k__BackingField: 1.4
-  <AttackCastRadius>k__BackingField: 1
+  <AttackCastRadius>k__BackingField: 1.1
   <AttackCastDistance>k__BackingField: 40
   <AttackDash>k__BackingField:
     Duration: 0.15
@@ -109,16 +109,16 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   <AttackStopOffset>k__BackingField: 0
-  <SwipeThreshold>k__BackingField: 40
-  <MaxTimeSwipe>k__BackingField: 0.25
+  <SwipeThreshold>k__BackingField: 35
+  <MaxTimeSwipe>k__BackingField: 0.3
   <ThresholdTimerAttack>k__BackingField: 0.25
-  <TimerAttack>k__BackingField: 0.5
+  <TimerAttack>k__BackingField: 0.55
   <CrossFadeDuration>k__BackingField: 0.1
   <RecoverDuration>k__BackingField: 1
   <RecoverCancelThreshold>k__BackingField: 0.3
   <BounceThresholdTimer>k__BackingField: 1
-  <BounceMultiplier>k__BackingField: 1.03
-  <AttackStrikeRadius>k__BackingField: 0.75
+  <BounceMultiplier>k__BackingField: 1.25
+  <AttackStrikeRadius>k__BackingField: 1.1
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973
