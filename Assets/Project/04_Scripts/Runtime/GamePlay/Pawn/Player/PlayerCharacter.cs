@@ -58,7 +58,7 @@ public class PlayerCharacter : Actor
     private PlayerRollState m_playerRollState;
     private PlayerHitState m_playerHitState;
     private PlayerFallState m_playerFallState;
-    private PlayerRecoverState m_playerRecoverState;
+    //private PlayerRecoverState m_playerRecoverState;
     
     private Transform m_transformCache;
     
@@ -183,7 +183,7 @@ public class PlayerCharacter : Actor
         m_playerDeathState = new PlayerDeathState(this, animator, ActiveStats);
         m_playerHitState = new PlayerHitState(this, animator, ActiveStats);
         m_playerFallState = new PlayerFallState(this, animator, ActiveStats, rb);
-        m_playerRecoverState = new PlayerRecoverState(this, animator, ActiveStats);
+        //m_playerRecoverState = new PlayerRecoverState(this, animator, ActiveStats);
 
         At(
             m_playerIdleState,
@@ -193,7 +193,7 @@ public class PlayerCharacter : Actor
 
         At(
             m_playerRollState,
-            m_playerRecoverState,
+            m_playerIdleState,
             new FuncPredicate(() =>
                 m_playerRollState.IsFinished &&
                 m_playerRollState.HasHit
@@ -208,24 +208,7 @@ public class PlayerCharacter : Actor
                 !m_playerRollState.HasHit
             )
         );
-
-        At(
-            m_playerRecoverState,
-            m_playerRollState,
-            new FuncPredicate(() =>
-                m_recoverCancelRequested &&
-                m_wantsDash
-            )
-        );
-
-        At(
-            m_playerRecoverState,
-            m_playerIdleState,
-            new FuncPredicate(() =>
-                m_playerRecoverState.IsFinished &&
-                !m_recoverCancelRequested
-            )
-        );
+        
 
         At(
             m_playerHitState,
