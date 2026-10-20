@@ -61,9 +61,6 @@
             "m_Id": "7276bb292ec94f0a86228d6a52e38632"
         },
         {
-            "m_Id": "625f1680a0d74af58d202eaad4c1f341"
-        },
-        {
             "m_Id": "f6a0dd236c2742f181e1c76ec653449a"
         },
         {
@@ -380,9 +377,6 @@
             },
             {
                 "m_Id": "7276bb292ec94f0a86228d6a52e38632"
-            },
-            {
-                "m_Id": "625f1680a0d74af58d202eaad4c1f341"
             }
         ]
     },
@@ -1286,7 +1280,7 @@
         "m_Id": "b1bb9f73bbd647a6a069c7a3618f2774"
     },
     "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 1,
+    "m_SurfaceType": 0,
     "m_ZTestMode": 4,
     "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
@@ -1372,40 +1366,6 @@
     },
     "isMainColor": false,
     "m_ColorMode": 1
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-    "m_ObjectId": "625f1680a0d74af58d202eaad4c1f341",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "SurfaceDescription.Alpha",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.0,
-            "height": 0.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "984febb6e3e54e06b2e5b9f733dc8eb8"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SerializedDescriptor": "SurfaceDescription.Alpha"
 }
 
 {
@@ -1943,22 +1903,6 @@
         "e32": 0.0,
         "e33": 1.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "984febb6e3e54e06b2e5b9f733dc8eb8",
-    "m_Id": 0,
-    "m_DisplayName": "Alpha",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Alpha",
-    "m_StageCapability": 2,
-    "m_Value": 1.0,
-    "m_DefaultValue": 1.0,
-    "m_Labels": [],
-    "m_LiteralMode": false
 }
 
 {
