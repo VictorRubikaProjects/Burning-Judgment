@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Event_Bus;
@@ -59,17 +60,23 @@ public class PlayerRollState : PlayerBaseState
     {
         m_audioService.PlaySfx(m_stats.DashEvent);
 
-        bool dashSucceeded = await m_owner.Dash.RollAsync(
-            direction,
-            token,
-            m_stats.DashDuration,
-            m_owner.DashDistance,
-            m_stats.DashCurve,
-            m_stats.ObstacleLayer);
-
-        if (token.IsCancellationRequested) return;
+        try
+        {
+            bool dashSucceeded = await m_owner.Dash.RollAsync(
+                direction,
+                token,
+                m_stats.DashDuration,
+                m_owner.DashDistance,
+                m_stats.DashCurve,
+                m_stats.ObstacleLayer);
         
-        IsFinished = true;
+            IsFinished = true;
+        }
+        catch (OperationCanceledException)
+        {
+            IsFinished = true;
+        }
+        
     }
 
     private void TryStrike()
@@ -98,6 +105,7 @@ public class PlayerRollState : PlayerBaseState
             m_audioService.PlaySfx(m_stats.HitEvent);
 
             HasHit = true;
+            m_ctsDash?.Cancel();
             return;
         }
     }
