@@ -7,7 +7,7 @@
             "id": "766ad69e-3c8c-444e-8d78-38f31bcecf8f",
             "actions": [
                 {
-                    "name": "Contact",
+                    "name": "Touch",
                     "type": "Button",
                     "id": "b0e75005-b704-4c53-8213-964fb4964db3",
                     "expectedControlType": "",
@@ -16,18 +16,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Position",
+                    "name": "Move",
                     "type": "Value",
-                    "id": "46364b14-fb41-4784-b3c1-26d803e82d51",
+                    "id": "4ac0110b-e189-43a9-869a-73cde283376d",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Move",
+                    "name": "Position",
                     "type": "Value",
-                    "id": "4ac0110b-e189-43a9-869a-73cde283376d",
+                    "id": "8e0ce702-d275-49ca-94a6-bcd3c760d36d",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -42,18 +42,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Contact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9cf30ac2-8fd9-4c0b-9fe3-f74bfd9c9854",
-                    "path": "<Touchscreen>/primaryTouch/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Position",
+                    "action": "Touch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -65,6 +54,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05e3796e-9d75-4fb9-8119-2976173db63b",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
