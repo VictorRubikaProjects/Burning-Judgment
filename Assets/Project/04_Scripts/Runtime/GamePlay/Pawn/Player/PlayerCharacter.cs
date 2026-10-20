@@ -12,6 +12,7 @@ public class PlayerCharacter : Actor
     [SerializeField] private Animator animator;
     [SerializeField] private Transform feetTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
+    [SerializeField] private RectTransform joystickRectT;
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
@@ -105,7 +106,7 @@ public class PlayerCharacter : Actor
         KnockBack = new KnockbackComponent(this, rb);
         HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
         Dash = new DashComponent(this, rb, GroundCheck);
-        Input = new PlayerInputComponent(owner: this, ActiveStats);
+        Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT);
         Controller = new PlayerControllerComponent(owner: this, rb);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
         Bounce = new PlayerBounceComponent(this, ActiveStats);
