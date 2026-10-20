@@ -3253,7 +3253,7 @@
     "m_ObjectId": "4d2672f2937e472b86d0255e853007df",
     "m_Title": "Color gradient",
     "m_Position": {
-        "x": -275.0,
+        "x": -275.00006103515627,
         "y": 333.0
     }
 }
@@ -4148,7 +4148,7 @@
     "m_ObjectId": "7056130da9aa49a5bb083907e9ffb580",
     "m_Title": "Dithering",
     "m_Position": {
-        "x": -1246.0,
+        "x": -1245.9998779296875,
         "y": 125.0
     }
 }
@@ -8330,8 +8330,8 @@
     "m_ObjectId": "fd775dbbdd964012b39f5e4b9347b2be",
     "m_Title": "Postérisation",
     "m_Position": {
-        "x": -1245.0,
-        "y": -111.0
+        "x": -1244.9998779296875,
+        "y": -110.99992370605469
     }
 }
 

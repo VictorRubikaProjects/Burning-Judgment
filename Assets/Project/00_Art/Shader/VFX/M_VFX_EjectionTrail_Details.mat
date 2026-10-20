@@ -51,11 +51,16 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaAmount: 1
+    - _COLORMANAGER: 0
     - _DissolveAmount: 0
     - _Gradient_Edge1: 1.27
     - _Gradient_Edge2: 1.85
+    - _InvertedWorldColors: 1
+    - _QueueControl: -1
+    - _QueueOffset: 0
     - _Spherical_Particle: 1
     - _WorldPosGradient: 1
+    - _WorldPosGradient_1: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _BotColor: {r: 0.808937, g: 2.6769466, b: 7.456288, a: 1}
