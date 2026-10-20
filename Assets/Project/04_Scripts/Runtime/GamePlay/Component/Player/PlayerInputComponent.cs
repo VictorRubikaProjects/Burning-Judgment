@@ -16,9 +16,14 @@ public class PlayerInputComponent : ActorComponent
     public event Action<Vector2, float> OnChargeUpdate;
     public event Action OnChargeEnd;
 
-    public PlayerInputComponent(Actor owner, SO_PlayerStats stats) : base(owner)
+    private RectTransform m_joystickRectT;
+    private Vector2 m_joystickRect;
+    
+    public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickRectT) : base(owner)
     {
         m_stats = stats;
+        m_joystickRectT = joystickRectT;
+        m_joystickRect =  joystickRectT.position;
     }
 
     public override void Initialize()
@@ -26,6 +31,9 @@ public class PlayerInputComponent : ActorComponent
         m_inputActions = new PlayerActions();
         m_inputActions.Gameplay.Enable();
 
+        m_inputActions.Gameplay.Touch.started += OnTouchStarted;
+        m_inputActions.Gameplay.Touch.canceled += OnTouchCanceled;
+        
         m_inputActions.Gameplay.Move.started += OnMoveStarted;
         m_inputActions.Gameplay.Move.performed += OnMovePerformed;
         m_inputActions.Gameplay.Move.canceled += OnMoveCanceled;
@@ -33,6 +41,9 @@ public class PlayerInputComponent : ActorComponent
 
     public override void Dispose()
     {
+        m_inputActions.Gameplay.Touch.started -= OnTouchStarted;
+        m_inputActions.Gameplay.Touch.canceled -= OnTouchCanceled;
+
         m_inputActions.Gameplay.Move.started -= OnMoveStarted;
         m_inputActions.Gameplay.Move.performed -= OnMovePerformed;
         m_inputActions.Gameplay.Move.canceled -= OnMoveCanceled;
@@ -45,6 +56,17 @@ public class PlayerInputComponent : ActorComponent
     {
         if (!m_isCharging) return;
         OnChargeUpdate?.Invoke(m_lastDirection, GetChargeRatio());
+    }
+    
+    private void OnTouchStarted(InputAction.CallbackContext context)
+    {
+        Vector2 value = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
+        m_joystickRectT.position = new Vector2(value.x, value.y);
+    }
+
+    private void OnTouchCanceled(InputAction.CallbackContext context)
+    {
+        m_joystickRectT.position = m_joystickRect;
     }
 
     private void OnMoveStarted(InputAction.CallbackContext context)
