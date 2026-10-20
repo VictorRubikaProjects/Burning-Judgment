@@ -9,6 +9,22 @@ public class SO_PlayerStats : SO_ActorsStats
     private const float MaxGain = 4f;
     private const float MinDuration = 0.01f;
     
+    [field: Space, Header("Roll")]
+    [field: SerializeField, Range(0f, 20f)]
+    [field: Tooltip("Distance maximale parcourue par le roll, en unités. Atteinte quand le tap est à MaxTapDistance de l'origine.")]
+    public float MaxRollDistance { get; private set; } = 5f;
+
+    [field: SerializeField, Range(0.01f, 1f)]
+    [field: Tooltip("Durée du roll en secondes. Plus c'est court, plus le roll est rapide.")]
+    public float RollDuration { get; private set; } = 0.25f;
+
+    [field: SerializeField]
+    [field: Tooltip("Forme de l'accélération du roll. X : temps (0 = début, 1 = fin). Y : distance parcourue (0 = départ, 1 = arrivée).")]
+    public AnimationCurve RollCurve { get; private set; } = new(
+        new Keyframe(0f, 0f, 0f, 2f),
+        new Keyframe(1f, 1f, 0f, 0f)
+    );
+    
     [field: Header("Dash")]
     [field: SerializeField, Range(0f, 20f), FormerlySerializedAs("dashDistance")]
     [field: Tooltip("Distance parcourue par le dash, en unités.")]
@@ -70,6 +86,13 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: SerializeField]
     [field: Tooltip("Inverse la direction du dash : tirer le joystick vers l'arrière lance le dash vers l'avant, comme un lance-pierre.")]
     public bool InvertStickDirection { get; private set; } = false;
+    [field: SerializeField, Range(50f, 1500f)]
+    [field: Tooltip("Distance maximale en pixels entre l'origine et le tap. Au-delà, le roll est à sa distance maximale.")]
+    public float MaxTapDistance { get; private set; } = 400f;
+
+    [field: SerializeField, Range(0.05f, 1f)]
+    [field: Tooltip("Durée maximale en secondes entre l'appui et le relèvement pour que ce soit un tap. Au-delà, ce n'est plus un tap.")]
+    public float MaxTapDuration { get; private set; } = 0.2f;
 
     [field: Space, Header("Animation")]
     [field: SerializeField, Range(0f, 0.9f), FormerlySerializedAs("crossFadeDuration")]
