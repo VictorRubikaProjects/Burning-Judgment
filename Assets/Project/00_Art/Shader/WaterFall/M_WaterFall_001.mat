@@ -107,6 +107,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Dotesize: 0.23
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
@@ -114,32 +115,38 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Metallic: 0
+    - _Metallic: 0.4
+    - _NormalStrengh: 0.12
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _Smoothness: 1.4
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _Step: 1
     - _Surface: 0
-    - _Tilling: 2.01
+    - _Tilling: 2.5
     - _VoronoiAgitation: 1
-    - _VoronoiPower: 3.33
-    - _VoronoiScale: 11.04
+    - _VoronoiPower: 3.66
+    - _VoronoiScale: 10
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
+    - _test: -6
     m_Colors:
-    - _BaseColor: {r: 0.05038024, g: 1.0987414, b: 3.207548, a: 1}
+    - _BaseColor: {r: 0.8305301, g: 1.5298012, b: 3.912719, a: 1}
+    - _BottomColor: {r: 0.7028302, g: 0.77140784, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _NormalSpeed: {r: 0, g: -0.75, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _VoronoiColor: {r: 0, g: 1.1459053, b: 1.5914744, a: 1}
-    - _VoronoiSpeed: {r: 0, g: 0.4, b: 0, a: 0}
+    - _TopColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
+    - _VoronoiColor: {r: 0.3061894, g: 1.2662821, b: 1.6245047, a: 1}
+    - _VoronoiSpeed: {r: 0, g: 0.3, b: 0, a: 0}
     - _VoronoiTilling: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
