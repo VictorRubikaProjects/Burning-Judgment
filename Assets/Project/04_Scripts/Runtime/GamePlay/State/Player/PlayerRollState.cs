@@ -52,6 +52,4 @@ public class PlayerRollState : PlayerBaseState
 
         IsFinished = true;
     }
-    
-    
 }
