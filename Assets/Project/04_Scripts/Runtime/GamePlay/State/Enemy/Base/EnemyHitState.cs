@@ -24,7 +24,8 @@ public class EnemyHitState : EnemyBaseState
             Owner.PendingKnockbackForce,
             Owner.StatsBase.HitKnockbackCurve,
             Owner.StatsBase.ObstacleLayer).Forget();
-
+        
+        ServiceLocator.Get<FxService>().PlayEjectionEffect(Owner.TransformCache,Owner.StatsBase.HitDuration);
     }
 
     public override void OnExit()
