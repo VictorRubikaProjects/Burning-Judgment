@@ -49,7 +49,7 @@ MonoBehaviour:
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <DashDistance>k__BackingField: 12
+  <DashDistance>k__BackingField: 6
   <DashDuration>k__BackingField: 0.2
   <DashCurve>k__BackingField:
     serializedVersion: 2
@@ -109,7 +109,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   <AttackStopOffset>k__BackingField: 0
-  <MaxChargeTime>k__BackingField: 0.4
+  <MaxChargeTime>k__BackingField: 0.2
   <MinChargeRatio>k__BackingField: 0.4
   <MinStickMagnitude>k__BackingField: 0.1
   <InvertStickDirection>k__BackingField: 0
