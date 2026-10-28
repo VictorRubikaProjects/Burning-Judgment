@@ -13,7 +13,6 @@ public class PlayerCharacter : Actor
     [SerializeField] private Transform feetTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
     [SerializeField] private RectTransform joystickRectT;
-    [SerializeField] private RectTransform anchorPointRectT;
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
@@ -36,7 +35,6 @@ public class PlayerCharacter : Actor
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
     
     public float DashDistance => m_dashDistance;
-    public float RollRatio => m_rollRatio;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
     
     public Transform FeetTransform => feetTransform;
@@ -49,7 +47,6 @@ public class PlayerCharacter : Actor
     
     private float m_dashDistance;
     private float m_pendingKnockbackForce;
-    private float m_rollRatio;
     
     private bool m_wantsDash;
     private bool m_wantsAttack;
@@ -111,7 +108,7 @@ public class PlayerCharacter : Actor
         KnockBack = new KnockbackComponent(this, rb);
         HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
         Dash = new DashComponent(this, rb, GroundCheck);
-        Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT,anchorPointRectT);
+        Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT);
         Controller = new PlayerControllerComponent(owner: this, rb);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
         Bounce = new PlayerBounceComponent(this, ActiveStats);
@@ -139,7 +136,7 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease += JoyStickRelease;
         Input.OnChargeUpdate += OnChargeUpdate;
         Input.OnChargeEnd += OnChargeEnd;
-        Input.OnTap += OnTap;
+        Input.OnSwipe += OnTap;
         
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(OnActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
@@ -150,7 +147,7 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease -= JoyStickRelease;
         Input.OnChargeUpdate -= OnChargeUpdate;
         Input.OnChargeEnd -= OnChargeEnd;
-        Input.OnTap -= OnTap;
+        Input.OnSwipe -= OnTap;
         
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
@@ -300,8 +297,6 @@ public class PlayerCharacter : Actor
         if (!CanSwipe() || dir == Vector2.zero) return;
 
         m_moveDir = new Vector3(dir.x, 0f, dir.y);
-        m_rollRatio = Mathf.Clamp01(ratio);
-
         RequestRoll();
     }
 

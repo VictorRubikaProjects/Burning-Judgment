@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
 public class PlayerRollState : PlayerBaseState
@@ -23,7 +22,7 @@ public class PlayerRollState : PlayerBaseState
         IsFinished = false;
 
         Vector3 direction = m_owner.MoveDir;
-        float distance = m_owner.RollRatio * m_stats.MaxRollDistance;
+        float distance = m_stats.MaxRollDistance;
         m_owner.ConsumeRollRequest();
         m_animator.CrossFade(DashHash, m_crossFadeDuration);
         m_ctsRoll = new CancellationTokenSource();

@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputComponent : ActorComponent
 {
+    #region Variables
+
     private readonly SO_PlayerStats m_stats;
     
     private PlayerActions m_inputActions;
@@ -18,24 +20,26 @@ public class PlayerInputComponent : ActorComponent
 
     public event Action<Vector2, float> OnJoystickRelease;
     public event Action<Vector2, float> OnChargeUpdate;
-    public event Action<Vector2, float> OnTap;
+    public event Action<Vector2, float> OnSwipe;
     public event Action OnChargeEnd;
 
     private RectTransform m_joystickRectT;
-    private readonly RectTransform m_originRectT;
     
     private Vector2 m_lastDirection;
     private Vector2 m_joystickRect;
     private Vector2 m_touchStartPosition;
     
     private readonly CanvasGroup m_joystickGroup;
-    
-    public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickRectT, RectTransform originRectT) : base(owner)
+
+    #endregion
+
+    #region Actor Component Core
+
+    public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickRectT) : base(owner)
     {
         m_stats = stats;
         m_joystickRectT = joystickRectT;
         m_joystickRect = joystickRectT.position;
-        m_originRectT = originRectT;
 
         m_joystickGroup = joystickRectT.TryGetComponent(out CanvasGroup group)
             ? group
@@ -72,38 +76,32 @@ public class PlayerInputComponent : ActorComponent
 
     public override void Update()
     {
-        if (m_isTouching && !m_isJoystickVisible && Time.time - m_touchStartTime > m_stats.MaxTapDuration)
-            SetJoystickVisible(true);
+        HandleJoystickPlacement();
 
         if (!m_isCharging) return;
+        
         OnChargeUpdate?.Invoke(m_lastDirection, GetChargeRatio());
     }
+
+    #endregion
+
+    #region Joystick
+
+    private void HandleJoystickPlacement()
+    {
+        if (!m_isTouching || m_isJoystickVisible) return;
+        
+        float elapsedTouchTime = Time.time - m_touchStartTime;
+
+        if (!(elapsedTouchTime >= m_stats.MaxSwipeDuration)) return;
+        
+        SetJoystickVisible(true);
+    }
     
-    private void OnTouchStarted(InputAction.CallbackContext context)
-    {
-        m_touchStartPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
-        m_touchStartTime = Time.time;
-        m_isTouching = true;
-        m_isDragging = false;
-        m_joystickRectT.position = m_touchStartPosition;
-    }
-
-    private void OnTouchCanceled(InputAction.CallbackContext context)
-    {
-        m_isTouching = false;
-        SetJoystickVisible(false);
-        m_joystickRectT.position = m_joystickRect;
-
-        if (m_isDragging) return;
-        if (Time.time - m_touchStartTime > m_stats.MaxTapDuration) return;
-
-        Vector2 offset = m_touchStartPosition - (Vector2)m_originRectT.position;
-        float ratio = Mathf.Clamp01(offset.magnitude / m_stats.MaxTapDistance);
-        OnTap?.Invoke(offset.normalized, ratio);
-    }
-
     private void OnMoveStarted(InputAction.CallbackContext context)
     {
+        if (!m_isJoystickVisible) return;
+
         m_chargeStartTime = Time.time;
         m_isCharging = true;
         m_lastDirection = Vector2.zero;
@@ -111,13 +109,22 @@ public class PlayerInputComponent : ActorComponent
 
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
+        if (!m_isJoystickVisible) return;
+
         Vector2 value = context.ReadValue<Vector2>();
-        if (value.magnitude < m_stats.MinStickMagnitude) return;
+        bool isBelowMinMagnitude = value.magnitude < m_stats.MinStickMagnitude;
+
+        if (isBelowMinMagnitude) return;
 
         if (!m_isDragging)
         {
             m_isDragging = true;
-            SetJoystickVisible(true);
+        }
+
+        if (!m_isCharging)
+        {
+            m_chargeStartTime = Time.time;
+            m_isCharging = true;
         }
 
         Vector2 direction = value.normalized;
@@ -127,18 +134,21 @@ public class PlayerInputComponent : ActorComponent
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         if (!m_isCharging) return;
+        
         m_isCharging = false;
 
         if (m_lastDirection != Vector2.zero)
+        {
             OnJoystickRelease?.Invoke(m_lastDirection, GetChargeRatio());
+        }
 
         OnChargeEnd?.Invoke();
     }
 
     private float GetChargeRatio()
     {
-        float held = Time.time - m_chargeStartTime;
-        return Mathf.Clamp(held / m_stats.MaxChargeTime, m_stats.MinChargeRatio, 1f);
+        float heldDuration = Time.time - m_chargeStartTime;
+        return Mathf.Clamp(heldDuration / m_stats.MaxChargeTime, m_stats.MinChargeRatio, 1f);
     }
     
     private void SetJoystickVisible(bool visible)
@@ -146,4 +156,45 @@ public class PlayerInputComponent : ActorComponent
         m_isJoystickVisible = visible;
         m_joystickGroup.alpha = visible ? 1f : 0f;
     }
+
+    #endregion
+
+    #region Swipe
+
+    private void OnTouchStarted(InputAction.CallbackContext context)
+    {
+        m_touchStartPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
+        m_joystickRectT.position = m_touchStartPosition;
+        
+        m_touchStartTime = Time.time;
+        m_isTouching = true;
+        m_isDragging = false;
+        
+        SetJoystickVisible(false);
+    }
+
+    private void OnTouchCanceled(InputAction.CallbackContext context)
+    {
+        m_isTouching = false;
+        SetJoystickVisible(false);
+        m_joystickRectT.position = m_joystickRect;
+
+        if (m_isDragging || m_isJoystickVisible) return;
+
+        float elapsedTouchTime = Time.time - m_touchStartTime;
+        Vector2 currentPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
+        Vector2 swipeVector = currentPosition - m_touchStartPosition;
+        
+        bool isWithinDuration = elapsedTouchTime <= m_stats.MaxSwipeDuration;
+        bool hasExceededMinDistance = swipeVector.magnitude >= m_stats.MinSwipeDistance;
+
+        if (!isWithinDuration || !hasExceededMinDistance) return;
+
+        float ratio = Mathf.Clamp01(swipeVector.magnitude / m_stats.MaxSwipeDistance);
+        
+        OnSwipe?.Invoke(swipeVector.normalized, ratio);
+    }
+
+    #endregion
+    
 }
