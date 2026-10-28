@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Event_Bus;
 using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
@@ -12,6 +11,8 @@ public class PlayerDashState : PlayerBaseState
     private CancellationTokenSource m_ctsDash;
     
     private AudioService m_audioService;
+    private CameraService m_cameraService;
+    private FxService m_fxService;
 
     public bool IsFinished { get; private set; }
     
@@ -25,6 +26,8 @@ public class PlayerDashState : PlayerBaseState
     {
         m_rb = rb;
         m_audioService = ServiceLocator.Get<AudioService>();
+        m_cameraService = ServiceLocator.Get<CameraService>();
+        m_fxService = ServiceLocator.Get<FxService>();
     }
 
     public override void OnEnter()
@@ -49,11 +52,7 @@ public class PlayerDashState : PlayerBaseState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-
-        if (m_owner.Dash.IsDashing && !HasHit)
-        {
-            TryStrike();
-        }
+        HandleDashStrike();
     }
 
     private async UniTaskVoid RollAsync(Vector3 direction, CancellationToken token)
@@ -76,37 +75,20 @@ public class PlayerDashState : PlayerBaseState
         {
             IsFinished = true;
         }
-        
     }
 
-    private void TryStrike()
+    private void HandleDashStrike()
     {
-        Vector3 center = m_owner.TransformCache.position;
+        if (!m_owner.Dash.IsDashing || HasHit) return;
+        
+        HasHit = m_owner.Controller.TryStrike();
 
-        int count = Physics.OverlapSphereNonAlloc(
-            center,
-            m_stats.AttackStrikeRadius,
-            m_strikeHits,
-            m_stats.EnemyLayer,
-            QueryTriggerInteraction.Ignore);
-
-        for (int i = 0; i < count; i++)
-        {
-            if (!m_strikeHits[i].TryGetComponent(out EnemyBase enemy)) continue;
-
-            EventBus<ActorPushedEvent>.Raise(
-                new ActorPushedEvent(
-                    enemy,
-                    m_owner.MoveDir,
-                    m_stats.PushForce));
-
-            ServiceLocator.Get<CameraService>()?.Shake();
-            ServiceLocator.Get<FxService>()?.HitStop();
-            m_audioService.PlaySfx(m_stats.HitEvent);
-
-            HasHit = true;
-            m_ctsDash?.Cancel();
-            return;
-        }
+        if (!HasHit) return;
+        
+        m_cameraService.Shake();
+        m_fxService.HitStop();
+        m_audioService.PlaySfx(m_stats.HitEvent);
+        m_ctsDash?.Cancel();
     }
+    
 }

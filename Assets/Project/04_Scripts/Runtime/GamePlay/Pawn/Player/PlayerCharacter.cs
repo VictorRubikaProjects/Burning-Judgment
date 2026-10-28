@@ -109,7 +109,7 @@ public class PlayerCharacter : Actor
         HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
         Dash = new DashComponent(this, rb, GroundCheck);
         Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT);
-        Controller = new PlayerControllerComponent(owner: this, rb);
+        Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
         Bounce = new PlayerBounceComponent(this, ActiveStats);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
