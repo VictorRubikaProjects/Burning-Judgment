@@ -30,6 +30,7 @@ public class PlayerCharacter : Actor
     public DashComponent Dash { get; private set; }
     public PlayerBounceComponent Bounce { get; private set; }
     public DashIndicatorComponent DashIndicator { get; private set; }
+    public TimeControllerComponent TimeController { get; private set; }
 
     public Vector3 MoveDir => m_moveDir;
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
@@ -105,10 +106,11 @@ public class PlayerCharacter : Actor
             ActiveStats.GroundCheckHeight,
             ActiveStats.GroundCheckDistance);
 
+        TimeController = new TimeControllerComponent(this);
         KnockBack = new KnockbackComponent(this, rb);
         HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
         Dash = new DashComponent(this, rb, GroundCheck);
-        Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT);
+        Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT, TimeController);
         Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
         Bounce = new PlayerBounceComponent(this, ActiveStats);
@@ -119,6 +121,7 @@ public class PlayerCharacter : Actor
     {
         base.Start();
     
+        AddActorComponent(TimeController);
         AddActorComponent(GroundCheck);
         AddActorComponent(KnockBack);
         AddActorComponent(HitGate);

@@ -30,12 +30,14 @@ public class PlayerInputComponent : ActorComponent
     private Vector2 m_touchStartPosition;
     
     private readonly CanvasGroup m_joystickGroup;
+    
+    private TimeControllerComponent m_timerController;
 
     #endregion
 
     #region Actor Component Core
 
-    public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickRectT) : base(owner)
+    public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickRectT, TimeControllerComponent timerController) : base(owner)
     {
         m_stats = stats;
         m_joystickRectT = joystickRectT;
@@ -46,6 +48,8 @@ public class PlayerInputComponent : ActorComponent
             : joystickRectT.gameObject.AddComponent<CanvasGroup>();
 
         SetJoystickVisible(false);
+
+        m_timerController = timerController;
     }
 
     public override void Initialize()
@@ -119,6 +123,7 @@ public class PlayerInputComponent : ActorComponent
         if (!m_isDragging)
         {
             m_isDragging = true;
+            m_timerController.LerpTimeDilationAsync(m_stats.SlowMotionTargetDilation, m_stats.SlowMotionEnterDuration).Forget();
         }
 
         if (!m_isCharging)
@@ -142,6 +147,7 @@ public class PlayerInputComponent : ActorComponent
             OnJoystickRelease?.Invoke(m_lastDirection, GetChargeRatio());
         }
 
+        m_timerController.LerpTimeDilationAsync(1f, m_stats.SlowMotionExitDuration).Forget();
         OnChargeEnd?.Invoke();
     }
 

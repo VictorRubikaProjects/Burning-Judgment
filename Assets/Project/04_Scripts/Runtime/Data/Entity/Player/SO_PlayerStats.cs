@@ -99,6 +99,19 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Durée maximale en secondes pour effectuer un swipe. Au-delà, le joystick apparaît.")]
     public float MaxSwipeDuration { get; private set; } = 0.2f;
 
+    [field: Space, Header("Time Control (Slow Motion)")]
+    [field: SerializeField, Range(0.01f, 1f)]
+    [field: Tooltip("Facteur de dilatation du temps cible lorsque le joueur maintient et charge son joystick.")]
+    public float SlowMotionTargetDilation { get; private set; } = 0.2f;
+
+    [field: SerializeField, Range(0.01f, 2f)]
+    [field: Tooltip("Durée de la transition pour entrer dans le slow motion.")]
+    public float SlowMotionEnterDuration { get; private set; } = 1f;
+
+    [field: SerializeField, Range(0.01f, 2f)]
+    [field: Tooltip("Durée de la transition pour revenir à la vitesse normale du temps.")]
+    public float SlowMotionExitDuration { get; private set; } = 0.5f;
+
     [field: Space, Header("Animation")]
     [field: SerializeField, Range(0f, 0.9f), FormerlySerializedAs("crossFadeDuration")]
     [field: Tooltip("Durée de la transition entre deux animations, en secondes.")]
