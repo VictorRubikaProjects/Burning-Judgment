@@ -8,23 +8,28 @@ public class MenuManager : MonoBehaviour
 {
     [Header("Buttons")]
     [SerializeField] private Button playButton;
-    [SerializeField] private Button[] optionButtons;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button creditsButton;
+    [SerializeField] private Button exitButton;
+    [SerializeField] private Button[] optionButtons; 
     
-    [Header("Canvas Groups")]
+    [Header("Panels / Canvas Groups")]
     [SerializeField] private CanvasGroup optionCanvasGroup;
-    
+    [SerializeField] private CanvasGroup creditsCanvasGroup; 
+    [SerializeField] private Button closeCreditsButton;     
+
     [Header("Slider")]
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider musicSlider;
     
-    [Header("RectTransform")]
-    [SerializeField] private RectTransform m_playButtonRT;
-    [SerializeField] private RectTransform m_optionButtonRT;
+    [Header("RectTransforms (Menu Principal)")]
+    [SerializeField] private RectTransform[] menuButtonRects; 
     [SerializeField] private RectTransform m_canvasRT;
 
     [Header("Intro Animation")]
     [SerializeField] private float slideDuration = 0.5f;
+    [SerializeField] private float staggerDelay = 0.1f; 
     [SerializeField] private float offScreenMargin = 50f;
     [SerializeField] private Ease slideEase = Ease.OutCubic;
     
@@ -33,7 +38,7 @@ public class MenuManager : MonoBehaviour
     
     private SceneService m_sceneService;
     private AudioService m_audioService;
-    private OptionController  m_optionController;
+    private OptionController m_optionController;
 
     private void Awake()
     {
@@ -41,6 +46,14 @@ public class MenuManager : MonoBehaviour
         m_audioService = ServiceLocator.Get<AudioService>();
         
         playButton.onClick.AddListener(LoadGame);
+        settingsButton.onClick.AddListener(OpenSettings);
+        creditsButton.onClick.AddListener(OpenCredits);
+        exitButton.onClick.AddListener(ExitGame);
+        
+        if (closeCreditsButton != null)
+        {
+            closeCreditsButton.onClick.AddListener(CloseCredits);
+        }
         
         m_optionController = new OptionController(
             audioUI,
@@ -49,9 +62,11 @@ public class MenuManager : MonoBehaviour
             volumeSlider,
             sfxSlider,
             musicSlider,
-            pauseTime:false);
+            pauseTime: false);
         
         m_optionController.Init();
+
+        SetupCreditsPanel(false, instantaneous: true);
 
         PlayIntroAnimation();
     }
@@ -63,23 +78,85 @@ public class MenuManager : MonoBehaviour
 
     private void PlayIntroAnimation()
     {
-        Vector2 playTarget = m_playButtonRT.anchoredPosition;
-        Vector2 optionTarget = m_optionButtonRT.anchoredPosition;
+        for (int i = 0; i < menuButtonRects.Length; i++)
+        {
+            RectTransform rt = menuButtonRects[i];
+            Vector2 targetPos = rt.anchoredPosition;
 
-        m_playButtonRT.anchoredPosition = playTarget + Vector2.left * GetOffScreenOffset(m_playButtonRT);
-        m_optionButtonRT.anchoredPosition = optionTarget + Vector2.right * GetOffScreenOffset(m_optionButtonRT);
+            bool comeFromLeft = (i % 2 == 0);
+            float offScreenX = comeFromLeft ? 
+                -(m_canvasRT.rect.width * 0.5f + rt.rect.width * 0.5f + offScreenMargin) : 
+                 (m_canvasRT.rect.width * 0.5f + rt.rect.width * 0.5f + offScreenMargin);
 
-        Tween.UIAnchoredPosition(m_playButtonRT, playTarget, slideDuration, slideEase);
-        Tween.UIAnchoredPosition(m_optionButtonRT, optionTarget, slideDuration, slideEase);
+            rt.anchoredPosition = new Vector2(offScreenX, targetPos.y);
+
+            float delay = i * staggerDelay;
+            Tween.UIAnchoredPosition(rt, targetPos, slideDuration, slideEase, startDelay: delay);
+        }
     }
-
-    private float GetOffScreenOffset(RectTransform rt) =>
-        (m_canvasRT.rect.width * 0.5f) + (rt.rect.width * 0.5f) + offScreenMargin;
 
     private void LoadGame()
     {
-        playButton.interactable = false;
+        SetButtonsInteractivity(false);
         m_audioService.PlaySfx(audioUI.NewGameFx);
         ServiceLocator.Get<GameService>().StartGame().Forget();
+    }
+
+    private void OpenSettings()
+    {
+        //m_audioService.PlaySfx(audioUI.ClickFx);
+        optionCanvasGroup.alpha = 1f;
+        optionCanvasGroup.interactable = true;
+        optionCanvasGroup.blocksRaycasts = true;
+    }
+
+    private void OpenCredits()
+    {
+        //m_audioService.PlaySfx(audioUI.ClickFx);
+        SetupCreditsPanel(true, instantaneous: false);
+    }
+
+    private void CloseCredits()
+    {
+        //m_audioService.PlaySfx(audioUI.ClickFx);
+        SetupCreditsPanel(false, instantaneous: false);
+    }
+
+    private void SetupCreditsPanel(bool isOpen, bool instantaneous)
+    {
+        if (creditsCanvasGroup == null) return;
+
+        float targetAlpha = isOpen ? 1f : 0f;
+
+        if (instantaneous)
+        {
+            creditsCanvasGroup.alpha = targetAlpha;
+            creditsCanvasGroup.interactable = isOpen;
+            creditsCanvasGroup.blocksRaycasts = isOpen;
+        }
+        else
+        {
+            creditsCanvasGroup.interactable = isOpen;
+            creditsCanvasGroup.blocksRaycasts = isOpen;
+            Tween.Alpha(creditsCanvasGroup, targetAlpha, 0.3f, Ease.OutQuad);
+        }
+    }
+
+    private void ExitGame()
+    {
+        //m_audioService.PlaySfx(audioUI.ClickFx);
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
+    }
+
+    private void SetButtonsInteractivity(bool state)
+    {
+        playButton.interactable = state;
+        settingsButton.interactable = state;
+        creditsButton.interactable = state;
+        exitButton.interactable = state;
     }
 }
