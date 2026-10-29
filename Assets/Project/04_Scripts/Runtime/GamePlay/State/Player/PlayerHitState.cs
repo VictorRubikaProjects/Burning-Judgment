@@ -8,7 +8,9 @@ public class PlayerHitState : PlayerBaseState
 
     public bool IsFinished => m_isFinished;
 
-    public PlayerHitState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats) : base(owner, animator, playerStats) { }
+    public PlayerHitState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats)
+        : base(owner, animator, playerStats, playerStats.HitAnimation)
+    { }
 
     public override void OnEnter()
     {
@@ -19,7 +21,7 @@ public class PlayerHitState : PlayerBaseState
         m_owner.ConsumeHitRequest();
         m_owner.Aspect.HurtVisuals();
 
-        m_animator.CrossFade(HitHash, m_crossFadeDuration);
+        PlayAnimation(HitHash);
 
         m_owner.HitGate.TakeDamage();
 

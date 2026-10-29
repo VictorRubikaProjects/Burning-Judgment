@@ -4,7 +4,8 @@ public class PlayerFallState : PlayerBaseState
 {
     private Rigidbody m_rb;
     
-    public PlayerFallState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats, Rigidbody rigidbody) : base(owner, animator, playerStats)
+    public PlayerFallState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats, Rigidbody rigidbody)
+        : base(owner, animator, playerStats, playerStats.FallAnimation)
     {
         m_rb = rigidbody;
     }
@@ -12,7 +13,7 @@ public class PlayerFallState : PlayerBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        
+        PlayAnimation(FallHash);
         m_rb.isKinematic = false;
         m_rb.useGravity = true;
     }

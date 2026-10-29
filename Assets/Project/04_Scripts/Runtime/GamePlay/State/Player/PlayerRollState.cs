@@ -17,7 +17,7 @@ public class PlayerRollState : PlayerBaseState
     public bool HasHit { get; private set; }
 
     public PlayerRollState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats)
-        : base(owner, animator, playerStats)
+        : base(owner, animator, playerStats, playerStats.RollAnimation)
     {
         m_audioService = ServiceLocator.Get<AudioService>();
         m_cameraService = ServiceLocator.Get<CameraService>();
@@ -32,7 +32,7 @@ public class PlayerRollState : PlayerBaseState
         Vector3 direction = m_owner.MoveDir;
         float distance = m_stats.MaxRollDistance;
         m_owner.ConsumeRollRequest();
-        m_animator.CrossFade(DashHash, m_crossFadeDuration);
+        PlayAnimation(RollHash);
         m_ctsRoll = new CancellationTokenSource();
         RollAsync(direction, distance, m_ctsRoll.Token).Forget();
     }

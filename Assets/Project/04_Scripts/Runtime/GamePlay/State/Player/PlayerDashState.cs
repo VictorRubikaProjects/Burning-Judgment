@@ -22,7 +22,7 @@ public class PlayerDashState : PlayerBaseState
     
 
     public PlayerDashState(PlayerCharacter owner, Animator animator, Rigidbody rb, SO_PlayerStats playerStats)
-        : base(owner, animator, playerStats)
+        : base(owner, animator, playerStats, playerStats.DashAnimation)
     {
         m_rb = rb;
         m_audioService = ServiceLocator.Get<AudioService>();
@@ -35,7 +35,7 @@ public class PlayerDashState : PlayerBaseState
         IsFinished = false;
         HasHit = false;
 
-        m_animator.CrossFade(DashHash, m_crossFadeDuration);
+        PlayAnimation(DashHash);
         m_owner.ConsumeDashRequest();
 
         m_ctsDash = new CancellationTokenSource();

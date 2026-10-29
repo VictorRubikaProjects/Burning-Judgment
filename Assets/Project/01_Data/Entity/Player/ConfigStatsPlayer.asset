@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConfigStatsPlayer
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   <Weight>k__BackingField: 10
-  <PushForce>k__BackingField: 60
+  <PushForce>k__BackingField: 55
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
@@ -49,8 +49,8 @@ MonoBehaviour:
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <MaxRollDistance>k__BackingField: 5
-  <RollDuration>k__BackingField: 0.25
+  <MaxRollDistance>k__BackingField: 6
+  <RollDuration>k__BackingField: 0.2
   <RollCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -75,6 +75,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  <RollStrikeRadius>k__BackingField: 0.75
   <DashDistance>k__BackingField: 7
   <DashDuration>k__BackingField: 0.2
   <DashCurve>k__BackingField:
@@ -101,40 +102,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  <DashStrikeRadius>k__BackingField: 0.75
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 320
-  <DashRadius>k__BackingField: 1.2
-  <OffsetDash>k__BackingField: 1.4
-  <AttackCastRadius>k__BackingField: 1
-  <AttackCastDistance>k__BackingField: 40
-  <AttackDash>k__BackingField:
-    Duration: 0.15
-    Curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 2.179945
-        outSlope: 2.179945
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.04914934
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: -0.057251453
-        outSlope: -0.057251453
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.08317578
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  <AttackStopOffset>k__BackingField: 0
   <MaxChargeTime>k__BackingField: 1.5
   <MinChargeRatio>k__BackingField: 0.2
   <MinStickMagnitude>k__BackingField: 0.3
@@ -145,12 +116,24 @@ MonoBehaviour:
   <SlowMotionTargetDilation>k__BackingField: 0.2
   <SlowMotionEnterDuration>k__BackingField: 1
   <SlowMotionExitDuration>k__BackingField: 0.5
-  <CrossFadeDuration>k__BackingField: 0.1
-  <RecoverDuration>k__BackingField: 1
-  <RecoverCancelThreshold>k__BackingField: 0.25
-  <BounceThresholdTimer>k__BackingField: 1
-  <BounceMultiplier>k__BackingField: 1.15
-  <AttackStrikeRadius>k__BackingField: 0.75
+  <IdleAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 1
+  <RollAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 8
+  <DashAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 8
+  <FallAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 1
+  <HitAnimation>k__BackingField:
+    CrossFadeDuration: 0.05
+    Speed: 1
+  <DeathAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 1
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973
@@ -165,10 +148,3 @@ MonoBehaviour:
       Data3: -970574174
       Data4: 231883612
     Path: event:/GamePlay/Player/Dash_Sfx
-  <AttackDashEvent>k__BackingField:
-    Guid:
-      Data1: 706297759
-      Data2: 1289015306
-      Data3: 314374548
-      Data4: -1349771360
-    Path: event:/GamePlay/Player/Attack_Dash_Sfx

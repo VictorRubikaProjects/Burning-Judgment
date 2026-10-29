@@ -26,7 +26,7 @@ public class PlayerCharacter : Actor
     public KnockbackComponent KnockBack { get; private set; }
     public GroundCheckComponent GroundCheck { get; private set; }
     public DashComponent Dash { get; private set; }
-    public PlayerBounceComponent Bounce { get; private set; }
+    public PlayerChainComponent Chain { get; private set; }
     public DashIndicatorComponent DashIndicator { get; private set; }
     public TimeControllerComponent TimeController { get; private set; }
 
@@ -106,7 +106,7 @@ public class PlayerCharacter : Actor
         Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT, TimeController);
         Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
-        Bounce = new PlayerBounceComponent(this);
+        Chain = new PlayerChainComponent(this);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
     }
 
@@ -121,7 +121,7 @@ public class PlayerCharacter : Actor
         AddActorComponent(Input);
         AddActorComponent(Controller);
         AddActorComponent(Aspect);
-        AddActorComponent(Bounce);
+        AddActorComponent(Chain);
         AddActorComponent(DashIndicator);
     
         ServiceLocator.Get<CameraService>().AddTarget(transform,1f);

@@ -96,9 +96,29 @@ public class SO_PlayerStats : SO_ActorsStats
     public float SlowMotionExitDuration { get; private set; } = 0.5f;
 
     [field: Space, Header("Animation")]
-    [field: SerializeField, Range(0f, 0.9f)]
-    [field: Tooltip("Durée de la transition entre deux animations, en secondes.")]
-    public float CrossFadeDuration { get; private set; } = 0.1f;
+    [field: SerializeField]
+    [field: Tooltip("Transition et vitesse de l'animation Idle.")]
+    public StateAnimationData IdleAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
+
+    [field: SerializeField]
+    [field: Tooltip("Transition et vitesse de l'animation de roll.")]
+    public StateAnimationData RollAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
+
+    [field: SerializeField]
+    [field: Tooltip("Transition et vitesse de l'animation de dash.")]
+    public StateAnimationData DashAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
+
+    [field: SerializeField]
+    [field: Tooltip("Transition et vitesse de l'animation de chute.")]
+    public StateAnimationData FallAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
+
+    [field: SerializeField]
+    [field: Tooltip("Transition et vitesse de l'animation quand le joueur prend un coup.")]
+    public StateAnimationData HitAnimation { get; private set; } = new() { CrossFadeDuration = 0.05f, Speed = 1f };
+
+    [field: SerializeField]
+    [field: Tooltip("Transition et vitesse de l'animation de mort.")]
+    public StateAnimationData DeathAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
 
     [field: Space, Header("Audio")]
     [field: SerializeField, Tooltip("Son joué quand le joueur prend un coup.")]
