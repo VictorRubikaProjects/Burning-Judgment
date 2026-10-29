@@ -7,7 +7,5 @@ public class PlayerDeathState : PlayerBaseState
     public override void OnEnter()
     {
         m_animator.CrossFade(DeathHash, m_crossFadeDuration);
-        
-        m_owner.Bounce.Break();
     }
 }

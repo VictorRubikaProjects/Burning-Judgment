@@ -15,7 +15,5 @@ public class PlayerFallState : PlayerBaseState
         
         m_rb.isKinematic = false;
         m_rb.useGravity = true;
-        
-        m_owner.Bounce.Break();
     }
 }

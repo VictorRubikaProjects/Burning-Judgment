@@ -1,6 +1,4 @@
-using System;
 using Event_Bus;
-using Helpers.Runtime.Math;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
@@ -43,19 +41,14 @@ public class PlayerCharacter : Actor
     private StateMachine m_stateMachine;
 
     private Vector3 m_moveDir;
-    private Vector3 m_attackDirection;
     private Vector3 m_pendingKnockbackDirection;
     
     private float m_dashDistance;
     private float m_pendingKnockbackForce;
     
     private bool m_wantsDash;
-    private bool m_wantsAttack;
     private bool m_isDead;
     private bool m_hitRequested;
-    private bool m_canCancelRecover;
-    private bool m_recoverCancelRequested;
-    private bool m_isAttackReadyShown;
     private bool m_wantsRoll;
     
     private PlayerIdleState m_playerIdleState;
@@ -113,7 +106,7 @@ public class PlayerCharacter : Actor
         Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT, TimeController);
         Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
-        Bounce = new PlayerBounceComponent(this, ActiveStats);
+        Bounce = new PlayerBounceComponent(this);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
     }
 
@@ -323,9 +316,7 @@ public class PlayerCharacter : Actor
     #region Helpers
 
     public void ConsumeDashRequest() => m_wantsDash = false;
-    public void ConsumeAttackRequest() => m_wantsAttack = false;
     public void RequestDash()=> m_wantsDash = true;
-    public void RequestAttack()=> m_wantsAttack = true;
 
     public override void Kill()
     {
@@ -336,19 +327,10 @@ public class PlayerCharacter : Actor
     public void RequestHit() => m_hitRequested = true;
     
     public void ConsumeHitRequest() => m_hitRequested = false;
-    
-    public void RequestRecoverCancel() => m_recoverCancelRequested = true;
-    public void SetCanCancelRecover(bool value) => m_canCancelRecover = value;
-    
-    public void ResetRecoverCancel()
-    {
-        m_canCancelRecover = false;
-        m_recoverCancelRequested = false;
-    }
 
     public void SetIdle() => m_stateMachine.SetState(m_playerIdleState);
     
-    private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState || Bounce.CanBounce;
+    private bool CanAttack() => m_stateMachine.GetCurrentState() is PlayerIdleState;
     private bool CanSwipe() => m_stateMachine.GetCurrentState() is PlayerIdleState;
     
     private float ComputeDashDistance(float ratio) => ActiveStats.DashDistance * Mathf.Clamp01(ratio);

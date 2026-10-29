@@ -74,7 +74,7 @@ public class PlayerRollState : PlayerBaseState
     {
         if (!m_owner.Dash.IsDashing || HasHit) return;
         
-        HasHit = m_owner.Controller.TryStrike();
+        HasHit = m_owner.Controller.TryStrike(m_stats.RollStrikeRadius);
 
         if (!HasHit) return;
         

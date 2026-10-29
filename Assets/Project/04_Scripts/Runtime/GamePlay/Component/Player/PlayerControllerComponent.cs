@@ -44,13 +44,13 @@ public class PlayerControllerComponent : ActorComponent
         m_rb.MoveRotation(m_targetRotation);
     }
     
-    public bool TryStrike()
+    public bool TryStrike(float radius)
     {
         Vector3 center = m_pc.TransformCache.position;
 
         int count = Physics.OverlapSphereNonAlloc(
             center,
-            m_stats.AttackStrikeRadius,
+            radius,
             m_strikeHits,
             m_stats.EnemyLayer,
             QueryTriggerInteraction.Ignore);
@@ -64,7 +64,7 @@ public class PlayerControllerComponent : ActorComponent
                     enemy,
                     m_pc.MoveDir,
                     m_stats.PushForce));
-            
+
             return true;
         }
 

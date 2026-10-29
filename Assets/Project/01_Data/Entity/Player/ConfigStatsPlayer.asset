@@ -138,10 +138,13 @@ MonoBehaviour:
   <MaxChargeTime>k__BackingField: 1.5
   <MinChargeRatio>k__BackingField: 0.2
   <MinStickMagnitude>k__BackingField: 0.3
-  <InvertStickDirection>k__BackingField: 0
+  <InvertStickDirection>k__BackingField: 1
   <MinSwipeDistance>k__BackingField: 50
   <MaxSwipeDistance>k__BackingField: 400
   <MaxSwipeDuration>k__BackingField: 0.15
+  <SlowMotionTargetDilation>k__BackingField: 0.2
+  <SlowMotionEnterDuration>k__BackingField: 1
+  <SlowMotionExitDuration>k__BackingField: 0.5
   <CrossFadeDuration>k__BackingField: 0.1
   <RecoverDuration>k__BackingField: 1
   <RecoverCancelThreshold>k__BackingField: 0.25

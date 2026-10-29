@@ -23,8 +23,6 @@ public class PlayerHitState : PlayerBaseState
 
         m_owner.HitGate.TakeDamage();
 
-        m_owner.Bounce.Break();
-
         m_owner.KnockBack.HitAsync(
             m_owner.PendingKnockbackDirection,
             m_stats.HitDuration,
