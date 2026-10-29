@@ -2,54 +2,56 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public delegate void DirectionRatioHandler(Vector2 direction, float ratio);
+
 public class PlayerInputComponent : ActorComponent
 {
     #region Variables
 
     private readonly SO_PlayerStats m_stats;
-    
+    private readonly RectTransform m_joystickTransform;
+    private readonly CanvasGroup m_joystickGroup;
+    private readonly TimeControllerComponent m_timeController;
+    private readonly Vector2 m_joystickRestPosition;
+
     private PlayerActions m_inputActions;
-    
-    private float m_chargeStartTime;
+
+    private Vector2 m_touchStartPosition;
+    private Vector2 m_lastDirection;
+
     private float m_touchStartTime;
-    
-    private bool m_isCharging;
+    private float m_chargeStartTime;
+
     private bool m_isTouching;
     private bool m_isJoystickVisible;
-    private bool m_isDragging;
+    private bool m_isStickEngaged;
+    private bool m_isCharging;
 
-    public event Action<Vector2, float> OnJoystickRelease;
-    public event Action<Vector2, float> OnChargeUpdate;
-    public event Action<Vector2, float> OnSwipe;
+    public event DirectionRatioHandler OnJoystickRelease;
+    public event DirectionRatioHandler OnChargeUpdate;
+    public event DirectionRatioHandler OnSwipe;
     public event Action OnChargeEnd;
-
-    private RectTransform m_joystickRectT;
-    
-    private Vector2 m_lastDirection;
-    private Vector2 m_joystickRect;
-    private Vector2 m_touchStartPosition;
-    
-    private readonly CanvasGroup m_joystickGroup;
-    
-    private TimeControllerComponent m_timerController;
 
     #endregion
 
     #region Actor Component Core
 
-    public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickRectT, TimeControllerComponent timerController) : base(owner)
+    public PlayerInputComponent(
+        Actor owner,
+        SO_PlayerStats stats,
+        RectTransform joystickTransform,
+        TimeControllerComponent timeController) : base(owner)
     {
         m_stats = stats;
-        m_joystickRectT = joystickRectT;
-        m_joystickRect = joystickRectT.position;
+        m_joystickTransform = joystickTransform;
+        m_joystickRestPosition = joystickTransform.position;
+        m_timeController = timeController;
 
-        m_joystickGroup = joystickRectT.TryGetComponent(out CanvasGroup group)
+        m_joystickGroup = joystickTransform.TryGetComponent(out CanvasGroup group)
             ? group
-            : joystickRectT.gameObject.AddComponent<CanvasGroup>();
+            : joystickTransform.gameObject.AddComponent<CanvasGroup>();
 
         SetJoystickVisible(false);
-
-        m_timerController = timerController;
     }
 
     public override void Initialize()
@@ -59,7 +61,7 @@ public class PlayerInputComponent : ActorComponent
 
         m_inputActions.Gameplay.Touch.started += OnTouchStarted;
         m_inputActions.Gameplay.Touch.canceled += OnTouchCanceled;
-        
+
         m_inputActions.Gameplay.Move.started += OnMoveStarted;
         m_inputActions.Gameplay.Move.performed += OnMovePerformed;
         m_inputActions.Gameplay.Move.canceled += OnMoveCanceled;
@@ -80,83 +82,48 @@ public class PlayerInputComponent : ActorComponent
 
     public override void Update()
     {
-        HandleJoystickPlacement();
+        ShowJoystickAfterHold();
 
         if (!m_isCharging) return;
-        
+
         OnChargeUpdate?.Invoke(m_lastDirection, GetChargeRatio());
     }
 
     #endregion
 
-    #region Joystick
+    #region Touch
 
-    private void HandleJoystickPlacement()
+    private void OnTouchStarted(InputAction.CallbackContext context)
+    {
+        m_touchStartPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
+        m_joystickTransform.position = m_touchStartPosition;
+
+        m_touchStartTime = Time.time;
+        m_isTouching = true;
+        m_isStickEngaged = false;
+
+        SetJoystickVisible(false);
+    }
+
+    private void OnTouchCanceled(InputAction.CallbackContext context)
+    {
+        m_isTouching = false;
+        SetJoystickVisible(false);
+        m_joystickTransform.position = m_joystickRestPosition;
+
+        if (m_isStickEngaged) return;
+
+        TryEmitSwipe();
+    }
+
+    private void ShowJoystickAfterHold()
     {
         if (!m_isTouching || m_isJoystickVisible) return;
-        
-        float elapsedTouchTime = Time.time - m_touchStartTime;
+        if (Time.time - m_touchStartTime < m_stats.MaxSwipeDuration) return;
 
-        if (!(elapsedTouchTime >= m_stats.MaxSwipeDuration)) return;
-        
         SetJoystickVisible(true);
     }
-    
-    private void OnMoveStarted(InputAction.CallbackContext context)
-    {
-        if (!m_isJoystickVisible) return;
 
-        m_chargeStartTime = Time.time;
-        m_isCharging = true;
-        m_lastDirection = Vector2.zero;
-    }
-
-    private void OnMovePerformed(InputAction.CallbackContext context)
-    {
-        if (!m_isJoystickVisible) return;
-
-        Vector2 value = context.ReadValue<Vector2>();
-        bool isBelowMinMagnitude = value.magnitude < m_stats.MinStickMagnitude;
-
-        if (isBelowMinMagnitude) return;
-
-        if (!m_isDragging)
-        {
-            m_isDragging = true;
-            m_timerController.LerpTimeDilationAsync(m_stats.SlowMotionTargetDilation, m_stats.SlowMotionEnterDuration).Forget();
-        }
-
-        if (!m_isCharging)
-        {
-            m_chargeStartTime = Time.time;
-            m_isCharging = true;
-        }
-
-        Vector2 direction = value.normalized;
-        m_lastDirection = m_stats.InvertStickDirection ? -direction : direction;
-    }
-
-    private void OnMoveCanceled(InputAction.CallbackContext context)
-    {
-        if (!m_isCharging) return;
-        
-        m_isCharging = false;
-
-        if (m_lastDirection != Vector2.zero)
-        {
-            OnJoystickRelease?.Invoke(m_lastDirection, GetChargeRatio());
-        }
-
-        m_timerController.LerpTimeDilationAsync(1f, m_stats.SlowMotionExitDuration).Forget();
-        OnChargeEnd?.Invoke();
-    }
-
-    private float GetChargeRatio()
-    {
-        float heldDuration = Time.time - m_chargeStartTime;
-        return Mathf.Clamp(heldDuration / m_stats.MaxChargeTime, m_stats.MinChargeRatio, 1f);
-    }
-    
     private void SetJoystickVisible(bool visible)
     {
         m_isJoystickVisible = visible;
@@ -167,40 +134,81 @@ public class PlayerInputComponent : ActorComponent
 
     #region Swipe
 
-    private void OnTouchStarted(InputAction.CallbackContext context)
+    private void TryEmitSwipe()
     {
-        m_touchStartPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
-        m_joystickRectT.position = m_touchStartPosition;
-        
-        m_touchStartTime = Time.time;
-        m_isTouching = true;
-        m_isDragging = false;
-        
-        SetJoystickVisible(false);
-    }
-
-    private void OnTouchCanceled(InputAction.CallbackContext context)
-    {
-        m_isTouching = false;
-        SetJoystickVisible(false);
-        m_joystickRectT.position = m_joystickRect;
-
-        if (m_isDragging || m_isJoystickVisible) return;
-
         float elapsedTouchTime = Time.time - m_touchStartTime;
         Vector2 currentPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
         Vector2 swipeVector = currentPosition - m_touchStartPosition;
-        
-        bool isWithinDuration = elapsedTouchTime <= m_stats.MaxSwipeDuration;
-        bool hasExceededMinDistance = swipeVector.magnitude >= m_stats.MinSwipeDistance;
 
-        if (!isWithinDuration || !hasExceededMinDistance) return;
+        bool isQuickEnough = elapsedTouchTime <= m_stats.MaxSwipeDuration;
+        bool isLongEnough = swipeVector.magnitude >= m_stats.MinSwipeDistance;
+
+        if (!isQuickEnough || !isLongEnough) return;
 
         float ratio = Mathf.Clamp01(swipeVector.magnitude / m_stats.MaxSwipeDistance);
-        
+
         OnSwipe?.Invoke(swipeVector.normalized, ratio);
     }
 
     #endregion
-    
+
+    #region Joystick Charge
+
+    private void OnMoveStarted(InputAction.CallbackContext context)
+    {
+        if (!m_isJoystickVisible) return;
+
+        BeginCharge();
+    }
+
+    private void OnMovePerformed(InputAction.CallbackContext context)
+    {
+        if (!m_isJoystickVisible) return;
+
+        Vector2 stickValue = context.ReadValue<Vector2>();
+
+        if (stickValue.magnitude < m_stats.MinStickMagnitude) return;
+
+        if (!m_isStickEngaged) EngageStick();
+        if (!m_isCharging) BeginCharge();
+
+        Vector2 direction = stickValue.normalized;
+        m_lastDirection = m_stats.InvertStickDirection ? -direction : direction;
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext context)
+    {
+        if (!m_isCharging) return;
+
+        m_isCharging = false;
+
+        if (m_lastDirection != Vector2.zero)
+        {
+            OnJoystickRelease?.Invoke(m_lastDirection, GetChargeRatio());
+        }
+
+        m_timeController.LerpTimeDilationAsync(1f, m_stats.SlowMotionExitDuration).Forget();
+        OnChargeEnd?.Invoke();
+    }
+
+    private void BeginCharge()
+    {
+        m_chargeStartTime = Time.unscaledTime; //unscaled time for slow motion impact
+        m_isCharging = true;
+        m_lastDirection = Vector2.zero;
+    }
+
+    private void EngageStick()
+    {
+        m_isStickEngaged = true;
+        m_timeController.LerpTimeDilationAsync(m_stats.SlowMotionTargetDilation, m_stats.SlowMotionEnterDuration).Forget();
+    }
+
+    private float GetChargeRatio()
+    {
+        float heldDuration = Time.unscaledTime - m_chargeStartTime; //unscaled time used so slow motion no impact on charge.
+        return Mathf.Clamp(heldDuration / m_stats.MaxChargeTime, m_stats.MinChargeRatio, 1f);
+    }
+
+    #endregion
 }
