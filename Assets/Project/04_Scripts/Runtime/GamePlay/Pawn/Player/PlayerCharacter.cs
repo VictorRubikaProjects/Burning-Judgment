@@ -81,7 +81,6 @@ public class PlayerCharacter : Actor
         if (augmentService == null)
         {
             Debug.LogError("Augment Service null in PlayerCharacter Awake");
-            
         }
         else
         {
@@ -106,7 +105,7 @@ public class PlayerCharacter : Actor
         Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT, TimeController);
         Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
-        Chain = new PlayerChainComponent(this);
+        Chain = new PlayerChainComponent(this, ActiveStats);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
     }
 
@@ -133,6 +132,8 @@ public class PlayerCharacter : Actor
         Input.OnChargeUpdate += OnChargeUpdate;
         Input.OnChargeEnd += OnChargeEnd;
         Input.OnSwipe += OnTap;
+
+        Chain.OnChainInputSuccess += OnChainSuccessInput;
         
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(OnActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
@@ -144,6 +145,8 @@ public class PlayerCharacter : Actor
         Input.OnChargeUpdate -= OnChargeUpdate;
         Input.OnChargeEnd -= OnChargeEnd;
         Input.OnSwipe -= OnTap;
+        
+        Chain.OnChainInputSuccess -= OnChainSuccessInput;
         
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
@@ -295,6 +298,9 @@ public class PlayerCharacter : Actor
         m_moveDir = new Vector3(dir.x, 0f, dir.y);
         RequestRoll();
     }
+
+    private void OnChainSuccessInput()
+        => ServiceLocator.Get<FxService>().PlayChainSuccessEffect(TransformCache,1.5f);
 
     #endregion
 

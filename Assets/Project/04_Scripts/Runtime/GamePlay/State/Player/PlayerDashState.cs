@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
 public class PlayerDashState : PlayerBaseState
@@ -40,6 +39,10 @@ public class PlayerDashState : PlayerBaseState
 
         m_ctsDash = new CancellationTokenSource();
         RollAsync(m_owner.MoveDir, m_ctsDash.Token).Forget();
+        
+        Debug.Log($"<color=red>[PlayerDashState] PlayerDashState OnEnter Combo {m_owner.Chain.ChainCount}</red>");
+        
+        m_owner.Chain.SetTimerChain().Forget(); //TODO NEED TO RESET IF ENTER A CERTAIN STATE LIKE HIT !!!!!!!!!!!
     }
 
     public override void OnExit()

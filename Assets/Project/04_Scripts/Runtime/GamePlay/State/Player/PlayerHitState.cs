@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using Project._05_Scripts.Runtime.System.ServiceLocator.Services;
 using UnityEngine;
 
 public class PlayerHitState : PlayerBaseState
@@ -31,6 +30,8 @@ public class PlayerHitState : PlayerBaseState
             m_owner.PendingKnockbackForce,
             m_stats.HitKnockbackCurve,
             m_stats.ObstacleLayer).Forget();
+        
+        m_owner.Chain.Reset();
         
         ServiceLocator.Get<FxService>().PlayEjectionEffect(m_owner.TransformCache,m_stats.HitDuration);
     }
