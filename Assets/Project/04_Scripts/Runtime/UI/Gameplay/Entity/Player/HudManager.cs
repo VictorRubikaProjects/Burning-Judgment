@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,8 @@ public class HudManager : MonoBehaviour
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider musicSlider;
+    [Header("Feedback")] 
+    [SerializeField] private TMP_Text levelIndicator;
 
     [Header("Sound")] 
     [SerializeField] private SO_AudioUI audioUI;
@@ -29,6 +32,8 @@ public class HudManager : MonoBehaviour
             musicSlider);
         
         m_optionController.Init();
+
+        levelIndicator.text = ServiceLocator.Get<GameService>().CurrentFloor.ToString();
     }
 
     private void OnDestroy()

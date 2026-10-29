@@ -110,7 +110,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -331, y: 0}
+  m_AnchoredPosition: {x: -383, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2149867342598620978
@@ -230,7 +230,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 326, y: 0}
+  m_AnchoredPosition: {x: 383, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2988877400462385246
@@ -424,8 +424,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.7307, y: 2.1921}
-  m_SizeDelta: {x: 534.6599, y: 127.454}
+  m_AnchoredPosition: {x: -4.1666, y: -1}
+  m_SizeDelta: {x: 634.301, y: 220.2231}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6376016976763247520
 CanvasRenderer:
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.9
+  m_fontSize: 38.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -822,8 +822,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -550}
-  m_SizeDelta: {x: 800, y: 150}
+  m_AnchoredPosition: {x: 0, y: -535}
+  m_SizeDelta: {x: 900, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &4205281170363861669
 PrefabInstance:
@@ -943,6 +943,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 247
       objectReference: {fileID: 0}
+    - target: {fileID: 4142096014151512831, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142096014151512831, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_fontSize
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142096014151512831, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c2738f53d15b6bc45b5d8cf4eb6b8d64, type: 2}
+    - target: {fileID: 4142096014151512831, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142096014151512831, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142096014151512831, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5870216310492752201, guid: c2738f53d15b6bc45b5d8cf4eb6b8d64, type: 2}
+    - target: {fileID: 4142096014151512831, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4586318117213073355, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1024,8 +1052,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4829125090996561673, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 198.3485
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829125090996561673, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 147.2055
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829125090996561673, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 12.6204
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829125090996561673, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 328
+      value: 307
       objectReference: {fileID: 0}
     - target: {fileID: 8278102842887165786, guid: c745fa9e0e3847c4d928c4514607af0f, type: 3}
       propertyPath: m_Name
@@ -1061,7 +1101,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4227944036547096373}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
