@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89161a0b61d2e0a4ead9604ce9e6ffb0, type: 3}
   m_Name: SO_ConfigVfx
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigVfx
-  <VfxPrefabPushed>k__BackingField: {fileID: 6632970447897807731, guid: c1479855215624c4aaa191d5b980dd99, type: 3}
+  <VfxPrefabEjection>k__BackingField: {fileID: 6632970447897807731, guid: c1479855215624c4aaa191d5b980dd99, type: 3}
+  <VfxPrefabChainInputSuccess>k__BackingField: {fileID: 8299483044362581044, guid: 6a5bf1ecf4d152843b77c52e17dbff40, type: 3}

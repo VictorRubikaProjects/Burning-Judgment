@@ -134,6 +134,8 @@ MonoBehaviour:
   <DeathAnimation>k__BackingField:
     CrossFadeDuration: 0.1
     Speed: 1
+  <ChainThreshold>k__BackingField: 1
+  <ChainMultiplier>k__BackingField: 1.15
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973
