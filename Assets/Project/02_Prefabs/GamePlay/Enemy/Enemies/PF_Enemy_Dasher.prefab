@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::EnemyDasher
   agent: {fileID: 7148706208256203508}
   <Rigidbody>k__BackingField: {fileID: 2573753427026032265}
+  <DamagePopUp>k__BackingField: {fileID: 4038700554573661298}
   stats: {fileID: 11400000, guid: a6f19d2432e860a4983d6bd83dbd009b, type: 2}
   materialIndicatorDash: {fileID: 2100000, guid: 37360b12a44e8744ba87b9ea3c4ebf61, type: 2}
   rendererDash: {fileID: 8155048811342292436}
@@ -185,6 +186,17 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 3032748135735321449, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
   m_PrefabInstance: {fileID: 694032937245464032}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4038700554573661298 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3579776243268489618, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 694032937245464032}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839912238954140197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::DamagePopUp
 --- !u!195 &7148706208256203508 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 7680041633153437460, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}

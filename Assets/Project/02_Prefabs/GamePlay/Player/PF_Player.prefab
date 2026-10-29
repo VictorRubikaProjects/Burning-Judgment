@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 1563943224991897210}
   - component: {fileID: 4374285692015904546}
   - component: {fileID: 6773298274157356297}
+  - component: {fileID: 8638680600792434940}
   m_Layer: 7
   m_Name: PF_Player
   m_TagString: Player
@@ -188,6 +189,7 @@ MonoBehaviour:
   feetTransform: {fileID: 4256807357542900472}
   dashIndicatorSprite: {fileID: 6824200629020617773}
   joystickRectT: {fileID: 2375921176757055119}
+  <DamagePopUp>k__BackingField: {fileID: 8638680600792434940}
   playerMaterial: {fileID: 2100000, guid: 560af941f648858428da39ccc0b31931, type: 2}
   playerRenderer: {fileID: 973267823528567192}
   baseStats: {fileID: 11400000, guid: adece986b4bfd16459c4207bc87333ef, type: 2}
@@ -241,6 +243,24 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!114 &8638680600792434940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976233887079919446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::DamagePopUp
+  damageTextPrefab: {fileID: 1265472547213768431, guid: f2b069083e5ab9b4fb9f50cb81e35e62, type: 3}
+  poolSize: 2
+  punchScale: 1.2
+  moveSpeed: 1
+  lifeTime: 1
+  offsetY: 1
 --- !u!1 &8427667490690870893
 GameObject:
   m_ObjectHideFlags: 0

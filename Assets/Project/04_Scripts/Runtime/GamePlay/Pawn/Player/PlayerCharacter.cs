@@ -11,6 +11,7 @@ public class PlayerCharacter : Actor
     [SerializeField] private Transform feetTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
     [SerializeField] private RectTransform joystickRectT;
+    [field: SerializeField] public DamagePopUp  DamagePopUp { get; protected set; }
     
     [Header("Aspect")]
     [SerializeField] private Material playerMaterial;
@@ -315,6 +316,7 @@ public class PlayerCharacter : Actor
         m_pendingKnockbackDirection = e.Direction;
         m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, baseStats.Weight);
         RequestHit();
+        DamagePopUp.Show(e.Force,TransformCache.position);
     }
 
     #endregion

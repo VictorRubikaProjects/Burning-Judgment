@@ -1,8 +1,7 @@
-using System;
 using Event_Bus;
 using UnityEngine;
 using UnityEngine.AI;
-using Object = UnityEngine.Object;
+
 
 public abstract class EnemyBase : Actor , IBouncy
 {
@@ -10,6 +9,7 @@ public abstract class EnemyBase : Actor , IBouncy
 
     [SerializeField] private NavMeshAgent agent;
     [field:SerializeField] public Rigidbody Rigidbody { get; protected set; }
+    [field: SerializeField] public DamagePopUp  DamagePopUp { get; protected set; }
 
     public abstract SO_ConfigEnemy StatsBase { get; }
 
@@ -134,6 +134,7 @@ public abstract class EnemyBase : Actor , IBouncy
         PendingKnockbackDirection = e.Direction;
         PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, StatsBase.Weight);
         RequestHit();
+        DamagePopUp.Show(e.Force,TransformCache.position);
     }
 
     public void LookAtPlayer()
