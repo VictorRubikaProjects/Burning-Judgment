@@ -2141,41 +2141,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Canvas_GameOver
       objectReference: {fileID: 0}
-    - target: {fileID: 5475368919850606793, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 7399946396373204669, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
+      propertyPath: m_SortingOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6647037470216641335, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6647037470216641335, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6647037470216641335, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6647037470216641335, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589400391163798866, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589400391163798866, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589400391163798866, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589400391163798866, guid: 830175175ebe03f4a87d4eeabb9734d0, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5336,6 +5304,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 234158369408530662, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1016514009572045617, guid: ad136e3f43ce0a443b82a30c7f5f8943, type: 3}
       propertyPath: m_Name
       value: PF_Canvas_Hud
@@ -5622,8 +5594,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1939938457}
-  - {fileID: 3340452781338461935}
   - {fileID: 828043766}
+  - {fileID: 3340452781338461935}
   - {fileID: 1193908559}
   - {fileID: 317019368}
   - {fileID: 1452300732}
