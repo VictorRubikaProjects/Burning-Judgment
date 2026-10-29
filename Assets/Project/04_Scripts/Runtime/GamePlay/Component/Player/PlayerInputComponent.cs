@@ -31,6 +31,9 @@ public class PlayerInputComponent : ActorComponent
     public event DirectionRatioHandler OnChargeUpdate;
     public event DirectionRatioHandler OnSwipe;
     public event Action OnChargeEnd;
+    public event Action OnTouchPressed;
+    public event Action OnHoldConfirmed;
+    public event Action OnTouchReleased;
 
     #endregion
 
@@ -75,7 +78,7 @@ public class PlayerInputComponent : ActorComponent
         m_inputActions.Gameplay.Move.started -= OnMoveStarted;
         m_inputActions.Gameplay.Move.performed -= OnMovePerformed;
         m_inputActions.Gameplay.Move.canceled -= OnMoveCanceled;
-
+        
         m_inputActions.Gameplay.Disable();
         m_inputActions.Dispose();
     }
@@ -98,11 +101,13 @@ public class PlayerInputComponent : ActorComponent
         m_touchStartPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
         m_joystickTransform.position = m_touchStartPosition;
 
-        m_touchStartTime = Time.time;
+        m_touchStartTime = Time.unscaledTime;
         m_isTouching = true;
         m_isStickEngaged = false;
 
         SetJoystickVisible(false);
+
+        OnTouchPressed?.Invoke();
     }
 
     private void OnTouchCanceled(InputAction.CallbackContext context)
@@ -111,17 +116,18 @@ public class PlayerInputComponent : ActorComponent
         SetJoystickVisible(false);
         m_joystickTransform.position = m_joystickRestPosition;
 
-        if (m_isStickEngaged) return;
+        if (!m_isStickEngaged) TryEmitSwipe();
 
-        TryEmitSwipe();
+        OnTouchReleased?.Invoke();
     }
 
     private void ShowJoystickAfterHold()
     {
         if (!m_isTouching || m_isJoystickVisible) return;
-        if (Time.time - m_touchStartTime < m_stats.MaxSwipeDuration) return;
+        if (TouchElapsed < m_stats.MaxSwipeDuration) return;
 
         SetJoystickVisible(true);
+        OnHoldConfirmed?.Invoke();
     }
 
     private void SetJoystickVisible(bool visible)
@@ -130,20 +136,20 @@ public class PlayerInputComponent : ActorComponent
         m_joystickGroup.alpha = visible ? 1f : 0f;
     }
 
+    private float TouchElapsed => Time.unscaledTime - m_touchStartTime;
+    
     #endregion
 
     #region Swipe
 
     private void TryEmitSwipe()
     {
-        float elapsedTouchTime = Time.time - m_touchStartTime;
         Vector2 currentPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
         Vector2 swipeVector = currentPosition - m_touchStartPosition;
 
-        bool isQuickEnough = elapsedTouchTime <= m_stats.MaxSwipeDuration;
-        bool isLongEnough = swipeVector.magnitude >= m_stats.MinSwipeDistance;
+        bool isQuickEnough = TouchElapsed <= m_stats.MaxSwipeDuration;
 
-        if (!isQuickEnough || !isLongEnough) return;
+        if (!isQuickEnough) return;
 
         float ratio = Mathf.Clamp01(swipeVector.magnitude / m_stats.MaxSwipeDistance);
 

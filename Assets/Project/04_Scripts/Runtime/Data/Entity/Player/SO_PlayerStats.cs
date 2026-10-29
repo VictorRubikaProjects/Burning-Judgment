@@ -120,6 +120,13 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Transition et vitesse de l'animation de mort.")]
     public StateAnimationData DeathAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
 
+    [field: Space, Header("Chain")]
+    [field: SerializeField, Range(0.1f,1f), Tooltip("Offset de temps pour valider un combo de chain.")]
+    public float ChainThreshold { get; private set; } = 0.25f;
+    [field: SerializeField, Range(1f,1.5f), Tooltip("Offset de temps pour valider un combo de chain.")]
+    public float ChainMultiplier { get; private set; } = 1.15f;
+    
+    
     [field: Space, Header("Audio")]
     [field: SerializeField, Tooltip("Son joué quand le joueur prend un coup.")]
     public EventReference HitEvent { get; private set; }
