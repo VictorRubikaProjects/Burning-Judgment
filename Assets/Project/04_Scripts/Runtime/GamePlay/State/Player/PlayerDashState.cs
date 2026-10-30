@@ -13,6 +13,8 @@ public class PlayerDashState : PlayerBaseState
     private CameraService m_cameraService;
     private FxService m_fxService;
 
+    private float m_forceMultiplier;
+
     public bool IsFinished { get; private set; }
     
     public bool HasHit { get; private set; }
@@ -33,6 +35,8 @@ public class PlayerDashState : PlayerBaseState
     {
         IsFinished = false;
         HasHit = false;
+        
+        m_forceMultiplier = m_owner.Chain.ForceMultiplier;
 
         PlayAnimation(DashHash);
         m_owner.ConsumeDashRequest();
@@ -83,16 +87,23 @@ public class PlayerDashState : PlayerBaseState
     private void HandleDashStrike()
     {
         if (!m_owner.Dash.IsDashing || HasHit) return;
-        
-        HasHit = m_owner.Controller.TryStrike(m_stats.DashStrikeRadius, m_owner.Chain.ForceMultiplier);
 
-        if (!HasHit) return;
-        
-        m_owner.Chain.OnDashStrike();
+        StrikeResult result = m_owner.Controller.TryStrike(
+            m_stats.DashStrikeRadius,
+            m_stats.DashStrikeLayer,
+            m_forceMultiplier);
+
+        if (!result.Accepted) return;
+
+        HasHit = true;
+
+        if (result.AllowsChain) m_owner.Chain.OnDashStrike();
+
         m_cameraService.Shake();
         m_fxService.HitStop();
         m_audioService.PlaySfx(m_stats.HitEvent);
-        m_ctsDash?.Cancel();
+
+        if (result.CancelsDash) m_ctsDash?.Cancel();
     }
     
 }

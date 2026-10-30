@@ -43,30 +43,42 @@ public class PlayerControllerComponent : ActorComponent
         m_rb.MoveRotation(m_targetRotation);
     }
     
-    public bool TryStrike(float radius, float forceMultiplier = 1)
+    public StrikeResult TryStrike(float radius, LayerMask layers, float forceMultiplier = 1f)
     {
         Vector3 center = m_pc.TransformCache.position;
+        Vector3 forward = m_pc.MoveDir;
 
         int count = Physics.OverlapSphereNonAlloc(
             center,
             radius,
             m_strikeHits,
-            m_stats.EnemyLayer,
+            layers,
             QueryTriggerInteraction.Ignore);
+
+        StrikeContext context = new(forward, m_stats.PushForce * forceMultiplier);
 
         for (int i = 0; i < count; i++)
         {
-            if (!m_strikeHits[i].TryGetComponent(out EnemyBase enemy)) continue;
+            Collider hit = m_strikeHits[i];
 
-            EventBus<ActorPushedEvent>.Raise(
-                new ActorPushedEvent(
-                    enemy,
-                    m_pc.MoveDir,
-                    m_stats.PushForce * forceMultiplier));
+            if (!IsInFront(hit, center, forward)) continue;
+            if (!hit.TryGetComponent(out IStrikeable target)) continue;
 
-            return true;
+            StrikeResult result = target.OnStruck(context);
+
+            if (result.Accepted) return result;
         }
 
-        return false;
+        return StrikeResult.Ignored;
+    }
+
+    private static bool IsInFront(Collider collider, Vector3 origin, Vector3 forward)
+    {
+        Vector3 toClosest = collider.ClosestPoint(origin) - origin;
+        toClosest.y = 0f;
+
+        if (toClosest.sqrMagnitude < 0.0001f) return true;
+
+        return Vector3.Dot(toClosest, forward) > 0f;
     }
 }

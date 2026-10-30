@@ -1,17 +1,10 @@
-using System;
 using System.Collections.Generic;
-
 
 public class Actor : Pawn
 {
     private readonly List<ActorComponent> m_components = new();
-    
-    public virtual void Kill() { }
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    public virtual void Kill() { }
 
     protected override void Update()
     {
@@ -21,7 +14,6 @@ public class Actor : Pawn
         {
             component.Update();
         }
-            
     }
 
     protected override void FixedUpdate()
@@ -34,7 +26,17 @@ public class Actor : Pawn
         }
     }
 
-    protected T AddActorComponent<T>(T component) where T : ActorComponent 
+    protected virtual void OnDestroy()
+    {
+        foreach (ActorComponent component in m_components)
+        {
+            component.Dispose();
+        }
+
+        m_components.Clear();
+    }
+
+    protected T AddActorComponent<T>(T component) where T : ActorComponent
     {
         m_components.Add(component);
         component.Initialize();
@@ -47,10 +49,10 @@ public class Actor : Pawn
         {
             if (component is T match) return match;
         }
-        
+
         return null;
     }
-    
+
     protected virtual void OnDrawGizmosSelected()
     {
         foreach (ActorComponent component in m_components)
@@ -58,5 +60,4 @@ public class Actor : Pawn
             component.OnDrawGizmosSelected();
         }
     }
-
 }

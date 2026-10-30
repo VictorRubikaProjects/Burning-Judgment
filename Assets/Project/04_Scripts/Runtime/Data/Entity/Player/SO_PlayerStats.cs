@@ -27,6 +27,10 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: SerializeField, Range(0.1f, 3f)]
     [field: Tooltip("Rayon de la zone de frappe autour du joueur pendant le roll. Plus c'est grand, plus le roll touche facilement.")]
     public float RollStrikeRadius { get; private set; } = 0.75f;
+    
+    [field: SerializeField]
+    [field: Tooltip("Layers que le roll peut frapper. Normalement les ennemis uniquement.")]
+    public LayerMask RollStrikeLayer { get; private set; }
 
     [field: Space, Header("Dash")]
     [field: SerializeField, Range(0f, 20f)]
@@ -47,11 +51,10 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: SerializeField, Range(0.1f, 3f)]
     [field: Tooltip("Rayon de la zone de frappe autour du joueur pendant le dash. Plus c'est grand, plus le dash pardonne une visée approximative.")]
     public float DashStrikeRadius { get; private set; } = 0.75f;
-
-    [field: Space, Header("Combat")]
+    
     [field: SerializeField]
-    [field: Tooltip("Layers des ennemis que le joueur peut toucher avec le dash et le roll.")]
-    public LayerMask EnemyLayer { get; private set; }
+    [field: Tooltip("Layers que le dash peut frapper : ennemis et éléments de LD avec lesquels on peut enchaîner.")]
+    public LayerMask DashStrikeLayer { get; private set; }
 
     [field: Space, Header("Input")]
     [field: SerializeField, Range(0.1f, 3f)]

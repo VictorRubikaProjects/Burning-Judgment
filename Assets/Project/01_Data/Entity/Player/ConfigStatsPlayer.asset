@@ -76,6 +76,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   <RollStrikeRadius>k__BackingField: 0.75
+  <RollStrikeLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
   <DashDistance>k__BackingField: 7
   <DashDuration>k__BackingField: 0.2
   <DashCurve>k__BackingField:
@@ -103,7 +106,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   <DashStrikeRadius>k__BackingField: 0.75
-  <EnemyLayer>k__BackingField:
+  <DashStrikeLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 320
   <MaxChargeTime>k__BackingField: 1.5
@@ -135,7 +138,7 @@ MonoBehaviour:
     CrossFadeDuration: 0.1
     Speed: 1
   <ChainThreshold>k__BackingField: 1
-  <ChainMultiplier>k__BackingField: 1.15
+  <ChainBonusPercent>k__BackingField: 15
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973
