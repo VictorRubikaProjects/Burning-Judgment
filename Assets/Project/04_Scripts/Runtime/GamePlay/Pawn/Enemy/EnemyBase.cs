@@ -191,7 +191,7 @@ public abstract class EnemyBase : Actor , IStrikeable
             StatsBase.DefaultScaling,
             Stability);
         
-        Stability = KnockbackUtility.CalculateNewStability(destabilization,Stability);
+        Stability = KnockbackUtility.CalculateNewStability(destabilization,force,StatsBase.Weight,Stability);
         
         RequestHit();
         

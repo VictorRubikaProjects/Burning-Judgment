@@ -277,7 +277,7 @@ public class PlayerCharacter : Actor
             Stability
             );
         
-        Stability = KnockbackUtility.CalculateNewStability(e.Destabilization,Stability);
+        Stability = KnockbackUtility.CalculateNewStability(e.Destabilization,e.Force,ActiveStats.Weight,Stability);
         
         RequestHit();
         

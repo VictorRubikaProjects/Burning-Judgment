@@ -10,14 +10,9 @@ public static class KnockbackUtility
         return finalForce;
     }
 
-    public static float CalculateNewStability(float incomingDestabilization, float targetStability)
+    public static float CalculateNewStability(float incomingDestabilization, float incomingForce, float targetWeight, float targetStability)
     {
-        return targetStability * (1 - incomingDestabilization);
+        return targetStability * (1 - (incomingDestabilization * incomingForce)/targetWeight);
     }
-
-    /*
-    public static float CalculateMultiplicatorForceChain(float targetForce, float multiplicatorForce, float )
-    {
-        
-    }*/
+    
 }
