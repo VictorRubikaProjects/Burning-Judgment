@@ -30,7 +30,7 @@ public class EnemySniper : Enemy<SO_ConfigEnemySniper>
     protected override void Start()
     {
         base.Start();
-        AimVisual.Configure(Stats.ConeAngle, Stats.ShotRange, Stats.TargetLayer);
+        AimVisual.Configure(Stats.ShotRange, Stats.TargetLayer | Stats.ObstacleLayer);
     }
     
     protected override void SetupTransitions()

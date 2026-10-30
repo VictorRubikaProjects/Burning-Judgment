@@ -59,8 +59,7 @@ public class EnemySniperAttackState : EnemyBaseState
 
         m_sniper.AimVisual.UpdateAim(
             m_sniper.ShootPoint.position,
-            m_sniper.TransformCache.forward,
-            progress);
+            m_sniper.TransformCache.forward);
     }
     
     private void UpdateAiming()
@@ -92,12 +91,14 @@ public class EnemySniperAttackState : EnemyBaseState
     {
         Ray r = new Ray(m_sniper.ShootPoint.position, m_sniper.TransformCache.forward);
 
+        LayerMask targetLayer = m_sniper.Stats.TargetLayer| m_sniper.Stats.ObstacleLayer;
+        
         if (!Physics.Raycast(
                 r.origin,
                 r.direction,
                 out RaycastHit hit,
                 m_sniper.Stats.ShotRange,
-                m_sniper.Stats.TargetLayer,
+                targetLayer,
                 QueryTriggerInteraction.Ignore)) return;
 
         PlayerCharacter player = hit.transform.GetComponentInParent<PlayerCharacter>();
