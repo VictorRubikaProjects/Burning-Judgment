@@ -64,9 +64,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6014201564846427122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d60d4a380d5905e42a11078c9068289a, type: 3}
+  m_Script: {fileID: 11500000, guid: c8839bfd104d48999840912b9c9f02dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::ActorTestBounce
+  cancelsDash: 1
+  allowsChain: 1
+  onStruck:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &5273981580952666808
 PrefabInstance:
   m_ObjectHideFlags: 0

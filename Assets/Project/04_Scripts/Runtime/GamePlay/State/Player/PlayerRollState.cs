@@ -1,55 +1,87 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerRollState : PlayerBaseState
 {
-    private readonly Rigidbody m_rb;
-
-    private CancellationTokenSource m_ctsDash;
-    
     private AudioService m_audioService;
+    private CameraService m_cameraService;
+    private FxService m_fxService;
+
+    private CancellationTokenSource m_ctsRoll;
 
     public bool IsFinished { get; private set; }
+    
+    public bool HasHit { get; private set; }
 
-    public PlayerRollState(PlayerCharacter owner, Animator animator, Rigidbody rb, SO_PlayerStats playerStats)
-        : base(owner, animator, playerStats)
+    public PlayerRollState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats)
+        : base(owner, animator, playerStats, playerStats.RollAnimation)
     {
-        m_rb = rb;
         m_audioService = ServiceLocator.Get<AudioService>();
+        m_cameraService = ServiceLocator.Get<CameraService>();
+        m_fxService = ServiceLocator.Get<FxService>();
     }
 
     public override void OnEnter()
     {
         IsFinished = false;
-        
-        m_animator.CrossFade(DashHash, m_crossFadeDuration);
+        HasHit = false;
 
-        m_owner.ConsumeDashRequest();
-
-        m_ctsDash = new CancellationTokenSource();
-        
-        RollAsync(m_owner.MoveDir, m_ctsDash.Token).Forget();
+        Vector3 direction = m_owner.MoveDir;
+        float distance = m_stats.MaxRollDistance;
+        m_owner.ConsumeRollRequest();
+        PlayAnimation(RollHash);
+        m_ctsRoll = new CancellationTokenSource();
+        RollAsync(direction, distance, m_ctsRoll.Token).Forget();
     }
 
     public override void OnExit()
     {
-        m_ctsDash?.Cancel();
-        m_ctsDash?.Dispose();
+        m_ctsRoll?.Cancel();
+        m_ctsRoll?.Dispose();
+        m_ctsRoll = null;
     }
-    
-    private async UniTaskVoid RollAsync(Vector3 direction, CancellationToken token)
-    {
-        m_audioService.PlaySfx(m_stats.DashEvent);
 
-        bool dashSucceeded = await m_owner.Dash.RollAsync(
-            direction,
-            token,
-            m_stats.DashDuration,
-            m_stats.DashDistance,
-            m_stats.DashCurve,
-            m_stats.ObstacleLayer);
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        HandleRollStrike();
+    }
+
+    private async UniTaskVoid RollAsync(Vector3 direction, float distance, CancellationToken token)
+    {
+        
+        try
+        {
+            await m_owner.Dash.RollAsync(
+                direction,
+                token,
+                m_stats.RollDuration,
+                distance,
+                m_stats.RollCurve,
+                m_stats.ObstacleLayer);
+        }
+        catch (OperationCanceledException)
+        {
+        }
 
         IsFinished = true;
+    }
+    
+    private void HandleRollStrike()
+    {
+        if (!m_owner.Dash.IsDashing || HasHit) return;
+        
+        HasHit = m_owner.Controller.TryStrike(
+            m_stats.RollStrikeRadius,
+            m_stats.RollStrikeLayer).Accepted;
+
+        if (!HasHit) return;
+        
+        m_cameraService.Shake();
+        m_fxService.HitStop();
+        m_audioService.PlaySfx(m_stats.HitEvent);
+        m_ctsRoll?.Cancel();
     }
 }

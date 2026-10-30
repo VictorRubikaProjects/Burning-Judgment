@@ -1,15 +1,15 @@
-using System;
 using Event_Bus;
 using UnityEngine;
 using UnityEngine.AI;
-using Object = UnityEngine.Object;
 
-public abstract class EnemyBase : Actor , IBouncy
+
+public abstract class EnemyBase : Actor , IStrikeable
 {
     #region Variables
 
     [SerializeField] private NavMeshAgent agent;
     [field:SerializeField] public Rigidbody Rigidbody { get; protected set; }
+    [field: SerializeField] public DamagePopUp  DamagePopUp { get; protected set; }
 
     public abstract SO_ConfigEnemy StatsBase { get; }
 
@@ -131,9 +131,7 @@ public abstract class EnemyBase : Actor , IBouncy
 
         if (m_stateMachine.GetCurrentState() is EnemyHitState) return;
 
-        PendingKnockbackDirection = e.Direction;
-        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, StatsBase.Weight);
-        RequestHit();
+        ApplyPush(e.Direction, e.Force);
     }
 
     public void LookAtPlayer()
@@ -160,7 +158,7 @@ public abstract class EnemyBase : Actor , IBouncy
     public void RequestFlee() => m_fleeRequested = true;
     public void ConsumeFleeRequest() => m_fleeRequested = false;
     public Transform TargetTransform => TransformCache;
-    public bool CanBeBounced => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState);
+    public bool CanBeStruck => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState);
     
     public bool IsPlayerInSight()
     {
@@ -171,5 +169,21 @@ public abstract class EnemyBase : Actor , IBouncy
         Vector3 target = Player.TransformCache.position + offset;
 
         return !Physics.Linecast(origin, target, StatsBase.ObstacleLayer, QueryTriggerInteraction.Ignore);
+    }
+
+    public virtual StrikeResult OnStruck(in StrikeContext context)
+    {
+        if (!CanBeStruck) return StrikeResult.Ignored;
+
+        ApplyPush(context.Direction, context.Force);
+        return new StrikeResult(accepted: true, cancelsDash: true, allowsChain: true);
+    }
+
+    private void ApplyPush(Vector3 direction, float force)
+    {
+        PendingKnockbackDirection = direction;
+        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(force, StatsBase.Weight);
+        RequestHit();
+        DamagePopUp.Show(force, TransformCache.position);
     }
 }

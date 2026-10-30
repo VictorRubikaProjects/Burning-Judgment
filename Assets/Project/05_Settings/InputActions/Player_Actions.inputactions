@@ -7,7 +7,7 @@
             "id": "766ad69e-3c8c-444e-8d78-38f31bcecf8f",
             "actions": [
                 {
-                    "name": "Contact",
+                    "name": "Touch",
                     "type": "Button",
                     "id": "b0e75005-b704-4c53-8213-964fb4964db3",
                     "expectedControlType": "",
@@ -16,9 +16,18 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "4ac0110b-e189-43a9-869a-73cde283376d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Position",
                     "type": "Value",
-                    "id": "46364b14-fb41-4784-b3c1-26d803e82d51",
+                    "id": "8e0ce702-d275-49ca-94a6-bcd3c760d36d",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -33,46 +42,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Contact",
+                    "action": "Touch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "9cf30ac2-8fd9-4c0b-9fe3-f74bfd9c9854",
+                    "id": "4f54d43b-ef6f-4083-81e7-794b6a07df00",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05e3796e-9d75-4fb9-8119-2976173db63b",
                     "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Position",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "UI",
-            "id": "981473e7-5432-41fe-a9fa-71d84f917af2",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "7c4d2953-d594-4186-8a7f-dc54857f97a8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "b5e745e0-8cbe-40f9-9c56-9647cc26fe0d",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

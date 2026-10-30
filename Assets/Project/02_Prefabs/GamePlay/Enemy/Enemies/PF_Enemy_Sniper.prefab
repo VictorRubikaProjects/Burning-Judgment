@@ -376,7 +376,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1164494043303806917, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_Name
-      value: PF_EnemyBase Variant
+      value: PF_Enemy_Sniper
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.x
@@ -444,6 +444,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
   m_PrefabInstance: {fileID: 7705899380321744277}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6583472306031191047 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3579776243268489618, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 7705899380321744277}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852325899519160912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::DamagePopUp
 --- !u!1 &8852325899519160912 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1164494043303806917, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
@@ -463,6 +474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::EnemySniper
   agent: {fileID: 28190946007497345}
   <Rigidbody>k__BackingField: {fileID: 4676608833685133052}
+  <DamagePopUp>k__BackingField: {fileID: 6583472306031191047}
   stats: {fileID: 11400000, guid: 72752c4124e23b74fb67a1585a920db6, type: 2}
   <ShootPoint>k__BackingField: {fileID: 2580230676802955762}
   <AimVisual>k__BackingField: {fileID: 1645958956491001147}

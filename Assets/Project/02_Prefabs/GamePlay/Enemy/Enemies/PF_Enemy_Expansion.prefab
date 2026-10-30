@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::EnemyExpansion
   agent: {fileID: 7917633788143797245}
   <Rigidbody>k__BackingField: {fileID: 3270621082815049600}
+  <DamagePopUp>k__BackingField: {fileID: 3951912321538186619}
   stats: {fileID: 11400000, guid: 75dc8c98f59bb2b4c88a6b4e6a7c499a, type: 2}
   materialChargeAttack: {fileID: 2100000, guid: 5a7670149ab14b346a0725d5098df67e, type: 2}
   rendererEnemy: {fileID: 6429605846392613010}
@@ -185,6 +186,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
   m_PrefabInstance: {fileID: 537591743468752105}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3951912321538186619 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3579776243268489618, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 537591743468752105}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683490832093399852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::DamagePopUp
 --- !u!195 &7917633788143797245 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 7680041633153437460, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}

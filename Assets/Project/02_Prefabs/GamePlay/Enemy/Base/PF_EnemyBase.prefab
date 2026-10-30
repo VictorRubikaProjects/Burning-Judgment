@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3032748135735321449}
   - component: {fileID: 3894360988590235541}
   - component: {fileID: 135710882538897194}
+  - component: {fileID: 3579776243268489618}
   m_Layer: 6
   m_Name: PF_EnemyBase
   m_TagString: Untagged
@@ -129,6 +130,24 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.19
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3579776243268489618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164494043303806917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::DamagePopUp
+  damageTextPrefab: {fileID: 1265472547213768431, guid: f2b069083e5ab9b4fb9f50cb81e35e62, type: 3}
+  poolSize: 3
+  punchScale: 1.2
+  moveSpeed: 1
+  lifeTime: 1
+  offsetY: 1
 --- !u!1 &3556016721050087377
 GameObject:
   m_ObjectHideFlags: 0

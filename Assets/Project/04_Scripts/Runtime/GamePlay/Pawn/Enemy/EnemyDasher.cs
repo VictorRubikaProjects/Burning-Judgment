@@ -87,9 +87,11 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
         return sqrDistance >= min * min && sqrDistance <= max * max;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         Destroy(m_materialIndicatorInstance);
         m_materialIndicatorInstance = null; 
     }
+    
 }

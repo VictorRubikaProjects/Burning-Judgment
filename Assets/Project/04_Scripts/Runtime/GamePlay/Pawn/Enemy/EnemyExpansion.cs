@@ -24,8 +24,9 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
         rendererEnemy.material = MaterialChargeAttackInstance;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         Destroy(MaterialChargeAttackInstance);
         MaterialChargeAttackInstance = null;
     }

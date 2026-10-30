@@ -47,4 +47,5 @@ MonoBehaviour:
   gameConfig: {fileID: 11400000, guid: 822959a6ed921c046b0198aa8ae95f43, type: 2}
   audioConfig: {fileID: 11400000, guid: 707a1f418f384e54187055a2c5a2e79f, type: 2}
   entityPoolConfig: {fileID: 11400000, guid: 7fb707a09f242d04898251a1893a8bc9, type: 2}
+  configVfx: {fileID: 11400000, guid: c65dc7043c393f24da28a70cb6b082fa, type: 2}
   MaxFrames: 60

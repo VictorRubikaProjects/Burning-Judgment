@@ -2,12 +2,8 @@ using UnityEngine;
 
 public class PlayerDeathState : PlayerBaseState
 {
-    public PlayerDeathState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats) : base(owner, animator,playerStats) { }
+    public PlayerDeathState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats)
+        : base(owner, animator, playerStats, playerStats.DeathAnimation) { }
 
-    public override void OnEnter()
-    {
-        m_animator.CrossFade(DeathHash, m_crossFadeDuration);
-        
-        m_owner.Bounce.Break();
-    }
+    public override void OnEnter() => PlayAnimation(DeathHash);
 }
