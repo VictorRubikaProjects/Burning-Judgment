@@ -17,7 +17,7 @@ MonoBehaviour:
       asset: {fileID: 102900000, guid: 8b9072066ece08d419efd644468bbd39, type: 3}
       guid: 8b9072066ece08d419efd644468bbd39
     <EnemyTeams>k__BackingField:
-    - {fileID: 11400000, guid: 5cdf5834699cfda43af13af1c37ca45b, type: 2}
+    - {fileID: 11400000, guid: 4704d89e0d8672b45992bf4deaa94f92, type: 2}
   <PlayerSpawnPosition>k__BackingField: {x: 0, y: 0.78, z: 0}
   <EnemySpawnPositions>k__BackingField:
   - {x: -7.97, y: 1.1, z: 11.07}

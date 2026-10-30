@@ -2,25 +2,24 @@ using UnityEngine;
 
 public class SniperAimVisual : MonoBehaviour
 {
-    [SerializeField] private LineRenderer m_leftLine;
-    [SerializeField] private LineRenderer m_rightLine;
+    [SerializeField] private LineRenderer m_line;
     [SerializeField] private Color m_trackingColor = Color.yellow;
     [SerializeField] private Color m_lockedColor = Color.red;
+    [SerializeField] private float m_blinkSpeed = 10f;
 
-    private float m_coneAngle;
     private float m_range;
     private LayerMask m_blockMask;
+    private bool m_isLocked;
 
     private void Awake()
     {
-        SetupLine(m_leftLine);
-        SetupLine(m_rightLine);
+        m_line.useWorldSpace = true;
+        m_line.positionCount = 2;
         Hide();
     }
 
-    public void Configure(float coneAngle, float range, LayerMask blockMask)
+    public void Configure(float range, LayerMask blockMask)
     {
-        m_coneAngle = coneAngle;
         m_range = range;
         m_blockMask = blockMask;
     }
@@ -28,51 +27,43 @@ public class SniperAimVisual : MonoBehaviour
     public void Show()
     {
         SetLocked(false);
-        m_leftLine.enabled = true;
-        m_rightLine.enabled = true;
+        m_line.enabled = true;
     }
 
-    public void Hide()
-    {
-        m_leftLine.enabled = false;
-        m_rightLine.enabled = false;
-    }
+    public void Hide() => m_line.enabled = false;
 
     public void SetLocked(bool locked)
     {
-        Color color = locked ? m_lockedColor : m_trackingColor;
-        ApplyColor(m_leftLine, color);
-        ApplyColor(m_rightLine, color);
+        m_isLocked = locked;
+        if (!locked)
+        {
+            ApplyColor(m_trackingColor);
+        }
     }
 
-    public void UpdateAim(Vector3 origin, Vector3 forward, float progress)
+    public void UpdateAim(Vector3 origin, Vector3 forward)
     {
-        float halfAngle = m_coneAngle * 0.5f * (1f - Mathf.Clamp01(progress));
+        if (!m_line.enabled) return;
 
-        DrawLine(m_leftLine, origin, Quaternion.AngleAxis(-halfAngle, Vector3.up) * forward);
-        DrawLine(m_rightLine, origin, Quaternion.AngleAxis(halfAngle, Vector3.up) * forward);
-    }
+        if (m_isLocked)
+        {
+            float t = Mathf.PingPong(Time.time * m_blinkSpeed, 1f);
+            ApplyColor(Color.Lerp(m_lockedColor, Color.white, t));
+        }
 
-    private void DrawLine(LineRenderer line, Vector3 origin, Vector3 direction)
-    {
         float length = m_range;
-
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, m_range, m_blockMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(origin, forward, out RaycastHit hit, m_range, m_blockMask, QueryTriggerInteraction.Ignore))
+        {
             length = hit.distance;
+        }
 
-        line.SetPosition(0, origin);
-        line.SetPosition(1, origin + direction * length);
+        m_line.SetPosition(0, origin);
+        m_line.SetPosition(1, origin + forward.normalized * length);
     }
 
-    private static void SetupLine(LineRenderer line)
+    private void ApplyColor(Color color)
     {
-        line.useWorldSpace = true;
-        line.positionCount = 2;
-    }
-
-    private static void ApplyColor(LineRenderer line, Color color)
-    {
-        line.startColor = color;
-        line.endColor = color;
+        m_line.startColor = color;
+        m_line.endColor = color;
     }
 }
