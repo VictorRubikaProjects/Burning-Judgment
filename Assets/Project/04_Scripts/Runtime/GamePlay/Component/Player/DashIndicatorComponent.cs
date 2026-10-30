@@ -11,7 +11,7 @@ public class DashIndicatorComponent : ActorComponent
     public DashIndicatorComponent(
         Actor owner,
         SpriteRenderer sprite,
-        float width = 1.5f,
+        float width = 5f,
         float heightOffset = 0.05f,
         float minLength = 0.5f) : base(owner)
     {

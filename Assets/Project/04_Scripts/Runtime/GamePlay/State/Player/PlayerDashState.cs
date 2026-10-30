@@ -32,6 +32,9 @@ public class PlayerDashState : PlayerBaseState
         m_forceMultiplier = m_owner.Chain.ForceMultiplier;
 
         PlayAnimation(DashHash);
+        
+        ServiceLocator.Get<FxService>().PlayDashEffect(m_owner.TransformCache,0.4f);
+        
         m_owner.ConsumeDashRequest();
         m_owner.Chain.OnDashStarted();
 
