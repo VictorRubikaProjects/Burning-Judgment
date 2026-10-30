@@ -53,8 +53,8 @@ MonoBehaviour:
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <MaxRollDistance>k__BackingField: 6
-  <RollDuration>k__BackingField: 0.2
+  <MaxRollDistance>k__BackingField: 4
+  <RollDuration>k__BackingField: 0.25
   <RollCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -83,8 +83,8 @@ MonoBehaviour:
   <RollStrikeLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <DashDistance>k__BackingField: 7
-  <DashDuration>k__BackingField: 0.2
+  <DashDistance>k__BackingField: 12
+  <DashDuration>k__BackingField: 0.25
   <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -114,14 +114,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   <MaxChargeTime>k__BackingField: 1.5
-  <MinChargeRatio>k__BackingField: 0.2
+  <MinChargeRatio>k__BackingField: 0
   <MinStickMagnitude>k__BackingField: 0.3
   <InvertStickDirection>k__BackingField: 1
   <MinSwipeDistance>k__BackingField: 50
   <MaxSwipeDistance>k__BackingField: 400
-  <MaxSwipeDuration>k__BackingField: 0.15
+  <MaxSwipeDuration>k__BackingField: 0.25
   <SlowMotionTargetDilation>k__BackingField: 0.2
-  <SlowMotionEnterDuration>k__BackingField: 1
+  <SlowMotionEnterDuration>k__BackingField: 0.5
   <SlowMotionExitDuration>k__BackingField: 0.5
   <IdleAnimation>k__BackingField:
     CrossFadeDuration: 0.1

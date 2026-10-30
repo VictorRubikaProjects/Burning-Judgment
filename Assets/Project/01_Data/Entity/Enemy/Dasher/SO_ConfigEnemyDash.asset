@@ -21,7 +21,7 @@ MonoBehaviour:
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
-  <HitDuration>k__BackingField: 0.3
+  <HitDuration>k__BackingField: 0.35
   <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -53,19 +53,19 @@ MonoBehaviour:
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <Speed>k__BackingField: 20
-  <RotationSpeed>k__BackingField: 550
-  <DistanceMin>k__BackingField: 3
-  <DistanceMax>k__BackingField: 6
+  <Speed>k__BackingField: 15
+  <RotationSpeed>k__BackingField: 450
+  <DistanceMin>k__BackingField: 6
+  <DistanceMax>k__BackingField: 9
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
   <SightHeight>k__BackingField: 0.5
-  <LockTime>k__BackingField: 0.6
-  <LockToDashDelay>k__BackingField: 0.15
-  <DashDistance>k__BackingField: 10
-  <DashDuration>k__BackingField: 0.3
+  <LockTime>k__BackingField: 0.75
+  <LockToDashDelay>k__BackingField: 1
+  <DashDistance>k__BackingField: 9
+  <DashDuration>k__BackingField: 0.5
   <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
