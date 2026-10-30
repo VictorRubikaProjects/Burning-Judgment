@@ -42,7 +42,7 @@ public class PlayerDashState : PlayerBaseState
         
         Debug.Log($"<color=red>[PlayerDashState] PlayerDashState OnEnter Combo {m_owner.Chain.ChainCount}</red>");
         
-        m_owner.Chain.SetTimerChain().Forget(); //TODO NEED TO RESET IF ENTER A CERTAIN STATE LIKE HIT !!!!!!!!!!!
+        m_owner.Chain.OnDashStarted();
     }
 
     public override void OnExit()
@@ -84,10 +84,11 @@ public class PlayerDashState : PlayerBaseState
     {
         if (!m_owner.Dash.IsDashing || HasHit) return;
         
-        HasHit = m_owner.Controller.TryStrike(m_stats.DashStrikeRadius);
+        HasHit = m_owner.Controller.TryStrike(m_stats.DashStrikeRadius, m_owner.Chain.ForceMultiplier);
 
         if (!HasHit) return;
         
+        m_owner.Chain.OnDashStrike();
         m_cameraService.Shake();
         m_fxService.HitStop();
         m_audioService.PlaySfx(m_stats.HitEvent);

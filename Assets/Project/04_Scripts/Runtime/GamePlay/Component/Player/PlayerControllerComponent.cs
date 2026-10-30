@@ -43,7 +43,7 @@ public class PlayerControllerComponent : ActorComponent
         m_rb.MoveRotation(m_targetRotation);
     }
     
-    public bool TryStrike(float radius)
+    public bool TryStrike(float radius, float forceMultiplier = 1)
     {
         Vector3 center = m_pc.TransformCache.position;
 
@@ -62,7 +62,7 @@ public class PlayerControllerComponent : ActorComponent
                 new ActorPushedEvent(
                     enemy,
                     m_pc.MoveDir,
-                    m_stats.PushForce));
+                    m_stats.PushForce * forceMultiplier));
 
             return true;
         }

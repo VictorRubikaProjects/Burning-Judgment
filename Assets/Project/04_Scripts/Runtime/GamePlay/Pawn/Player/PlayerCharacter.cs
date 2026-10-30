@@ -106,7 +106,7 @@ public class PlayerCharacter : Actor
         Input = new PlayerInputComponent(owner: this, ActiveStats,joystickRectT, TimeController);
         Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
-        Chain = new PlayerChainComponent(this, ActiveStats);
+        Chain = new PlayerChainComponent(this, ActiveStats, Input);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
     }
 
