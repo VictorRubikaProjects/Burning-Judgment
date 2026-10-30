@@ -11,6 +11,18 @@ public abstract class SO_ActorsStats : ScriptableObject
     [field: Tooltip("Force de poussée appliquée aux autres acteurs quand celui-ci les repousse (attaque, impact).")]
     public float PushForce { get; protected set; } = 10f;
     
+    [field: SerializeField, Tooltip("Échelle du knockback réel (x) pour tout les états sauf cas particuliés par rapport à la stabilité (St) d’une entité.")]
+    public float DefaultScaling { get; protected set; } = 0.5f;
+    
+    [field: SerializeField, Tooltip("Échelle du knockback réel (x) pour les états de faiblesse hit par rapport à la stabilité (St) d’une entité.")]
+    public float BadScaling { get; protected set; } = 0.25f;
+    
+    [field: SerializeField, Tooltip("Multiplicateur sur le knockback réel (x). Diminue de (D) à chaque coup reçu.")]
+    public float Stability { get; protected set; } = 1f;
+    
+    [field: SerializeField, Tooltip(" Facteur définissant l’ampleur de la perte de stabilité (St) de la cible après chaque coup.")]
+    public float Destabilization { get; protected set; } = 0.33f;
+    
     [field: Space, Header("Obstacles")]
     [field: SerializeField]
     [field: Tooltip("Layers des obstacles qui bloquent les déplacements forcés de l'ennemi (dash).")]

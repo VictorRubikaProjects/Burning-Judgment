@@ -37,7 +37,7 @@ public class DamagePopUp : MonoBehaviour
     {
         TMP_Text popupText = m_damagePool.Get();
         popupText.transform.position = position + new Vector3(0, offsetY, 0);
-        popupText.text = damageAmount.ToString();
+        popupText.text = (damageAmount * 10).ToString();
 
         AnimateAndReleaseAsync(popupText, this.GetCancellationTokenOnDestroy()).Forget();
     }

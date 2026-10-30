@@ -45,6 +45,8 @@ public abstract class EnemyBase : Actor , IStrikeable
 
         ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.5f);
 
+        Stability = StatsBase.Stability;
+        
         GroundCheck = new GroundCheckComponent(
             this,
             transform,
@@ -131,7 +133,7 @@ public abstract class EnemyBase : Actor , IStrikeable
 
         if (m_stateMachine.GetCurrentState() is EnemyHitState) return;
 
-        ApplyPush(e.Direction, e.Force);
+        ApplyPush(e.Direction, e.Force,e.Destabilization);
     }
 
     public void LookAtPlayer()
@@ -175,15 +177,24 @@ public abstract class EnemyBase : Actor , IStrikeable
     {
         if (!CanBeStruck) return StrikeResult.Ignored;
 
-        ApplyPush(context.Direction, context.Force);
+        ApplyPush(context.Direction, context.Force,context.Destabilization);
         return new StrikeResult(accepted: true, cancelsDash: true, allowsChain: true);
     }
 
-    private void ApplyPush(Vector3 direction, float force)
+    private void ApplyPush(Vector3 direction, float force, float destabilization)
     {
         PendingKnockbackDirection = direction;
-        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(force, StatsBase.Weight);
+        
+        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(
+            force,
+            StatsBase.Weight,
+            StatsBase.DefaultScaling,
+            Stability);
+        
+        Stability = KnockbackUtility.CalculateNewStability(destabilization,Stability);
+        
         RequestHit();
-        DamagePopUp.Show(force, TransformCache.position);
+        
+        DamagePopUp.Show(PendingKnockbackForce, TransformCache.position);
     }
 }

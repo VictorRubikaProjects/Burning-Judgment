@@ -107,6 +107,7 @@ public class EnemySniperAttackState : EnemyBaseState
         EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
             player,
             m_sniper.TransformCache.forward,
-            m_sniper.Stats.PushForce));
+            m_sniper.Stats.PushForce,
+            m_sniper.Stats.Destabilization));
     }
 }
