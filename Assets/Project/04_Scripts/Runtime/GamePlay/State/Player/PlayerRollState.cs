@@ -75,7 +75,8 @@ public class PlayerRollState : PlayerBaseState
         
         HasHit = m_owner.Controller.TryStrike(
             m_stats.RollStrikeRadius,
-            m_stats.RollStrikeLayer).Accepted;
+            m_stats.RollStrikeLayer,
+            PlayerControllerComponent.StrikeType.Roll).Accepted;
 
         if (!HasHit) return;
         

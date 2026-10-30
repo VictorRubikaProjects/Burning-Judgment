@@ -88,6 +88,8 @@ public class PlayerCharacter : Actor
 
         m_runtimeStats = baseStats.CreateRuntimeCopy(deltas);
 
+        Stability = m_runtimeStats.Stability;
+        
         GroundCheck = new GroundCheckComponent(
             this,
             transform,
@@ -267,9 +269,19 @@ public class PlayerCharacter : Actor
         if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
 
         m_pendingKnockbackDirection = e.Direction;
-        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, ActiveStats.Weight);
+        
+        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(
+            e.Force,
+            ActiveStats.Weight,
+            ActiveStats.DefaultScaling,
+            Stability
+            );
+        
+        Stability = KnockbackUtility.CalculateNewStability(e.Destabilization,Stability);
+        
         RequestHit();
-        DamagePopUp.Show(e.Force, TransformCache.position);
+        
+        DamagePopUp.Show(m_pendingKnockbackForce, TransformCache.position);
     }
 
     #endregion

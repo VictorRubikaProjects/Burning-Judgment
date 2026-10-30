@@ -68,7 +68,8 @@ public class EnemyHitState : EnemyBaseState
             EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
                 enemyBase,
                 -Owner.TransformCache.forward,
-                Owner.StatsBase.PushForce));
+                Owner.StatsBase.PushForce,
+                Owner.StatsBase.Destabilization));
             
             return;
         }

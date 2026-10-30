@@ -93,7 +93,8 @@ public class EnemyExpansionAttackState : EnemyBaseState
             EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
                 player,
                 direction,
-                m_expansion.Stats.PushForce * multiplier));
+                m_expansion.Stats.PushForce * multiplier,
+                m_expansion.Stats.Destabilization));
 
             m_cameraService ??= ServiceLocator.Get<CameraService>();
             m_cameraService.Shake();

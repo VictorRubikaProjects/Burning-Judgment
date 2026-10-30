@@ -18,7 +18,8 @@ public class PlayerChainComponent : ActorComponent
     public int ChainCount { get; private set; }
     public bool IsWindowOpen { get; private set; }
     public bool HasPendingChain { get; private set; }
-    public float ForceMultiplier => 1f + m_stats.ChainBonusPercent / 100f * ChainCount;
+
+    public float GetForceMultiplier => 1f + (ChainCount * m_stats.ChainBonusPercent);
 
     public event Action OnChainInputSuccess;
     public event Action OnChainWindowOpen;

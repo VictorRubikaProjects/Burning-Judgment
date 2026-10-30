@@ -126,9 +126,9 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Space, Header("Chain")]
     [field: SerializeField, Range(0.1f,1f), Tooltip("Offset de temps pour valider un combo de chain.")]
     public float ChainThreshold { get; private set; } = 0.25f;
-    [field: SerializeField, Range(0f, 100f)]
+    [field: SerializeField, Range(0f, 1f)]
     [field: Tooltip("Bonus de force en pourcentage ajouté par palier de chaîne. 15 = +15% de la force de base par chaîne (3 chaînes = +45%).")]
-    public float ChainBonusPercent { get; private set; } = 15f;
+    public float ChainBonusPercent { get; private set; } = 0.25f;
     
     
     [field: Space, Header("Audio")]

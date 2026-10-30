@@ -1,8 +1,12 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Actor : Pawn
 {
     private readonly List<ActorComponent> m_components = new();
+    
+    
+    public float Stability {get; protected set;}
 
     public virtual void Kill() { }
 
@@ -60,4 +64,5 @@ public class Actor : Pawn
             component.OnDrawGizmosSelected();
         }
     }
+    
 }

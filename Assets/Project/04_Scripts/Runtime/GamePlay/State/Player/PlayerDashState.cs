@@ -10,7 +10,6 @@ public class PlayerDashState : PlayerBaseState
     private readonly FxService m_fxService;
 
     private CancellationTokenSource m_ctsDash;
-    private float m_forceMultiplier;
     private bool m_chainStruck;
 
     public bool IsFinished { get; private set; }
@@ -29,7 +28,6 @@ public class PlayerDashState : PlayerBaseState
         IsFinished = false;
         HasHit = false;
         m_chainStruck = false;
-        m_forceMultiplier = m_owner.Chain.ForceMultiplier;
 
         PlayAnimation(DashHash);
         
@@ -87,7 +85,7 @@ public class PlayerDashState : PlayerBaseState
         StrikeResult result = m_owner.Controller.TryStrike(
             m_stats.DashStrikeRadius,
             m_stats.DashStrikeLayer,
-            m_forceMultiplier);
+            PlayerControllerComponent.StrikeType.Dash);
 
         if (!result.Accepted) return;
 

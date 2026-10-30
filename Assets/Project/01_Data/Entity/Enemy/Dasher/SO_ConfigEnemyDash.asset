@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81817a730b3a424b87b8ea65ee30b550, type: 3}
   m_Name: SO_ConfigEnemyDash
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyDash
-  <Weight>k__BackingField: 10
-  <PushForce>k__BackingField: 50
+  <Weight>k__BackingField: 40
+  <PushForce>k__BackingField: 25
+  <DefaultScaling>k__BackingField: 0.5
+  <BadScaling>k__BackingField: 0.25
+  <Stability>k__BackingField: 1
+  <Destabilization>k__BackingField: 0.33
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
@@ -57,6 +61,7 @@ MonoBehaviour:
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
+  <SightHeight>k__BackingField: 0.5
   <LockTime>k__BackingField: 0.6
   <LockToDashDelay>k__BackingField: 0.15
   <DashDistance>k__BackingField: 10

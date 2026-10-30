@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8401e282e98f5524a827435e8b640da9, type: 3}
   m_Name: ConfigStatsPlayer
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
-  <Weight>k__BackingField: 10
-  <PushForce>k__BackingField: 55
+  <Weight>k__BackingField: 60
+  <PushForce>k__BackingField: 40
+  <DefaultScaling>k__BackingField: 0.5
+  <BadScaling>k__BackingField: 0.25
+  <Stability>k__BackingField: 1
+  <Destabilization>k__BackingField: 0.33
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
@@ -137,8 +141,8 @@ MonoBehaviour:
   <DeathAnimation>k__BackingField:
     CrossFadeDuration: 0.1
     Speed: 1
-  <ChainThreshold>k__BackingField: 1
-  <ChainBonusPercent>k__BackingField: 15
+  <ChainThreshold>k__BackingField: 0.75
+  <ChainBonusPercent>k__BackingField: 0.15
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973
