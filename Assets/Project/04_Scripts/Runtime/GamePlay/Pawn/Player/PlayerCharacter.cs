@@ -183,7 +183,7 @@ public class PlayerCharacter : Actor
         m_stateMachine = new StateMachine();
 
         m_playerIdleState = new PlayerIdleState(this, animator, ActiveStats);
-        m_playerDashState = new PlayerDashState(this, animator, rb, ActiveStats);
+        m_playerDashState = new PlayerDashState(this, animator, ActiveStats);
         m_playerDeathState = new PlayerDeathState(this, animator, ActiveStats);
         m_playerHitState = new PlayerHitState(this, animator, ActiveStats);
         m_playerFallState = new PlayerFallState(this, animator, ActiveStats, rb);

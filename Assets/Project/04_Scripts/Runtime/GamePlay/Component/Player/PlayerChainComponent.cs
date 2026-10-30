@@ -11,6 +11,8 @@ public class PlayerChainComponent : ActorComponent
     private readonly PlayerInputComponent m_input;
 
     private CancellationTokenSource m_ctsWindow;
+    private float m_touchPressedTime;
+    private bool m_touchUnresolved;
     private bool m_touchedThisWindow;
 
     public int ChainCount { get; private set; }
@@ -45,13 +47,26 @@ public class PlayerChainComponent : ActorComponent
 
     public void OnDashStarted()
     {
+        CancelTimer();
+        CloseWindow();
         m_touchedThisWindow = false;
-
-        float openDelay = Mathf.Max(0f, m_stats.DashDuration - m_stats.ChainThreshold);
-        ScheduleWindow(openDelay, m_stats.ChainThreshold * 2f).Forget();
     }
 
-    public void OnDashStrike() => ScheduleWindow(0f, m_stats.ChainThreshold * 2f).Forget();
+    public void OpenWindow()
+    {
+        m_touchedThisWindow = false;
+
+        bool pressedJustBefore = m_touchUnresolved
+            && Time.unscaledTime - m_touchPressedTime <= m_stats.ChainThreshold;
+
+        if (pressedJustBefore)
+        {
+            HasPendingChain = true;
+            m_touchedThisWindow = true;
+        }
+
+        RunWindowAsync().Forget();
+    }
 
     public override void Reset()
     {
@@ -65,7 +80,7 @@ public class PlayerChainComponent : ActorComponent
         m_touchedThisWindow = false;
     }
 
-    private async UniTaskVoid ScheduleWindow(float openDelay, float duration)
+    private async UniTaskVoid RunWindowAsync()
     {
         CancelTimer();
         CloseWindow();
@@ -73,17 +88,11 @@ public class PlayerChainComponent : ActorComponent
         m_ctsWindow = new CancellationTokenSource();
         CancellationToken token = m_ctsWindow.Token;
 
-        bool cancelled = await UniTask
-            .Delay(TimeSpan.FromSeconds(openDelay), WindowDelayType, cancellationToken: token)
-            .SuppressCancellationThrow();
-
-        if (cancelled) return;
-
         IsWindowOpen = true;
         OnChainWindowOpen?.Invoke();
 
-        cancelled = await UniTask
-            .Delay(TimeSpan.FromSeconds(duration), WindowDelayType, cancellationToken: token)
+        bool cancelled = await UniTask
+            .Delay(TimeSpan.FromSeconds(m_stats.ChainThreshold), WindowDelayType, cancellationToken: token)
             .SuppressCancellationThrow();
 
         if (cancelled) return;
@@ -117,6 +126,9 @@ public class PlayerChainComponent : ActorComponent
 
     private void HandleTouchPressed()
     {
+        m_touchPressedTime = Time.unscaledTime;
+        m_touchUnresolved = true;
+
         if (!IsWindowOpen) return;
 
         HasPendingChain = true;
@@ -125,6 +137,8 @@ public class PlayerChainComponent : ActorComponent
 
     private void HandleHoldConfirmed()
     {
+        m_touchUnresolved = false;
+
         if (!HasPendingChain) return;
 
         HasPendingChain = false;
@@ -135,6 +149,8 @@ public class PlayerChainComponent : ActorComponent
 
     private void HandleTouchReleased()
     {
+        m_touchUnresolved = false;
+
         if (!HasPendingChain) return;
 
         Reset();
