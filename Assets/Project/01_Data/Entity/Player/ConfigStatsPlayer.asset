@@ -114,7 +114,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   <MaxChargeTime>k__BackingField: 1.5
-  <MinChargeRatio>k__BackingField: 0.25
+  <MinChargeRatio>k__BackingField: 0.5
   <MinStickMagnitude>k__BackingField: 0.3
   <InvertStickDirection>k__BackingField: 1
   <MinSwipeDistance>k__BackingField: 50
