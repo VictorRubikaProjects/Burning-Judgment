@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8092740159167543935}
   - component: {fileID: 5209467164617160361}
   - component: {fileID: 96170671873266464}
-  - component: {fileID: 3753059117203846570}
   m_Layer: 8
   m_Name: PF_Pylone
   m_TagString: Untagged
@@ -68,23 +67,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8839bfd104d48999840912b9c9f02dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::ActorTestBounce
-  cancelsDash: 1
-  allowsChain: 1
-  onStruck:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3753059117203846570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6014201564846427122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8839bfd104d48999840912b9c9f02dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Project.Runtime::StrikeableElement
   cancelsDash: 1
   allowsChain: 1
   onStruck:
