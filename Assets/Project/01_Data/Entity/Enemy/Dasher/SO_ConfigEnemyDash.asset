@@ -62,8 +62,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   <SightHeight>k__BackingField: 0.5
-  <LockTime>k__BackingField: 0.75
-  <LockToDashDelay>k__BackingField: 1
+  <LockTime>k__BackingField: 1
+  <LockToDashDelay>k__BackingField: 0.5
   <DashDistance>k__BackingField: 9
   <DashDuration>k__BackingField: 0.5
   <DashCurve>k__BackingField:
