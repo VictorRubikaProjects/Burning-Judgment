@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   <Weight>k__BackingField: 60
   <PushForce>k__BackingField: 40
-  <DefaultScaling>k__BackingField: 0.5
-  <BadScaling>k__BackingField: 0.25
+  <DefaultScaling>k__BackingField: 1
+  <BadScaling>k__BackingField: 2
   <Stability>k__BackingField: 1
   <Destabilization>k__BackingField: 0.33
   <ObstacleLayer>k__BackingField:
