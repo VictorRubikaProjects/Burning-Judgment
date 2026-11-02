@@ -2565,8 +2565,8 @@
     "m_ObjectId": "3a319a7d5bd94978afb60f6e5d09840e",
     "m_Title": "Position normalisée dans la BB du mesh",
     "m_Position": {
-        "x": -3877.0,
-        "y": 285.9999084472656
+        "x": -3877.000244140625,
+        "y": 285.9999694824219
     }
 }
 
@@ -3156,8 +3156,8 @@
     "m_ObjectId": "4d2672f2937e472b86d0255e853007df",
     "m_Title": "Color gradient",
     "m_Position": {
-        "x": -605.0001220703125,
-        "y": 456.9998779296875
+        "x": -605.0,
+        "y": 457.0000305175781
     }
 }
 
@@ -3190,8 +3190,8 @@
     "m_ObjectId": "4e29cfb636904a81baf41cc69ff571eb",
     "m_Title": "Récupération de la screen position pour générer une courbe euh voilà",
     "m_Position": {
-        "x": -2934.0,
-        "y": 778.9998168945313
+        "x": -2934.000244140625,
+        "y": 779.0001220703125
     }
 }
 
@@ -4027,7 +4027,7 @@
     "m_Title": "Dithering",
     "m_Position": {
         "x": -1246.0,
-        "y": 79.99990844726563
+        "y": 80.0
     }
 }
 
@@ -4703,8 +4703,8 @@
     "m_ObjectId": "82944d450c394d0a910a741dae8f39e2",
     "m_Title": "Fade sur le haut du mesh",
     "m_Position": {
-        "x": -3153.0,
-        "y": 209.9998779296875
+        "x": -3153.000244140625,
+        "y": 210.0000457763672
     }
 }
 
@@ -5550,7 +5550,7 @@
         "half tone"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -6279,8 +6279,8 @@
     "m_ObjectId": "ba1e5681578a4b4090461e36eb82ad69",
     "m_Title": "Variation de noise sur la normale",
     "m_Position": {
-        "x": -4333.0,
-        "y": -182.00006103515626
+        "x": -4333.00048828125,
+        "y": -182.00001525878907
     }
 }
 
@@ -6913,8 +6913,8 @@
     "m_ObjectId": "d2557f8c97224eaab48f19097d318f67",
     "m_Title": "Calcul du lighting",
     "m_Position": {
-        "x": -1992.0,
-        "y": -96.00013732910156
+        "x": -1992.0001220703125,
+        "y": -96.0
     }
 }
 
@@ -8141,8 +8141,8 @@
     "m_ObjectId": "fd775dbbdd964012b39f5e4b9347b2be",
     "m_Title": "Postérisation",
     "m_Position": {
-        "x": -1262.999755859375,
-        "y": -78.00005340576172
+        "x": -1263.0001220703125,
+        "y": -78.00003051757813
     }
 }
 
