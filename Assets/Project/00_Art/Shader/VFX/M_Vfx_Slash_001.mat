@@ -44,7 +44,7 @@ Material:
     m_Floats:
     - _CeillingIntensity: 10
     - _Distortion: 0.1
-    - _DotSize: 4
+    - _DotSize: 3
     - _Float: 1.32
     - _Float_1: 0.9
     - _LOCK: 0
