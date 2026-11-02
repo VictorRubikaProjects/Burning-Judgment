@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ConfigStatsPlayer
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   <Weight>k__BackingField: 60
-  <PushForce>k__BackingField: 40
-  <DefaultScaling>k__BackingField: 1
-  <BadScaling>k__BackingField: 2
+  <PushForce>k__BackingField: 100
+  <DefaultScaling>k__BackingField: 0.5
+  <BadScaling>k__BackingField: 1
   <Stability>k__BackingField: 1
-  <Destabilization>k__BackingField: 0.33
+  <Destabilization>k__BackingField: 0.12
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
@@ -113,8 +113,8 @@ MonoBehaviour:
   <DashStrikeLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 320
-  <MaxChargeTime>k__BackingField: 1.5
-  <MinChargeRatio>k__BackingField: 0.5
+  <MaxChargeTime>k__BackingField: 0.5
+  <MinChargeRatio>k__BackingField: 0.65
   <MinStickMagnitude>k__BackingField: 0.3
   <InvertStickDirection>k__BackingField: 1
   <MinSwipeDistance>k__BackingField: 50
@@ -142,7 +142,7 @@ MonoBehaviour:
     CrossFadeDuration: 0.1
     Speed: 1
   <ChainThreshold>k__BackingField: 0.75
-  <ChainBonusPercent>k__BackingField: 0.15
+  <ChainBonusPercent>k__BackingField: 0.25
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973
