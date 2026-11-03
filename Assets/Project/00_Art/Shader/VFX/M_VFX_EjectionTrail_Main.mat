@@ -25,8 +25,9 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _COLORMANAGER_WOLRDPOSGRADIENT
+  m_InvalidKeywords:
   - _COLORMANAGER_GRADIENT
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -64,6 +65,8 @@ Material:
     - _Spherical_Mask: 1
     - _Spherical_Particle: 1
     - _WorldPosGradient: 1
+    - _usingDissolve: 1
+    - _usingSphericalMask: 1
     - _usingTexture: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}

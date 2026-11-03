@@ -25,8 +25,9 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _COLORMANAGER_WOLRDPOSGRADIENT
+  m_InvalidKeywords:
   - _COLORMANAGER_GRADIENT
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -61,10 +62,12 @@ Material:
     - _Gradient_Edge2: 7.88
     - _Spherical_Mask: 0
     - _usingDissolve: 0
+    - _usingSphericalMask: 1
     - _usingTexture: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _BotColor: {r: 2.6037736, g: 4.8251004, b: 8, a: 1}
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _NoiseSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _TopColor: {r: 0.75977945, g: 0.5127036, b: 3.293732, a: 1}
   m_BuildTextureStacks: []
