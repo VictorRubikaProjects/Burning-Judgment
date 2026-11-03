@@ -4,9 +4,13 @@ using UnityEngine;
 public class Actor : Pawn
 {
     private readonly List<ActorComponent> m_components = new();
-    
-    
-    public float Stability {get; protected set;}
+
+    private float m_stability;
+    public float Stability
+    {
+        get => m_stability;
+        protected set => m_stability = Mathf.Clamp(value, 0.0f, 1.0f);
+    }
 
     public virtual void Kill() { }
 
