@@ -1,13 +1,9 @@
-using System;
 using UnityEngine;
 
 public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
 {
-    [SerializeField] private Material materialIndicatorDash;
-    [SerializeField] private MeshRenderer rendererDash;
-    
-    private Material m_materialIndicatorInstance;
-    
+    [SerializeField] private SpriteRenderer spriteDash;
+
     private EnemyChaseState m_chaseState;
     private EnemyFleeState m_fleeState;
     private EnemyHitState m_hitState;
@@ -19,16 +15,14 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
     private float m_nextDashTime;
 
     public DashComponent Dash { get; private set; }
-    public Material MaterialIndicatorDash => m_materialIndicatorInstance;
+    public DashIndicatorComponent DashIndicator { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
         
         Dash = new DashComponent(this, Rigidbody, GroundCheck);
-        
-        m_materialIndicatorInstance = new Material(materialIndicatorDash);
-        rendererDash.material = m_materialIndicatorInstance;
+        DashIndicator = new DashIndicatorComponent(this, spriteDash, 2f);
     }
 
     protected override void Start()
@@ -77,7 +71,6 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
     {
         if (Time.time < m_nextDashTime) return false;
         if (!GroundCheck.IsGrounded()) return false;
-
         if (!IsPlayerInSight()) return false;
 
         float sqrDistance = (Player.TransformCache.position - TransformCache.position).sqrMagnitude;
@@ -86,12 +79,4 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
 
         return sqrDistance >= min * min && sqrDistance <= max * max;
     }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        Destroy(m_materialIndicatorInstance);
-        m_materialIndicatorInstance = null; 
-    }
-    
 }
