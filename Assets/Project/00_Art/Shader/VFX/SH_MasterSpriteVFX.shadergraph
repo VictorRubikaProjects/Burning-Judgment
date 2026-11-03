@@ -6363,7 +6363,7 @@
     "m_ObjectId": "9f1290862aef43759e6d61311160cba7",
     "m_Title": "Dither and Posterize",
     "m_Position": {
-        "x": 785.0,
+        "x": 784.9996337890625,
         "y": 329.0
     }
 }
@@ -6826,7 +6826,7 @@
     "m_ObjectId": "b866732647b14dcc823c533002001337",
     "m_Title": "Set alpha from Shuriken",
     "m_Position": {
-        "x": 2499.0,
+        "x": 2498.999267578125,
         "y": 1208.0
     }
 }
@@ -8063,8 +8063,8 @@
     "m_ObjectId": "d7d38fe0b3774bfbb403cc6e37dc41a2",
     "m_Title": "Generate Spherical Mask For Particle",
     "m_Position": {
-        "x": 1296.0,
-        "y": 1195.0
+        "x": 1295.9996337890625,
+        "y": 1195.0001220703125
     }
 }
 
@@ -8100,7 +8100,7 @@
     "m_Title": "Gradient based on world pos",
     "m_Position": {
         "x": -1197.0,
-        "y": -280.0
+        "y": -279.9999694824219
     }
 }
 
@@ -8707,8 +8707,8 @@
     "m_ObjectId": "f1b8ae2745ff434fa51b59043a452ef9",
     "m_Title": "Dissolve",
     "m_Position": {
-        "x": -2961.000244140625,
-        "y": 1022.0000610351563
+        "x": -2961.0,
+        "y": 1021.9999389648438
     }
 }
 
