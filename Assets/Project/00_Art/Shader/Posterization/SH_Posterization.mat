@@ -48,7 +48,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0
-    - _Step: 1.22
+    - _Step: 1.28
     - _XRMotionVectorsPass: 1
     m_Colors:
     - _Bottom_Color: {r: 0.06897471, g: 0.19644001, b: 0.5849056, a: 1}
