@@ -14,7 +14,6 @@ public class EnemyHitState : EnemyBaseState
     {
         base.OnEnter();
         IsFinished = false;
-        Owner.Agent.enabled = false;
         Owner.ConsumeHitRequest();
 
         Owner.KnockBack.HitAsync(
@@ -24,17 +23,13 @@ public class EnemyHitState : EnemyBaseState
             Owner.StatsBase.HitKnockbackCurve,
             Owner.StatsBase.ObstacleLayer).Forget();
         
-        ServiceLocator.Get<FxService>().PlayEjectionEffect(Owner.TransformCache,Owner.StatsBase.HitDuration);
+        ServiceLocator.Get<FxService>().PlayEjectionEffect(Owner.TransformCache, Owner.StatsBase.HitDuration);
     }
 
     public override void OnExit()
     {
         base.OnExit();
         Owner.KnockBack.Cancel();
-
-        bool grounded = Owner.GroundCheck.IsGrounded();
-        if (grounded) Owner.Agent.Warp(Owner.Rigidbody.position);
-        Owner.Agent.enabled = grounded;
     }
 
     public override void Update()
@@ -46,7 +41,6 @@ public class EnemyHitState : EnemyBaseState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        
         if (Owner.KnockBack.IsActive) ExecuteStrikeHit();
     }
 
@@ -62,7 +56,6 @@ public class EnemyHitState : EnemyBaseState
         for (int i = 0; i < count; i++)
         {
             EnemyBase enemyBase = m_strikeHits[i].GetComponentInParent<EnemyBase>();
-            
             if (!enemyBase) continue;
 
             EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(

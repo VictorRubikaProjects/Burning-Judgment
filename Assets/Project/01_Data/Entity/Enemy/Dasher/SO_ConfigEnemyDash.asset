@@ -53,8 +53,8 @@ MonoBehaviour:
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <Speed>k__BackingField: 12
-  <RotationSpeed>k__BackingField: 500
+  <Speed>k__BackingField: 5
+  <RotationSpeed>k__BackingField: 1800
   <DistanceMin>k__BackingField: 6
   <DistanceMax>k__BackingField: 12
   <HitRadius>k__BackingField: 1

@@ -13,6 +13,7 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
     private EnemyFallState m_fallState;
     private EnemyExpansionIdleState m_idleState;
     private EnemyExpansionAttackState m_attackState;
+    private EnemyRepositionState m_repositionState;
 
     private bool m_attackRequested;
     private float m_nextAttackTime;
@@ -39,6 +40,7 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
         m_fallState = new EnemyFallState(this);
         m_idleState = new EnemyExpansionIdleState(this);
         m_attackState = new EnemyExpansionAttackState(this);
+        m_repositionState = new EnemyRepositionState(this);
 
         return m_idleState;
     }
@@ -51,6 +53,8 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
         At(m_fleeState, m_idleState, new FuncPredicate(() => m_fleeState.IsFinished));
         At(m_chaseState, m_idleState, new FuncPredicate(() => m_chaseState.IsFinished));
         At(m_attackState, m_idleState, new FuncPredicate(() => m_attackState.IsFinished));
+        At(m_idleState, m_repositionState, new FuncPredicate(() => RepositionRequested));
+        At(m_repositionState, m_idleState, new FuncPredicate(() => m_repositionState.IsFinished));
 
         Any(m_hitState, new FuncPredicate(() => HitRequested && GroundCheck.IsGrounded()));
         Any(m_attackState, new FuncPredicate(() => m_attackRequested && GroundCheck.IsGrounded()));

@@ -45,15 +45,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.61348
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.08
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.78793
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalRotation.w
@@ -132,13 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1358c33444a4fb0858bf92c2f3f7fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyShooter
-  agent: {fileID: 6831164609745259922}
   <Rigidbody>k__BackingField: {fileID: 2184155058998813167}
   <DamagePopUp>k__BackingField: {fileID: 429032386074956564}
   stats: {fileID: 11400000, guid: aebb328231d49b748bc44e014ee6f533, type: 2}
   <ShootPoint>k__BackingField: {fileID: 9000011747619222117}
---- !u!195 &6831164609745259922 stripped
-NavMeshAgent:
-  m_CorrespondingSourceObject: {fileID: 7680041633153437460, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
-  m_PrefabInstance: {fileID: 3772276133740167814}
-  m_PrefabAsset: {fileID: 0}

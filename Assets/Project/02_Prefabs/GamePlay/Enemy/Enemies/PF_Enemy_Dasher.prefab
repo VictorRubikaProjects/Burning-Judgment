@@ -105,15 +105,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.61348
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.08
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.78793
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalRotation.w
@@ -171,7 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67ff553ca4c4b849ba76e16110f2206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyDasher
-  agent: {fileID: 7148706208256203508}
   <Rigidbody>k__BackingField: {fileID: 2573753427026032265}
   <DamagePopUp>k__BackingField: {fileID: 4038700554573661298}
   stats: {fileID: 11400000, guid: a6f19d2432e860a4983d6bd83dbd009b, type: 2}
@@ -197,8 +196,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::DamagePopUp
---- !u!195 &7148706208256203508 stripped
-NavMeshAgent:
-  m_CorrespondingSourceObject: {fileID: 7680041633153437460, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
-  m_PrefabInstance: {fileID: 694032937245464032}
-  m_PrefabAsset: {fileID: 0}
