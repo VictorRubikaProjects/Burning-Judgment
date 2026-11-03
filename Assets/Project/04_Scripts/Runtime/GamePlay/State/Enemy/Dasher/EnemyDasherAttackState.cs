@@ -34,35 +34,26 @@ public class EnemyDashAttackState : EnemyBaseState
         base.OnEnter();
         
         IsFinished = false;
-        
         m_isAttacking = false;
-        
         m_cts = new CancellationTokenSource();
         
         m_dasher.ConsumeDashRequest();
         
         m_timerChargeAttack.OnTimerStop += Attack;
-        
         m_timerChargeAttack.Start();
-
-        FeedBackAttack(m_cts.Token, 1f, m_dasher.Stats.LockTime);
     }
 
     public override void OnExit()
     {
         m_isAttacking = false;
-        
         m_timerChargeAttack.OnTimerStop -= Attack;
-        
         m_timerChargeAttack.Stop();
         
+        m_dasher.DashIndicator.Hide();
+        
         m_cts?.Cancel();
-        
         m_cts?.Dispose();
-        
         m_cts = null;
-        
-        m_dasher.MaterialIndicatorDash.SetFloat(m_idPropMaterialProgressionHash, 0f);
     }
 
     public override void Update()
@@ -72,6 +63,7 @@ public class EnemyDashAttackState : EnemyBaseState
         if (!m_timerChargeAttack.IsRunning) return;
 
         m_dasher.LookAtPlayer();
+        UpdateIndicator();
     }
 
     public override void FixedUpdate()
@@ -79,6 +71,21 @@ public class EnemyDashAttackState : EnemyBaseState
         base.FixedUpdate();
         if (!m_isAttacking) return;
         ExecuteStrike();
+    }
+
+    private void UpdateIndicator()
+    {
+        Vector3 start = m_dasher.TransformCache.position;
+        Vector3 direction = m_dasher.TransformCache.forward;
+        direction.y = 0f;
+        direction.Normalize();
+
+        float chargeProgress = 1f - (m_timerChargeAttack.CurrentTime / m_dasher.Stats.LockTime);
+        float currentDashDistance = Mathf.Lerp(0f, m_dasher.Stats.DashDistance, chargeProgress);
+
+        Vector3 end = start + direction * currentDashDistance;
+        
+        m_dasher.DashIndicator.Show(start, end);
     }
 
     private void Attack() => AttackAsync(m_cts.Token).Forget();
@@ -93,9 +100,11 @@ public class EnemyDashAttackState : EnemyBaseState
             direction.y = 0f;
             direction.Normalize();
 
+            m_dasher.DashIndicator.Hide();
+
             m_isAttacking = true;
 
-            await m_dasher.Dash.DashAsync(
+            var dashTask = m_dasher.Dash.DashAsync(
                 direction,
                 token,
                 m_dasher.Stats.DashDuration,
@@ -103,10 +112,13 @@ public class EnemyDashAttackState : EnemyBaseState
                 m_dasher.Stats.DashCurve,
                 m_dasher.Stats.ObstacleLayer);
 
+            await dashTask;
+
             m_isAttacking = false;
         }
         catch (OperationCanceledException)
         {
+            m_dasher.DashIndicator.Hide();
             return;
         }
 
@@ -141,16 +153,5 @@ public class EnemyDashAttackState : EnemyBaseState
             
             return;
         }
-    }
-    
-    private void FeedBackAttack(CancellationToken token, float endValue, float duration)
-    {
-        Tween tween = Tween.MaterialProperty(
-            m_dasher.MaterialIndicatorDash,
-            m_idPropMaterialProgressionHash,
-            endValue,
-            duration);
-
-        token.Register(tween.Stop);
     }
 }
