@@ -20,7 +20,6 @@ public class PlayerInputComponent : ActorComponent
     private Vector2 m_lastDirection;
 
     private float m_touchStartTime;
-    private float m_chargeStartTime;
 
     private bool m_isTouching;
     private bool m_isJoystickVisible;
@@ -199,7 +198,6 @@ public class PlayerInputComponent : ActorComponent
 
     private void BeginCharge()
     {
-        m_chargeStartTime = Time.unscaledTime; //unscaled time for slow motion impact
         m_isCharging = true;
         m_lastDirection = Vector2.zero;
     }
@@ -212,8 +210,11 @@ public class PlayerInputComponent : ActorComponent
 
     private float GetChargeRatio()
     {
-        float heldDuration = Time.unscaledTime - m_chargeStartTime; //unscaled time used so slow motion no impact on charge.
-        return Mathf.Clamp(heldDuration / m_stats.MaxChargeTime, m_stats.MinChargeRatio, 1f);
+        Vector2 currentPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
+        float stretchMagnitude = (currentPosition - m_touchStartPosition).magnitude;
+        float ratio = stretchMagnitude / m_stats.MaxSwipeDistance;
+
+        return Mathf.Clamp(ratio, m_stats.MinChargeRatio, 1f);
     }
 
     #endregion

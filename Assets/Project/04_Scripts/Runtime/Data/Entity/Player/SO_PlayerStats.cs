@@ -57,12 +57,8 @@ public class SO_PlayerStats : SO_ActorsStats
     public LayerMask DashStrikeLayer { get; private set; }
 
     [field: Space, Header("Input")]
-    [field: SerializeField, Range(0.1f, 3f)]
-    [field: Tooltip("Durée en secondes pour atteindre la charge maximale du joystick. Au-delà, la distance du dash n'augmente plus.")]
-    public float MaxChargeTime { get; private set; } = 1.5f;
-
     [field: SerializeField, Range(0f, 1f)]
-    [field: Tooltip("Ratio minimal de charge appliqué même pour un relâchement immédiat. 0.2 = 20% de la distance de dash maximale.")]
+    [field: Tooltip("Ratio minimal de charge appliqué même pour un relâchement immédiat ou un joystick à peine poussé. 0.2 = 20% de la distance max.")]
     public float MinChargeRatio { get; private set; } = 0.2f;
 
     [field: SerializeField, Range(0f, 1f)]
@@ -78,7 +74,7 @@ public class SO_PlayerStats : SO_ActorsStats
     public float MinSwipeDistance { get; private set; } = 50f;
 
     [field: SerializeField, Range(50f, 1500f)]
-    [field: Tooltip("Distance maximale en pixels du swipe. Au-delà, le roll atteint sa distance maximale.")]
+    [field: Tooltip("Distance maximale en pixels de l'étirement du joystick (ou swipe). Au-delà, la distance de dash/tir atteint 100% (ratio 1f).")]
     public float MaxSwipeDistance { get; private set; } = 400f;
 
     [field: SerializeField, Range(0.05f, 1f)]
