@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ConfigStatsPlayer
   m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
   <Weight>k__BackingField: 60
-  <PushForce>k__BackingField: 40
+  <PushForce>k__BackingField: 100
   <DefaultScaling>k__BackingField: 0.5
-  <BadScaling>k__BackingField: 0.25
+  <BadScaling>k__BackingField: 1
   <Stability>k__BackingField: 1
-  <Destabilization>k__BackingField: 0.33
+  <Destabilization>k__BackingField: 0.12
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 768
@@ -61,18 +61,18 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 2
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -91,20 +91,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2.0992064
-      outSlope: 2.0992064
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.14177693
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: -0.03759795
-      outSlope: -0.03759795
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0.12665409
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -113,8 +113,8 @@ MonoBehaviour:
   <DashStrikeLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 320
-  <MaxChargeTime>k__BackingField: 1.5
-  <MinChargeRatio>k__BackingField: 0
+  <MaxChargeTime>k__BackingField: 0.5
+  <MinChargeRatio>k__BackingField: 0.65
   <MinStickMagnitude>k__BackingField: 0.3
   <InvertStickDirection>k__BackingField: 1
   <MinSwipeDistance>k__BackingField: 50
@@ -142,7 +142,7 @@ MonoBehaviour:
     CrossFadeDuration: 0.1
     Speed: 1
   <ChainThreshold>k__BackingField: 0.75
-  <ChainBonusPercent>k__BackingField: 0.15
+  <ChainBonusPercent>k__BackingField: 0.25
   <HitEvent>k__BackingField:
     Guid:
       Data1: -614538973

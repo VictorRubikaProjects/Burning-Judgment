@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07366f51f1424c79be0276ecd4d60297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyExpansion
+  Stability: 0
   agent: {fileID: 7917633788143797245}
   <Rigidbody>k__BackingField: {fileID: 3270621082815049600}
   <DamagePopUp>k__BackingField: {fileID: 3951912321538186619}
