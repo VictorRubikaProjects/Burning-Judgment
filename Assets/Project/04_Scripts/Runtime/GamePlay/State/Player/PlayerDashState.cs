@@ -85,7 +85,8 @@ public class PlayerDashState : PlayerBaseState
         StrikeResult result = m_owner.Controller.TryStrike(
             m_stats.DashStrikeRadius,
             m_stats.DashStrikeLayer,
-            PlayerControllerComponent.StrikeType.Dash);
+            PlayerControllerComponent.StrikeType.Dash,
+            m_owner.Chain.GetForceMultiplier);
 
         if (!result.Accepted) return;
 
