@@ -121,14 +121,6 @@ public abstract class EnemyBase : Actor, IStrikeable
 
     #endregion
 
-    protected void OnActorPushed(ActorPushedEvent e)
-    {
-        if (e.Target != this) return;
-        if (m_stateMachine.GetCurrentState() is EnemyHitState) return;
-
-        ApplyPush(e.Direction, e.Force, e.Destabilization);
-    }
-
     public void LookAtPlayer()
     {
         Vector3 direction = Player.TransformCache.position - TransformCache.position;
@@ -156,7 +148,7 @@ public abstract class EnemyBase : Actor, IStrikeable
     public void ConsumeRepositionRequest() => m_repositionRequested = false;
     
     public Transform TargetTransform => TransformCache;
-    public bool CanBeStruck => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState);
+    public bool CanBeStruck => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState) && HitGate.CanTakeDamage();
     public float ComfortDistance => (StatsBase.DistanceMin + StatsBase.DistanceMax) * 0.5f;
     
     public bool IsPlayerInSight() => HasSightFrom(TransformCache.position);
@@ -181,6 +173,15 @@ public abstract class EnemyBase : Actor, IStrikeable
         if (!IsPlayerInSight()) return PositionNeed.Reposition;
 
         return PositionNeed.None;
+    }
+    
+    protected void OnActorPushed(ActorPushedEvent e)
+    {
+        if (e.Target != this) return;
+        
+        if (m_stateMachine.GetCurrentState() is EnemyHitState || !HitGate.CanTakeDamage()) return;
+
+        ApplyPush(e.Direction, e.Force, e.Destabilization);
     }
 
     public virtual StrikeResult OnStruck(in StrikeContext context)

@@ -266,7 +266,7 @@ public class PlayerCharacter : Actor
     {
         if (e.Target != this) return;
 
-        if (m_stateMachine.GetCurrentState() is PlayerHitState) return;
+        if (m_stateMachine.GetCurrentState() is PlayerHitState || !HitGate.CanTakeDamage()) return;
 
         m_pendingKnockbackDirection = e.Direction;
         

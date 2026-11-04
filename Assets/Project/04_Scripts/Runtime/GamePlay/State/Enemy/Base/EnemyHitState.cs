@@ -16,6 +16,8 @@ public class EnemyHitState : EnemyBaseState
         IsFinished = false;
         Owner.ConsumeHitRequest();
 
+        Owner.HitGate.TakeDamage();
+        
         Owner.KnockBack.HitAsync(
             Owner.PendingKnockbackDirection,
             Owner.StatsBase.HitDuration,
