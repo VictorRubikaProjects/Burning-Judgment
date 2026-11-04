@@ -46,7 +46,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <InvincibilityDuration>k__BackingField: 0.5
+  <InvincibilityDuration>k__BackingField: 2
   <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 55
