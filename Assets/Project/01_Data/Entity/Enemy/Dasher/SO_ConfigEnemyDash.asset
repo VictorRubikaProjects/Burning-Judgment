@@ -46,15 +46,15 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <InvincibilityDuration>k__BackingField: 0.5
+  <InvincibilityDuration>k__BackingField: 2
   <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 55
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <Speed>k__BackingField: 12
-  <RotationSpeed>k__BackingField: 500
+  <Speed>k__BackingField: 5
+  <RotationSpeed>k__BackingField: 1800
   <DistanceMin>k__BackingField: 6
   <DistanceMax>k__BackingField: 12
   <HitRadius>k__BackingField: 1

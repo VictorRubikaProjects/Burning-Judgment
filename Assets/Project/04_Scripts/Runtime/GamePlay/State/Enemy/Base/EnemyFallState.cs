@@ -15,7 +15,6 @@ public class EnemyFallState : EnemyBaseState
     private async UniTaskVoid FallAsync()
     {
         Owner.KnockBack.Cancel();
-        Owner.Agent.enabled = false;
         Owner.Rigidbody.isKinematic = false;
         Owner.Rigidbody.useGravity = true;
 

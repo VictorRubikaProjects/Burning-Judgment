@@ -4,6 +4,8 @@ public class EnemyFleeState : EnemyBaseState
 {
     public bool IsFinished { get; private set; }
 
+    private Vector3 m_fleeTargetPosition;
+
     public EnemyFleeState(EnemyBase owner) : base(owner) { }
 
     public override void OnEnter()
@@ -11,7 +13,6 @@ public class EnemyFleeState : EnemyBaseState
         base.OnEnter();
         Owner.ConsumeFleeRequest();
         IsFinished = false;
-        Owner.Agent.stoppingDistance = 0f;
         CalculateFleePosition();
     }
 
@@ -19,19 +20,30 @@ public class EnemyFleeState : EnemyBaseState
     {
         base.Update();
         Owner.LookAtPlayer();
-        CalculateFleePosition();
         EvaluateFleeSuccess();
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        Owner.Steering.MoveTowards(m_fleeTargetPosition, Owner.StatsBase.Speed);
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+        Owner.Steering.Stop();
     }
 
     private void CalculateFleePosition()
     {
         Vector3 away = (Owner.TransformCache.position - Owner.Player.TransformCache.position).normalized;
-        Owner.Agent.SetDestination(Owner.TransformCache.position + away * Owner.StatsBase.DistanceMax);
+        m_fleeTargetPosition = Owner.TransformCache.position + away * Owner.StatsBase.DistanceMax;
     }
 
     private void EvaluateFleeSuccess()
     {
         float distance = Vector3.Distance(Owner.TransformCache.position, Owner.Player.TransformCache.position);
-        if (distance > Owner.StatsBase.DistanceMin) IsFinished = true;
+        if (distance > Owner.ComfortDistance) IsFinished = true;
     }
 }

@@ -11,6 +11,7 @@ public class EnemyShooter : Enemy<SO_ConfigEnemyShoot>
     private EnemyHitState m_hitState;
     private EnemyIdleState m_idleState;
     private EnemyFallState m_fallState;
+    private EnemyRepositionState m_repositionState;
     
     private EventBinding<RunEndedEvent> m_runEndedEventBinding;
 
@@ -41,6 +42,8 @@ public class EnemyShooter : Enemy<SO_ConfigEnemyShoot>
         m_hitState = new EnemyHitState(this);
         m_idleState = new EnemyShooterIdleState(this);
         m_fallState = new EnemyFallState(this);
+        m_repositionState = new EnemyRepositionState(this);
+        
         return m_idleState;
     }
 
@@ -51,6 +54,8 @@ public class EnemyShooter : Enemy<SO_ConfigEnemyShoot>
         At(m_hitState, m_idleState, new FuncPredicate(() => m_hitState.IsFinished));
         At(m_fleeState, m_idleState, new FuncPredicate(() => m_fleeState.IsFinished));
         At(m_chaseState, m_idleState, new FuncPredicate(() => m_chaseState.IsFinished));
+        At(m_idleState, m_repositionState, new FuncPredicate(() => RepositionRequested));
+        At(m_repositionState, m_idleState, new FuncPredicate(() => m_repositionState.IsFinished));
 
         Any(m_fleeState, new FuncPredicate(() => FleeRequested && GroundCheck.IsGrounded()));
         Any(m_chaseState, new FuncPredicate(() => ChaseRequested && GroundCheck.IsGrounded()));

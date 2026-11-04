@@ -11,17 +11,26 @@ public class EnemyChaseState : EnemyBaseState
         base.OnEnter();
         IsFinished = false;
         Owner.ConsumeChaseRequest();
-        Owner.Agent.stoppingDistance = Owner.StatsBase.DistanceMax;
-        Owner.Agent.SetDestination(Owner.Player.TransformCache.position);
     }
 
     public override void Update()
     {
         base.Update();
         Owner.LookAtPlayer();
-        Owner.Agent.SetDestination(Owner.Player.TransformCache.position);
 
         float distance = Vector3.Distance(Owner.TransformCache.position, Owner.Player.TransformCache.position);
-        if (distance < Owner.StatsBase.DistanceMax) IsFinished = true;
+        if (distance < Owner.ComfortDistance) IsFinished = true;
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        Owner.Steering.MoveTowards(Owner.Player.TransformCache.position, Owner.StatsBase.Speed);
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+        Owner.Steering.Stop();
     }
 }

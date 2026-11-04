@@ -190,6 +190,7 @@ MonoBehaviour:
   m_line: {fileID: 842929529874755700}
   m_trackingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_lockedColor: {r: 1, g: 0, b: 0, a: 1}
+  m_blinkSpeed: 10
 --- !u!1 &8961772142905382159
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,15 +237,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.61348
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.08
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.78793
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
       propertyPath: m_LocalRotation.w
@@ -285,11 +286,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3512228309614343052}
   m_SourcePrefab: {fileID: 100100000, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
---- !u!195 &28190946007497345 stripped
-NavMeshAgent:
-  m_CorrespondingSourceObject: {fileID: 7680041633153437460, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
-  m_PrefabInstance: {fileID: 7705899380321744277}
-  m_PrefabAsset: {fileID: 0}
 --- !u!54 &4676608833685133052 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 3032748135735321449, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
@@ -328,7 +324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d73badefa12431896fa04058983fd62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemySniper
-  agent: {fileID: 28190946007497345}
   <Rigidbody>k__BackingField: {fileID: 4676608833685133052}
   <DamagePopUp>k__BackingField: {fileID: 6583472306031191047}
   stats: {fileID: 11400000, guid: 72752c4124e23b74fb67a1585a920db6, type: 2}

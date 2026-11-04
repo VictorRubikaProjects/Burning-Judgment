@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class EnemyIdleState : EnemyBaseState
 {
     public EnemyIdleState(EnemyBase owner) : base(owner) { }
@@ -7,7 +5,7 @@ public class EnemyIdleState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        Owner.Agent.ResetPath();
+        Owner.Steering.Stop();
     }
 
     public override void Update()
@@ -19,9 +17,11 @@ public class EnemyIdleState : EnemyBaseState
 
     private void EvaluateSituation()
     {
-        float distance = Vector3.Distance(Owner.TransformCache.position, Owner.Player.TransformCache.position);
-
-        if (distance > Owner.StatsBase.DistanceMax) Owner.RequestChase();
-        else if (distance < Owner.StatsBase.DistanceMin) Owner.RequestFlee();
+        switch (Owner.EvaluatePositionNeed())
+        {
+            case EnemyBase.PositionNeed.Approach: Owner.RequestChase(); break;
+            case EnemyBase.PositionNeed.Retreat: Owner.RequestFlee(); break;
+            case EnemyBase.PositionNeed.Reposition: Owner.RequestReposition(); break;
+        }
     }
 }

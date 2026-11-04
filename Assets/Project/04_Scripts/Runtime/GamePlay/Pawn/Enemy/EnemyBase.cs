@@ -1,27 +1,27 @@
 using Event_Bus;
 using UnityEngine;
-using UnityEngine.AI;
 
-
-public abstract class EnemyBase : Actor , IStrikeable
+public abstract class EnemyBase : Actor, IStrikeable
 {
     #region Variables
 
-    [SerializeField] private NavMeshAgent agent;
-    [field:SerializeField] public Rigidbody Rigidbody { get; protected set; }
-    [field: SerializeField] public DamagePopUp  DamagePopUp { get; protected set; }
+    [field: SerializeField] public Rigidbody Rigidbody { get; protected set; }
+    [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
 
+    public enum PositionNeed { None, Approach, Retreat, Reposition }
+    
     public abstract SO_ConfigEnemy StatsBase { get; }
-
-    public NavMeshAgent Agent => agent;
+    
+    public SteeringComponent Steering { get; private set; }
 
     protected StateMachine m_stateMachine;
 
     protected bool m_hitRequested;
-
     private bool m_chaseRequested;
     private bool m_fleeRequested;
-
+    private bool m_repositionRequested;
+    
+    public bool RepositionRequested => m_repositionRequested;
     public bool HitRequested => m_hitRequested;
     public bool ChaseRequested => m_chaseRequested;
     public bool FleeRequested => m_fleeRequested;
@@ -54,12 +54,9 @@ public abstract class EnemyBase : Actor , IStrikeable
             StatsBase.GroundCheckHeight,
             StatsBase.GroundCheckDistance);
 
+        Steering = new SteeringComponent(this, Rigidbody, StatsBase.ObstacleLayer, GroundCheck);
         KnockBack = new KnockbackComponent(this, Rigidbody);
-
         HitGate = new HitGateComponent(this, StatsBase.InvincibilityDuration);
-
-        Agent.speed = StatsBase.Speed;
-        Agent.updateRotation = false;
 
         SetupStateMachine();
     }
@@ -70,6 +67,7 @@ public abstract class EnemyBase : Actor , IStrikeable
         AddActorComponent(GroundCheck);
         AddActorComponent(KnockBack);
         AddActorComponent(HitGate);
+        AddActorComponent(Steering);
     }
 
     protected override void Update()
@@ -111,16 +109,12 @@ public abstract class EnemyBase : Actor , IStrikeable
     private void SetupStateMachine()
     {
         m_stateMachine = new StateMachine();
-
         IState state = SetupStates();
-
         SetupTransitions();
-
         m_stateMachine.SetState(state);
     }
 
     protected abstract IState SetupStates();
-
     protected virtual void SetupTransitions() { }
 
     public void SetupPlayerRef(PlayerCharacter player) => Player = player;
@@ -130,16 +124,14 @@ public abstract class EnemyBase : Actor , IStrikeable
     protected void OnActorPushed(ActorPushedEvent e)
     {
         if (e.Target != this) return;
-
         if (m_stateMachine.GetCurrentState() is EnemyHitState) return;
 
-        ApplyPush(e.Direction, e.Force,e.Destabilization);
+        ApplyPush(e.Direction, e.Force, e.Destabilization);
     }
 
     public void LookAtPlayer()
     {
         Vector3 direction = Player.TransformCache.position - TransformCache.position;
-
         direction.y = 0f;
 
         if (direction.sqrMagnitude < 0.0001f) return;
@@ -159,25 +151,43 @@ public abstract class EnemyBase : Actor , IStrikeable
 
     public void RequestFlee() => m_fleeRequested = true;
     public void ConsumeFleeRequest() => m_fleeRequested = false;
+    
+    public void RequestReposition() => m_repositionRequested = true;
+    public void ConsumeRepositionRequest() => m_repositionRequested = false;
+    
     public Transform TargetTransform => TransformCache;
     public bool CanBeStruck => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState);
+    public float ComfortDistance => (StatsBase.DistanceMin + StatsBase.DistanceMax) * 0.5f;
     
-    public bool IsPlayerInSight()
+    public bool IsPlayerInSight() => HasSightFrom(TransformCache.position);
+
+    public bool HasSightFrom(Vector3 position)
     {
         if (!Player) return false;
 
         Vector3 offset = Vector3.up * StatsBase.SightHeight;
-        Vector3 origin = TransformCache.position + offset;
+        Vector3 origin = position + offset;
         Vector3 target = Player.TransformCache.position + offset;
 
         return !Physics.Linecast(origin, target, StatsBase.ObstacleLayer, QueryTriggerInteraction.Ignore);
+    }
+
+    public PositionNeed EvaluatePositionNeed()
+    {
+        float distance = Vector3.Distance(TransformCache.position, Player.TransformCache.position);
+
+        if (distance < StatsBase.DistanceMin) return PositionNeed.Retreat;
+        if (distance > StatsBase.DistanceMax) return PositionNeed.Approach;
+        if (!IsPlayerInSight()) return PositionNeed.Reposition;
+
+        return PositionNeed.None;
     }
 
     public virtual StrikeResult OnStruck(in StrikeContext context)
     {
         if (!CanBeStruck) return StrikeResult.Ignored;
 
-        ApplyPush(context.Direction, context.Force,context.Destabilization);
+        ApplyPush(context.Direction, context.Force, context.Destabilization);
         return new StrikeResult(accepted: true, cancelsDash: true, allowsChain: true);
     }
 
@@ -191,10 +201,9 @@ public abstract class EnemyBase : Actor , IStrikeable
             StatsBase.DefaultScaling,
             Stability);
         
-        Stability = KnockbackUtility.CalculateNewStability(destabilization,force,StatsBase.Weight,Stability);
+        Stability = KnockbackUtility.CalculateNewStability(destabilization, force, StatsBase.Weight, Stability);
         
         RequestHit();
-        
         DamagePopUp.Show(PendingKnockbackForce, TransformCache.position);
     }
 }

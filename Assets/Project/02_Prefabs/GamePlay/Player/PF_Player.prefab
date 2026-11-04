@@ -269,14 +269,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4603752934244844598}
     m_Modifications:
-    - target: {fileID: 1562817199994917507, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1562817199994917507, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2674581673068890333, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -357,52 +349,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5759146682835716946, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
-      propertyPath: m_Color.a
-      value: 0.14901961
-      objectReference: {fileID: 0}
-    - target: {fileID: 5759146682835716946, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5932314570724167308, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
       propertyPath: m_Name
       value: PF_Joystick
       objectReference: {fileID: 0}
-    - target: {fileID: 5932314570724167308, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5932314570724167308, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6132373288948266444}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
 --- !u!224 &2375921176757055119 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2674581673068890333, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
   m_PrefabInstance: {fileID: 425293728977266258}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6319995926467799262 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5932314570724167308, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
-  m_PrefabInstance: {fileID: 425293728977266258}
-  m_PrefabAsset: {fileID: 0}
---- !u!225 &6132373288948266444
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6319995926467799262}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1001 &509163988195781360
 PrefabInstance:
   m_ObjectHideFlags: 0

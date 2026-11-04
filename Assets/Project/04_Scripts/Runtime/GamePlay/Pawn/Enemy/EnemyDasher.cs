@@ -10,6 +10,7 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
     private EnemyDasherIdleState m_idleState;
     private EnemyFallState m_fallState;
     private EnemyDashAttackState m_dashState;
+    private EnemyRepositionState m_repositionState;
 
     private bool m_dashRequest;
     private float m_nextDashTime;
@@ -39,6 +40,8 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
         m_hitState = new EnemyHitState(this);
         m_fallState = new EnemyFallState(this);
         m_dashState = new EnemyDashAttackState(this);
+        m_repositionState = new EnemyRepositionState(this);
+        
         return m_idleState;
     }
 
@@ -50,6 +53,8 @@ public class EnemyDasher : Enemy<SO_ConfigEnemyDash>
         At(m_fleeState, m_idleState, new FuncPredicate(() => m_fleeState.IsFinished));
         At(m_chaseState, m_idleState, new FuncPredicate(() => m_chaseState.IsFinished));
         At(m_dashState, m_idleState, new FuncPredicate(() => m_dashState.IsFinished));
+        At(m_idleState, m_repositionState, new FuncPredicate(() => RepositionRequested));
+        At(m_repositionState, m_idleState, new FuncPredicate(() => m_repositionState.IsFinished));
 
         Any(m_hitState, new FuncPredicate(() => HitRequested && GroundCheck.IsGrounded()));
         Any(m_dashState, new FuncPredicate(() => m_dashRequest && GroundCheck.IsGrounded()));
