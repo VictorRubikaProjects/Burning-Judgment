@@ -153,6 +153,11 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 1511189929643106263}
   m_SourcePrefab: {fileID: 100100000, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+--- !u!4 &1440780938651814500 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1480354379048257165, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 537591743468752105}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1683490832093399852 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1164494043303806917, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
@@ -172,6 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::EnemyExpansion
   <Rigidbody>k__BackingField: {fileID: 3270621082815049600}
   <DamagePopUp>k__BackingField: {fileID: 3951912321538186619}
+  <FeetTransform>k__BackingField: {fileID: 1440780938651814500}
   stats: {fileID: 11400000, guid: 75dc8c98f59bb2b4c88a6b4e6a7c499a, type: 2}
   materialChargeAttack: {fileID: 2100000, guid: 5a7670149ab14b346a0725d5098df67e, type: 2}
   rendererEnemy: {fileID: 6429605846392613010}

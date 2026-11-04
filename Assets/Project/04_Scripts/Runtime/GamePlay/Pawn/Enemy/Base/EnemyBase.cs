@@ -7,6 +7,7 @@ public abstract class EnemyBase : Actor, IStrikeable
 
     [field: SerializeField] public Rigidbody Rigidbody { get; protected set; }
     [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
+    [field: SerializeField] public Transform FeetTransform { get; protected set; }
 
     public enum PositionNeed { None, Approach, Retreat, Reposition }
     

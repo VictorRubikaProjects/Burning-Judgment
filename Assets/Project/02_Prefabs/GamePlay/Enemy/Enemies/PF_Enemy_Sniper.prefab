@@ -326,6 +326,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::EnemySniper
   <Rigidbody>k__BackingField: {fileID: 4676608833685133052}
   <DamagePopUp>k__BackingField: {fileID: 6583472306031191047}
+  <FeetTransform>k__BackingField: {fileID: 9114050749522211608}
   stats: {fileID: 11400000, guid: 72752c4124e23b74fb67a1585a920db6, type: 2}
   <ShootPoint>k__BackingField: {fileID: 2580230676802955762}
   <AimVisual>k__BackingField: {fileID: 1645958956491001147}
+--- !u!4 &9114050749522211608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1480354379048257165, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 7705899380321744277}
+  m_PrefabAsset: {fileID: 0}

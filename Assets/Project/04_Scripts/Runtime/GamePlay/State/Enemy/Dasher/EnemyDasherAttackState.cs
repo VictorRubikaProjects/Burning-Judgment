@@ -74,7 +74,7 @@ public class EnemyDashAttackState : EnemyBaseState
 
     private void UpdateIndicator()
     {
-        Vector3 start = m_dasher.TransformCache.position;
+        Vector3 start = m_dasher.FeetTransform.position;
         Vector3 direction = m_dasher.TransformCache.forward;
         direction.y = 0f;
         direction.Normalize();

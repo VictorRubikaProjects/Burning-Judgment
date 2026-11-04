@@ -115,6 +115,11 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 3032748135735321449, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
   m_PrefabInstance: {fileID: 3772276133740167814}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &2365119187167855627 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1480354379048257165, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 3772276133740167814}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2625822891189126467 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1164494043303806917, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
@@ -134,5 +139,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::EnemyShooter
   <Rigidbody>k__BackingField: {fileID: 2184155058998813167}
   <DamagePopUp>k__BackingField: {fileID: 429032386074956564}
+  <FeetTransform>k__BackingField: {fileID: 2365119187167855627}
   stats: {fileID: 11400000, guid: aebb328231d49b748bc44e014ee6f533, type: 2}
   <ShootPoint>k__BackingField: {fileID: 9000011747619222117}
