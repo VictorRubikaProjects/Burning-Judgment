@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Event_Bus;
-using PrimeTween;
 using UnityEngine;
 
 public class EnemyDashAttackState : EnemyBaseState

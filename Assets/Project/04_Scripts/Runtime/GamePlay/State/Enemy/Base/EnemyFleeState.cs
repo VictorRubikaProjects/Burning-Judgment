@@ -6,7 +6,12 @@ public class EnemyFleeState : EnemyBaseState
 
     private Vector3 m_fleeTargetPosition;
 
-    public EnemyFleeState(EnemyBase owner) : base(owner) { }
+    private readonly CountdownTimer m_timerDesperateAct;
+
+    public EnemyFleeState(EnemyBase owner) : base(owner)
+    {
+        m_timerDesperateAct = new CountdownTimer(1.2f);
+    }
 
     public override void OnEnter()
     {
@@ -14,6 +19,9 @@ public class EnemyFleeState : EnemyBaseState
         Owner.ConsumeFleeRequest();
         IsFinished = false;
         CalculateFleePosition();
+        
+        m_timerDesperateAct.OnTimerStop += OnTimerStop;
+        m_timerDesperateAct.Start();
     }
 
     public override void Update()
@@ -32,7 +40,10 @@ public class EnemyFleeState : EnemyBaseState
     public override void OnExit()
     {
         base.OnExit();
+        
         Owner.Steering.Stop();
+        m_timerDesperateAct.OnTimerStop -= OnTimerStop;
+        m_timerDesperateAct.Stop();
     }
 
     private void CalculateFleePosition()
@@ -45,5 +56,11 @@ public class EnemyFleeState : EnemyBaseState
     {
         float distance = Vector3.Distance(Owner.TransformCache.position, Owner.Player.TransformCache.position);
         if (distance > Owner.ComfortDistance) IsFinished = true;
+    }
+    
+    private void OnTimerStop()
+    {
+        Owner.RequestAttack();
+        IsFinished = true;
     }
 }

@@ -10,12 +10,12 @@ public class EnemyDasherIdleState : EnemyIdleState
     public override void Update()
     {
         base.Update();
-        m_dasher.EvaluateDashRequest();
+        m_dasher.EvaluateAttackRequest();
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        m_dasher.ClearDashRequest();
+        m_dasher.ClearAttackRequest();
     }
 }

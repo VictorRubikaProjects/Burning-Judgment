@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
+public class EnemyExpansion : EnemyWithCooldown<SO_ConfigEnemyExpansion>
 {
     [SerializeField] private Material materialChargeAttack;
     [SerializeField] private Renderer rendererEnemy;
@@ -14,9 +14,6 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
     private EnemyExpansionIdleState m_idleState;
     private EnemyExpansionAttackState m_attackState;
     private EnemyRepositionState m_repositionState;
-
-    private bool m_attackRequested;
-    private float m_nextAttackTime;
 
     protected override void Awake()
     {
@@ -62,33 +59,12 @@ public class EnemyExpansion : Enemy<SO_ConfigEnemyExpansion>
         Any(m_chaseState, new FuncPredicate(() => ChaseRequested && GroundCheck.IsGrounded()));
     }
 
-    public void EvaluateAttackRequest() => m_attackRequested = CanAttack();
-
-    public void ClearAttackRequest() => m_attackRequested = false;
-
-    public void ConsumeAttackRequest()
-    {
-        m_attackRequested = false;
-        m_nextAttackTime = Time.time + Stats.AttackCooldown;
-    }
-
-    private bool CanAttack()
-    {
-        if (Time.time < m_nextAttackTime) return false;
-        if (!GroundCheck.IsGrounded()) return false;
-
-        float sqrDistance = (Player.TransformCache.position - TransformCache.position).sqrMagnitude;
-        float min = Stats.DistanceMin;
-        float max = Stats.DistanceMax;
-
-        return sqrDistance >= min * min && sqrDistance <= max * max;
-    }
+    public new void ConsumeAttackRequest() => ConsumeAttackRequest(Stats.AttackCooldown);
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (!Stats) return;
-
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, Stats.AttackRadius);
     }

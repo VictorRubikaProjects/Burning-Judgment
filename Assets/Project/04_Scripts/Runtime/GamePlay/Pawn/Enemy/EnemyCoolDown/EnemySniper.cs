@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemySniper : Enemy<SO_ConfigEnemySniper>
+public class EnemySniper : EnemyWithCooldown<SO_ConfigEnemySniper>
 {
     [field: SerializeField] public Transform ShootPoint { get; private set; }
     [field: SerializeField] public SniperAimVisual AimVisual { get; private set; }
@@ -12,9 +12,6 @@ public class EnemySniper : Enemy<SO_ConfigEnemySniper>
     private EnemySniperIdleState m_idleState;
     private EnemySniperAttackState m_attackState;
     private EnemyRepositionState m_repositionState;
-    
-    private bool m_shotRequest;
-    private float m_nextShotTime;
     
     protected override IState SetupStates()
     {
@@ -47,30 +44,12 @@ public class EnemySniper : Enemy<SO_ConfigEnemySniper>
         At(m_repositionState, m_idleState, new FuncPredicate(() => m_repositionState.IsFinished));
 
         Any(m_hitState, new FuncPredicate(() => HitRequested && GroundCheck.IsGrounded()));
-        Any(m_attackState, new FuncPredicate(() => m_shotRequest && GroundCheck.IsGrounded()));
+        Any(m_attackState, new FuncPredicate(() => m_attackRequested && GroundCheck.IsGrounded()));
         Any(m_fleeState, new FuncPredicate(() => FleeRequested && GroundCheck.IsGrounded()));
         Any(m_chaseState, new FuncPredicate(() => ChaseRequested && GroundCheck.IsGrounded()));
     }
     
-    public void EvaluateShootRequest() => m_shotRequest = CanShoot();
-
-    public void ClearShootRequest() => m_shotRequest = false;
-
-    public void ConsumeShootRequest()
-    {
-        m_shotRequest = false;
-        m_nextShotTime = Time.time + Stats.ShotCooldown;
-    }
-
-    private bool CanShoot()
-    {
-        if (Time.time < m_nextShotTime) return false;
-        if (!GroundCheck.IsGrounded()) return false;
-
-        float sqrDistance = (Player.TransformCache.position - TransformCache.position).sqrMagnitude;
-        float min = Stats.DistanceMin;
-        float max = Stats.DistanceMax;
-
-        return sqrDistance >= min * min && sqrDistance <= max * max;
-    }
+    public void EvaluateShootRequest() => EvaluateAttackRequest();
+    public void ClearShootRequest() => ClearAttackRequest();
+    public void ConsumeShootRequest() => ConsumeAttackRequest(Stats.ShotCooldown);
 }

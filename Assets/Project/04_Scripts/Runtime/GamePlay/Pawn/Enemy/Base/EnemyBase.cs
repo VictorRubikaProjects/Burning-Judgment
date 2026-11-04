@@ -20,6 +20,7 @@ public abstract class EnemyBase : Actor, IStrikeable
     private bool m_chaseRequested;
     private bool m_fleeRequested;
     private bool m_repositionRequested;
+    protected bool m_attackRequested;
     
     public bool RepositionRequested => m_repositionRequested;
     public bool HitRequested => m_hitRequested;
@@ -146,6 +147,8 @@ public abstract class EnemyBase : Actor, IStrikeable
     
     public void RequestReposition() => m_repositionRequested = true;
     public void ConsumeRepositionRequest() => m_repositionRequested = false;
+    public void RequestAttack() => m_attackRequested = true;
+    public void ConsumeAttackRequest() => m_attackRequested = false;
     
     public Transform TargetTransform => TransformCache;
     public bool CanBeStruck => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState) && HitGate.CanTakeDamage();
