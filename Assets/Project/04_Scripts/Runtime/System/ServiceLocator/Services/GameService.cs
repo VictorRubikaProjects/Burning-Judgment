@@ -23,7 +23,10 @@ public class GameService : IGameService
         m_augmentService = augmentService;
     }
 
-    public void Dispose() { }
+    public void Dispose() 
+    {
+        m_enemySystem?.Dispose();
+    }
 
     public UniTask InitializeService()
     {
@@ -36,26 +39,34 @@ public class GameService : IGameService
         return UniTask.CompletedTask;
     }
 
-    public void ShutDownService() { }
+    public void ShutDownService() 
+    {
+        m_enemySystem?.Dispose();
+    }
 
     public void Tick() { }
 
     public async UniTask StartGame()
     {
+        await InternalStartGame(async () => await m_sceneService.UnloadMenu());
+    }
+
+    public async UniTask StartGameFromGameOver()
+    {
+        await InternalStartGame(async () => await m_sceneService.UnloadScene(SceneManager.GetActiveScene().name));
+    }
+
+    private async UniTask InternalStartGame(System.Func<UniTask> unloadPreviousSceneAction)
+    {
         CurrentFloor = 0;
-        
         m_augmentService.Reset();
-        
         CurrentState = GameState.Playing;
 
         EventBus<RunStartedEvent>.Raise(new RunStartedEvent());
 
         await m_transitionService.CircleTransitionFadeIn();
-
-        await m_sceneService.UnloadMenu();
-        
+        await unloadPreviousSceneAction();
         await StartFloor(true);
-        
         await m_transitionService.CircleTransitionFadeOut();
     }
 
@@ -63,18 +74,15 @@ public class GameService : IGameService
     {
         CurrentFloor++;
 
-        UniTask taskDeloadGameplay = new UniTask();
-        
-        if (!isFirstFloor)
-        {
-            taskDeloadGameplay = m_sceneService.UnloadScene(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
-        }
+        UniTask taskDeloadGameplay = isFirstFloor 
+            ? UniTask.CompletedTask 
+            : m_sceneService.UnloadScene(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
         
         m_enemySystem.SetupRound();
 
-        UniTask taskLoadGameplay = m_sceneService.LoadSceneAsync(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name,true);
+        UniTask taskLoadGameplay = m_sceneService.LoadSceneAsync(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name, true);
 
-        await UniTask.WhenAll(taskLoadGameplay,taskDeloadGameplay);
+        await UniTask.WhenAll(taskLoadGameplay, taskDeloadGameplay);
         
         await SpawnPlayer();
         
@@ -89,7 +97,16 @@ public class GameService : IGameService
     {
         EventBus<FloorCompletedEvent>.Raise(new FloorCompletedEvent(CurrentFloor));
 
-        StartFloor().Forget();
+        InternalPortalTransition().Forget();
+    }
+
+    private async UniTaskVoid InternalPortalTransition()
+    {
+        await m_transitionService.CircleTransitionFadeIn();
+
+        await StartFloor();
+
+        await m_transitionService.CircleTransitionFadeOut();
     }
 
     public void EndRun()
@@ -119,7 +136,6 @@ public class GameService : IGameService
         }
         
         m_playerCharacter.SetIdle();
-        
         m_playerCharacter.gameObject.SetActive(false);
 
         await UniTask.WaitForFixedUpdate();
@@ -137,28 +153,8 @@ public class GameService : IGameService
         CurrentState = GameState.MainMenu;
         
         await m_transitionService.CircleTransitionFadeIn();
-        
         await m_sceneService.UnloadScene(SceneManager.GetActiveScene().name);
-        
         await m_sceneService.LoadMenu();
-        
-        await m_transitionService.CircleTransitionFadeOut();
-    }
-    
-    public async UniTask StartGameFromGameOver()
-    {
-        CurrentFloor = 0;
-        
-        CurrentState = GameState.Playing;
-
-        EventBus<RunStartedEvent>.Raise(new RunStartedEvent());
-        
-        await m_transitionService.CircleTransitionFadeIn();
-        
-        await m_sceneService.UnloadScene(SceneManager.GetActiveScene().name);
-        
-        await StartFloor(true);
-        
         await m_transitionService.CircleTransitionFadeOut();
     }
 }
