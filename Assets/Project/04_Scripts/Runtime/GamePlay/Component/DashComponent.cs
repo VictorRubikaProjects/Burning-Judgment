@@ -25,7 +25,7 @@ public class DashComponent : ActorComponent
         AnimationCurve curve,
         LayerMask obstacleLayer)
     {
-        return RunAsync(direction, token, duration, distance, curve, obstacleLayer, MovementComponentExtension.CollisionMode.Stop);
+        return RunAsync(direction, token, duration, distance, curve, obstacleLayer, MovementComponentExtension.CollisionMode.Slide);
     }
 
     public UniTask<bool> RollAsync(

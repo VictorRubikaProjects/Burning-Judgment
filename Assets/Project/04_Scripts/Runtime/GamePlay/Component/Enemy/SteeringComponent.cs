@@ -52,14 +52,17 @@ public class SteeringComponent : ActorComponent
             return desiredDir;
         }
 
-        Vector3 leftDir = Quaternion.Euler(0f, -45f, 0f) * desiredDir;
-        Vector3 rightDir = Quaternion.Euler(0f, 45f, 0f) * desiredDir;
+        float[] candidateAngles = { -30f, 30f, -60f, 60f, -90f, 90f };
 
-        bool hitLeft = Physics.SphereCast(rayOrigin, EnemyRadius, leftDir, out _, checkDistance * 0.8f, m_obstacleLayer, QueryTriggerInteraction.Ignore);
-        bool hitRight = Physics.SphereCast(rayOrigin, EnemyRadius, rightDir, out _, checkDistance * 0.8f, m_obstacleLayer, QueryTriggerInteraction.Ignore);
-
-        if (!hitLeft) return leftDir;
-        if (!hitRight) return rightDir;
+        foreach (float angle in candidateAngles)
+        {
+            Vector3 candidateDir = Quaternion.Euler(0f, angle, 0f) * desiredDir;
+        
+            if (!Physics.SphereCast(rayOrigin, EnemyRadius, candidateDir, out _, checkDistance * 0.9f, m_obstacleLayer, QueryTriggerInteraction.Ignore))
+            {
+                return candidateDir; 
+            }
+        }
 
         return CalculateSlideDirection(desiredDir, hit.normal);
     }
