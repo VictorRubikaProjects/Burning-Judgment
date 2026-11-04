@@ -20,7 +20,7 @@ MonoBehaviour:
   <Destabilization>k__BackingField: 0.33
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 832
   <HitDuration>k__BackingField: 0.35
   <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2

@@ -29,18 +29,39 @@ public class EnemySystem
         EventBus<EnemyDiedEvent>.Unregister(m_eventBindingEnemyDied);
     }
 
-    
     public void SetupFloor(PlayerCharacter player)
     {
         m_aliveEnemies.Clear();
 
         List<EnemyBase> enemyBases = m_configCurrentRound.RoundData.GetRandomEnemyTeam().TeamEnemies;
+        int spawnCount = m_configCurrentRound.EnemySpawnPositionsCount;
 
-        foreach (var @base in enemyBases)
+        if (spawnCount == 0)
         {
-            Vector3 spawnPos = m_configCurrentRound.GetRandomPosition();
+            Debug.LogWarning("Aucun point de spawn défini dans le round courant !");
+            return;
+        }
+
+        List<int> spawnIndices = new List<int>();
+        
+        for (int i = 0; i < spawnCount; i++)
+        {
+            spawnIndices.Add(i);
+        }
+
+        for (int i = 0; i < spawnIndices.Count; i++)
+        {
+            int randomIndex = Random.Range(i, spawnIndices.Count);
             
-            EnemyBase enemyObj = Object.Instantiate(@base, spawnPos, Quaternion.identity);
+            (spawnIndices[i], spawnIndices[randomIndex]) = (spawnIndices[randomIndex], spawnIndices[i]);
+        }
+
+        for (int i = 0; i < enemyBases.Count; i++)
+        {
+            int pointIndex = spawnIndices[i % spawnCount];
+            Vector3 spawnPos = m_configCurrentRound.GetPosition(pointIndex);
+            
+            EnemyBase enemyObj = Object.Instantiate(enemyBases[i], spawnPos, Quaternion.identity);
             
             enemyObj.SetupPlayerRef(player);
 

@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyShoot
   <Weight>k__BackingField: 10
   <PushForce>k__BackingField: 30
+  <DefaultScaling>k__BackingField: 0.5
+  <BadScaling>k__BackingField: 0.25
+  <Stability>k__BackingField: 1
+  <Destabilization>k__BackingField: 0.33
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 832
   <HitDuration>k__BackingField: 0.3
   <HitKnockbackCurve>k__BackingField:
     serializedVersion: 2
@@ -57,5 +61,6 @@ MonoBehaviour:
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
+  <SightHeight>k__BackingField: 0.5
   <ProjectilePrefab>k__BackingField: {fileID: 6366994832525994504, guid: 287af6b2d5b85114682499fe4cdd77d5, type: 3}
   <FrequencyShoot>k__BackingField: 1

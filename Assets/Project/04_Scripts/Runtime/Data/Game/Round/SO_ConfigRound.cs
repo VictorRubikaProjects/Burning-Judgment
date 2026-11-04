@@ -22,14 +22,19 @@ public class SO_ConfigRound : ScriptableObject
     [field: Tooltip("Rayon autour de chaque point d'apparition où l'ennemi peut apparaître. 0 = exactement sur le point.")]
     public float SpawnRadius { get; private set; }
 
+    public int EnemySpawnPositionsCount => EnemySpawnPositions != null ? EnemySpawnPositions.Length : 0;
+
     public Vector3 GetRandomPosition()
     {
-        return GetPosition(Random.Range(0, EnemySpawnPositions.Length));
+        if (EnemySpawnPositionsCount == 0) return Vector3.zero;
+        return GetPosition(Random.Range(0, EnemySpawnPositionsCount));
     }
 
     public Vector3 GetPosition(int index)
     {
-        Vector3 basePosition = EnemySpawnPositions[index];
+        if (EnemySpawnPositionsCount == 0) return Vector3.zero;
+
+        Vector3 basePosition = EnemySpawnPositions[index % EnemySpawnPositions.Length]; 
         Vector2 randomOffset = Random.insideUnitCircle * SpawnRadius;
 
         return basePosition + new Vector3(randomOffset.x, 0f, randomOffset.y);
