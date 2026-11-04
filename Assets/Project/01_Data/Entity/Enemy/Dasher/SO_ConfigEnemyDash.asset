@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyDash
   <Weight>k__BackingField: 40
   <PushForce>k__BackingField: 60
-  <DefaultScaling>k__BackingField: 0.5
-  <BadScaling>k__BackingField: 1
+  <DefaultScaling>k__BackingField: 1
+  <BadScaling>k__BackingField: 2
   <Stability>k__BackingField: 1
   <Destabilization>k__BackingField: 0.33
   <ObstacleLayer>k__BackingField:
@@ -46,26 +46,26 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <InvincibilityDuration>k__BackingField: 2
+  <InvincibilityDuration>k__BackingField: 0.5
   <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 55
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <DeathDelay>k__BackingField: 1.5
-  <Speed>k__BackingField: 5
+  <Speed>k__BackingField: 4.5
   <RotationSpeed>k__BackingField: 1800
-  <DistanceMin>k__BackingField: 6
+  <DistanceMin>k__BackingField: 4
   <DistanceMax>k__BackingField: 12
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
   <SightHeight>k__BackingField: 0.5
-  <LockTime>k__BackingField: 0.5
-  <LockToDashDelay>k__BackingField: 1.5
-  <DashDistance>k__BackingField: 12
-  <DashDuration>k__BackingField: 0.5
+  <LockTime>k__BackingField: 1.5
+  <LockToDashDelay>k__BackingField: 0.5
+  <DashDistance>k__BackingField: 9
+  <DashDuration>k__BackingField: 0.75
   <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -90,7 +90,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <DashCooldown>k__BackingField: 2.5
+  <DashCooldown>k__BackingField: 4
   <PlayerLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
