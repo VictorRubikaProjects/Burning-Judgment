@@ -94,6 +94,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6412494920678223553}
   m_SourcePrefab: {fileID: 100100000, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+--- !u!136 &167298974230453523 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3894360988590235541, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 3772276133740167814}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &429032386074956564 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3579776243268489618, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
@@ -140,5 +145,6 @@ MonoBehaviour:
   <Rigidbody>k__BackingField: {fileID: 2184155058998813167}
   <DamagePopUp>k__BackingField: {fileID: 429032386074956564}
   <FeetTransform>k__BackingField: {fileID: 2365119187167855627}
+  <ColliderEnemy>k__BackingField: {fileID: 167298974230453523}
   stats: {fileID: 11400000, guid: aebb328231d49b748bc44e014ee6f533, type: 2}
   <ShootPoint>k__BackingField: {fileID: 9000011747619222117}

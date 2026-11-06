@@ -8,6 +8,7 @@ public abstract class EnemyBase : Actor, IStrikeable
     [field: SerializeField] public Rigidbody Rigidbody { get; protected set; }
     [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
     [field: SerializeField] public Transform FeetTransform { get; protected set; }
+    [field: SerializeField] public Collider ColliderEnemy { get; protected set; }
 
     public enum PositionNeed { None, Approach, Retreat, Reposition }
     
@@ -56,7 +57,7 @@ public abstract class EnemyBase : Actor, IStrikeable
             StatsBase.GroundCheckHeight,
             StatsBase.GroundCheckDistance);
 
-        Steering = new SteeringComponent(this, Rigidbody, StatsBase.ObstacleLayer, GroundCheck);
+        Steering = new SteeringComponent(this, Rigidbody, ColliderEnemy,StatsBase.ObstacleLayer, GroundCheck);
         KnockBack = new KnockbackComponent(this, Rigidbody);
         HitGate = new HitGateComponent(this, StatsBase.InvincibilityDuration);
 

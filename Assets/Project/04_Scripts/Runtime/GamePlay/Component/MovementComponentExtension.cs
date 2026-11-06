@@ -38,9 +38,8 @@ public static class MovementComponentExtension
 
         Vector3 position = rb.position;
 
-        Bounds bounds = collider.bounds;
-        Vector3 centerOffset = bounds.center - position;
-        float radius = Mathf.Max(0.05f, Mathf.Min(bounds.extents.x, bounds.extents.z) - SkinWidth);
+        Vector3 centerOffset = GetCenterOffset(collider, position);
+        float radius = GetCastRadius(collider);
 
         float elapsed = 0f;
         float previousProgress = 0f;
@@ -131,6 +130,17 @@ public static class MovementComponentExtension
         slide = Vector3.ProjectOnPlane(leftover, normal);
 
         return slide.magnitude >= leftover.magnitude * MinSlideRatio;
+    }
+    
+    public static float GetCastRadius(Collider collider)
+    {
+        Bounds bounds = collider.bounds;
+        return Mathf.Max(0.05f, Mathf.Min(bounds.extents.x, bounds.extents.z) - SkinWidth);
+    }
+
+    public static Vector3 GetCenterOffset(Collider collider, Vector3 position)
+    {
+        return collider.bounds.center - position;
     }
 
 #if UNITY_EDITOR

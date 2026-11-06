@@ -307,6 +307,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::DamagePopUp
+--- !u!136 &6700043459764791808 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3894360988590235541, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 7705899380321744277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8852325899519160912 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1164494043303806917, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
@@ -327,6 +332,7 @@ MonoBehaviour:
   <Rigidbody>k__BackingField: {fileID: 4676608833685133052}
   <DamagePopUp>k__BackingField: {fileID: 6583472306031191047}
   <FeetTransform>k__BackingField: {fileID: 9114050749522211608}
+  <ColliderEnemy>k__BackingField: {fileID: 6700043459764791808}
   stats: {fileID: 11400000, guid: 72752c4124e23b74fb67a1585a920db6, type: 2}
   <ShootPoint>k__BackingField: {fileID: 2580230676802955762}
   <AimVisual>k__BackingField: {fileID: 1645958956491001147}

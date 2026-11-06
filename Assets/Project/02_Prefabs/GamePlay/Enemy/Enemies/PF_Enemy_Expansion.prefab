@@ -178,6 +178,7 @@ MonoBehaviour:
   <Rigidbody>k__BackingField: {fileID: 3270621082815049600}
   <DamagePopUp>k__BackingField: {fileID: 3951912321538186619}
   <FeetTransform>k__BackingField: {fileID: 1440780938651814500}
+  <ColliderEnemy>k__BackingField: {fileID: 3566398422551106428}
   stats: {fileID: 11400000, guid: 75dc8c98f59bb2b4c88a6b4e6a7c499a, type: 2}
   materialChargeAttack: {fileID: 2100000, guid: 5a7670149ab14b346a0725d5098df67e, type: 2}
   rendererEnemy: {fileID: 6429605846392613010}
@@ -189,6 +190,11 @@ Rigidbody:
 --- !u!4 &3427870861660467944 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2947560552715288065, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 537591743468752105}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &3566398422551106428 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3894360988590235541, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
   m_PrefabInstance: {fileID: 537591743468752105}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3951912321538186619 stripped

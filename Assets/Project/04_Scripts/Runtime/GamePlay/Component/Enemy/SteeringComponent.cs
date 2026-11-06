@@ -3,35 +3,47 @@ using UnityEngine;
 public class SteeringComponent : ActorComponent
 {
     private readonly Rigidbody m_rigidbody;
+    private readonly Collider m_collider;
     private readonly LayerMask m_obstacleLayer;
     private readonly GroundCheckComponent m_groundCheck;
 
-    private const float EnemyRadius = 1f;
-    private const float RaycastHeightOffset = 0.5f;
-    private const float MinSlideSqrMagnitude = 0.0001f;
+    private const float AvoidanceDistanceMargin = 0.8f;
+    private const float SkinWidth = 0.05f;
 
-    private static readonly float[] VoidAvoidanceAngles = { 45f, -45f, 90f, -90f };
+    private static readonly float[] ObstacleAvoidanceAngles = { 0f, -30f, 30f, -60f, 60f, -90f, 90f };
+    private static readonly float[] VoidAvoidanceAngles = { 0f, 45f, -45f, 90f, -90f };
+    private static readonly Collider[] s_overlapBuffer = new Collider[8];
 
-    public SteeringComponent(Actor owner, Rigidbody rigidbody, LayerMask obstacleLayer, GroundCheckComponent groundCheck) : base(owner)
+    public SteeringComponent(Actor owner, Rigidbody rigidbody, Collider collider, LayerMask obstacleLayer, GroundCheckComponent groundCheck) : base(owner)
     {
         m_rigidbody = rigidbody;
+        m_collider = collider;
         m_obstacleLayer = obstacleLayer;
         m_groundCheck = groundCheck;
     }
 
     public void MoveTowards(Vector3 targetPosition, float moveSpeed)
     {
-        Vector3 currentPosition = Owner.TransformCache.position;
-        Vector3 desiredDir = GetDesiredDirection(currentPosition, targetPosition);
+        Vector3 startPosition = m_rigidbody.position;
+        Vector3 position = ResolvePenetration(startPosition);
+        Vector3 desiredDir = GetDesiredDirection(position, targetPosition);
 
-        if (desiredDir == Vector3.zero) return;
+        if (desiredDir == Vector3.zero)
+        {
+            if (position != startPosition) m_rigidbody.MovePosition(position);
+            return;
+        }
 
+        float radius = MovementComponentExtension.GetCastRadius(m_collider);
+        Vector3 origin = position + MovementComponentExtension.GetCenterOffset(m_collider, startPosition);
         float stepDistance = moveSpeed * Time.fixedDeltaTime;
-        desiredDir = CalculateObstacleAvoidance(currentPosition, desiredDir, stepDistance + 0.8f);
 
-        if (!TryResolveVoid(currentPosition, desiredDir, stepDistance, out Vector3 finalDir)) return;
+        Vector3 baseDir = PickFreeDirection(origin, radius, desiredDir, stepDistance + AvoidanceDistanceMargin);
+        bool found = TryFindMove(position, origin, radius, baseDir, stepDistance, out Vector3 moved);
 
-        m_rigidbody.MovePosition(currentPosition + finalDir * stepDistance);
+        MovementComponentExtension.DrawStep(origin, desiredDir * stepDistance, found ? moved : Vector3.zero, radius, !found);
+
+        m_rigidbody.MovePosition(found ? position + moved : position);
     }
 
     public void Stop() { }
@@ -43,58 +55,59 @@ public class SteeringComponent : ActorComponent
         return toTarget == Vector3.zero ? Vector3.zero : toTarget.normalized;
     }
 
-    private Vector3 CalculateObstacleAvoidance(Vector3 currentPosition, Vector3 desiredDir, float checkDistance)
+    private Vector3 PickFreeDirection(Vector3 origin, float radius, Vector3 desiredDir, float checkDistance)
     {
-        Vector3 rayOrigin = currentPosition + Vector3.up * RaycastHeightOffset;
-
-        if (!Physics.SphereCast(rayOrigin, EnemyRadius, desiredDir, out RaycastHit hit, checkDistance, m_obstacleLayer, QueryTriggerInteraction.Ignore))
+        foreach (float angle in ObstacleAvoidanceAngles)
         {
-            return desiredDir;
-        }
+            Vector3 candidate = Quaternion.Euler(0f, angle, 0f) * desiredDir;
 
-        float[] candidateAngles = { -30f, 30f, -60f, 60f, -90f, 90f };
-
-        foreach (float angle in candidateAngles)
-        {
-            Vector3 candidateDir = Quaternion.Euler(0f, angle, 0f) * desiredDir;
-        
-            if (!Physics.SphereCast(rayOrigin, EnemyRadius, candidateDir, out _, checkDistance * 0.9f, m_obstacleLayer, QueryTriggerInteraction.Ignore))
+            if (!Physics.SphereCast(origin, radius, candidate, out _, checkDistance, m_obstacleLayer, QueryTriggerInteraction.Ignore))
             {
-                return candidateDir; 
+                return candidate;
             }
         }
 
-        return CalculateSlideDirection(desiredDir, hit.normal);
+        return desiredDir;
     }
 
-    private Vector3 CalculateSlideDirection(Vector3 desiredDir, Vector3 hitNormal)
+    private bool TryFindMove(Vector3 position, Vector3 origin, float radius, Vector3 baseDir, float stepDistance, out Vector3 moved)
     {
-        hitNormal.y = 0f;
-        if (hitNormal.sqrMagnitude < MinSlideSqrMagnitude) return desiredDir;
-        hitNormal.Normalize();
-
-        Vector3 slide = Vector3.ProjectOnPlane(desiredDir, hitNormal);
-        if (slide.sqrMagnitude < MinSlideSqrMagnitude) slide = Vector3.Cross(Vector3.up, hitNormal);
-
-        return slide.normalized;
-    }
-
-    private bool TryResolveVoid(Vector3 currentPosition, Vector3 desiredDir, float stepDistance, out Vector3 resolvedDir)
-    {
-        resolvedDir = desiredDir;
-
-        if (m_groundCheck == null) return true;
-        if (m_groundCheck.IsGrounded(currentPosition + desiredDir * stepDistance)) return true;
-
         foreach (float angle in VoidAvoidanceAngles)
         {
-            Vector3 candidate = Quaternion.Euler(0f, angle, 0f) * desiredDir;
-            if (!m_groundCheck.IsGrounded(currentPosition + candidate * stepDistance)) continue;
+            Vector3 candidate = Quaternion.Euler(0f, angle, 0f) * baseDir;
+            moved = MovementComponentExtension.ResolveMovement(origin, radius, candidate * stepDistance, m_obstacleLayer, MovementComponentExtension.CollisionMode.Slide, out _);
 
-            resolvedDir = candidate;
-            return true;
+            if (m_groundCheck == null || m_groundCheck.IsGrounded(position + moved)) return true;
         }
 
+        moved = Vector3.zero;
         return false;
+    }
+
+    private Vector3 ResolvePenetration(Vector3 position)
+    {
+        float radius = MovementComponentExtension.GetCastRadius(m_collider);
+        Vector3 origin = position + MovementComponentExtension.GetCenterOffset(m_collider, m_rigidbody.position);
+        Quaternion rotation = m_rigidbody.rotation;
+
+        int count = Physics.OverlapSphereNonAlloc(origin, radius + SkinWidth, s_overlapBuffer, m_obstacleLayer, QueryTriggerInteraction.Ignore);
+
+        for (int i = 0; i < count; i++)
+        {
+            Collider other = s_overlapBuffer[i];
+            if (other == m_collider) continue;
+
+            bool penetrating = Physics.ComputePenetration(
+                m_collider, position, rotation,
+                other, other.transform.position, other.transform.rotation,
+                out Vector3 direction, out float distance);
+
+            if (!penetrating) continue;
+
+            direction.y = 0f;
+            position += direction * distance;
+        }
+
+        return position;
     }
 }
