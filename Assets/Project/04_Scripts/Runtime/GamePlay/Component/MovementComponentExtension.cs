@@ -58,10 +58,6 @@ public static class MovementComponentExtension
             Vector3 origin = position + centerOffset;
             Vector3 moved = ResolveMovement(origin, radius, delta, obstacleLayer, mode, out bool stopped);
             Vector3 target = position + moved;
-
-#if UNITY_EDITOR
-            DrawStep(origin, delta, moved, radius, stopped);
-#endif
             
             if (groundCheck != null && !groundCheck.IsGrounded(target)) return false;
 
@@ -74,7 +70,7 @@ public static class MovementComponentExtension
         return true;
     }
 
-    private static Vector3 ResolveMovement(
+    public static Vector3 ResolveMovement(
         Vector3 origin,
         float radius,
         Vector3 delta,
@@ -139,7 +135,7 @@ public static class MovementComponentExtension
 
 #if UNITY_EDITOR
     [System.Diagnostics.Conditional("UNITY_EDITOR")]
-    private static void DrawStep(Vector3 origin, Vector3 intended, Vector3 moved, float radius, bool stopped)
+    public static void DrawStep(Vector3 origin, Vector3 intended, Vector3 moved, float radius, bool stopped)
     {
         if (!DebugDraw) return;
 
@@ -154,7 +150,7 @@ public static class MovementComponentExtension
     }
 
     [System.Diagnostics.Conditional("UNITY_EDITOR")]
-    private static void DrawWireSphere(Vector3 center, float radius, Color color)
+    public static void DrawWireSphere(Vector3 center, float radius, Color color)
     {
         float angleStep = Mathf.PI * 2f / DebugSegments;
 
@@ -171,6 +167,45 @@ public static class MovementComponentExtension
             Debug.DrawLine(center + new Vector3(c0, 0f, s0), center + new Vector3(c1, 0f, s1), color, DebugDuration);
             Debug.DrawLine(center + new Vector3(c0, s0, 0f), center + new Vector3(c1, s1, 0f), color, DebugDuration);
             Debug.DrawLine(center + new Vector3(0f, c0, s0), center + new Vector3(0f, c1, s1), color, DebugDuration);
+        }
+    }
+    
+    [System.Diagnostics.Conditional("UNITY_EDITOR")]
+    public static void DrawWireCapsule(Vector3 center, Vector3 direction, float distance, float radius, Color color)
+    {
+        direction = direction.normalized;
+        float halfDistance = distance / 2f;
+    
+        Vector3 point1 = center + direction * halfDistance;
+        Vector3 point2 = center - direction * halfDistance;
+
+        Vector3 forward = direction;
+        Vector3 up = Vector3.Slerp(forward, -forward, 0.5f);
+        Vector3.OrthoNormalize(ref forward, ref up);
+        Vector3 right = Vector3.Cross(forward, up).normalized * radius;
+        up *= radius;
+
+        float angleStep = Mathf.PI * 2f / DebugSegments;
+
+        for (int i = 0; i < DebugSegments; i++)
+        {
+            float angle = i * angleStep;
+            Vector3 offset = (Mathf.Cos(angle) * right + Mathf.Sin(angle) * up);
+            Debug.DrawLine(point1 + offset, point2 + offset, color, DebugDuration);
+        }
+
+        for (int i = 0; i < DebugSegments; i++)
+        {
+            float a0 = i * angleStep;
+            float a1 = (i + 1) * angleStep;
+
+            float c0 = Mathf.Cos(a0);
+            float s0 = Mathf.Sin(a0);
+            float c1 = Mathf.Cos(a1);
+            float s1 = Mathf.Sin(a1);
+
+            Debug.DrawLine(point1 + c0 * right + s0 * up, point1 + c1 * right + s1 * up, color, DebugDuration);
+            Debug.DrawLine(point2 + c0 * right + s0 * up, point2 + c1 * right + s1 * up, color, DebugDuration);
         }
     }
 #endif

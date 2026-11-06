@@ -30,6 +30,7 @@ public class PlayerInputComponent : ActorComponent
     public event DirectionRatioHandler OnChargeUpdate;
     public event DirectionRatioHandler OnSwipe;
     public event Action OnChargeEnd;
+    public event Action OnChargeStarted;
     public event Action OnTouchPressed;
     public event Action OnHoldConfirmed;
     public event Action OnTouchReleased;
@@ -192,7 +193,6 @@ public class PlayerInputComponent : ActorComponent
             OnJoystickRelease?.Invoke(m_lastDirection, GetChargeRatio());
         }
 
-        m_timeController.LerpTimeDilationAsync(1f, m_stats.SlowMotionExitDuration).Forget();
         OnChargeEnd?.Invoke();
     }
 
@@ -205,7 +205,8 @@ public class PlayerInputComponent : ActorComponent
     private void EngageStick()
     {
         m_isStickEngaged = true;
-        m_timeController.LerpTimeDilationAsync(m_stats.SlowMotionTargetDilation, m_stats.SlowMotionEnterDuration).Forget();
+        
+        OnChargeStarted?.Invoke();
     }
 
     private float GetChargeRatio()

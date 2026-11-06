@@ -1,4 +1,5 @@
 using Event_Bus;
+using PrimeTween;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
@@ -11,6 +12,7 @@ public class PlayerCharacter : Actor
     [SerializeField] private Transform feetTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
     [SerializeField] private RectTransform joystickRectT;
+    [SerializeField] private CanvasGroup icyPanel;
     [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
 
     [Header("Aspect")]
@@ -130,8 +132,11 @@ public class PlayerCharacter : Actor
     private void OnEnable()
     {
         Input.OnJoystickRelease += HandleJoystickRelease;
+        
         Input.OnChargeUpdate += HandleChargeUpdate;
         Input.OnChargeEnd += HandleChargeEnd;
+        Input.OnChargeStarted += HandleChargeStarted;
+        
         Input.OnSwipe += HandleSwipe;
 
         Chain.OnChainInputSuccess += HandleChainSuccess;
@@ -143,8 +148,11 @@ public class PlayerCharacter : Actor
     private void OnDisable()
     {
         Input.OnJoystickRelease -= HandleJoystickRelease;
+        
         Input.OnChargeUpdate -= HandleChargeUpdate;
         Input.OnChargeEnd -= HandleChargeEnd;
+        Input.OnChargeStarted -= HandleChargeStarted;
+        
         Input.OnSwipe -= HandleSwipe;
 
         Chain.OnChainInputSuccess -= HandleChainSuccess;
@@ -245,7 +253,12 @@ public class PlayerCharacter : Actor
         DashIndicator.Show(origin, origin + direction * distance);
     }
 
-    private void HandleChargeEnd() => DashIndicator.Hide();
+    private void HandleChargeEnd()
+    {
+        DashIndicator.Hide();
+        TimeController.LerpTimeDilationAsync(1f, ActiveStats.SlowMotionExitDuration).Forget();
+        Tween.Alpha(icyPanel, 0f, 0.4f);
+    }
 
     private void HandleSwipe(Vector2 dir, float ratio)
     {
@@ -254,9 +267,21 @@ public class PlayerCharacter : Actor
         m_moveDir = ToWorldDirection(dir);
         RequestRoll();
     }
-
+    
+    
     private void HandleChainSuccess()
-        => ServiceLocator.Get<FxService>().PlayChainSuccessEffect(TransformCache, 1.5f);
+    {
+        ServiceLocator.Get<FxService>().PlayChainSuccessEffect(TransformCache, 1.5f);
+    }
+
+    private void HandleChargeStarted()
+    {
+        TimeController.LerpTimeDilationAsync(
+            ActiveStats.SlowMotionTargetDilation,
+            ActiveStats.SlowMotionEnterDuration).Forget();
+
+        Tween.Alpha(icyPanel, 1f, 0.4f);
+    }
 
     #endregion
 
