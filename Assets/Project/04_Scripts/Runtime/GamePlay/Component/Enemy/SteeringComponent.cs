@@ -41,7 +41,9 @@ public class SteeringComponent : ActorComponent
         Vector3 baseDir = PickFreeDirection(origin, radius, desiredDir, stepDistance + AvoidanceDistanceMargin);
         bool found = TryFindMove(position, origin, radius, baseDir, stepDistance, out Vector3 moved);
 
+#if UNITY_EDITOR
         MovementComponentExtension.DrawStep(origin, desiredDir * stepDistance, found ? moved : Vector3.zero, radius, !found);
+#endif
 
         m_rigidbody.MovePosition(found ? position + moved : position);
     }
