@@ -83,8 +83,8 @@ MonoBehaviour:
   <RollStrikeLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <DashDistance>k__BackingField: 12
-  <DashDuration>k__BackingField: 0.45
+  <DashDistance>k__BackingField: 10
+  <DashDuration>k__BackingField: 0.35
   <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
