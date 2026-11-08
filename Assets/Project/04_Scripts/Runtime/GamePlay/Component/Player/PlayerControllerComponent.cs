@@ -68,9 +68,13 @@ public class PlayerControllerComponent : ActorComponent
         {
             Collider hit = m_strikeHits[i];
 
-            if (!IsInFront(hit, center, forward)) continue;
             if (!hit.TryGetComponent(out IStrikeable target)) continue;
+            
+            bool targetIsEnemy = target is EnemyBase;
+            
+            if (!IsInFront(hit, center, forward, targetIsEnemy ? 0f : 0.3f)) continue;
 
+            
             StrikeResult result = target.OnStruck(context);
 
             if (result.Accepted) return result;
@@ -79,13 +83,14 @@ public class PlayerControllerComponent : ActorComponent
         return StrikeResult.Ignored;
     }
 
-    private static bool IsInFront(Collider collider, Vector3 origin, Vector3 forward)
+    private static bool IsInFront(Collider collider, Vector3 origin, Vector3 forward, float tolerance = 0f)
     {
         Vector3 toClosest = collider.ClosestPoint(origin) - origin;
+        
         toClosest.y = 0f;
 
         if (toClosest.sqrMagnitude < 0.0001f) return true;
-
-        return Vector3.Dot(toClosest, forward) > 0f;
+        
+        return Vector3.Dot(toClosest.normalized, forward) > tolerance;
     }
 }
