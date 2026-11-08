@@ -20,7 +20,7 @@ public class BootStrap : MonoBehaviour
     public SO_GameConfig GameConfig => gameConfig;
     public SO_AudioConfig AudioConfig => audioConfig;
     
-    public int MaxFrames = 60;
+    public int MaxFrames = 300;
 
     private void Awake()
     {
@@ -39,6 +39,7 @@ public class BootStrap : MonoBehaviour
         UniTaskScheduler.UnobservedTaskException += OnUnobservedException;
         
         Application.targetFrameRate = MaxFrames;
+        QualitySettings.vSyncCount = -1;
     }
 
     private void OnUnobservedException(Exception exception)
