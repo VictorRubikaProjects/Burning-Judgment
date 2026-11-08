@@ -31,13 +31,15 @@ public class PlayerDashState : PlayerBaseState
 
         PlayAnimation(DashHash);
         
-        ServiceLocator.Get<FxService>().PlayDashEffect(m_owner.TransformCache,0.4f);
+        m_fxService.PlayDashEffect(m_owner.TransformCache,0.4f);
         
         m_owner.ConsumeDashRequest();
         m_owner.Chain.OnDashStarted();
 
         m_ctsDash = new CancellationTokenSource();
+        
         RunDashAsync(m_owner.MoveDir, m_ctsDash.Token).Forget();
+        
     }
 
     public override void OnExit()
@@ -91,6 +93,8 @@ public class PlayerDashState : PlayerBaseState
         if (!result.Accepted) return;
 
         HasHit = true;
+        
+        m_fxService.PlayerAttackPlayerEffect(m_owner.TransformCache, 0.5f);
 
         if (result.AllowsChain)
         {

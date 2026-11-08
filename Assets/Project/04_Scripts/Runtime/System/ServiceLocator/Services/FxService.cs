@@ -96,6 +96,9 @@ public sealed class FxService : IGameService
         public void PlayEjectionEffect(Transform targetTransform, float duration)
             => LaunchEffect(m_configVfx.VfxPrefabEjection, targetTransform, duration).Forget();
         
+        public void PlayerAttackPlayerEffect(Transform playerTransform, float duration)
+        => LaunchEffect(m_configVfx.VfxPrefabAttackPlayer, playerTransform, duration).Forget();
+        
         public void PlayDashEffect(Transform targetTransform, float duration)
         => LaunchEffect(m_configVfx.VfxPrefabDash, targetTransform, duration).Forget();
         
