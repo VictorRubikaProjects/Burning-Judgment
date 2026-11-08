@@ -18,7 +18,7 @@ public class EnemyFallState : EnemyBaseState
         Owner.Rigidbody.isKinematic = false;
         Owner.Rigidbody.useGravity = true;
 
-        await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+        await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
 
         Owner.Rigidbody.linearVelocity = Vector3.zero;
         Owner.Rigidbody.angularVelocity = Vector3.zero;

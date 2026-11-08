@@ -55,15 +55,14 @@ public class PlayerAspectComponent : ActorComponent
         m_playerRenderer.enabled = true;
     }
 
-    public void CancelSlowMotionVisualsAsync()
-    {
-        m_slowMotionTween.Stop();
-        m_slowMotionTween = Tween.Alpha(m_slowMotionCanvasGroup, 0f, 0.4f);
-    }
+    public void CancelSlowMotionVisualsAsync() => SlowMotionVisuals(0f, 0.4f);
     
-    public void StartSlowMotionVisualsAsync()
+    public void StartSlowMotionVisualsAsync() => SlowMotionVisuals(1f, 0.4f);
+
+    private void SlowMotionVisuals(float targetAlpha, float duration )
     {
+        if (Mathf.Approximately(targetAlpha, m_slowMotionCanvasGroup.alpha)) return;
         m_slowMotionTween.Stop();
-        m_slowMotionTween = Tween.Alpha(m_slowMotionCanvasGroup, 1f, 0.4f);
+        m_slowMotionTween = Tween.Alpha(m_slowMotionCanvasGroup, targetAlpha, duration);
     }
 }

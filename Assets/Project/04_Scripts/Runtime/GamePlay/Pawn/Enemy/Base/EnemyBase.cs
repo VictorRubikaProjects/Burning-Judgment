@@ -46,7 +46,7 @@ public abstract class EnemyBase : Actor, IStrikeable
     {
         base.Awake();
 
-        ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.5f);
+        //ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.5f);
 
         Stability = StatsBase.Stability;
         
@@ -99,8 +99,15 @@ public abstract class EnemyBase : Actor, IStrikeable
     public override void Kill()
     {
         base.Kill();
-        ServiceLocator.Get<CameraService>().RemoveTarget(TransformCache);
+
+        if (m_isDead) return;
+        
+        m_isDead = true;
+        
+        //ServiceLocator.Get<CameraService>().RemoveTarget(TransformCache);
+        
         EventBus<EnemyDiedEvent>.Raise(new EnemyDiedEvent(this));
+        
         Destroy(gameObject);
     }
 

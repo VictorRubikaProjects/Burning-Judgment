@@ -60,7 +60,6 @@ public class PlayerCharacter : Actor
 
     private bool m_wantsDash;
     private bool m_wantsRoll;
-    private bool m_isDead;
     private bool m_hitRequested;
 
     private PlayerIdleState m_playerIdleState;
@@ -306,6 +305,7 @@ public class PlayerCharacter : Actor
 
     public override void Kill()
     {
+        if (m_isDead) return;
         m_isDead = true;
         ServiceLocator.Get<GameService>().EndRun();
     }

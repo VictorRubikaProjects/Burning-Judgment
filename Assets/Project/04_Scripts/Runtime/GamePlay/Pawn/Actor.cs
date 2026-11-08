@@ -6,6 +6,7 @@ public class Actor : Pawn
     private readonly List<ActorComponent> m_components = new();
 
     private float m_stability;
+    protected bool m_isDead;
     public float Stability
     {
         get => m_stability;

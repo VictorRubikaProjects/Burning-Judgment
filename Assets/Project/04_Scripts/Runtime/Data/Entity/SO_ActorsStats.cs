@@ -50,10 +50,7 @@ public abstract class SO_ActorsStats : ScriptableObject
 
     [field: SerializeField, Range(0f, 3f), Tooltip("Longueur de la détection du sol. Trop court : l'acteur tombe sur les pentes. Trop long : il ne tombe pas au bord du vide.")]
     public float GroundCheckDistance { get; protected set; } = 1.5f;
-
-    [field: Space, Header("Death")]
-    [field: SerializeField, Range(0f, 5f), Tooltip("Délai en secondes entre la mort de l'acteur et sa disparition.")]
-    public float DeathDelay { get; protected set; } = 1.5f;
+    
 
 #if UNITY_EDITOR
     protected virtual void OnValidate()
