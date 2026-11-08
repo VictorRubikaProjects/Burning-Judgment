@@ -105,7 +105,7 @@ public class PlayerCharacter : Actor
         Dash = new DashComponent(this, rb, GroundCheck);
         Input = new PlayerInputComponent(owner: this, ActiveStats, joystickRectT, TimeController);
         Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
-        Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats);
+        Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats,icyPanel);
         Chain = new PlayerChainComponent(this, ActiveStats, Input);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
 
@@ -253,11 +253,23 @@ public class PlayerCharacter : Actor
         DashIndicator.Show(origin, origin + direction * distance);
     }
 
+    private void HandleChargeStarted()
+    {
+        if (Chain.ChainCount <= 0) return;
+        
+        TimeController.LerpTimeDilationAsync(
+            ActiveStats.SlowMotionTargetDilation,
+            ActiveStats.SlowMotionEnterDuration).Forget();
+
+        Aspect.StartSlowMotionVisualsAsync().Forget();
+    }
+    
     private void HandleChargeEnd()
     {
         DashIndicator.Hide();
+
         TimeController.LerpTimeDilationAsync(1f, ActiveStats.SlowMotionExitDuration).Forget();
-        Tween.Alpha(icyPanel, 0f, 0.4f);
+        Aspect.CancelSlowMotionVisualsAsync().Forget();
     }
 
     private void HandleSwipe(Vector2 dir, float ratio)
@@ -272,15 +284,6 @@ public class PlayerCharacter : Actor
     private void HandleChainSuccess()
     {
         ServiceLocator.Get<FxService>().PlayChainSuccessEffect(TransformCache, 1.5f);
-    }
-
-    private void HandleChargeStarted()
-    {
-        TimeController.LerpTimeDilationAsync(
-            ActiveStats.SlowMotionTargetDilation,
-            ActiveStats.SlowMotionEnterDuration).Forget();
-
-        Tween.Alpha(icyPanel, 1f, 0.4f);
     }
 
     #endregion

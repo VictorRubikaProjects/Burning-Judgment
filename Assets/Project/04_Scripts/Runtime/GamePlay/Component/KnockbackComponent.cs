@@ -59,7 +59,7 @@ public class KnockbackComponent : ActorComponent
                 distance,
                 curve,
                 obstacleLayer,
-                MovementComponentExtension.CollisionMode.Slide);
+                MovementComponentExtension.CollisionMode.Stop);
         }
         catch (OperationCanceledException)
         {

@@ -4,17 +4,17 @@ using PrimeTween;
 
 public class PlayerAspectComponent : ActorComponent
 {
-    private readonly Color m_playerColorNeutral;
-    private readonly Color m_playerColorAttackReady = Color.green;
-    private readonly Color m_playerColorHurt = Color.red;
-
     private readonly SO_PlayerStats m_stats;
+    
     private readonly SkinnedMeshRenderer m_playerRenderer;
+    private CanvasGroup m_slowMotionCanvasGroup;
+    
     private Material m_playerMaterialInstance;
 
     private Tween m_currentTween;
+    private Tween m_slowMotionTween;
 
-    public PlayerAspectComponent(Actor owner, Material playerMaterial, SkinnedMeshRenderer playerRenderer, SO_PlayerStats stats) : base(owner)
+    public PlayerAspectComponent(Actor owner, Material playerMaterial, SkinnedMeshRenderer playerRenderer, SO_PlayerStats stats, CanvasGroup slowMotionCanvasGroup) : base(owner)
     {
         m_playerMaterialInstance = new Material(playerMaterial);
         
@@ -23,29 +23,18 @@ public class PlayerAspectComponent : ActorComponent
         m_playerRenderer.material = m_playerMaterialInstance;
         
         m_stats = stats;
-        
-        m_playerColorNeutral = m_playerMaterialInstance.color;
+
+        m_slowMotionCanvasGroup = slowMotionCanvasGroup;
+        m_slowMotionCanvasGroup.alpha = 0f;
     }
-
-
-    public void CancelAttackReadyVisuals()
-    {
-        m_currentTween.Stop();
-        m_playerMaterialInstance.color = m_playerColorNeutral;
-    }
-
+    
     public void HurtVisuals() => HurtVisualsAsync().Forget();
-
-    public void CancelHurtVisuals()
-    {
-        m_currentTween.Stop();
-        m_playerMaterialInstance.color = m_playerColorNeutral;
-    }
 
     public override void Dispose()
     {
         base.Dispose();
         m_currentTween.Stop();
+        m_slowMotionTween.Stop();
         Object.Destroy(m_playerMaterialInstance);
         m_playerMaterialInstance = null;
     }
@@ -57,16 +46,24 @@ public class PlayerAspectComponent : ActorComponent
         int cycle = 3;
         float duration = 0.08f;
 
-        m_currentTween = Tween.MaterialColor(m_playerMaterialInstance,
-            m_playerColorNeutral,
-            m_playerColorHurt,
-            duration,
-            Ease.Linear,
-            cycle,
-            CycleMode.Yoyo);
+        for (int i = 0; i < cycle * 2; i++)
+        {
+            m_playerRenderer.enabled = !m_playerRenderer.enabled;
+            await UniTask.Delay(System.TimeSpan.FromSeconds(duration));
+        }
 
-        await m_currentTween;
+        m_playerRenderer.enabled = true;
+    }
 
-        m_playerMaterialInstance.color = m_playerColorNeutral;
+    public async UniTaskVoid CancelSlowMotionVisualsAsync()
+    {
+        m_slowMotionTween.Stop();
+        m_slowMotionTween = Tween.Alpha(m_slowMotionCanvasGroup, 0f, 0.4f);
+    }
+    
+    public async UniTaskVoid StartSlowMotionVisualsAsync()
+    {
+        m_slowMotionTween.Stop();
+        m_slowMotionTween = Tween.Alpha(m_slowMotionCanvasGroup, 1f, 0.4f);
     }
 }

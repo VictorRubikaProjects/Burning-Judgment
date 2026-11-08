@@ -77,7 +77,7 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Distance maximale en pixels de l'étirement du joystick (ou swipe). Au-delà, la distance de dash/tir atteint 100% (ratio 1f).")]
     public float MaxSwipeDistance { get; private set; } = 400f;
 
-    [field: SerializeField, Range(0.05f, 1f)]
+    [field: SerializeField, Range(0.00f, 1f)]
     [field: Tooltip("Durée maximale en secondes pour effectuer un swipe. Au-delà, le joystick apparaît.")]
     public float MaxSwipeDuration { get; private set; } = 0.2f;
 
