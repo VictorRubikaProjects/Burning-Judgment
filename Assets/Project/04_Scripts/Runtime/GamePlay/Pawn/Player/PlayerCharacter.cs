@@ -1,10 +1,21 @@
 using Event_Bus;
-using PrimeTween;
 using UnityEngine;
 
 public class PlayerCharacter : Actor
 {
-    #region Variable
+    public readonly struct DashContext
+    {
+        public readonly Vector3 Direction;
+        public readonly float Distance;
+
+        public DashContext(in Vector3 direction, float distance)
+        {
+            Direction = direction;
+            Distance = distance;
+        }
+    }
+
+    #region Fields & Properties
 
     [Header("References")]
     [SerializeField] private Rigidbody rb;
@@ -33,20 +44,18 @@ public class PlayerCharacter : Actor
     public DashIndicatorComponent DashIndicator { get; private set; }
     public TimeControllerComponent TimeController { get; private set; }
 
-    public Vector3 MoveDir => m_moveDir;
+    public Vector3 MoveDir => m_currentDashContext.Direction;
+    public float DashDistance => m_currentDashContext.Distance;
+
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
-
-    public float DashDistance => m_dashDistance;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
-
     public Transform FeetTransform => feetTransform;
+    public string CurrentStateName => m_stateMachine?.GetCurrentState()?.ToString() ?? "None";
 
     private StateMachine m_stateMachine;
+    private DashContext m_currentDashContext;
 
-    private Vector3 m_moveDir;
     private Vector3 m_pendingKnockbackDirection;
-
-    private float m_dashDistance;
     private float m_pendingKnockbackForce;
 
     private bool m_wantsDash;
@@ -62,7 +71,6 @@ public class PlayerCharacter : Actor
     private PlayerRollState m_playerRollState;
 
     private EventBinding<ActorPushedEvent> m_playerPushedBinding;
-
     private SO_PlayerStats m_runtimeStats;
 
     private SO_PlayerStats ActiveStats => m_runtimeStats ? m_runtimeStats : baseStats;
@@ -74,71 +82,25 @@ public class PlayerCharacter : Actor
     protected override void Awake()
     {
         base.Awake();
-
-        AugmentService augmentService = ServiceLocator.Get<AugmentService>();
-
-        AugmentDeltas deltas = default;
-
-        if (augmentService == null)
-        {
-            Debug.LogError("Augment Service null in PlayerCharacter Awake");
-        }
-        else
-        {
-            deltas = augmentService.Total;
-        }
-
-        m_runtimeStats = baseStats.CreateRuntimeCopy(deltas);
-
-        Stability = m_runtimeStats.Stability;
-        
-        GroundCheck = new GroundCheckComponent(
-            this,
-            transform,
-            ActiveStats.GroundLayer,
-            ActiveStats.GroundCheckHeight,
-            ActiveStats.GroundCheckDistance);
-
-        TimeController = new TimeControllerComponent(this);
-        KnockBack = new KnockbackComponent(this, rb);
-        HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
-        Dash = new DashComponent(this, rb, GroundCheck);
-        Input = new PlayerInputComponent(owner: this, ActiveStats, joystickRectT, TimeController);
-        Controller = new PlayerControllerComponent(owner: this, rb, ActiveStats);
-        Aspect = new PlayerAspectComponent(owner: this, playerMaterial, playerRenderer, ActiveStats,icyPanel);
-        Chain = new PlayerChainComponent(this, ActiveStats, Input);
-        DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
-
+        InitializeStats();
+        InitializeComponents();
         SetupStateMachine();
     }
 
     protected override void Start()
     {
         base.Start();
-
-        AddActorComponent(TimeController);
-        AddActorComponent(GroundCheck);
-        AddActorComponent(KnockBack);
-        AddActorComponent(HitGate);
-        AddActorComponent(Input);
-        AddActorComponent(Controller);
-        AddActorComponent(Aspect);
-        AddActorComponent(Chain);
-        AddActorComponent(DashIndicator);
-
+        RegisterActorComponents();
         ServiceLocator.Get<CameraService>().AddTarget(transform, 1f);
     }
 
     private void OnEnable()
     {
         Input.OnJoystickRelease += HandleJoystickRelease;
-        
         Input.OnChargeUpdate += HandleChargeUpdate;
         Input.OnChargeEnd += HandleChargeEnd;
         Input.OnChargeStarted += HandleChargeStarted;
-        
         Input.OnSwipe += HandleSwipe;
-
         Chain.OnChainInputSuccess += HandleChainSuccess;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(HandleActorPushed);
@@ -148,13 +110,10 @@ public class PlayerCharacter : Actor
     private void OnDisable()
     {
         Input.OnJoystickRelease -= HandleJoystickRelease;
-        
         Input.OnChargeUpdate -= HandleChargeUpdate;
         Input.OnChargeEnd -= HandleChargeEnd;
         Input.OnChargeStarted -= HandleChargeStarted;
-        
         Input.OnSwipe -= HandleSwipe;
-
         Chain.OnChainInputSuccess -= HandleChainSuccess;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
@@ -163,30 +122,65 @@ public class PlayerCharacter : Actor
     protected override void Update()
     {
         base.Update();
-
         m_stateMachine.Update();
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
         m_stateMachine.FixedUpdate();
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-
         if (m_runtimeStats) Destroy(m_runtimeStats);
     }
 
     #endregion
 
-    #region State Machine
+    #region Initialization Helpers
 
-    private void At(IState from, IState to, IPredictate condition) => m_stateMachine.AddTransition(from, to, condition);
-    private void Any(IState to, IPredictate condition) => m_stateMachine.AddAnyTransition(to, condition);
+    private void InitializeStats()
+    {
+        AugmentService augmentService = ServiceLocator.Get<AugmentService>();
+        AugmentDeltas deltas = augmentService != null ? augmentService.Total : default;
+
+        if (augmentService == null)
+        {
+            Debug.LogError("Augment Service null in PlayerCharacter Awake");
+        }
+
+        m_runtimeStats = baseStats.CreateRuntimeCopy(deltas);
+        Stability = m_runtimeStats.Stability;
+    }
+
+    private void InitializeComponents()
+    {
+        GroundCheck = new GroundCheckComponent(this, transform, ActiveStats.GroundLayer, ActiveStats.GroundCheckHeight, ActiveStats.GroundCheckDistance);
+        TimeController = new TimeControllerComponent(this);
+        KnockBack = new KnockbackComponent(this, rb);
+        HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
+        Dash = new DashComponent(this, rb, GroundCheck);
+        Input = new PlayerInputComponent(this, ActiveStats, joystickRectT, TimeController);
+        Controller = new PlayerControllerComponent(this, rb, ActiveStats);
+        Aspect = new PlayerAspectComponent(this, playerMaterial, playerRenderer, ActiveStats, icyPanel);
+        Chain = new PlayerChainComponent(this, ActiveStats, Input);
+        DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
+    }
+
+    private void RegisterActorComponents()
+    {
+        AddActorComponent(TimeController);
+        AddActorComponent(GroundCheck);
+        AddActorComponent(KnockBack);
+        AddActorComponent(HitGate);
+        AddActorComponent(Input);
+        AddActorComponent(Controller);
+        AddActorComponent(Aspect);
+        AddActorComponent(Chain);
+        AddActorComponent(DashIndicator);
+    }
 
     private void SetupStateMachine()
     {
@@ -199,16 +193,15 @@ public class PlayerCharacter : Actor
         m_playerFallState = new PlayerFallState(this, animator, ActiveStats, rb);
         m_playerRollState = new PlayerRollState(this, animator, ActiveStats);
 
-        At(m_playerIdleState, m_playerDashState, new FuncPredicate(() => m_wantsDash));
-        At(m_playerIdleState, m_playerRollState, new FuncPredicate(() => m_wantsRoll));
+        m_stateMachine.AddTransition(m_playerIdleState, m_playerDashState, new FuncPredicate(() => m_wantsDash));
+        m_stateMachine.AddTransition(m_playerIdleState, m_playerRollState, new FuncPredicate(() => m_wantsRoll));
+        m_stateMachine.AddTransition(m_playerDashState, m_playerIdleState, new FuncPredicate(() => m_playerDashState.IsFinished));
+        m_stateMachine.AddTransition(m_playerRollState, m_playerIdleState, new FuncPredicate(() => m_playerRollState.IsFinished));
+        m_stateMachine.AddTransition(m_playerHitState, m_playerIdleState, new FuncPredicate(() => m_playerHitState.IsFinished));
 
-        At(m_playerDashState, m_playerIdleState, new FuncPredicate(() => m_playerDashState.IsFinished));
-        At(m_playerRollState, m_playerIdleState, new FuncPredicate(() => m_playerRollState.IsFinished));
-        At(m_playerHitState, m_playerIdleState, new FuncPredicate(() => m_playerHitState.IsFinished));
-
-        Any(m_playerDeathState, new FuncPredicate(() => m_isDead));
-        Any(m_playerHitState, new FuncPredicate(() => m_hitRequested));
-        Any(m_playerFallState, new FuncPredicate(() => !GroundCheck.IsGrounded()));
+        m_stateMachine.AddAnyTransition(m_playerDeathState, new FuncPredicate(() => m_isDead));
+        m_stateMachine.AddAnyTransition(m_playerHitState, new FuncPredicate(() => m_hitRequested));
+        m_stateMachine.AddAnyTransition(m_playerFallState, new FuncPredicate(() => !GroundCheck.IsGrounded()));
 
         m_stateMachine.SetState(m_playerIdleState);
     }
@@ -221,8 +214,9 @@ public class PlayerCharacter : Actor
     {
         if (!CanAct()) return;
 
-        m_moveDir = ToWorldDirection(dir);
-        m_dashDistance = ComputeDashDistance(ratio);
+        Vector3 moveDir = ToWorldDirection(in dir);
+        float distance = ComputeDashDistance(ratio);
+        m_currentDashContext = new DashContext(in moveDir, distance);
 
         RequestDash();
     }
@@ -235,52 +229,43 @@ public class PlayerCharacter : Actor
             return;
         }
 
-        Vector3 direction = ToWorldDirection(dir);
+        Vector3 direction = ToWorldDirection(in dir);
         Vector3 origin = feetTransform.position;
         float distance = ComputeDashDistance(ratio);
 
-        if (Physics.Raycast(
-                origin + Vector3.up * 0.5f,
-                direction,
-                out RaycastHit hit,
-                distance,
-                ActiveStats.ObstacleLayer,
-                QueryTriggerInteraction.Ignore))
+        if (TryRaycastObstacle(in origin, in direction, ref distance))
         {
-            distance = hit.distance;
+            
         }
 
-        DashIndicator.Show(origin, origin + direction * distance);
+        Vector3 targetPos = origin + direction * distance;
+        DashIndicator.Show(origin, targetPos);
     }
 
     private void HandleChargeStarted()
     {
         if (Chain.ChainCount <= 0) return;
-        
-        TimeController.LerpTimeDilationAsync(
-            ActiveStats.SlowMotionTargetDilation,
-            ActiveStats.SlowMotionEnterDuration).Forget();
 
-        Aspect.StartSlowMotionVisualsAsync().Forget();
+        TimeController.LerpTimeDilationAsync(ActiveStats.SlowMotionTargetDilation, ActiveStats.SlowMotionEnterDuration).Forget();
+        Aspect.StartSlowMotionVisualsAsync();
     }
-    
+
     private void HandleChargeEnd()
     {
         DashIndicator.Hide();
-
         TimeController.LerpTimeDilationAsync(1f, ActiveStats.SlowMotionExitDuration).Forget();
-        Aspect.CancelSlowMotionVisualsAsync().Forget();
+        Aspect.CancelSlowMotionVisualsAsync();
     }
 
     private void HandleSwipe(Vector2 dir, float ratio)
     {
         if (!CanAct() || dir == Vector2.zero) return;
 
-        m_moveDir = ToWorldDirection(dir);
+        Vector3 moveDir = ToWorldDirection(in dir);
+        m_currentDashContext = new DashContext(in moveDir, ActiveStats.DashDistance);
         RequestRoll();
     }
-    
-    
+
     private void HandleChainSuccess()
     {
         ServiceLocator.Get<FxService>().PlayChainSuccessEffect(TransformCache, 1.5f);
@@ -293,28 +278,19 @@ public class PlayerCharacter : Actor
     private void HandleActorPushed(ActorPushedEvent e)
     {
         if (e.Target != this) return;
-
         if (m_stateMachine.GetCurrentState() is PlayerHitState || !HitGate.CanTakeDamage()) return;
 
         m_pendingKnockbackDirection = e.Direction;
-        
-        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(
-            e.Force,
-            ActiveStats.Weight,
-            ActiveStats.DefaultScaling,
-            Stability
-            );
-        
-        Stability = KnockbackUtility.CalculateNewStability(e.Destabilization,e.Force,ActiveStats.Weight,Stability);
-        
+        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, ActiveStats.Weight, ActiveStats.DefaultScaling, Stability);
+        Stability = KnockbackUtility.CalculateNewStability(e.Destabilization, e.Force, ActiveStats.Weight, Stability);
+
         RequestHit();
-        
         DamagePopUp.Show(m_pendingKnockbackForce, TransformCache.position);
     }
 
     #endregion
 
-    #region Helpers
+    #region Public State Control
 
     public void RequestDash() => m_wantsDash = true;
     public void ConsumeDashRequest() => m_wantsDash = false;
@@ -326,8 +302,7 @@ public class PlayerCharacter : Actor
     public void ConsumeHitRequest() => m_hitRequested = false;
 
     public void SetIdle() => m_stateMachine.SetState(m_playerIdleState);
-
-    public void ResetDashDistance() => m_dashDistance = ActiveStats.DashDistance;
+    public void ResetDashDistance() => m_currentDashContext = new DashContext(m_currentDashContext.Direction, ActiveStats.DashDistance);
 
     public override void Kill()
     {
@@ -335,35 +310,25 @@ public class PlayerCharacter : Actor
         ServiceLocator.Get<GameService>().EndRun();
     }
 
+    #endregion
+
+    #region Pure Utilities
+
     private bool CanAct() => m_stateMachine.GetCurrentState() is PlayerIdleState;
 
     private float ComputeDashDistance(float ratio) => ActiveStats.DashDistance * Mathf.Clamp01(ratio);
 
-    private static Vector3 ToWorldDirection(Vector2 dir) => new(dir.x, 0f, dir.y);
+    private static Vector3 ToWorldDirection(in Vector2 dir) => new(dir.x, 0f, dir.y);
 
-    #endregion
-
-#if UNITY_EDITOR
-
-    #region Debug
-
-    private void OnGUI()
+    private bool TryRaycastObstacle(in Vector3 origin, in Vector3 direction, ref float distance)
     {
-        Rect rect = new Rect(Screen.width - 400, 10, 200, 40);
-
-        string text = $"{m_stateMachine.GetCurrentState()}";
-
-        GUIStyle style = new GUIStyle
+        if (Physics.Raycast(origin + Vector3.up * 0.5f, direction, out RaycastHit hit, distance, ActiveStats.ObstacleLayer, QueryTriggerInteraction.Ignore))
         {
-            fontSize = 40,
-            fontStyle = FontStyle.Bold,
-            normal = { textColor = Color.white }
-        };
-
-        GUI.Box(rect, text, style);
+            distance = hit.distance;
+            return true;
+        }
+        return false;
     }
 
     #endregion
-
-#endif
 }

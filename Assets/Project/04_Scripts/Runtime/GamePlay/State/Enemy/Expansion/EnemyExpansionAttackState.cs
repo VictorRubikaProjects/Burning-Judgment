@@ -53,7 +53,10 @@ public class EnemyExpansionAttackState : EnemyBaseState
         StartChargeFeedback(duration);
 
         bool canceled = await UniTask
-            .Delay(TimeSpan.FromSeconds(duration), cancellationToken: token)
+            .Delay(
+                TimeSpan.FromSeconds(duration),
+                cancellationToken: token,
+                ignoreTimeScale:false)
             .SuppressCancellationThrow();
 
         if (canceled) return;
