@@ -7652,7 +7652,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: a6cd43b432a5228439094e8f9edcbcf9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: aee9d934c4a579746bf8d27a2e063f28, type: 2}
+      objectReference: {fileID: 2100000, guid: 21e9f20c3ec701341b5e8685f7c8850d, type: 2}
     - target: {fileID: 919132149155446097, guid: a6cd43b432a5228439094e8f9edcbcf9, type: 3}
       propertyPath: m_Name
       value: SM_Pillone_001
