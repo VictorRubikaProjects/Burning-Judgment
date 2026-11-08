@@ -15,7 +15,8 @@ public class ProjectileEnemyClassic : AbstractProjectile
             playerActor,
             transform.forward,
             m_owner.Stats.PushForce,
-            m_owner.Stats.Destabilization));
+            m_owner.Stats.Destabilization,
+            transform.position));
         
         return true;
     }

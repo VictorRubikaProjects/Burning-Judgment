@@ -48,7 +48,7 @@ public class PlayerControllerComponent : ActorComponent
         m_rb.MoveRotation(m_targetRotation);
     }
     
-    public StrikeResult TryStrike(float radius, LayerMask layers,StrikeType strikeType, float forceMultiplier = 1)
+    public StrikeResult TryStrike(float radius, LayerMask layers, StrikeType strikeType, float forceMultiplier = 1)
     {
         Vector3 center = m_pc.TransformCache.position;
         Vector3 forward = m_pc.MoveDir;
@@ -60,9 +60,9 @@ public class PlayerControllerComponent : ActorComponent
             layers,
             QueryTriggerInteraction.Ignore);
         
-        float force = strikeType is  StrikeType.Dash ? m_stats.PushForce : m_stats.PushForce/2;
+        float force = strikeType is StrikeType.Dash ? m_stats.PushForce : m_stats.PushForce / 2;
         
-        StrikeContext context = new(forward, force * forceMultiplier,m_stats.Destabilization);
+        StrikeContext context = new(center, forward, force * forceMultiplier, m_stats.Destabilization);
 
         for (int i = 0; i < count; i++)
         {

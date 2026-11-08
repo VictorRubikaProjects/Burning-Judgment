@@ -145,7 +145,8 @@ public class EnemyDashAttackState : EnemyBaseState
                 player,
                 Owner.TransformCache.forward,
                 m_dasher.Stats.PushForce,
-                m_dasher.Stats.Destabilization));
+                m_dasher.Stats.Destabilization,
+                m_dasher.TransformCache.position));
 
             m_cameraService.Shake();
             m_isAttacking = false;

@@ -193,14 +193,38 @@ public abstract class EnemyBase : Actor, IStrikeable
         
         if (m_stateMachine.GetCurrentState() is EnemyHitState || !HitGate.CanTakeDamage()) return;
 
-        ApplyPush(e.Direction, e.Force, e.Destabilization);
+        Vector3 pushDirection = TransformCache.position - e.SourcePosition;
+        pushDirection.y = 0f;
+
+        if (pushDirection.sqrMagnitude < 0.0001f)
+        {
+            pushDirection = e.Direction;
+        }
+        else
+        {
+            pushDirection.Normalize();
+        }
+
+        ApplyPush(pushDirection, e.Force, e.Destabilization);
     }
 
     public virtual StrikeResult OnStruck(in StrikeContext context)
     {
         if (!CanBeStruck) return StrikeResult.Ignored;
 
-        ApplyPush(context.Direction, context.Force, context.Destabilization);
+        Vector3 strikeDirection = TransformCache.position - context.Position;
+        strikeDirection.y = 0f;
+
+        if (strikeDirection.sqrMagnitude < 0.0001f)
+        {
+            strikeDirection = context.Direction;
+        }
+        else
+        {
+            strikeDirection.Normalize();
+        }
+
+        ApplyPush(strikeDirection, context.Force, context.Destabilization);
         return new StrikeResult(accepted: true, cancelsDash: true, allowsChain: true);
     }
 

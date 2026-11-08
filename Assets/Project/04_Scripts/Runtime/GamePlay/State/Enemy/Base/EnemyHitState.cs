@@ -64,7 +64,8 @@ public class EnemyHitState : EnemyBaseState
                 enemyBase,
                 -Owner.TransformCache.forward,
                 Owner.StatsBase.PushForce,
-                Owner.StatsBase.Destabilization));
+                Owner.StatsBase.Destabilization,
+                Owner.TransformCache.position));
             
             return;
         }
