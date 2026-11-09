@@ -11,7 +11,6 @@ public class PlayerInputComponent : ActorComponent
     private readonly SO_PlayerStats m_stats;
     private readonly RectTransform m_joystickTransform;
     private readonly CanvasGroup m_joystickGroup;
-    private readonly TimeControllerComponent m_timeController;
     private readonly Vector2 m_joystickRestPosition;
 
     private PlayerActions m_inputActions;
@@ -39,16 +38,11 @@ public class PlayerInputComponent : ActorComponent
 
     #region Actor Component Core
 
-    public PlayerInputComponent(
-        Actor owner,
-        SO_PlayerStats stats,
-        RectTransform joystickTransform,
-        TimeControllerComponent timeController) : base(owner)
+    public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickTransform) : base(owner)
     {
         m_stats = stats;
         m_joystickTransform = joystickTransform;
         m_joystickRestPosition = joystickTransform.position;
-        m_timeController = timeController;
 
         m_joystickGroup = joystickTransform.TryGetComponent(out CanvasGroup group)
             ? group

@@ -42,7 +42,6 @@ public class PlayerCharacter : Actor
     public DashComponent Dash { get; private set; }
     public PlayerChainComponent Chain { get; private set; }
     public DashIndicatorComponent DashIndicator { get; private set; }
-    public TimeControllerComponent TimeController { get; private set; }
 
     public Vector3 MoveDir => m_currentDashContext.Direction;
     public float DashDistance => m_currentDashContext.Distance;
@@ -98,7 +97,6 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease += HandleJoystickRelease;
         Input.OnChargeUpdate += HandleChargeUpdate;
         Input.OnChargeEnd += HandleChargeEnd;
-        Input.OnChargeStarted += HandleChargeStarted;
         Input.OnSwipe += HandleSwipe;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(HandleActorPushed);
@@ -110,7 +108,6 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease -= HandleJoystickRelease;
         Input.OnChargeUpdate -= HandleChargeUpdate;
         Input.OnChargeEnd -= HandleChargeEnd;
-        Input.OnChargeStarted -= HandleChargeStarted;
         Input.OnSwipe -= HandleSwipe;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
@@ -155,11 +152,10 @@ public class PlayerCharacter : Actor
     private void InitializeComponents()
     {
         GroundCheck = new GroundCheckComponent(this, transform, ActiveStats.GroundLayer, ActiveStats.GroundCheckHeight, ActiveStats.GroundCheckDistance);
-        TimeController = new TimeControllerComponent(this);
         KnockBack = new KnockbackComponent(this, rb);
         HitGate = new HitGateComponent(this, ActiveStats.InvincibilityDuration);
         Dash = new DashComponent(this, rb, GroundCheck);
-        Input = new PlayerInputComponent(this, ActiveStats, joystickRectT, TimeController);
+        Input = new PlayerInputComponent(this, ActiveStats, joystickRectT);
         Controller = new PlayerControllerComponent(this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(this, playerMaterial, playerRenderer, ActiveStats, icyPanel);
         Chain = new PlayerChainComponent(this, ActiveStats);
@@ -168,7 +164,6 @@ public class PlayerCharacter : Actor
 
     private void RegisterActorComponents()
     {
-        AddActorComponent(TimeController);
         AddActorComponent(GroundCheck);
         AddActorComponent(KnockBack);
         AddActorComponent(HitGate);
@@ -238,21 +233,9 @@ public class PlayerCharacter : Actor
         Vector3 targetPos = origin + direction * distance;
         DashIndicator.Show(origin, targetPos);
     }
+    
 
-    private void HandleChargeStarted()
-    {
-        if (Chain.ChainCount <= 0) return;
-
-        TimeController.LerpTimeDilationAsync(ActiveStats.SlowMotionTargetDilation, ActiveStats.SlowMotionEnterDuration).Forget();
-        Aspect.StartSlowMotionVisualsAsync();
-    }
-
-    private void HandleChargeEnd()
-    {
-        DashIndicator.Hide();
-        TimeController.LerpTimeDilationAsync(1f, ActiveStats.SlowMotionExitDuration).Forget();
-        Aspect.CancelSlowMotionVisualsAsync();
-    }
+    private void HandleChargeEnd() => DashIndicator.Hide();
 
     private void HandleSwipe(Vector2 dir, float ratio)
     {
