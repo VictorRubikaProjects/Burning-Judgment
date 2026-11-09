@@ -218,6 +218,8 @@ public sealed class FxService : IGameService
         => LaunchEffectUnparented(effectPrefab, targetTransform, duration).Forget();
 
     #region Helper
+    public void PlayHitEffect(Transform target, float duration)
+        => PlayEffect(m_configVfx.VfxPrefabHit,target, duration);
     public void PlayEjectionEffect(Transform targetTransform, float duration)
         => PlayEffect(m_configVfx.VfxPrefabEjection, targetTransform, duration);
     

@@ -33,6 +33,7 @@ public class EnemyHitState : EnemyBaseState
             Owner.StatsBase.ObstacleLayer).Forget();
         
         m_fxService.PlayEjectionEffect(Owner.TransformCache, Owner.StatsBase.HitDuration);
+        m_fxService.PlayHitEffect(Owner.TransformCache,Owner.StatsBase.HitDuration);
         m_audioService.PlaySfx(m_audioService.Bank.EnemyHitEvent,Owner.TransformCache.position);
     }
 

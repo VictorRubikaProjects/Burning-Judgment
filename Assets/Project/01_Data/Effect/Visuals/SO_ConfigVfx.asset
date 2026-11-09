@@ -16,3 +16,4 @@ MonoBehaviour:
   <VfxPrefabChainInputSuccess>k__BackingField: {fileID: 8299483044362581044, guid: 6a5bf1ecf4d152843b77c52e17dbff40, type: 3}
   <VfxPrefabDash>k__BackingField: {fileID: 9149213220067885641, guid: 37f6fb6e6e30b6640902fba7bfdc6fdc, type: 3}
   <VfxPrefabAttackPlayer>k__BackingField: {fileID: 1064298706896255859, guid: 74373cab77cd9eb4fb120a4b796f5658, type: 3}
+  <VfxPrefabHit>k__BackingField: {fileID: 8551891807610761133, guid: bd203bed1c8eb984bb2d7264999a811b, type: 3}
