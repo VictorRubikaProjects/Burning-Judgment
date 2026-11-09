@@ -36,7 +36,6 @@ public class PlayerDashState : PlayerBaseState
         m_ctsDash = new CancellationTokenSource();
         
         RunDashAsync(m_owner.MoveDir, m_ctsDash.Token).Forget();
-        
     }
 
     public override void OnExit()
@@ -59,6 +58,8 @@ public class PlayerDashState : PlayerBaseState
 
         float durationDash = Mathf.Clamp01(m_owner.DashDistance / m_stats.DashDistance) * m_stats.DashDuration;
 
+        m_audioService.PlaySfx(m_audioService.Bank.PlayerDashEvent,m_owner.TransformCache.position);
+        
         try
         {
             await m_owner.Dash.RollAsync(direction, token, durationDash, m_owner.DashDistance, m_stats.DashCurve, m_stats.ObstacleLayer);
@@ -91,6 +92,7 @@ public class PlayerDashState : PlayerBaseState
 
         m_cameraService.Shake();
         m_fxService.HitStop();
+        m_audioService.PlaySfx(m_audioService.Bank.PlayerAttackEvent,m_owner.TransformCache.position);
 
         if (result.CancelsDash)
         {

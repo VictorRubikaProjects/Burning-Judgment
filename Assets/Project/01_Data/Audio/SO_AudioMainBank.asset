@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e6f636c4b84c798612c64bfdabb454, type: 3}
+  m_Name: SO_AudioMainBank
+  m_EditorClassIdentifier: Project.Runtime::SO_AudioBankGameplay
+  <PlayerDashEvent>k__BackingField:
+    Guid:
+      Data1: -891296428
+      Data2: 1164257832
+      Data3: 417654958
+      Data4: -403788161
+    Path: event:/GamePlay/Player/PlayerDashEvent
+  <PlayerHitEvent>k__BackingField:
+    Guid:
+      Data1: 115982973
+      Data2: 1198172345
+      Data3: -1935209810
+      Data4: -1652938565
+    Path: event:/GamePlay/Player/PlayerHitEvent
+  <PlayerAttackEvent>k__BackingField:
+    Guid:
+      Data1: -468470271
+      Data2: 1322561277
+      Data3: -13882728
+      Data4: 1887228946
+    Path: event:/GamePlay/Player/PlayerAttackEvent
+  <EnemyHitEvent>k__BackingField:
+    Guid:
+      Data1: -360572372
+      Data2: 1105845476
+      Data3: -859666545
+      Data4: -704909176
+    Path: event:/GamePlay/Enemy/Base/Enemy_Base_hit
+  <DasherDashEvent>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <DasherChargeDashEvent>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <ExpansionChargeAOEEvent>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <ExpansionExecuteAOEEvent>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <SniperShootEvent>k__BackingField:
+    Guid:
+      Data1: 386744793
+      Data2: 1304567250
+      Data3: 1002095489
+      Data4: 1110434779
+    Path: event:/GamePlay/Enemy/Sniper/Enemy_Sniper_Shoot
+  <SniperAimEvent>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <UIButtonEvent>k__BackingField:
+    Guid:
+      Data1: -1163249233
+      Data2: 1260789872
+      Data3: 16019903
+      Data4: 799210259
+    Path: event:/UI/UIButtonEvent
+  <UISliderEvent>k__BackingField:
+    Guid:
+      Data1: -10912011
+      Data2: 1139261349
+      Data3: 1888058497
+      Data4: -469996544
+    Path: event:/UI/UISliderEvent
+  <RoundWonEvent>k__BackingField:
+    Guid:
+      Data1: 233299655
+      Data2: 1129363853
+      Data3: 1473272755
+      Data4: -2055339810
+    Path: event:/Game/RoundWonEvent
+  <StartGameEvent>k__BackingField:
+    Guid:
+      Data1: -28827189
+      Data2: 1305357169
+      Data3: 952685244
+      Data4: -1629637552
+    Path: event:/Game/StartGameEvent
+  <RoundStartEvent>k__BackingField:
+    Guid:
+      Data1: 1425386151
+      Data2: 1335254136
+      Data3: -392022390
+      Data4: 1378828722
+    Path: event:/Game/RoundStartEvent

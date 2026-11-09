@@ -41,3 +41,4 @@ MonoBehaviour:
   MusicBusPath: bus:/Music
   SfxBusPath: bus:/Sfx
   AmbienceBusPath: bus:/Ambience
+  <AudioBank>k__BackingField: {fileID: 11400000, guid: bf1d8bb9febd7404d88512ed54a81b6a, type: 2}

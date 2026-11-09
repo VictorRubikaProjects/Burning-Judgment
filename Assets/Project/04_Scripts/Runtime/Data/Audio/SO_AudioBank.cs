@@ -2,7 +2,7 @@ using UnityEngine;
 using FMODUnity; 
 
 [CreateAssetMenu(menuName = "Config/Audio/Audio Bank Gameplay", fileName = "SO_AudioConfig")]
-public class SO_AudioBankGameplay : ScriptableObject
+public class SO_AudioBank : ScriptableObject
 {
     [Header("Player")]
     [field: SerializeField] public EventReference PlayerDashEvent { get; private set; }
@@ -27,9 +27,9 @@ public class SO_AudioBankGameplay : ScriptableObject
     [Header("UI")]
     [field: SerializeField] public EventReference UIButtonEvent { get; private set; }
     [field: SerializeField] public EventReference UISliderEvent { get; private set; }
-    [field: SerializeField] public EventReference UIStartGameEvent { get; private set; }
-    [field: SerializeField] public EventReference UIRoundStartEvent { get; private set; }
-
+    
     [Header("Game")]
     [field: SerializeField] public EventReference RoundWonEvent { get; private set; }
+    [field: SerializeField] public EventReference StartGameEvent { get; private set; }
+    [field: SerializeField] public EventReference RoundStartEvent { get; private set; }
 }

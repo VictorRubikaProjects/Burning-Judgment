@@ -16,15 +16,12 @@ public class HudManager : MonoBehaviour
     [Header("Feedback")] 
     [SerializeField] private TMP_Text levelIndicator;
 
-    [Header("Sound")] 
-    [SerializeField] private SO_AudioBankUI audioUI;
     
     private OptionController m_optionController;
     
     private void Awake()
     {
         m_optionController = new OptionController(
-            audioUI,
             optionButtons,
             optionCanvasGroup,
             volumeSlider,

@@ -6,10 +6,16 @@ public class PlayerHitState : PlayerBaseState
     private bool m_isFinished;
 
     public bool IsFinished => m_isFinished;
+    
+    private readonly AudioService m_audioService;
+    private readonly FxService m_fxService;
 
     public PlayerHitState(PlayerCharacter owner, Animator animator, SO_PlayerStats playerStats)
         : base(owner, animator, playerStats, playerStats.HitAnimation)
-    { }
+    {
+        m_audioService = ServiceLocator.Get<AudioService>();
+        m_fxService = ServiceLocator.Get<FxService>();
+    }
 
     public override void OnEnter()
     {
@@ -33,7 +39,8 @@ public class PlayerHitState : PlayerBaseState
         
         m_owner.Chain.Reset();
         
-        ServiceLocator.Get<FxService>().PlayEjectionEffect(m_owner.TransformCache,m_stats.HitDuration);
+        m_audioService.PlaySfx(m_audioService.Bank.PlayerHitEvent,m_owner.TransformCache.position);
+        m_fxService.PlayEjectionEffect(m_owner.TransformCache,m_stats.HitDuration);
     }
 
     public override void Update()

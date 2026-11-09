@@ -13,10 +13,12 @@ public class AudioService : IGameService
     private Bus m_musicBus;
     private Bus m_ambienceBus;
 
-    private SO_AudioConfig m_config;
+    private readonly SO_AudioConfig m_config;
 
     private List<EventInstance> m_eventInstances;
     private EventInstance m_musicEventInstance;
+    
+    public SO_AudioBank Bank => m_config.AudioBank;
 
     public AudioService(SO_AudioConfig config)
     {

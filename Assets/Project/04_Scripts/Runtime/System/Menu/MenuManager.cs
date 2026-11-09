@@ -33,8 +33,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private float offScreenMargin = 50f;
     [SerializeField] private Ease slideEase = Ease.OutCubic;
     
-    [Header("Sound")] 
-    [SerializeField] private SO_AudioBankUI audioUI;
     
     private SceneService m_sceneService;
     private AudioService m_audioService;
@@ -56,7 +54,6 @@ public class MenuManager : MonoBehaviour
         }
         
         m_optionController = new OptionController(
-            audioUI,
             optionButtons,
             optionCanvasGroup,
             volumeSlider,

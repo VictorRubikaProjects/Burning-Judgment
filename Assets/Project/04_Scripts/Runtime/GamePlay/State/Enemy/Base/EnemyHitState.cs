@@ -5,10 +5,17 @@ using UnityEngine;
 public class EnemyHitState : EnemyBaseState
 {
     public bool IsFinished { get; private set; }
-
-    public EnemyHitState(EnemyBase owner) : base(owner) { }
+    
+    private readonly AudioService m_audioService;
+    private readonly FxService m_fxService;
     
     private readonly Collider[] m_strikeHits = new Collider[30];
+
+    public EnemyHitState(EnemyBase owner) : base(owner)
+    {
+        m_audioService = ServiceLocator.Get<AudioService>();
+        m_fxService = ServiceLocator.Get<FxService>();
+    }
 
     public override void OnEnter()
     {
@@ -25,7 +32,8 @@ public class EnemyHitState : EnemyBaseState
             Owner.StatsBase.HitKnockbackCurve,
             Owner.StatsBase.ObstacleLayer).Forget();
         
-        ServiceLocator.Get<FxService>().PlayEjectionEffect(Owner.TransformCache, Owner.StatsBase.HitDuration);
+        m_fxService.PlayEjectionEffect(Owner.TransformCache, Owner.StatsBase.HitDuration);
+        m_audioService.PlaySfx(m_audioService.Bank.EnemyHitEvent,Owner.TransformCache.position);
     }
 
     public override void OnExit()

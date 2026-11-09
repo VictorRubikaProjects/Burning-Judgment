@@ -15,12 +15,14 @@ public class GameService : IGameService
     private SO_EntityPooling m_entityConfig;
     private PlayerCharacter m_playerCharacter;
     
-    private AugmentService m_augmentService;
+    private readonly AugmentService m_augmentService;
+    private readonly AudioService m_audioService;
 
-    public GameService(SO_EntityPooling entityConfig, AugmentService augmentService)
+    public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService)
     {
         m_entityConfig = entityConfig;
         m_augmentService = augmentService;
+        m_audioService = audioService;
     }
 
     public void Dispose() 
@@ -58,6 +60,8 @@ public class GameService : IGameService
 
     private async UniTask InternalStartGame(System.Func<UniTask> unloadPreviousSceneAction)
     {
+        m_audioService.PlaySfx(m_audioService.Bank.StartGameEvent);
+        
         CurrentFloor = 0;
         m_augmentService.Reset();
         CurrentState = GameState.Playing;
@@ -73,6 +77,8 @@ public class GameService : IGameService
     public async UniTask StartFloor(bool isFirstFloor = false)
     {
         CurrentFloor++;
+        
+        m_audioService.PlaySfx(m_audioService.Bank.RoundStartEvent);
 
         UniTask taskDeloadGameplay = isFirstFloor 
             ? UniTask.CompletedTask 

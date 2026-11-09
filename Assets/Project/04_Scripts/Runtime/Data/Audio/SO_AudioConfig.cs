@@ -12,4 +12,6 @@ public class SO_AudioConfig : ScriptableObject
     public string MusicBusPath = "bus:/Music";
     public string SfxBusPath = "bus:/Sfx";
     public string AmbienceBusPath = "bus:/Ambience";
+    
+    [field: SerializeField] public SO_AudioBank AudioBank { get; private set; }
 }

@@ -12,10 +12,13 @@ public class EnemySystem
     private SO_ConfigRound m_configCurrentRound;
     
     private EventBinding<EnemyDiedEvent> m_eventBindingEnemyDied;
+    
+    private readonly AudioService m_audioService;
 
     public EnemySystem(SO_EntityPooling entityPoolingData)
     {
         m_entityPooling = entityPoolingData;
+        m_audioService = ServiceLocator.Get<AudioService>();
     }
 
     public void Initialize()
@@ -76,6 +79,7 @@ public class EnemySystem
         if (m_aliveEnemies.Count == 0)
         {
             EventBus<FloorClearedEvent>.Raise(new FloorClearedEvent());
+            m_audioService.PlaySfx(m_audioService.Bank.RoundWonEvent);
         }
     }
 

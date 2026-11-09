@@ -12,6 +12,8 @@ public class EnemySniperAttackState : EnemyBaseState
     private float m_elapsed;
     private bool m_isLocked;
     
+    private readonly AudioService m_audioService;
+    
     private bool IsAimComplete => m_elapsed >= m_totalTime;
 
     public EnemySniperAttackState(EnemySniper owner) : base(owner)
@@ -19,6 +21,7 @@ public class EnemySniperAttackState : EnemyBaseState
         m_sniper = owner;
         m_trackingTime = owner.Stats.AimTrackingTime;
         m_totalTime = Mathf.Max(0.01f, owner.Stats.AimTrackingTime + owner.Stats.AimFrozenTime);
+        m_audioService = ServiceLocator.Get<AudioService>();
     }
 
     public override void OnEnter()
@@ -84,6 +87,7 @@ public class EnemySniperAttackState : EnemyBaseState
     private void Fire()
     {
         ExecuteShoot();
+        m_audioService.PlaySfx(m_audioService.Bank.SniperShootEvent,m_sniper.TransformCache.position);
         IsFinished = true;
     }
 
