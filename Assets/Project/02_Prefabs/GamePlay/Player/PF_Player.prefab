@@ -439,6 +439,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4625482722595918682, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
+      propertyPath: m_UseIsolatedInputActions
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625482722595918682, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
+      propertyPath: m_PointerDownAction.m_Name
+      value: Pointer Down
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625482722595918682, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
+      propertyPath: m_PointerMoveAction.m_Name
+      value: Pointer Move
+      objectReference: {fileID: 0}
     - target: {fileID: 5932314570724167308, guid: ea9f79d856625274988b0260bbfe67b5, type: 3}
       propertyPath: m_Name
       value: PF_Joystick

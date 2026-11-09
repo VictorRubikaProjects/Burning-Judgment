@@ -6,8 +6,6 @@ public delegate void DirectionRatioHandler(Vector2 direction, float ratio);
 
 public class PlayerInputComponent : ActorComponent
 {
-    #region Variables
-
     private readonly SO_PlayerStats m_stats;
     private readonly RectTransform m_joystickTransform;
     private readonly CanvasGroup m_joystickGroup;
@@ -33,10 +31,6 @@ public class PlayerInputComponent : ActorComponent
     public event Action OnTouchPressed;
     public event Action OnHoldConfirmed;
     public event Action OnTouchReleased;
-
-    #endregion
-
-    #region Actor Component Core
 
     public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickTransform) : base(owner)
     {
@@ -86,10 +80,6 @@ public class PlayerInputComponent : ActorComponent
         OnChargeUpdate?.Invoke(m_lastDirection, GetChargeRatio());
     }
 
-    #endregion
-
-    #region Touch
-
     private void OnTouchStarted(InputAction.CallbackContext context)
     {
         m_touchStartPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
@@ -110,7 +100,21 @@ public class PlayerInputComponent : ActorComponent
         SetJoystickVisible(false);
         m_joystickTransform.position = m_joystickRestPosition;
 
-        if (!m_isStickEngaged) TryEmitSwipe();
+        if (m_isCharging)
+        {
+            m_isCharging = false;
+
+            if (m_lastDirection != Vector2.zero)
+            {
+                OnJoystickRelease?.Invoke(m_lastDirection, GetChargeRatio());
+            }
+
+            OnChargeEnd?.Invoke();
+        }
+        else if (!m_isStickEngaged)
+        {
+            TryEmitSwipe();
+        }
 
         OnTouchReleased?.Invoke();
     }
@@ -131,10 +135,6 @@ public class PlayerInputComponent : ActorComponent
     }
 
     private float TouchElapsed => Time.unscaledTime - m_touchStartTime;
-    
-    #endregion
-
-    #region Swipe
 
     private void TryEmitSwipe()
     {
@@ -149,10 +149,6 @@ public class PlayerInputComponent : ActorComponent
 
         OnSwipe?.Invoke(swipeVector.normalized, ratio);
     }
-
-    #endregion
-
-    #region Joystick Charge
 
     private void OnMoveStarted(InputAction.CallbackContext context)
     {
@@ -179,15 +175,8 @@ public class PlayerInputComponent : ActorComponent
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         if (!m_isCharging) return;
-
-        m_isCharging = false;
-
-        if (m_lastDirection != Vector2.zero)
-        {
-            OnJoystickRelease?.Invoke(m_lastDirection, GetChargeRatio());
-        }
-
-        OnChargeEnd?.Invoke();
+        
+        m_lastDirection = Vector2.zero;
     }
 
     private void BeginCharge()
@@ -211,6 +200,4 @@ public class PlayerInputComponent : ActorComponent
 
         return Mathf.Clamp(ratio, m_stats.MinChargeRatio, 1f);
     }
-
-    #endregion
 }
