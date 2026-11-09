@@ -58,12 +58,14 @@ public class PlayerDashState : PlayerBaseState
     {
         m_audioService.PlaySfx(m_stats.DashEvent);
 
+        float durationDash = Mathf.Clamp01(m_owner.DashDistance / m_stats.DashDistance) * m_stats.DashDuration;
+        
         try
         {
             await m_owner.Dash.RollAsync(
                 direction,
                 token,
-                m_stats.DashDuration,
+                durationDash,
                 m_owner.DashDistance,
                 m_stats.DashCurve,
                 m_stats.ObstacleLayer);
