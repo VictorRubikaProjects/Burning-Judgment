@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 public sealed class FxService : IGameService
@@ -16,6 +15,8 @@ public sealed class FxService : IGameService
 
     private readonly Dictionary<ParticleSystem, IObjectPool<ParticleSystem>> m_effectPools = new();
     private readonly Dictionary<Transform, ActiveEffectData> m_activeEffects = new();
+
+    private GameObject m_vfxRoot;
 
     private struct ActiveEffectData
     {
@@ -40,6 +41,11 @@ public sealed class FxService : IGameService
             pool.Clear();
         }
         m_effectPools.Clear();
+
+        if (m_vfxRoot != null)
+        {
+            Object.Destroy(m_vfxRoot);
+        }
     }
 
     public FxService(SO_ConfigVfx configVfx, SO_GameConfig gameConfig)
@@ -51,6 +57,9 @@ public sealed class FxService : IGameService
     public UniTask InitializeService()
     {
         m_timeEffect = new TimeEffect();
+        m_vfxRoot = new GameObject("[Global_VfxPool]");
+        Object.DontDestroyOnLoad(m_vfxRoot);
+
         return UniTask.CompletedTask;
     }
 
@@ -61,25 +70,6 @@ public sealed class FxService : IGameService
     #endregion
     
     public void HitStop() => m_timeEffect.HitStop().Forget();
-    
-    private Scene GetBootstrapScene()
-    {
-        string sceneName = m_gameConfig.BootStrapScene.Name; 
-        return SceneManager.GetSceneByName(sceneName);
-    }
-    
-    private void MoveToBootstrapScene(GameObject go)
-    {
-        if (go == null) return;
-
-        go.transform.SetParent(null);
-
-        var bootstrapScene = GetBootstrapScene();
-        if (bootstrapScene.IsValid() && bootstrapScene.isLoaded)
-        {
-            SceneManager.MoveGameObjectToScene(go, bootstrapScene);
-        }
-    }
 
     private IObjectPool<ParticleSystem> GetOrCreatePool(ParticleSystem prefab)
     {
@@ -88,8 +78,7 @@ public sealed class FxService : IGameService
             pool = new ObjectPool<ParticleSystem>(
                 createFunc: () =>
                 {
-                    var instance = Object.Instantiate(prefab);
-                    MoveToBootstrapScene(instance.gameObject);
+                    var instance = Object.Instantiate(prefab, m_vfxRoot.transform);
                     return instance;
                 },
                 actionOnGet: ps => { if (ps) ps.gameObject.SetActive(true); },
@@ -98,7 +87,7 @@ public sealed class FxService : IGameService
                     if (ps) 
                     {
                         ps.gameObject.SetActive(false);
-                        MoveToBootstrapScene(ps.gameObject);
+                        ps.transform.SetParent(m_vfxRoot.transform);
                     } 
                 },
                 actionOnDestroy: ps => { if (ps) Object.Destroy(ps.gameObject); },
@@ -148,7 +137,7 @@ public sealed class FxService : IGameService
         {
             await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: linkedCts.Token);
             
-            MoveToBootstrapScene(ps.gameObject);
+            ps.transform.SetParent(m_vfxRoot.transform);
             
             await UniTask.Delay(TimeSpan.FromSeconds(ps.main.startLifetime.constantMax), cancellationToken: linkedCts.Token);
         }
@@ -169,8 +158,7 @@ public sealed class FxService : IGameService
         ParticleSystem ps = pool.Get();
         if (ps == null) return;
 
-        MoveToBootstrapScene(ps.gameObject);
-
+        ps.transform.SetParent(m_vfxRoot.transform);
         ps.transform.position = targetTransform.position;
         ps.transform.rotation = targetTransform.rotation;
         ps.transform.localScale = Vector3.one;
@@ -209,7 +197,7 @@ public sealed class FxService : IGameService
         {
             if (!isCancelledExternally)
             {
-                MoveToBootstrapScene(ps.gameObject);
+                ps.transform.SetParent(m_vfxRoot.transform);
             }
             GetOrCreatePool(effectPrefab).Release(ps);
         }
