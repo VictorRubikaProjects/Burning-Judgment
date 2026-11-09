@@ -1,0 +1,246 @@
+using Event_Bus;
+using UnityEngine;
+
+public abstract class EnemyBase : Actor, IStrikeable
+{
+    #region Variables
+
+    [field: SerializeField] public Rigidbody Rigidbody { get; protected set; }
+    [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
+    [field: SerializeField] public Transform FeetTransform { get; protected set; }
+    [field: SerializeField] public Collider ColliderEnemy { get; protected set; }
+
+    public enum PositionNeed { None, Approach, Retreat, Reposition }
+    
+    public abstract SO_ConfigEnemy StatsBase { get; }
+    
+    public SteeringComponent Steering { get; private set; }
+
+    protected StateMachine m_stateMachine;
+
+    protected bool m_hitRequested;
+    private bool m_chaseRequested;
+    private bool m_fleeRequested;
+    private bool m_repositionRequested;
+    protected bool m_attackRequested;
+    
+    public bool RepositionRequested => m_repositionRequested;
+    public bool HitRequested => m_hitRequested;
+    public bool ChaseRequested => m_chaseRequested;
+    public bool FleeRequested => m_fleeRequested;
+
+    public Vector3 PendingKnockbackDirection { get; private set; }
+    public float PendingKnockbackForce { get; private set; }
+
+    public PlayerCharacter Player { get; private set; }
+
+    public HitGateComponent HitGate { get; private set; }
+    public KnockbackComponent KnockBack { get; private set; }
+    public GroundCheckComponent GroundCheck { get; private set; }
+
+    private EventBinding<ActorPushedEvent> m_eventBindingPushActor;
+
+    #endregion
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        //ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.5f);
+
+        Stability = StatsBase.Stability;
+        
+        GroundCheck = new GroundCheckComponent(
+            this,
+            transform,
+            StatsBase.GroundLayer,
+            StatsBase.GroundCheckHeight,
+            StatsBase.GroundCheckDistance);
+
+        Steering = new SteeringComponent(this, Rigidbody, ColliderEnemy,StatsBase.ObstacleLayer, GroundCheck);
+        KnockBack = new KnockbackComponent(this, Rigidbody);
+        HitGate = new HitGateComponent(this, StatsBase.InvincibilityDuration);
+
+        SetupStateMachine();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        AddActorComponent(GroundCheck);
+        AddActorComponent(KnockBack);
+        AddActorComponent(HitGate);
+        AddActorComponent(Steering);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        m_stateMachine.Update();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        m_stateMachine.FixedUpdate();
+    }
+
+    private void OnEnable()
+    {
+        m_eventBindingPushActor = new EventBinding<ActorPushedEvent>(OnActorPushed);
+        EventBus<ActorPushedEvent>.Register(m_eventBindingPushActor);
+    }
+
+    private void OnDisable()
+    {
+        EventBus<ActorPushedEvent>.Unregister(m_eventBindingPushActor);
+    }
+
+    public override void Kill()
+    {
+        base.Kill();
+
+        if (m_isDead) return;
+        
+        m_isDead = true;
+        
+        //ServiceLocator.Get<CameraService>().RemoveTarget(TransformCache);
+        
+        EventBus<EnemyDiedEvent>.Raise(new EnemyDiedEvent(this));
+        
+        Destroy(gameObject);
+    }
+
+    #region StateMachine
+
+    protected void At(IState from, IState to, IPredictate condition) => m_stateMachine.AddTransition(from, to, condition);
+    protected void Any(IState to, IPredictate condition) => m_stateMachine.AddAnyTransition(to, condition);
+
+    private void SetupStateMachine()
+    {
+        m_stateMachine = new StateMachine();
+        IState state = SetupStates();
+        SetupTransitions();
+        m_stateMachine.SetState(state);
+    }
+
+    protected abstract IState SetupStates();
+    protected virtual void SetupTransitions() { }
+
+    public void SetupPlayerRef(PlayerCharacter player) => Player = player;
+
+    #endregion
+
+    public void LookAtPlayer()
+    {
+        Vector3 direction = Player.TransformCache.position - TransformCache.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.0001f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        TransformCache.rotation = Quaternion.RotateTowards(
+            TransformCache.rotation,
+            targetRotation,
+            StatsBase.RotationSpeed * Time.deltaTime);
+    }
+
+    public void RequestHit() => m_hitRequested = true;
+    public void ConsumeHitRequest() => m_hitRequested = false;
+
+    public void RequestChase() => m_chaseRequested = true;
+    public void ConsumeChaseRequest() => m_chaseRequested = false;
+
+    public void RequestFlee() => m_fleeRequested = true;
+    public void ConsumeFleeRequest() => m_fleeRequested = false;
+    
+    public void RequestReposition() => m_repositionRequested = true;
+    public void ConsumeRepositionRequest() => m_repositionRequested = false;
+    public void RequestAttack() => m_attackRequested = true;
+    public void ConsumeAttackRequest() => m_attackRequested = false;
+    
+    public Transform TargetTransform => TransformCache;
+    public bool CanBeStruck => m_stateMachine.GetCurrentState() is not (EnemyHitState or EnemyFallState) && HitGate.CanTakeDamage();
+    public float ComfortDistance => (StatsBase.DistanceMin + StatsBase.DistanceMax) * 0.5f;
+    
+    public bool IsPlayerInSight() => HasSightFrom(TransformCache.position);
+
+    public bool HasSightFrom(Vector3 position)
+    {
+        if (!Player) return false;
+
+        Vector3 offset = Vector3.up * StatsBase.SightHeight;
+        Vector3 origin = position + offset;
+        Vector3 target = Player.TransformCache.position + offset;
+
+        return !Physics.Linecast(origin, target, StatsBase.ObstacleLayer, QueryTriggerInteraction.Ignore);
+    }
+
+    public PositionNeed EvaluatePositionNeed()
+    {
+        float distance = Vector3.Distance(TransformCache.position, Player.TransformCache.position);
+
+        if (distance < StatsBase.DistanceMin) return PositionNeed.Retreat;
+        if (distance > StatsBase.DistanceMax) return PositionNeed.Approach;
+        if (!IsPlayerInSight()) return PositionNeed.Reposition;
+
+        return PositionNeed.None;
+    }
+    
+    protected void OnActorPushed(ActorPushedEvent e)
+    {
+        if (e.Target != this) return;
+        
+        if (m_stateMachine.GetCurrentState() is EnemyHitState || !HitGate.CanTakeDamage()) return;
+
+        Vector3 pushDirection = TransformCache.position - e.SourcePosition;
+        pushDirection.y = 0f;
+
+        if (pushDirection.sqrMagnitude < 0.0001f)
+        {
+            pushDirection = e.Direction;
+        }
+        else
+        {
+            pushDirection.Normalize();
+        }
+
+        ApplyPush(pushDirection, e.Force, e.Destabilization);
+    }
+
+    public virtual StrikeResult OnStruck(in StrikeContext context)
+    {
+        if (!CanBeStruck) return StrikeResult.Ignored;
+
+        Vector3 strikeDirection = TransformCache.position - context.Position;
+        strikeDirection.y = 0f;
+
+        if (strikeDirection.sqrMagnitude < 0.0001f)
+        {
+            strikeDirection = context.Direction;
+        }
+        else
+        {
+            strikeDirection.Normalize();
+        }
+
+        ApplyPush(strikeDirection, context.Force, context.Destabilization);
+        return new StrikeResult(accepted: true, cancelsDash: true, allowsChain: true);
+    }
+
+    private void ApplyPush(Vector3 direction, float force, float destabilization)
+    {
+        PendingKnockbackDirection = direction;
+        
+        PendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(
+            force,
+            StatsBase.Weight,
+            StatsBase.DefaultScaling,
+            Stability);
+        
+        Stability = KnockbackUtility.CalculateNewStability(destabilization, force, StatsBase.Weight, Stability);
+        
+        RequestHit();
+        DamagePopUp.Show(PendingKnockbackForce, TransformCache.position);
+    }
+}

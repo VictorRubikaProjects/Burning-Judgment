@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89161a0b61d2e0a4ead9604ce9e6ffb0, type: 3}
+  m_Name: SO_ConfigVfx
+  m_EditorClassIdentifier: Project.Runtime::SO_ConfigVfx
+  <VfxPrefabEjection>k__BackingField: {fileID: 6632970447897807731, guid: c1479855215624c4aaa191d5b980dd99, type: 3}
+  <VfxPrefabChainInputSuccess>k__BackingField: {fileID: 8299483044362581044, guid: 6a5bf1ecf4d152843b77c52e17dbff40, type: 3}
+  <VfxPrefabDash>k__BackingField: {fileID: 9149213220067885641, guid: 37f6fb6e6e30b6640902fba7bfdc6fdc, type: 3}
+  <VfxPrefabAttackPlayer>k__BackingField: {fileID: 1064298706896255859, guid: 74373cab77cd9eb4fb120a4b796f5658, type: 3}

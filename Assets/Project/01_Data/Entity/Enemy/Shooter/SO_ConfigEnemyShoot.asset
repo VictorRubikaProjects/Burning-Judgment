@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7169e92f0cb91504a97284f6a054bb1c, type: 3}
+  m_Name: SO_ConfigEnemyShoot
+  m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyShoot
+  <Weight>k__BackingField: 10
+  <PushForce>k__BackingField: 30
+  <DefaultScaling>k__BackingField: 0.5
+  <BadScaling>k__BackingField: 0.25
+  <Stability>k__BackingField: 1
+  <Destabilization>k__BackingField: 0.33
+  <ObstacleLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 832
+  <HitDuration>k__BackingField: 0.3
+  <HitKnockbackCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <InvincibilityDuration>k__BackingField: 0.5
+  <GroundLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 55
+  <GroundCheckHeight>k__BackingField: 0
+  <GroundCheckDistance>k__BackingField: 1.5
+  <DeathDelay>k__BackingField: 1.5
+  <Speed>k__BackingField: 15
+  <RotationSpeed>k__BackingField: 300
+  <DistanceMin>k__BackingField: 6
+  <DistanceMax>k__BackingField: 16
+  <HitRadius>k__BackingField: 1
+  <EnemyLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <SightHeight>k__BackingField: 0.5
+  <ProjectilePrefab>k__BackingField: {fileID: 6366994832525994504, guid: 287af6b2d5b85114682499fe4cdd77d5, type: 3}
+  <FrequencyShoot>k__BackingField: 1

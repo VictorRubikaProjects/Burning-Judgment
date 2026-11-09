@@ -1,0 +1,158 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8401e282e98f5524a827435e8b640da9, type: 3}
+  m_Name: ConfigStatsPlayer
+  m_EditorClassIdentifier: Project.Data::ConfigStatsPlayer
+  <Weight>k__BackingField: 60
+  <PushForce>k__BackingField: 100
+  <DefaultScaling>k__BackingField: 0.5
+  <BadScaling>k__BackingField: 1
+  <Stability>k__BackingField: 1
+  <Destabilization>k__BackingField: 0.12
+  <ObstacleLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 768
+  <HitDuration>k__BackingField: 0.3
+  <HitKnockbackCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <InvincibilityDuration>k__BackingField: 0.5
+  <GroundLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 55
+  <GroundCheckHeight>k__BackingField: 0
+  <GroundCheckDistance>k__BackingField: 1.5
+  <DeathDelay>k__BackingField: 1.5
+  <MaxRollDistance>k__BackingField: 4
+  <RollDuration>k__BackingField: 0.25
+  <RollCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <RollStrikeRadius>k__BackingField: 0.75
+  <RollStrikeLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <DashDistance>k__BackingField: 10
+  <DashDuration>k__BackingField: 0.35
+  <DashCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <DashStrikeRadius>k__BackingField: 0.75
+  <DashStrikeLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 320
+  <MinChargeRatio>k__BackingField: 0
+  <MinStickMagnitude>k__BackingField: 0.3
+  <InvertStickDirection>k__BackingField: 0
+  <MinSwipeDistance>k__BackingField: 50
+  <MaxSwipeDistance>k__BackingField: 200
+  <MaxSwipeDuration>k__BackingField: 0
+  <SlowMotionTargetDilation>k__BackingField: 1
+  <SlowMotionEnterDuration>k__BackingField: 0.5
+  <SlowMotionExitDuration>k__BackingField: 0.5
+  <IdleAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 1
+  <RollAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 8
+  <DashAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 8
+  <FallAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 1
+  <HitAnimation>k__BackingField:
+    CrossFadeDuration: 0.05
+    Speed: 1
+  <DeathAnimation>k__BackingField:
+    CrossFadeDuration: 0.1
+    Speed: 1
+  <ChainThreshold>k__BackingField: 0.75
+  <ChainBonusPercent>k__BackingField: 0.25
+  <HitEvent>k__BackingField:
+    Guid:
+      Data1: -614538973
+      Data2: 1100481243
+      Data3: -1331975033
+      Data4: -799232545
+    Path: event:/GamePlay/Player/Hit_Sfx
+  <DashEvent>k__BackingField:
+    Guid:
+      Data1: 1342469454
+      Data2: 1152851515
+      Data3: -970574174
+      Data4: 231883612
+    Path: event:/GamePlay/Player/Dash_Sfx

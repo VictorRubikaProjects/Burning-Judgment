@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81817a730b3a424b87b8ea65ee30b550, type: 3}
+  m_Name: SO_ConfigEnemyDash
+  m_EditorClassIdentifier: Project.Runtime::SO_ConfigEnemyDash
+  <Weight>k__BackingField: 40
+  <PushForce>k__BackingField: 60
+  <DefaultScaling>k__BackingField: 1
+  <BadScaling>k__BackingField: 2
+  <Stability>k__BackingField: 1
+  <Destabilization>k__BackingField: 0.33
+  <ObstacleLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 832
+  <HitDuration>k__BackingField: 0.35
+  <HitKnockbackCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <InvincibilityDuration>k__BackingField: 0.5
+  <GroundLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 55
+  <GroundCheckHeight>k__BackingField: 0
+  <GroundCheckDistance>k__BackingField: 1.5
+  <DeathDelay>k__BackingField: 1.5
+  <Speed>k__BackingField: 4.5
+  <RotationSpeed>k__BackingField: 1800
+  <DistanceMin>k__BackingField: 4
+  <DistanceMax>k__BackingField: 8
+  <HitRadius>k__BackingField: 1
+  <EnemyLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <SightHeight>k__BackingField: 0.5
+  <LockTime>k__BackingField: 0.5
+  <LockToDashDelay>k__BackingField: 1.5
+  <DashDistance>k__BackingField: 8
+  <DashDuration>k__BackingField: 0.65
+  <DashCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <DashCooldown>k__BackingField: 5
+  <PlayerLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 128
+  <StrikeRadius>k__BackingField: 1
+  <StrikeForwardOffset>k__BackingField: 0.5

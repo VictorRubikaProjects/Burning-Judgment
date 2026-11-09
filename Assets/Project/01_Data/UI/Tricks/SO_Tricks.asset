@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e118c019703a54e843271be28eb51e, type: 3}
+  m_Name: SO_Tricks
+  m_EditorClassIdentifier: Project.Runtime::SO_Tricks
+  tricksList:
+  - "La r\xE8gle d'or des proportions : Visez g\xE9n\xE9ralement un ratio de 50 %
+    de viande maigre, 30 % de viande mi-grasse (comme l'\xE9chine) et 20 % de gras
+    pur (gorge ou lard) pour \xE9viter un p\xE2t\xE9 trop sec."
+  - "Le choix du foie : Utilisez du foie de porc ou de volaille pour l'onctuosit\xE9,
+    mais ne d\xE9passez pas 20 \xE0 25 % de la masse totale pour \xE9viter une amertume
+    trop prononc\xE9e."
+  - "Le parage m\xE9ticuleux : Retirez soigneusement les nerfs, les cartilages et
+    les tendons de vos viandes avant le hachage pour une texture agr\xE9able en bouche."
+  - "La temp\xE9rature de la viande : Placez vos viandes et votre hachoir au cong\xE9lateur
+    pendant 30 minutes avant de hacher ; le gras ne doit pas fondre sous l'effet
+    de la chaleur des lames."
+  - "Le test de cuisson de la farce : Faites po\xEAler une petite boulette de votre
+    farce crue avant d'embosser ou de cuire pour rectifier l'assaisonnement en sel
+    et en \xE9pices."
+  - "Le salage pr\xE9cis : Comptez en moyenne entre 15 et 18 grammes de sel par kilo
+    de mati\xE8re premi\xE8re pour un assaisonnement \xE9quilibr\xE9."
+  - "L'harmonie des \xE9pices : Le quatre-\xE9pices, le poivre blanc et une pointe
+    de muscade sont les alli\xE9s incontournables de la charcuterie fran\xE7aise
+    traditionnelle."
+  - "Le r\xF4le de l'alcool : Incorporez un alcool fort (cognac, armagnac, porto
+    ou vin blanc sec) : il sert \xE0 la fois de exhausteur de go\xFBt et de conservateur
+    naturel."
+  - "L'utilisation d'un liant : Ajoutez un \u0153uf ou un peu de f\xE9cule/lait en
+    poudre si votre m\xE9lange manque de liant, surtout si vos viandes sont tr\xE8s
+    maigres."
+  - "Le repos de la masse : Laissez reposer votre farce assaisonn\xE9e au r\xE9frig\xE9rateur
+    pendant 12 \xE0 24 heures (le \xAB fre\u015Bange \xBB) pour que les aromates
+    comp\xE9n\xE8trent les fibres de viande."
+  - "Le chemisage au lard : Tapissez le fond et les bords de votre terrine avec de
+    fines tranches de lard blanc ou de poitrine fum\xE9e pour prot\xE9ger la viande
+    du dess\xE8chement."
+  - "La protection de la cr\xE9pine : Si vous utilisez une cr\xE9pine de porc, rincez-la
+    abondamment \xE0 l'eau vinaigr\xE9e froide pour enlever les impuret\xE9s et l'assouplir."
+  - "Chasser les poches d'air : Tassez fermement votre farce par couches successives
+    dans la terrine en tapant cette derni\xE8re sur le plan de travail pour \xE9liminer
+    l'air emprisonn\xE9."
+  - "Le scellage de la terrine : Si votre terrine n'a pas de couvercle herm\xE9tique,
+    r\xE9alisez une lueur de p\xE2te (farine et eau) pour souder le couvercle de
+    fortune et retenir les ar\xF4mes."
+  - "La chemin\xE9e indispensable : Pr\xE9voyez toujours un petit trou au centre
+    du couvercle (ou de la cro\xFBte) et ins\xE9rez-y un tube en papier d'aluminium
+    pour laisser s'\xE9chapper la vapeur."
+  - "Le bain-marie obligatoire : Cuisez toujours votre terrine au bain-marie dans
+    un four pr\xE9chauff\xE9 pour garantir une chaleur douce et homog\xE8ne qui \xE9vite
+    de durcir les prot\xE9ines."
+  - "L'eau du bain-marie : Remplissez le bain-marie avec de l'eau d\xE9j\xE0 chaude
+    (fr\xE9missante) pour ne pas casser la temp\xE9rature de d\xE9part du four."
+  - "La temp\xE9rature \xE0 c\u0153ur id\xE9ale : Utilisez une sonde de cuisson ;
+    le p\xE2t\xE9 est cuit lorsque la temp\xE9rature \xE0 c\u0153ur atteint entre
+    72 \xB0C et 75 \xB0C."
+  - "G\xE9rer le foisonnement du gras : Si le p\xE2t\xE9 bout trop fort dans son
+    bain-marie, le gras va se s\xE9parer de la g\xE9latine. Maintenez le four autour
+    de 150 \xB0C - 160 \xB0C max."
+  - "Le choc thermique invers\xE9 : Ne d\xE9moulez jamais un p\xE2t\xE9 chaud. Laissez-le
+    revenir \xE0 temp\xE9rature ambiante avant de le placer au frais."

@@ -1,0 +1,23 @@
+using Event_Bus;
+using UnityEngine;
+
+public class ProjectileEnemyClassic : AbstractProjectile
+{
+    protected override bool TryHandleHit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return false;
+        
+        Actor playerActor = other.GetComponent<Actor>();
+        
+        if (playerActor == null) return false;
+        
+        EventBus<ActorPushedEvent>.Raise(new ActorPushedEvent(
+            playerActor,
+            transform.forward,
+            m_owner.Stats.PushForce,
+            m_owner.Stats.Destabilization,
+            transform.position));
+        
+        return true;
+    }
+}
