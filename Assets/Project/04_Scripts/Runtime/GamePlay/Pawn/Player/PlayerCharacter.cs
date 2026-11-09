@@ -267,7 +267,7 @@ public class PlayerCharacter : Actor
 
     private void HandleChainSuccess()
     {
-        ServiceLocator.Get<FxService>().PlayChainSuccessEffect(TransformCache, 1.5f);
+        //success chain feedback
     }
 
     #endregion

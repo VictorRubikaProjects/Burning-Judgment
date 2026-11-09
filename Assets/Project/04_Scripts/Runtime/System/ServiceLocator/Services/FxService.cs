@@ -203,7 +203,5 @@ public sealed class FxService : IGameService
     public void PlayDashEffect(Transform targetTransform, float duration)
         => PlayEffect(m_configVfx.VfxPrefabDash, targetTransform, duration);
     
-    public void PlayChainSuccessEffect(Transform targetTransform, float duration) 
-        => PlayEffectAtTargetPosition(m_configVfx.VfxPrefabChainInputSuccess, targetTransform, duration);
     #endregion
 }
