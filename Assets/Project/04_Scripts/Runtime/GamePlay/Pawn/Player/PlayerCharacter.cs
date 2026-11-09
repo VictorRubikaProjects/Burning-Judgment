@@ -100,7 +100,6 @@ public class PlayerCharacter : Actor
         Input.OnChargeEnd += HandleChargeEnd;
         Input.OnChargeStarted += HandleChargeStarted;
         Input.OnSwipe += HandleSwipe;
-        Chain.OnChainInputSuccess += HandleChainSuccess;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(HandleActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
@@ -113,7 +112,6 @@ public class PlayerCharacter : Actor
         Input.OnChargeEnd -= HandleChargeEnd;
         Input.OnChargeStarted -= HandleChargeStarted;
         Input.OnSwipe -= HandleSwipe;
-        Chain.OnChainInputSuccess -= HandleChainSuccess;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
@@ -164,7 +162,7 @@ public class PlayerCharacter : Actor
         Input = new PlayerInputComponent(this, ActiveStats, joystickRectT, TimeController);
         Controller = new PlayerControllerComponent(this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(this, playerMaterial, playerRenderer, ActiveStats, icyPanel);
-        Chain = new PlayerChainComponent(this, ActiveStats, Input);
+        Chain = new PlayerChainComponent(this, ActiveStats);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
     }
 

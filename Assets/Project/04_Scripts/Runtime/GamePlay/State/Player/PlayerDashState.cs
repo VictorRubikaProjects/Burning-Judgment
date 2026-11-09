@@ -10,7 +10,6 @@ public class PlayerDashState : PlayerBaseState
     private readonly FxService m_fxService;
 
     private CancellationTokenSource m_ctsDash;
-    private bool m_chainStruck;
 
     public bool IsFinished { get; private set; }
     public bool HasHit { get; private set; }
@@ -27,14 +26,12 @@ public class PlayerDashState : PlayerBaseState
     {
         IsFinished = false;
         HasHit = false;
-        m_chainStruck = false;
 
         PlayAnimation(DashHash);
         
         m_fxService.PlayDashEffect(m_owner.TransformCache,0.4f);
         
         m_owner.ConsumeDashRequest();
-        m_owner.Chain.OnDashStarted();
 
         m_ctsDash = new CancellationTokenSource();
         
@@ -49,8 +46,6 @@ public class PlayerDashState : PlayerBaseState
         m_ctsDash = null;
 
         m_owner.ResetDashDistance();
-
-        if (!m_chainStruck) m_owner.Chain.Reset();
     }
 
     public override void FixedUpdate()
@@ -96,11 +91,7 @@ public class PlayerDashState : PlayerBaseState
         
         m_fxService.PlayerAttackPlayerEffect(m_owner.TransformCache, 0.5f);
 
-        if (result.AllowsChain)
-        {
-            m_chainStruck = true;
-            m_owner.Chain.OpenWindow();
-        }
+        if (result.AllowsChain) m_owner.Chain.IncrementChain();
 
         m_cameraService.Shake();
         m_fxService.HitStop();
