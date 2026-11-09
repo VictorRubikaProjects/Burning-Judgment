@@ -17,7 +17,7 @@ public class HudManager : MonoBehaviour
     [SerializeField] private TMP_Text levelIndicator;
 
     [Header("Sound")] 
-    [SerializeField] private SO_AudioUI audioUI;
+    [SerializeField] private SO_AudioBankUI audioUI;
     
     private OptionController m_optionController;
     

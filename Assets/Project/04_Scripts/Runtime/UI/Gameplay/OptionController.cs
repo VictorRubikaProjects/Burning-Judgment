@@ -24,9 +24,9 @@ public class OptionController
     private SaveService m_saveService;
     
     [Header("Sound")] 
-    private SO_AudioUI m_audioUI;
+    private SO_AudioBankUI m_audioUI;
 
-    public OptionController(SO_AudioUI audioUI, Button[] optionButtons, CanvasGroup optionPanel,Slider sliderMaster,Slider sliderSfx,Slider sliderMusic, bool pauseTime = true, float startingAlpha = 0)
+    public OptionController(SO_AudioBankUI audioUI, Button[] optionButtons, CanvasGroup optionPanel,Slider sliderMaster,Slider sliderSfx,Slider sliderMusic, bool pauseTime = true, float startingAlpha = 0)
     {
         m_audioUI = audioUI;
         

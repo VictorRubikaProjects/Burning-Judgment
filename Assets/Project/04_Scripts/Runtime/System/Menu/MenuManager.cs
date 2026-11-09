@@ -34,7 +34,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Ease slideEase = Ease.OutCubic;
     
     [Header("Sound")] 
-    [SerializeField] private SO_AudioUI audioUI;
+    [SerializeField] private SO_AudioBankUI audioUI;
     
     private SceneService m_sceneService;
     private AudioService m_audioService;
