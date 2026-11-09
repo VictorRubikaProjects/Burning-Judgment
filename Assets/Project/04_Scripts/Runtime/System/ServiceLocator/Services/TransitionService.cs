@@ -26,10 +26,17 @@ public class TransitionService : IGameService
     private const float m_floorHoldDuration = 1.5f;
     private const float m_floorFadeDuration = 0.3f;
 
+    private readonly AudioService m_audioService;
+    
     #endregion
 
     #region IGameService Core
 
+    public TransitionService(AudioService audioService)
+    {
+        m_audioService = audioService;
+    }
+    
     public bool IsInitialized { get; set; }
 
     public void Dispose()
@@ -128,6 +135,8 @@ public class TransitionService : IGameService
         await UniTask.Delay(TimeSpan.FromSeconds(1f));
         
         await Tween.LocalRotation(m_floorLabelText.rectTransform, new TweenSettings<Vector3>(new Vector3(0,180,0),0.2f));
+        
+        m_audioService.PlaySfx(m_audioService.Bank.RoundStartEvent);
         
         m_floorLabelText.text = floor.ToString();
         

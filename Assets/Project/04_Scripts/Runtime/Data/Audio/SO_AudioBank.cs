@@ -32,4 +32,7 @@ public class SO_AudioBank : ScriptableObject
     [field: SerializeField] public EventReference RoundWonEvent { get; private set; }
     [field: SerializeField] public EventReference StartGameEvent { get; private set; }
     [field: SerializeField] public EventReference RoundStartEvent { get; private set; }
+    
+    [Header("Music")]
+    [field: SerializeField] public EventReference MainMusic { get; private set; }
 }

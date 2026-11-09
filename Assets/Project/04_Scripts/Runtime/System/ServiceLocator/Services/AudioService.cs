@@ -23,6 +23,8 @@ public class AudioService : IGameService
     public AudioService(SO_AudioConfig config)
     {
         m_config = config;
+
+        StartMusic(config.AudioBank.MainMusic).Forget();
     }
 
     #region IGameService Core

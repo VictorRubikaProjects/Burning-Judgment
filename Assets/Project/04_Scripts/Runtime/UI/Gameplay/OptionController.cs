@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using FMODUnity; 
 using UnityEngine;
 using UnityEngine.UI;
 using PrimeTween;
@@ -23,11 +24,21 @@ public class OptionController
     private AudioService m_audioService;
     private SaveService m_saveService;
     
+    private float m_lastSliderSoundTime;
+    private float m_sliderSoundCooldown = 0.1f; 
 
-    public OptionController(Button[] optionButtons, CanvasGroup optionPanel,Slider sliderMaster,Slider sliderSfx,Slider sliderMusic, bool pauseTime = true, float startingAlpha = 0)
+    public OptionController(
+        Button[] optionButtons, 
+        CanvasGroup optionPanel,
+        Slider sliderMaster,
+        Slider sliderSfx,
+        Slider sliderMusic, 
+        bool pauseTime = true, 
+        float startingAlpha = 0,
+        EventReference uiButtonEvent = default,
+        EventReference uiSliderEvent = default)
     {
-        
-        m_optionButtons =  optionButtons;
+        m_optionButtons = optionButtons;
         m_optionPanel = optionPanel;
         m_pauseTime = pauseTime;
         m_optionPanel.alpha = startingAlpha;
@@ -54,6 +65,9 @@ public class OptionController
 
     private void ToggleOption()
     {
+        // Joue le son du clic de bouton UI
+        PlayButtonSound();
+
         if (m_optionTween.isAlive)
             m_optionTween.Stop();
 
@@ -83,7 +97,6 @@ public class OptionController
         if (m_pauseTime) Time.timeScale = 1;
 
         m_optionTween = Tween.Alpha(m_optionPanel, 0f, m_durationOptionTween, Ease.Linear, useUnscaledTime: true);
-        
     }
     
     private void UpdateUIFromSave()
@@ -106,6 +119,8 @@ public class OptionController
 
     private void OnMasterVolumeChanged(float value)
     {
+        PlaySliderSound(); 
+        
         if (m_saveService == null)
             return;
 
@@ -115,6 +130,8 @@ public class OptionController
 
     private void OnMusicVolumeChanged(float value)
     {
+        PlaySliderSound(); 
+
         if (m_saveService == null)
             return;
 
@@ -124,6 +141,8 @@ public class OptionController
 
     private void OnSfxVolumeChanged(float value)
     {
+        PlaySliderSound(); 
+
         if (m_saveService == null)
             return;
 
@@ -131,15 +150,24 @@ public class OptionController
         m_audioService.SetVolume(AudioService.BusEnum.SFX, value);
     }
     
+    private void PlayButtonSound() => m_audioService.PlaySfx(m_audioService.Bank.UIButtonEvent);
+
+    private void PlaySliderSound()
+    {
+        if (!(Time.unscaledTime - m_lastSliderSoundTime >= m_sliderSoundCooldown)) return;
+        
+        m_audioService.PlaySfx(m_audioService.Bank.UISliderEvent);
+        m_lastSliderSoundTime = Time.unscaledTime;
+    }
     
     private void BindUIEvents()
     {
         foreach (Button button in m_optionButtons)
             button.onClick.AddListener(ToggleOption);
         
-        m_sliderMaster.onValueChanged.AddListener(OnMasterVolumeChanged);
-        m_sliderSfx.onValueChanged.AddListener(OnSfxVolumeChanged);
-        m_sliderMusic.onValueChanged.AddListener(OnMusicVolumeChanged);
+        if (m_sliderMaster != null) m_sliderMaster.onValueChanged.AddListener(OnMasterVolumeChanged);
+        if (m_sliderSfx != null) m_sliderSfx.onValueChanged.AddListener(OnSfxVolumeChanged);
+        if (m_sliderMusic != null) m_sliderMusic.onValueChanged.AddListener(OnMusicVolumeChanged);
     }
 
     private void UnbindUIEvents()
@@ -147,9 +175,9 @@ public class OptionController
         foreach (Button button in m_optionButtons)
             button.onClick.RemoveListener(ToggleOption);
         
-        m_sliderMaster.onValueChanged.RemoveListener(OnMasterVolumeChanged);
-        m_sliderSfx.onValueChanged.RemoveListener(OnSfxVolumeChanged);
-        m_sliderMusic.onValueChanged.RemoveListener(OnMusicVolumeChanged);
+        if (m_sliderMaster != null) m_sliderMaster.onValueChanged.RemoveListener(OnMasterVolumeChanged);
+        if (m_sliderSfx != null) m_sliderSfx.onValueChanged.RemoveListener(OnSfxVolumeChanged);
+        if (m_sliderMusic != null) m_sliderMusic.onValueChanged.RemoveListener(OnMusicVolumeChanged);
     }
     
     private void SaveSettings() => m_saveService?.SaveSettings().Forget();

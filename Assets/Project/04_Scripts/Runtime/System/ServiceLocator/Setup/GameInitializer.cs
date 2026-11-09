@@ -53,7 +53,9 @@ public class GameInitializer
 
     private void CreateServices()
     {
-        m_transitionService = new TransitionService();
+        m_audioService = new AudioService(m_audioConfig);
+        
+        m_transitionService = new TransitionService(m_audioService);
         
         m_sceneService = new SceneService(m_gameConfig);
         
@@ -62,8 +64,6 @@ public class GameInitializer
         m_cameraService = new CameraService(m_gameConfig.CameraConfig);
 
         m_fxService = new FxService(m_configVfx);
-
-        m_audioService = new AudioService(m_audioConfig);
 
         m_augmentService =  new AugmentService();
         

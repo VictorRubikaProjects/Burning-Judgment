@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
@@ -32,7 +31,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private float staggerDelay = 0.1f; 
     [SerializeField] private float offScreenMargin = 50f;
     [SerializeField] private Ease slideEase = Ease.OutCubic;
-    
     
     private SceneService m_sceneService;
     private AudioService m_audioService;

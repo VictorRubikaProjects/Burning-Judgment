@@ -117,3 +117,10 @@ MonoBehaviour:
       Data3: -392022390
       Data4: 1378828722
     Path: event:/Game/RoundStartEvent
+  <MainMusic>k__BackingField:
+    Guid:
+      Data1: -1651757831
+      Data2: 1136350172
+      Data3: 1412893623
+      Data4: 1108549747
+    Path: event:/Music/MainMusic

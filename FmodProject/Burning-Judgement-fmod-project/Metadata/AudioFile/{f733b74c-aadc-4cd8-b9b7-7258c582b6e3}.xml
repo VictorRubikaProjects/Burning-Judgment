@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{2f11de06-6595-4175-9db4-8d89ab3b9cae}">
+	<object class="AudioFile" id="{f733b74c-aadc-4cd8-b9b7-7258c582b6e3}">
 		<property name="assetPath">
-			<value>Player/Player_Dash_03.mp3</value>
+			<value>Player/Player_Dash.wav</value>
 		</property>
 		<property name="frequencyInKHz">
-			<value>44.0999985</value>
+			<value>10</value>
 		</property>
 		<property name="channelCount">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>0.4179591836734694</value>
+			<value>4.6569000000000003</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{ccc40e56-597a-43ae-b5e3-791c38971c1a}</destination>

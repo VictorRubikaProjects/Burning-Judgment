@@ -77,8 +77,6 @@ public class GameService : IGameService
     public async UniTask StartFloor(bool isFirstFloor = false)
     {
         CurrentFloor++;
-        
-        m_audioService.PlaySfx(m_audioService.Bank.RoundStartEvent);
 
         UniTask taskDeloadGameplay = isFirstFloor 
             ? UniTask.CompletedTask 

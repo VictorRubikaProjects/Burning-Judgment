@@ -24,10 +24,13 @@ public class TricksController : MonoBehaviour
 
     private Tween m_fadeTween;
     private CancellationTokenSource m_cts;
+    
+    private AudioService m_audioService;
 
     private void Awake()
     {
         m_cts = new CancellationTokenSource();
+        m_audioService = ServiceLocator.Get<AudioService>();
     }
 
     private void Start()
@@ -77,6 +80,7 @@ public class TricksController : MonoBehaviour
 
         currentIndex = (currentIndex + 1) % soTricks.tricksList.Length;
         ChangeTrickWithFadeAsync().Forget();
+        m_audioService.PlaySfx(m_audioService.Bank.UIButtonEvent);
     }
 
     private void OnPreviousClicked()
@@ -86,6 +90,7 @@ public class TricksController : MonoBehaviour
 
         currentIndex = (currentIndex - 1 + soTricks.tricksList.Length) % soTricks.tricksList.Length;
         ChangeTrickWithFadeAsync().Forget();
+        m_audioService.PlaySfx(m_audioService.Bank.UIButtonEvent);
     }
 
     private async UniTaskVoid ChangeTrickWithFadeAsync()
