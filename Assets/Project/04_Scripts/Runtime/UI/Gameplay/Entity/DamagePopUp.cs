@@ -15,8 +15,28 @@ public class DamagePopUp : MonoBehaviour
     [SerializeField] private float lifeTime = 1f;
     [SerializeField] private float offsetY = 1f;
     
-    private ObjectPool<TMP_Text> m_damagePool;
+    private IObjectPool<TMP_Text> m_damagePool;
     private CameraService m_cameraService;
+
+    private struct DamagePopUpData
+    {
+        public readonly Color Color;
+        public readonly int DamageAmountNeeded;
+
+        public DamagePopUpData(Color color, int damageAmountNeeded)
+        {
+            Color = color;
+            DamageAmountNeeded = damageAmountNeeded;
+        }
+    }
+    
+    private readonly DamagePopUpData[] m_colorsDataAvailable = {
+        new (Color.lawnGreen,0),
+        new (Color.yellowNice,40),
+        new (Color.darkOrange,80),
+        new (Color.orangeRed,120),
+        new (Color.darkRed,200),
+    };
 
     private void Awake()
     {
@@ -33,11 +53,17 @@ public class DamagePopUp : MonoBehaviour
         m_cameraService = ServiceLocator.Get<CameraService>();
     }
 
-    public void Show(float damageAmount, Vector3 position)
+    public void Show(float incomingDamage, Vector3 position)
     {
         TMP_Text popupText = m_damagePool.Get();
+
+        int damage = (int)(incomingDamage * 10);
+
+        popupText.color = GetColorByDamage(damage);
+        
         popupText.transform.position = position + new Vector3(0, offsetY, 0);
-        popupText.SetText("{0}", (int)(damageAmount * 10)); //note pour plus tard SetText 0 alloc Tas
+        
+        popupText.SetText("{0}", damage); //note pour plus tard SetText 0 alloc Tas
 
         AnimateAndReleaseAsync(popupText, this.GetCancellationTokenOnDestroy()).Forget();
     }
@@ -113,5 +139,19 @@ public class DamagePopUp : MonoBehaviour
         {
             Destroy(pooledObject.gameObject);
         }
+    }
+
+    private Color GetColorByDamage(int incomingDamage)
+    {
+        int indexStart = m_colorsDataAvailable.Length - 1;
+
+        for (int i = indexStart; i >= 0; i--)
+        {
+            DamagePopUpData data = m_colorsDataAvailable[i];
+
+            if (incomingDamage >= data.DamageAmountNeeded) return data.Color;
+        }
+        
+        return Color.white;
     }
 }
