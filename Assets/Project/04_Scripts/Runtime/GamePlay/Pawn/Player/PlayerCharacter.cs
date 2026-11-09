@@ -58,7 +58,6 @@ public class PlayerCharacter : Actor
     private float m_pendingKnockbackForce;
 
     private bool m_wantsDash;
-    private bool m_wantsRoll;
     private bool m_hitRequested;
 
     private PlayerIdleState m_playerIdleState;
@@ -66,7 +65,6 @@ public class PlayerCharacter : Actor
     private PlayerDashState m_playerDashState;
     private PlayerHitState m_playerHitState;
     private PlayerFallState m_playerFallState;
-    private PlayerRollState m_playerRollState;
 
     private EventBinding<ActorPushedEvent> m_playerPushedBinding;
     private SO_PlayerStats m_runtimeStats;
@@ -97,7 +95,6 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease += HandleJoystickRelease;
         Input.OnChargeUpdate += HandleChargeUpdate;
         Input.OnChargeEnd += HandleChargeEnd;
-        Input.OnSwipe += HandleSwipe;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(HandleActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
@@ -108,7 +105,6 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease -= HandleJoystickRelease;
         Input.OnChargeUpdate -= HandleChargeUpdate;
         Input.OnChargeEnd -= HandleChargeEnd;
-        Input.OnSwipe -= HandleSwipe;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
@@ -183,12 +179,9 @@ public class PlayerCharacter : Actor
         m_playerDeathState = new PlayerDeathState(this, animator, ActiveStats);
         m_playerHitState = new PlayerHitState(this, animator, ActiveStats);
         m_playerFallState = new PlayerFallState(this, animator, ActiveStats, rb);
-        m_playerRollState = new PlayerRollState(this, animator, ActiveStats);
 
         m_stateMachine.AddTransition(m_playerIdleState, m_playerDashState, new FuncPredicate(() => m_wantsDash));
-        m_stateMachine.AddTransition(m_playerIdleState, m_playerRollState, new FuncPredicate(() => m_wantsRoll));
         m_stateMachine.AddTransition(m_playerDashState, m_playerIdleState, new FuncPredicate(() => m_playerDashState.IsFinished));
-        m_stateMachine.AddTransition(m_playerRollState, m_playerIdleState, new FuncPredicate(() => m_playerRollState.IsFinished));
         m_stateMachine.AddTransition(m_playerHitState, m_playerIdleState, new FuncPredicate(() => m_playerHitState.IsFinished));
 
         m_stateMachine.AddAnyTransition(m_playerDeathState, new FuncPredicate(() => m_isDead));
@@ -207,10 +200,19 @@ public class PlayerCharacter : Actor
         if (!CanAct()) return;
 
         Vector3 moveDir = ToWorldDirection(in dir);
+        
         float distance = ComputeDashDistance(ratio);
+        
         m_currentDashContext = new DashContext(in moveDir, distance);
 
-        RequestDash();
+        if (m_stateMachine.GetCurrentState() is PlayerDashState dashState)
+        {
+            dashState.UpdateDashParameters(moveDir, distance);
+        }
+        else
+        {
+            RequestDash();
+        }
     }
 
     private void HandleChargeUpdate(Vector2 dir, float ratio)
@@ -237,20 +239,6 @@ public class PlayerCharacter : Actor
 
     private void HandleChargeEnd() => DashIndicator.Hide();
 
-    private void HandleSwipe(Vector2 dir, float ratio)
-    {
-        if (!CanAct() || dir == Vector2.zero) return;
-
-        Vector3 moveDir = ToWorldDirection(in dir);
-        m_currentDashContext = new DashContext(in moveDir, ActiveStats.DashDistance);
-        RequestRoll();
-    }
-
-    private void HandleChainSuccess()
-    {
-        ServiceLocator.Get<FxService>().PlayChainSuccessEffect(TransformCache, 1.5f);
-    }
-
     #endregion
 
     #region Event Bus Handlers
@@ -274,10 +262,6 @@ public class PlayerCharacter : Actor
 
     public void RequestDash() => m_wantsDash = true;
     public void ConsumeDashRequest() => m_wantsDash = false;
-
-    public void RequestRoll() => m_wantsRoll = true;
-    public void ConsumeRollRequest() => m_wantsRoll = false;
-
     public void RequestHit() => m_hitRequested = true;
     public void ConsumeHitRequest() => m_hitRequested = false;
 
@@ -295,7 +279,7 @@ public class PlayerCharacter : Actor
 
     #region Pure Utilities
 
-    private bool CanAct() => m_stateMachine.GetCurrentState() is PlayerIdleState;
+    private bool CanAct() => m_stateMachine.GetCurrentState() is not (PlayerHitState or PlayerFallState or PlayerDeathState);
 
     private float ComputeDashDistance(float ratio) => ActiveStats.DashDistance * Mathf.Clamp01(ratio);
 

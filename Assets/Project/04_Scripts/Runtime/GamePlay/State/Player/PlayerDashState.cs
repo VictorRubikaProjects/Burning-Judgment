@@ -59,19 +59,14 @@ public class PlayerDashState : PlayerBaseState
         m_audioService.PlaySfx(m_stats.DashEvent);
 
         float durationDash = Mathf.Clamp01(m_owner.DashDistance / m_stats.DashDistance) * m_stats.DashDuration;
-        
+
         try
         {
-            await m_owner.Dash.RollAsync(
-                direction,
-                token,
-                durationDash,
-                m_owner.DashDistance,
-                m_stats.DashCurve,
-                m_stats.ObstacleLayer);
+            await m_owner.Dash.RollAsync(direction, token, durationDash, m_owner.DashDistance, m_stats.DashCurve, m_stats.ObstacleLayer);
         }
         catch (OperationCanceledException)
         {
+            return;
         }
 
         IsFinished = true;
@@ -99,6 +94,22 @@ public class PlayerDashState : PlayerBaseState
         m_fxService.HitStop();
         m_audioService.PlaySfx(m_stats.HitEvent);
 
-        if (result.CancelsDash) m_ctsDash?.Cancel();
+        if (result.CancelsDash)
+        {
+            m_ctsDash?.Cancel();
+            IsFinished = true;
+        }
+    }
+    
+    public void UpdateDashParameters(Vector3 newDirection, float newDistance)
+    {
+        IsFinished = false;
+        PlayAnimation(DashHash);
+
+        m_ctsDash?.Cancel();
+        m_ctsDash?.Dispose();
+        m_ctsDash = new CancellationTokenSource();
+
+        RunDashAsync(newDirection, m_ctsDash.Token).Forget();
     }
 }

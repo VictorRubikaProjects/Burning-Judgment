@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class DashComponent : ActorComponent
     private readonly Rigidbody m_rb;
     private readonly GroundCheckComponent m_groundCheck;
     private readonly Collider m_collider;
+    
+    private CancellationTokenSource m_dashCts;
 
     public bool IsDashing { get; private set; }
 
@@ -48,27 +51,25 @@ public class DashComponent : ActorComponent
         LayerMask obstacleLayer,
         MovementComponentExtension.CollisionMode mode)
     {
-        if (IsDashing) return false;
+        m_dashCts?.Cancel();
 
+        CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+        m_dashCts = cts;
         IsDashing = true;
 
         try
         {
             return await MovementComponentExtension.MoveAsync(
-                m_rb,
-                m_collider,
-                direction,
-                token,
-                duration,
-                distance,
-                curve,
-                obstacleLayer,
-                mode,
-                m_groundCheck);
+                m_rb, m_collider, direction, cts.Token, duration, distance, curve, obstacleLayer, mode, m_groundCheck);
         }
         finally
         {
-            IsDashing = false;
+            if (m_dashCts == cts)
+            {
+                IsDashing = false;
+                m_dashCts = null;
+            }
+            cts.Dispose();
         }
     }
 }

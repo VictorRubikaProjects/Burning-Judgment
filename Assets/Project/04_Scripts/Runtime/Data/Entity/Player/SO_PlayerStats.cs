@@ -7,31 +7,7 @@ public class SO_PlayerStats : SO_ActorsStats
     private const float MinGain = 0.1f;
     private const float MaxGain = 4f;
     private const float MinDuration = 0.01f;
-
-    [field: Space, Header("Roll")]
-    [field: SerializeField, Range(0f, 20f)]
-    [field: Tooltip("Distance maximale parcourue par le roll, en unités. Atteinte quand le swipe est à MaxSwipeDistance de l'origine.")]
-    public float MaxRollDistance { get; private set; } = 5f;
-
-    [field: SerializeField, Range(0.01f, 1f)]
-    [field: Tooltip("Durée du roll en secondes. Plus c'est court, plus le roll est rapide.")]
-    public float RollDuration { get; private set; } = 0.25f;
-
-    [field: SerializeField]
-    [field: Tooltip("Forme de l'accélération du roll. X : temps (0 = début, 1 = fin). Y : distance parcourue (0 = départ, 1 = arrivée).")]
-    public AnimationCurve RollCurve { get; private set; } = new(
-        new Keyframe(0f, 0f, 0f, 2f),
-        new Keyframe(1f, 1f, 0f, 0f)
-    );
-
-    [field: SerializeField, Range(0.1f, 3f)]
-    [field: Tooltip("Rayon de la zone de frappe autour du joueur pendant le roll. Plus c'est grand, plus le roll touche facilement.")]
-    public float RollStrikeRadius { get; private set; } = 0.75f;
     
-    [field: SerializeField]
-    [field: Tooltip("Layers que le roll peut frapper. Normalement les ennemis uniquement.")]
-    public LayerMask RollStrikeLayer { get; private set; }
-
     [field: Space, Header("Dash")]
     [field: SerializeField, Range(0f, 20f)]
     [field: Tooltip("Distance parcourue par le dash, en unités.")]
