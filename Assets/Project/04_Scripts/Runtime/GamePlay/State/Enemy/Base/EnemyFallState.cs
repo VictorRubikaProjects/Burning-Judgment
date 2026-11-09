@@ -14,12 +14,16 @@ public class EnemyFallState : EnemyBaseState
 
     private async UniTaskVoid FallAsync()
     {
+        if (!Owner.Rigidbody) return;
+        
         Owner.KnockBack.Cancel();
         Owner.Rigidbody.isKinematic = false;
         Owner.Rigidbody.useGravity = true;
 
         await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
 
+        if (!Owner.Rigidbody) return;
+        
         Owner.Rigidbody.linearVelocity = Vector3.zero;
         Owner.Rigidbody.angularVelocity = Vector3.zero;
     }

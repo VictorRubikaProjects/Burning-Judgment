@@ -63,7 +63,7 @@ public class GameInitializer
         
         m_cameraService = new CameraService(m_gameConfig.CameraConfig);
 
-        m_fxService = new FxService(m_configVfx);
+        m_fxService = new FxService(m_configVfx,m_gameConfig);
 
         m_augmentService =  new AugmentService();
         

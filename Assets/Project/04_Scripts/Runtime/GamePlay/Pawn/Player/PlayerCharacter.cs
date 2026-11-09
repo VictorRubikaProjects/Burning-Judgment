@@ -14,6 +14,17 @@ public class PlayerCharacter : Actor
             Distance = distance;
         }
     }
+    
+    public struct PlayerPersistentData
+    {
+        //for the moment only that but can grow
+        public float Stability;
+
+        public PlayerPersistentData(float stability)
+        {
+            Stability = stability;
+        }
+    }
 
     #region Fields & Properties
 
@@ -142,6 +153,7 @@ public class PlayerCharacter : Actor
         }
 
         m_runtimeStats = baseStats.CreateRuntimeCopy(deltas);
+        
         Stability = m_runtimeStats.Stability;
     }
 
@@ -294,6 +306,14 @@ public class PlayerCharacter : Actor
         }
         return false;
     }
+    
+    public void SetPersistentData(PlayerPersistentData data)
+    {
+        Stability = data.Stability;
+    }
+
+    public PlayerPersistentData GetPersistentData() => new(Stability);
+    public float GetRuntimeStability() => ActiveStats.Stability;
 
     #endregion
 }

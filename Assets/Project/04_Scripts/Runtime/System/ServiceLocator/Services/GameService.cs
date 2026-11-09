@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GameService : IGameService
 {
     public bool IsInitialized { get; set; }
-    public GameState CurrentState { get; private set; }
     public int CurrentFloor { get; private set; }
 
     private SceneService m_sceneService;
@@ -17,6 +16,8 @@ public class GameService : IGameService
     
     private readonly AugmentService m_augmentService;
     private readonly AudioService m_audioService;
+
+    private PlayerCharacter.PlayerPersistentData m_playerDataPersistent;
 
     public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService)
     {
@@ -64,7 +65,6 @@ public class GameService : IGameService
         
         CurrentFloor = 0;
         m_augmentService.Reset();
-        CurrentState = GameState.Playing;
 
         EventBus<RunStartedEvent>.Raise(new RunStartedEvent());
 
@@ -88,7 +88,7 @@ public class GameService : IGameService
 
         await UniTask.WhenAll(taskLoadGameplay, taskDeloadGameplay);
         
-        await SpawnPlayer();
+        await SpawnPlayer(isFirstFloor);
         
         await m_transitionService.ShowFloorAsync(CurrentFloor);
 
@@ -99,8 +99,8 @@ public class GameService : IGameService
 
     public void OnPortalTaken()
     {
+        m_playerDataPersistent = m_playerCharacter.GetPersistentData();
         EventBus<FloorCompletedEvent>.Raise(new FloorCompletedEvent(CurrentFloor));
-
         InternalPortalTransition().Forget();
     }
 
@@ -115,58 +115,42 @@ public class GameService : IGameService
 
     public void EndRun()
     {
-        CurrentState = GameState.GameOver;
-
         EventBus<RunEndedEvent>.Raise(new RunEndedEvent(CurrentFloor));
     }
+    
 
-    public void Pause()
-    {
-        if (CurrentState != GameState.Playing) return;
-        CurrentState = GameState.Paused;
-    }
-
-    public void Resume()
-    {
-        if (CurrentState != GameState.Paused) return;
-        CurrentState = GameState.Playing;
-    }
-
-    private async UniTask SpawnPlayer()
+    private async UniTask SpawnPlayer(bool isFirstFloor = false)
     {
         if (m_playerCharacter == null)
         {
             m_playerCharacter = Object.Instantiate(m_entityConfig.Player);
         }
-        
+
+        if (isFirstFloor)
+        {
+            m_playerDataPersistent = new PlayerCharacter.PlayerPersistentData(m_playerCharacter.GetRuntimeStability());
+        }
+
+        m_playerCharacter.SetPersistentData(m_playerDataPersistent);
         m_playerCharacter.SetIdle();
         m_playerCharacter.gameObject.SetActive(false);
 
         await UniTask.WaitForFixedUpdate();
-        
+
         m_playerCharacter.TransformCache.position = m_enemySystem.ConfigCurrentRound.PlayerSpawnPosition;
         m_playerCharacter.TransformCache.rotation = Quaternion.identity;
-        
+
         await UniTask.WaitForFixedUpdate();
-        
+
         m_playerCharacter.gameObject.SetActive(true);
     }
 
     public async UniTask LoadMenuFromGameplay()
     {
-        CurrentState = GameState.MainMenu;
-        
         await m_transitionService.CircleTransitionFadeIn();
         await m_sceneService.UnloadScene(SceneManager.GetActiveScene().name);
         await m_sceneService.LoadMenu();
         await m_transitionService.CircleTransitionFadeOut();
     }
-}
-
-public enum GameState
-{
-    MainMenu,
-    Playing,
-    Paused,
-    GameOver,
+    
 }

@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 public sealed class FxService : IGameService
 {
     private TimeEffect m_timeEffect;
+    
     private readonly SO_ConfigVfx m_configVfx;
+    private readonly SO_GameConfig m_gameConfig;
 
     private readonly Dictionary<ParticleSystem, IObjectPool<ParticleSystem>> m_effectPools = new();
     private readonly Dictionary<Transform, ActiveEffectData> m_activeEffects = new();
@@ -39,9 +42,10 @@ public sealed class FxService : IGameService
         m_effectPools.Clear();
     }
 
-    public FxService(SO_ConfigVfx configVfx)
+    public FxService(SO_ConfigVfx configVfx, SO_GameConfig gameConfig)
     {
         m_configVfx = configVfx;
+        m_gameConfig = gameConfig;
     }
     
     public UniTask InitializeService()
@@ -57,15 +61,46 @@ public sealed class FxService : IGameService
     #endregion
     
     public void HitStop() => m_timeEffect.HitStop().Forget();
+    
+    private Scene GetBootstrapScene()
+    {
+        string sceneName = m_gameConfig.BootStrapScene.Name; 
+        return SceneManager.GetSceneByName(sceneName);
+    }
+    
+    private void MoveToBootstrapScene(GameObject go)
+    {
+        if (go == null) return;
+
+        go.transform.SetParent(null);
+
+        var bootstrapScene = GetBootstrapScene();
+        if (bootstrapScene.IsValid() && bootstrapScene.isLoaded)
+        {
+            SceneManager.MoveGameObjectToScene(go, bootstrapScene);
+        }
+    }
 
     private IObjectPool<ParticleSystem> GetOrCreatePool(ParticleSystem prefab)
     {
         if (!m_effectPools.TryGetValue(prefab, out var pool))
         {
             pool = new ObjectPool<ParticleSystem>(
-                createFunc: () => Object.Instantiate(prefab),
+                createFunc: () =>
+                {
+                    var instance = Object.Instantiate(prefab);
+                    MoveToBootstrapScene(instance.gameObject);
+                    return instance;
+                },
                 actionOnGet: ps => { if (ps) ps.gameObject.SetActive(true); },
-                actionOnRelease: ps => { if (ps) ps.gameObject.SetActive(false); },
+                actionOnRelease: ps => 
+                { 
+                    if (ps) 
+                    {
+                        ps.gameObject.SetActive(false);
+                        MoveToBootstrapScene(ps.gameObject);
+                    } 
+                },
                 actionOnDestroy: ps => { if (ps) Object.Destroy(ps.gameObject); },
                 collectionCheck: true,
                 defaultCapacity: 5,
@@ -113,7 +148,7 @@ public sealed class FxService : IGameService
         {
             await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: linkedCts.Token);
             
-            ps.transform.SetParent(null); 
+            MoveToBootstrapScene(ps.gameObject);
             
             await UniTask.Delay(TimeSpan.FromSeconds(ps.main.startLifetime.constantMax), cancellationToken: linkedCts.Token);
         }
@@ -134,7 +169,8 @@ public sealed class FxService : IGameService
         ParticleSystem ps = pool.Get();
         if (ps == null) return;
 
-        ps.transform.SetParent(null);
+        MoveToBootstrapScene(ps.gameObject);
+
         ps.transform.position = targetTransform.position;
         ps.transform.rotation = targetTransform.rotation;
         ps.transform.localScale = Vector3.one;
@@ -173,7 +209,7 @@ public sealed class FxService : IGameService
         {
             if (!isCancelledExternally)
             {
-                ps.transform.SetParent(null);
+                MoveToBootstrapScene(ps.gameObject);
             }
             GetOrCreatePool(effectPrefab).Release(ps);
         }

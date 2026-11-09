@@ -14,6 +14,9 @@ public class PlayerFallState : PlayerBaseState
     {
         base.OnEnter();
         PlayAnimation(FallHash);
+
+        if (!m_rb) return;
+        
         m_rb.isKinematic = false;
         m_rb.useGravity = true;
     }
