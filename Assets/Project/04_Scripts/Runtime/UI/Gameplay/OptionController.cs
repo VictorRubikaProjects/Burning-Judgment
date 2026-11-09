@@ -76,8 +76,6 @@ public class OptionController
         if (m_pauseTime) Time.timeScale = 0;
 
         m_optionTween = Tween.Alpha(m_optionPanel, 1f, m_durationOptionTween, Ease.Linear, useUnscaledTime: true);
-        
-        m_audioService.PlaySfx(m_audioUI.OptionToggleFx);
     }
 
     private void CloseOptions()
@@ -88,7 +86,7 @@ public class OptionController
         if (m_pauseTime) Time.timeScale = 1;
 
         m_optionTween = Tween.Alpha(m_optionPanel, 0f, m_durationOptionTween, Ease.Linear, useUnscaledTime: true);
-        m_audioService.PlaySfx(m_audioUI.OptionToggleFx);
+        
     }
     
     private void UpdateUIFromSave()
@@ -116,7 +114,6 @@ public class OptionController
 
         m_saveService.Settings.MasterVolume = value;
         m_audioService.SetVolume(AudioService.BusEnum.MASTER, value);
-        m_audioService.PlaySfx(m_audioUI.SliderFx);
     }
 
     private void OnMusicVolumeChanged(float value)
@@ -126,7 +123,6 @@ public class OptionController
 
         m_saveService.Settings.MusicVolume = value;
         m_audioService.SetVolume(AudioService.BusEnum.MUSIC, value);
-        m_audioService.PlaySfx(m_audioUI.SliderFx);
     }
 
     private void OnSfxVolumeChanged(float value)
@@ -136,7 +132,6 @@ public class OptionController
 
         m_saveService.Settings.SfxVolume = value;
         m_audioService.SetVolume(AudioService.BusEnum.SFX, value);
-        m_audioService.PlaySfx(m_audioUI.SliderFx);
     }
     
     

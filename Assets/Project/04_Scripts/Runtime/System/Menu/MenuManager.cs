@@ -98,13 +98,11 @@ public class MenuManager : MonoBehaviour
     private void LoadGame()
     {
         SetButtonsInteractivity(false);
-        m_audioService.PlaySfx(audioUI.NewGameFx);
         ServiceLocator.Get<GameService>().StartGame().Forget();
     }
 
     private void OpenSettings()
     {
-        //m_audioService.PlaySfx(audioUI.ClickFx);
         optionCanvasGroup.alpha = 1f;
         optionCanvasGroup.interactable = true;
         optionCanvasGroup.blocksRaycasts = true;
@@ -112,13 +110,11 @@ public class MenuManager : MonoBehaviour
 
     private void OpenCredits()
     {
-        //m_audioService.PlaySfx(audioUI.ClickFx);
         SetupCreditsPanel(true, instantaneous: false);
     }
 
     private void CloseCredits()
     {
-        //m_audioService.PlaySfx(audioUI.ClickFx);
         SetupCreditsPanel(false, instantaneous: false);
     }
 
@@ -144,7 +140,6 @@ public class MenuManager : MonoBehaviour
 
     private void ExitGame()
     {
-        //m_audioService.PlaySfx(audioUI.ClickFx);
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #else

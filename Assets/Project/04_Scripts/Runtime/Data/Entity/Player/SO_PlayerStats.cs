@@ -102,13 +102,6 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Bonus de force en pourcentage ajouté par palier de chaîne. 15 = +15% de la force de base par chaîne (3 chaînes = +45%).")]
     public float ChainBonusPercent { get; private set; } = 0.25f;
     
-    
-    [field: Space, Header("Audio")]
-    [field: SerializeField, Tooltip("Son joué quand le joueur prend un coup.")]
-    public EventReference HitEvent { get; private set; }
-
-    [field: SerializeField, Tooltip("Son joué pendant le dash.")]
-    public EventReference DashEvent { get; private set; }
 
     public SO_PlayerStats CreateRuntimeCopy(in AugmentDeltas deltas)
     {

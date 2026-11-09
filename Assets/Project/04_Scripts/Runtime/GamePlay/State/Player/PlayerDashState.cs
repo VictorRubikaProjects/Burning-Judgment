@@ -56,7 +56,6 @@ public class PlayerDashState : PlayerBaseState
 
     private async UniTaskVoid RunDashAsync(Vector3 direction, CancellationToken token)
     {
-        m_audioService.PlaySfx(m_stats.DashEvent);
 
         float durationDash = Mathf.Clamp01(m_owner.DashDistance / m_stats.DashDistance) * m_stats.DashDuration;
 
@@ -92,7 +91,6 @@ public class PlayerDashState : PlayerBaseState
 
         m_cameraService.Shake();
         m_fxService.HitStop();
-        m_audioService.PlaySfx(m_stats.HitEvent);
 
         if (result.CancelsDash)
         {
