@@ -99,7 +99,7 @@ Material:
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _BaseDither: 0
-    - _Basedither: 5
+    - _Basedither: 9.17
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BottomMask: -49.2
@@ -110,6 +110,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DitherSize: 1.39
     - _Dotesize: 0
     - _DstBlend: 0
     - _DstBlendAlpha: 0
@@ -125,7 +126,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 1.4
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -136,7 +137,7 @@ Material:
     - _TopMask: -248.2
     - _VoronoiAgitation: 1
     - _VoronoiPower: 2.6
-    - _VoronoiScale: 5.24
+    - _VoronoiScale: 4.41
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
@@ -145,13 +146,13 @@ Material:
     - _test_dithyer: 5
     m_Colors:
     - _BaseColor: {r: 0.8305301, g: 1.5298012, b: 3.912719, a: 1}
-    - _BottomColor: {r: 0, g: 0.16080403, b: 0.84313726, a: 1}
+    - _BottomColor: {r: 0.14149407, g: 0.068396226, b: 0.2735849, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _NormalSpeed: {r: 0, g: -0.75, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TopColor: {r: 0, g: 1.3999254, b: 1.4142135, a: 1}
-    - _VoronoiColor: {r: 0, g: 1.0164231, b: 1.3888522, a: 1}
+    - _TopColor: {r: 0.015250206, g: 0, b: 1, a: 1}
+    - _VoronoiColor: {r: 0.04003478, g: 0, b: 1.1509434, a: 1}
     - _VoronoiSpeed: {r: 0, g: 0.3, b: 0, a: 0}
     - _VoronoiTilling: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

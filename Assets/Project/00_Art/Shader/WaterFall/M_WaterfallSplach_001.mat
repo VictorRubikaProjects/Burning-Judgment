@@ -50,22 +50,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alphaclipping: 0.21
-    - _BlackPower: 4.44
+    - _Alphaclipping: 0.19
+    - _BlackPower: 5.56
+    - _DitherSize: 3.06
     - _Edge: -0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Speed: 0
     - _agitation: 2
-    - _blackDensity: 0.24
+    - _blackDensity: 0.33
     - _blackPower: 1.29
-    - _power: -0.28
+    - _power: -0.39
     - _scale: 2
     - _tilling: 1
-    - _white_power: 3.53
+    - _white_power: 4.37
     m_Colors:
     - _Speed: {r: 0.75, g: 2.5, b: 0, a: 0}
-    - _color: {r: 0.14056592, g: 1.4940321, b: 2.2923048, a: 1}
+    - _color: {r: 0.1000979, g: 0.4113745, b: 3.031535, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1007193862205879799
