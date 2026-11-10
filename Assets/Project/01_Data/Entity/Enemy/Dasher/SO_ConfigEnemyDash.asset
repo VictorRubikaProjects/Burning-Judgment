@@ -52,7 +52,6 @@ MonoBehaviour:
     m_Bits: 55
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
-  <DeathDelay>k__BackingField: 1.5
   <Speed>k__BackingField: 4.5
   <RotationSpeed>k__BackingField: 1800
   <DistanceMin>k__BackingField: 4
@@ -62,10 +61,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   <SightHeight>k__BackingField: 0.5
-  <LockTime>k__BackingField: 0.5
-  <LockToDashDelay>k__BackingField: 1.5
+  <LockTime>k__BackingField: 0.25
+  <LockToDashDelay>k__BackingField: 0.5
   <DashDistance>k__BackingField: 8
-  <DashDuration>k__BackingField: 0.65
+  <DashDuration>k__BackingField: 0.45
   <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
