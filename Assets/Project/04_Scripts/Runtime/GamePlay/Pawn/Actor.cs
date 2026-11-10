@@ -7,10 +7,12 @@ public class Actor : Pawn
 
     private float m_stability;
     protected bool m_isDead;
-    public float Stability
+    
+    public float GetStability() => m_stability;
+
+    protected virtual void SetStability(float stability)
     {
-        get => m_stability;
-        protected set => m_stability = Mathf.Clamp(value, 0.0f, 1.0f);
+        m_stability = Mathf.Clamp(stability, 0.0f, 1.0f);
     }
 
     public virtual void Kill() { }

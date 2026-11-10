@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &34912161311928197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1539915238101294995}
+  - component: {fileID: 8026058231967181214}
+  - component: {fileID: 5024422197081148413}
+  m_Layer: 5
+  m_Name: Stability Player Indicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1539915238101294995
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34912161311928197}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5942420998054825654}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 374, y: 1035}
+  m_SizeDelta: {x: 250, y: 250}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8026058231967181214
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34912161311928197}
+  m_CullTransparentMesh: 1
+--- !u!114 &5024422197081148413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34912161311928197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 1984966995, guid: 83e666f1b2c4a6e49a1adc3938fed0bc, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1016514009572045617
 GameObject:
   m_ObjectHideFlags: 0
@@ -36,6 +111,7 @@ RectTransform:
   - {fileID: 6345153280748035820}
   - {fileID: 5821511024007029043}
   - {fileID: 2100258805708356902}
+  - {fileID: 1539915238101294995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -58,25 +134,33 @@ MonoBehaviour:
   optionButtons:
   - {fileID: 5439096320233248309}
   - {fileID: 6844672130175016573}
+  spritesIndicatorStabilityPlayer:
+  - {fileID: 1984966995, guid: 83e666f1b2c4a6e49a1adc3938fed0bc, type: 3}
+  - {fileID: 1164578796, guid: 83e666f1b2c4a6e49a1adc3938fed0bc, type: 3}
+  - {fileID: 2064673582, guid: 83e666f1b2c4a6e49a1adc3938fed0bc, type: 3}
+  - {fileID: 1582573990, guid: 83e666f1b2c4a6e49a1adc3938fed0bc, type: 3}
   optionCanvasGroup: {fileID: 6389990297901263158}
   volumeSlider: {fileID: 7481730171682061310}
   sfxSlider: {fileID: 7703699322853832762}
   musicSlider: {fileID: 3427639115273419389}
   levelIndicator: {fileID: 1395591524172511518}
   comboText: {fileID: 445202244354717755}
-  comboDisplayDuration: 1.5
-  comboHideDuration: 0.2
-  punchDuration: 0.25
-  punchScaleStrength: {x: 0.3, y: 0.3, z: 0.3}
-  minTiltAngle: -12
-  maxTiltAngle: 12
-  tiltCycles: 2
-  tiltCycleMode: 1
-  animationEase: 0
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  tier1Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  tier2Color: {r: 1, g: 0.5, b: 0, a: 1}
-  tier3Color: {r: 1, g: 0, b: 0, a: 1}
+  stabilityImage: {fileID: 5024422197081148413}
+  comboAnimation:
+    displayDuration: 1.5
+    hideDuration: 0.2
+    punchDuration: 0.25
+    punchScaleStrength: {x: 0.3, y: 0.3, z: 0.3}
+    minTiltAngle: -12
+    maxTiltAngle: 12
+    tiltCycles: 2
+    tiltCycleMode: 1
+    animationEase: 0
+  comboColors:
+    defaultColor: {r: 1, g: 1, b: 1, a: 1}
+    tier1Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    tier2Color: {r: 1, g: 0.5, b: 0, a: 1}
+    tier3Color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!223 &234158369408530662
 Canvas:
   m_ObjectHideFlags: 0
@@ -314,7 +398,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -394, y: 1100}
+  m_AnchoredPosition: {x: -293, y: 1100}
   m_SizeDelta: {x: 100, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3620227216677295890
@@ -390,7 +474,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 410, y: 1043}
+  m_AnchoredPosition: {x: -454, y: 1111}
   m_SizeDelta: {x: 94, y: 88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7706799687578943240

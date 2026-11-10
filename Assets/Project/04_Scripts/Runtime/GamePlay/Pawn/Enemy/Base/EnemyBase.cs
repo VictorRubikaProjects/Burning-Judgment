@@ -45,10 +45,8 @@ public abstract class EnemyBase : Actor, IStrikeable
     protected override void Awake()
     {
         base.Awake();
-
-        //ServiceLocator.Get<CameraService>().AddTarget(TransformCache, 0.5f);
-
-        Stability = StatsBase.Stability;
+        
+        SetStability(StatsBase.Stability);
         
         GroundCheck = new GroundCheckComponent(
             this,
@@ -236,9 +234,9 @@ public abstract class EnemyBase : Actor, IStrikeable
             force,
             StatsBase.Weight,
             StatsBase.DefaultScaling,
-            Stability);
+            GetStability());
         
-        Stability = KnockbackUtility.CalculateNewStability(destabilization, force, StatsBase.Weight, Stability);
+        SetStability(KnockbackUtility.CalculateNewStability(destabilization, force, StatsBase.Weight, GetStability()));
         
         RequestHit();
         DamagePopUp.Show(PendingKnockbackForce, TransformCache.position);

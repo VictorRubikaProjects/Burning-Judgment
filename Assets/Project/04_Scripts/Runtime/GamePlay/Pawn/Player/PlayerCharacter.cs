@@ -34,7 +34,6 @@ public class PlayerCharacter : Actor
     [SerializeField] private Transform feetTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
     [SerializeField] private RectTransform joystickRectT;
-    [SerializeField] private CanvasGroup icyPanel;
     [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
 
     [Header("Aspect")]
@@ -81,6 +80,12 @@ public class PlayerCharacter : Actor
     private SO_PlayerStats m_runtimeStats;
 
     private SO_PlayerStats ActiveStats => m_runtimeStats ? m_runtimeStats : baseStats;
+
+    protected override void SetStability(float stability)
+    {
+        base.SetStability(stability);
+        EventBus<PlayerStabilityUpdate>.Raise(new PlayerStabilityUpdate(stability));
+    }
 
     #endregion
 
@@ -154,7 +159,7 @@ public class PlayerCharacter : Actor
 
         m_runtimeStats = baseStats.CreateRuntimeCopy(deltas);
         
-        Stability = m_runtimeStats.Stability;
+        SetStability(m_runtimeStats.Stability);
     }
 
     private void InitializeComponents()
@@ -165,7 +170,7 @@ public class PlayerCharacter : Actor
         Dash = new DashComponent(this, rb, GroundCheck);
         Input = new PlayerInputComponent(this, ActiveStats, joystickRectT);
         Controller = new PlayerControllerComponent(this, rb, ActiveStats);
-        Aspect = new PlayerAspectComponent(this, playerMaterial, playerRenderer, ActiveStats, icyPanel);
+        Aspect = new PlayerAspectComponent(this, playerMaterial, playerRenderer, ActiveStats);
         Chain = new PlayerChainComponent(this, ActiveStats);
         DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
     }
@@ -261,9 +266,8 @@ public class PlayerCharacter : Actor
         if (m_stateMachine.GetCurrentState() is PlayerHitState || !HitGate.CanTakeDamage()) return;
 
         m_pendingKnockbackDirection = e.Direction;
-        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, ActiveStats.Weight, ActiveStats.DefaultScaling, Stability);
-        Stability = KnockbackUtility.CalculateNewStability(e.Destabilization, e.Force, ActiveStats.Weight, Stability);
-
+        m_pendingKnockbackForce = KnockbackUtility.CalculateKnockbackDistance(e.Force, ActiveStats.Weight, ActiveStats.DefaultScaling, GetStability());
+        SetStability(KnockbackUtility.CalculateNewStability(e.Destabilization, e.Force, ActiveStats.Weight, GetStability()));
         RequestHit();
         DamagePopUp.Show(m_pendingKnockbackForce, TransformCache.position);
     }
@@ -309,10 +313,10 @@ public class PlayerCharacter : Actor
     
     public void SetPersistentData(PlayerPersistentData data)
     {
-        Stability = data.Stability;
+        SetStability(data.Stability);
     }
 
-    public PlayerPersistentData GetPersistentData() => new(Stability);
+    public PlayerPersistentData GetPersistentData() => new(GetStability());
     public float GetRuntimeStability() => ActiveStats.Stability;
 
     #endregion

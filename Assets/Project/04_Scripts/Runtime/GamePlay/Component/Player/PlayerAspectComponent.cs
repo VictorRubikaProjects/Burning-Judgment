@@ -7,14 +7,12 @@ public class PlayerAspectComponent : ActorComponent
     private readonly SO_PlayerStats m_stats;
     
     private readonly SkinnedMeshRenderer m_playerRenderer;
-    private CanvasGroup m_slowMotionCanvasGroup;
     
     private Material m_playerMaterialInstance;
 
     private Tween m_currentTween;
-    private Tween m_slowMotionTween;
 
-    public PlayerAspectComponent(Actor owner, Material playerMaterial, SkinnedMeshRenderer playerRenderer, SO_PlayerStats stats, CanvasGroup slowMotionCanvasGroup) : base(owner)
+    public PlayerAspectComponent(Actor owner, Material playerMaterial, SkinnedMeshRenderer playerRenderer, SO_PlayerStats stats) : base(owner)
     {
         m_playerMaterialInstance = new Material(playerMaterial);
         
@@ -24,8 +22,6 @@ public class PlayerAspectComponent : ActorComponent
         
         m_stats = stats;
 
-        m_slowMotionCanvasGroup = slowMotionCanvasGroup;
-        m_slowMotionCanvasGroup.alpha = 0f;
     }
     
     public void HurtVisuals() => HurtVisualsAsync().Forget();
@@ -34,7 +30,6 @@ public class PlayerAspectComponent : ActorComponent
     {
         base.Dispose();
         m_currentTween.Stop();
-        m_slowMotionTween.Stop();
         Object.Destroy(m_playerMaterialInstance);
         m_playerMaterialInstance = null;
     }
@@ -54,15 +49,5 @@ public class PlayerAspectComponent : ActorComponent
 
         m_playerRenderer.enabled = true;
     }
-
-    public void CancelSlowMotionVisualsAsync() => SlowMotionVisuals(0f, 0.4f);
     
-    public void StartSlowMotionVisualsAsync() => SlowMotionVisuals(1f, 0.4f);
-
-    private void SlowMotionVisuals(float targetAlpha, float duration )
-    {
-        if (Mathf.Approximately(targetAlpha, m_slowMotionCanvasGroup.alpha)) return;
-        m_slowMotionTween.Stop();
-        m_slowMotionTween = Tween.Alpha(m_slowMotionCanvasGroup, targetAlpha, duration);
-    }
 }
