@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8481762233349936483
+--- !u!114 &-31821114063304924
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,12 +20,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_EjectionConfirm_Main
+  m_Name: M_VFX_DashPreview
   m_Shader: {fileID: -6465566751694194690, guid: d500c2a72c5e0d24aa4d6dc789e23eac, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _COLORMANAGER_GRADIENT
+  - _COLORMANAGER_HDRCOLOR
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -38,6 +38,14 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_48792ab125914754a3ae524f2e5d935b_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_82afe3a8a22a4b2297f01150f8026baa_Texture_1_Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -55,17 +63,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _COLORMANAGER: 0
-    - _DitherSize: 10
-    - _Gradient_Edge1: -1.12
-    - _Gradient_Edge2: 7.88
-    - _Spherical_Mask: 0
+    - _COLORMANAGER: 2
+    - _DitherSize: 1
+    - _EntityPosition_GradientIntensity: 1
+    - _Gradient_Edge1: 0.28
+    - _Gradient_Edge2: 0.58
     - _usingDissolve: 0
+    - _usingSphericalMask: 0
     - _usingTexture: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _BotColor: {r: 2.6037736, g: 4.8251004, b: 8, a: 1}
-    - _NoiseSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _TopColor: {r: 0.75977945, g: 0.5127036, b: 3.293732, a: 1}
+    - _BotColor: {r: 0.3892974, g: 0.3644536, b: 0.6603774, a: 1}
+    - _Color: {r: 1.1886792, g: 2.694781, b: 4, a: 1}
+    - _NoiseSpeed: {r: 1, g: 0, b: 0, a: 0}
+    - _TopColor: {r: 0.6775098, g: 0.8791255, b: 0.990566, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
