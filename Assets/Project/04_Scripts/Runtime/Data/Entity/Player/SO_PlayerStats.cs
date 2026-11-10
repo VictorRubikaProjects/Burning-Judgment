@@ -98,9 +98,15 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Space, Header("Chain")]
     [field: SerializeField, Range(0.0f,5f), Tooltip("Offset de temps pour valider un combo de chain.")]
     public float ChainDurationBeforeClear { get; private set; } = 3f;
-    [field: SerializeField, Range(0f, 1f)]
-    [field: Tooltip("Bonus de force en pourcentage ajouté par palier de chaîne. 15 = +15% de la force de base par chaîne (3 chaînes = +45%).")]
-    public float ChainBonusPercent { get; private set; } = 0.25f;
+    
+    [field: SerializeField, Range(0.0f,5f)]
+    public float ChainIncrementation { get; private set; } = 3f;
+    
+    [field: SerializeField, Range(0f,5f)]
+    public float ChainDecrementation { get; private set; } = -3f;
+    
+    [field: SerializeField, Range(0f,5f)]
+    public float ChainDelayBeforeIncrementation { get; private set; } = 1f;
     
 
     public SO_PlayerStats CreateRuntimeCopy(in AugmentDeltas deltas)

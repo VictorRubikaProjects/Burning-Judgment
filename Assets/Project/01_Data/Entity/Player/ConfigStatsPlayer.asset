@@ -52,37 +52,6 @@ MonoBehaviour:
     m_Bits: 55
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
-  <DeathDelay>k__BackingField: 1.5
-  <MaxRollDistance>k__BackingField: 4
-  <RollDuration>k__BackingField: 0.25
-  <RollCurve>k__BackingField:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  <RollStrikeRadius>k__BackingField: 0.75
-  <RollStrikeLayer>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 64
   <DashDistance>k__BackingField: 10
   <DashDuration>k__BackingField: 0.35
   <DashCurve>k__BackingField:
@@ -140,19 +109,7 @@ MonoBehaviour:
   <DeathAnimation>k__BackingField:
     CrossFadeDuration: 0.1
     Speed: 1
-  <ChainThreshold>k__BackingField: 0.75
-  <ChainBonusPercent>k__BackingField: 0.25
-  <HitEvent>k__BackingField:
-    Guid:
-      Data1: -614538973
-      Data2: 1100481243
-      Data3: -1331975033
-      Data4: -799232545
-    Path: event:/GamePlay/Player/Hit_Sfx
-  <DashEvent>k__BackingField:
-    Guid:
-      Data1: 1342469454
-      Data2: 1152851515
-      Data3: -970574174
-      Data4: 231883612
-    Path: event:/GamePlay/Player/Dash_Sfx
+  <ChainDurationBeforeClear>k__BackingField: 3
+  <ChainIncrementation>k__BackingField: 0.2
+  <ChainDecrementation>k__BackingField: 1
+  <ChainDelayBeforeIncrementation>k__BackingField: 1

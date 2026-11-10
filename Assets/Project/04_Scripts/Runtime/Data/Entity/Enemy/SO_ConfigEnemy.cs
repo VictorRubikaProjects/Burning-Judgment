@@ -34,4 +34,9 @@ public class SO_ConfigEnemy : SO_ActorsStats
     [field: SerializeField]
     [field: Tooltip("Hauteur au-dessus des pieds d'où part le rayon de vue vers le joueur. Un obstacle plus bas que cette hauteur ne bloque pas la vue.")]
     public float SightHeight { get; private set; } = 0.5f;
+    
+    [field: Space, Header("Combo")]
+    [field: SerializeField]
+    [field: Tooltip("Valeur qui sera perdu par le combo du player si l'enemy touche le player"), Range(0,5f)]
+    public float ComboPlayerDecrease { get; private set; } = 0.5f;
 }

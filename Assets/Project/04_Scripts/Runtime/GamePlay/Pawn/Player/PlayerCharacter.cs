@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Event_Bus;
 using UnityEngine;
 
@@ -17,7 +18,6 @@ public class PlayerCharacter : Actor
     
     public struct PlayerPersistentData
     {
-        //for the moment only that but can grow
         public float Stability;
 
         public PlayerPersistentData(float stability)
@@ -54,17 +54,20 @@ public class PlayerCharacter : Actor
     public DashIndicatorComponent DashIndicator { get; private set; }
 
     public Vector3 MoveDir => m_currentDashContext.Direction;
-    public float DashDistance => m_currentDashContext.Distance;
-
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
+    
+    public float DashDistance => m_currentDashContext.Distance;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
+    
     public Transform FeetTransform => feetTransform;
+    
     public string CurrentStateName => m_stateMachine?.GetCurrentState()?.ToString() ?? "None";
 
     private StateMachine m_stateMachine;
     private DashContext m_currentDashContext;
 
     private Vector3 m_pendingKnockbackDirection;
+    
     private float m_pendingKnockbackForce;
 
     private bool m_wantsDash;
@@ -111,6 +114,7 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease += HandleJoystickRelease;
         Input.OnChargeUpdate += HandleChargeUpdate;
         Input.OnChargeEnd += HandleChargeEnd;
+        Input.OnChargeStarted += HandleChargeStarted;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(HandleActorPushed);
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
@@ -121,6 +125,7 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease -= HandleJoystickRelease;
         Input.OnChargeUpdate -= HandleChargeUpdate;
         Input.OnChargeEnd -= HandleChargeEnd;
+        Input.OnChargeStarted -= HandleChargeStarted;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
     }
@@ -244,15 +249,19 @@ public class PlayerCharacter : Actor
         Vector3 origin = feetTransform.position;
         float distance = ComputeDashDistance(ratio);
 
-        if (TryRaycastObstacle(in origin, in direction, ref distance))
-        {
-            
-        }
+        TryRaycastObstacle(in origin, in direction, ref distance);
 
         Vector3 targetPos = origin + direction * distance;
+        
         DashIndicator.Show(origin, targetPos);
+
+        Chain.IncrementChain();
     }
-    
+
+    private void HandleChargeStarted()
+    {
+        Chain.StartChainForce().Forget();
+    }
 
     private void HandleChargeEnd() => DashIndicator.Hide();
 
@@ -270,6 +279,7 @@ public class PlayerCharacter : Actor
         SetStability(KnockbackUtility.CalculateNewStability(e.Destabilization, e.Force, ActiveStats.Weight, GetStability()));
         RequestHit();
         DamagePopUp.Show(m_pendingKnockbackForce, TransformCache.position);
+        Chain.OnEnemyHit(e.ComboDecrease);
     }
 
     #endregion

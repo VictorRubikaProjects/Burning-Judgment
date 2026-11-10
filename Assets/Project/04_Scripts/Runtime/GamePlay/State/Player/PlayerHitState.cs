@@ -37,8 +37,6 @@ public class PlayerHitState : PlayerBaseState
             m_stats.HitKnockbackCurve,
             m_stats.ObstacleLayer).Forget();
         
-        m_owner.Chain.Reset();
-        
         m_audioService.PlaySfx(m_audioService.Bank.PlayerHitEvent,m_owner.TransformCache.position);
         m_fxService.PlayEjectionEffect(m_owner.TransformCache,m_stats.HitDuration);
         m_fxService.PlayHitEffect(m_owner.TransformCache,m_stats.HitDuration);

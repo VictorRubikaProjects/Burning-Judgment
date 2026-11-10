@@ -114,6 +114,7 @@ public class EnemySniperAttackState : EnemyBaseState
             m_sniper.TransformCache.forward,
             m_sniper.Stats.PushForce,
             m_sniper.Stats.Destabilization,
-            m_sniper.TransformCache.position));
+            m_sniper.TransformCache.position,
+            m_sniper.Stats.ComboPlayerDecrease));
     }
 }

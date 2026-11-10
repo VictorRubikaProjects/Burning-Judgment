@@ -120,9 +120,9 @@ public class HudManager : MonoBehaviour
         rectTransform.localScale = Vector3.one;
         rectTransform.localEulerAngles = Vector3.zero;
         
-        m_sbCombo.Clear().Append("Combo ").Append(e.Combo);
+        m_sbCombo.Clear().Append("Combo ").Append($"{e.Multiplier:0.00}");
         comboText.text = m_sbCombo.ToString();
-        comboText.color = GetComboColor(e.Combo);
+        comboText.color = GetComboColor(e.Multiplier);
 
         float randomTilt = UnityEngine.Random.Range(comboAnimation.minTiltAngle, comboAnimation.maxTiltAngle);
         
@@ -133,7 +133,7 @@ public class HudManager : MonoBehaviour
             .Chain(Tween.Scale(rectTransform, Vector3.zero, comboAnimation.hideDuration));
     }
 
-    private Color GetComboColor(int comboCount)
+    private Color GetComboColor(float comboCount)
     {
         return comboCount switch
         {

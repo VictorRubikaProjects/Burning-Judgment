@@ -17,8 +17,9 @@ namespace Event_Bus
         public readonly float Destabilization;
         public readonly Vector3 Direction;
         public readonly Vector3 SourcePosition;
+        public readonly float ComboDecrease;
 
-        public ActorPushedEvent(Actor target, Vector3 direction, float force, float destabilization, Vector3 sourcePosition, PushType pushType = PushType.Classic)
+        public ActorPushedEvent(Actor target, Vector3 direction, float force, float destabilization, Vector3 sourcePosition, float comboDecrease = 0f, PushType pushType = PushType.Classic)
         {
             Target = target; 
             Force = force;
@@ -26,6 +27,7 @@ namespace Event_Bus
             Destabilization = destabilization;
             Type = pushType;
             SourcePosition = sourcePosition;
+            ComboDecrease =  comboDecrease;
         }
     }
 }

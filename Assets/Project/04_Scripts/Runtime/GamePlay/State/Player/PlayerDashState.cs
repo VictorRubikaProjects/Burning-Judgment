@@ -80,15 +80,15 @@ public class PlayerDashState : PlayerBaseState
             m_stats.DashStrikeRadius,
             m_stats.DashStrikeLayer,
             PlayerControllerComponent.StrikeType.Dash,
-            m_owner.Chain.GetForceMultiplier);
+            m_owner.Chain.ForceMultiplier);
 
         if (!result.Accepted) return;
 
         HasHit = true;
         
+        m_owner.Chain.RestartComboTimer();
+        
         m_fxService.PlayerAttackPlayerEffect(m_owner.TransformCache, 0.5f);
-
-        if (result.AllowsChain) m_owner.Chain.IncrementChain();
 
         m_cameraService.Shake();
         m_fxService.HitStop();
