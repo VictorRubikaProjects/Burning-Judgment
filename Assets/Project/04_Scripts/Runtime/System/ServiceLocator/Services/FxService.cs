@@ -11,17 +11,31 @@ public sealed class FxService : IGameService
     private TimeEffect m_timeEffect;
     
     private readonly SO_ConfigVfx m_configVfx;
-    private readonly SO_GameConfig m_gameConfig;
 
     private readonly Dictionary<ParticleSystem, IObjectPool<ParticleSystem>> m_effectPools = new();
-    private readonly Dictionary<Transform, ActiveEffectData> m_activeEffects = new();
+    
+    private readonly struct EffectKey : IEquatable<EffectKey>
+    {
+        public readonly Transform Target;
+        public readonly ParticleSystem Prefab;
+
+        public EffectKey(Transform target, ParticleSystem prefab)
+        {
+            Target = target;
+            Prefab = prefab;
+        }
+
+        public bool Equals(EffectKey other) => Target == other.Target && Prefab == other.Prefab;
+        public override int GetHashCode() => HashCode.Combine(Target, Prefab);
+    }
+
+    private readonly Dictionary<EffectKey, ActiveEffectData> m_activeEffects = new();
 
     private GameObject m_vfxRoot;
 
     private struct ActiveEffectData
     {
         public ParticleSystem ParticleSystem;
-        public ParticleSystem PrefabSource;
         public CancellationTokenSource Cts;
     }
 
@@ -48,10 +62,10 @@ public sealed class FxService : IGameService
         }
     }
 
-    public FxService(SO_ConfigVfx configVfx, SO_GameConfig gameConfig)
+    public FxService(SO_ConfigVfx configVfx)
     {
         m_configVfx = configVfx;
-        m_gameConfig = gameConfig;
+        
     }
     
     public UniTask InitializeService()
@@ -73,30 +87,36 @@ public sealed class FxService : IGameService
 
     private IObjectPool<ParticleSystem> GetOrCreatePool(ParticleSystem prefab)
     {
-        if (!m_effectPools.TryGetValue(prefab, out var pool))
-        {
-            pool = new ObjectPool<ParticleSystem>(
-                createFunc: () =>
+        if (m_effectPools.TryGetValue(prefab, out var pool)) return pool;
+        
+        pool = new ObjectPool<ParticleSystem>(
+            createFunc: () =>
+            {
+                var instance = Object.Instantiate(prefab, m_vfxRoot.transform);
+                return instance;
+            },
+            
+            actionOnGet: ps => { if (ps) ps.gameObject.SetActive(true); },
+            
+            actionOnRelease: ps => 
+            { 
+                if (ps) 
                 {
-                    var instance = Object.Instantiate(prefab, m_vfxRoot.transform);
-                    return instance;
-                },
-                actionOnGet: ps => { if (ps) ps.gameObject.SetActive(true); },
-                actionOnRelease: ps => 
-                { 
-                    if (ps) 
-                    {
-                        ps.gameObject.SetActive(false);
-                        ps.transform.SetParent(m_vfxRoot.transform);
-                    } 
-                },
-                actionOnDestroy: ps => { if (ps) Object.Destroy(ps.gameObject); },
-                collectionCheck: true,
-                defaultCapacity: 5,
-                maxSize: 20
-            );
-            m_effectPools[prefab] = pool;
-        }
+                    ps.gameObject.SetActive(false);
+                    ps.transform.SetParent(m_vfxRoot.transform);
+                } 
+            },
+            
+            actionOnDestroy: ps => { if (ps) Object.Destroy(ps.gameObject); },
+            
+            collectionCheck: true,
+            
+            defaultCapacity: 5,
+            
+            maxSize: 20
+        );
+        
+        m_effectPools[prefab] = pool;
         return pool;
     }
 
@@ -104,7 +124,12 @@ public sealed class FxService : IGameService
     {
         if (effectPrefab == null || targetTransform == null) return;
 
-        StopEffect(targetTransform);
+        var effectKey = new EffectKey(targetTransform, effectPrefab);
+
+        if (m_activeEffects.TryGetValue(effectKey, out var existingData))
+        {
+            existingData.Cts?.Cancel();
+        }
 
         var pool = GetOrCreatePool(effectPrefab);
         ParticleSystem ps = pool.Get();
@@ -121,10 +146,9 @@ public sealed class FxService : IGameService
 
         var cts = new CancellationTokenSource();
         
-        m_activeEffects[targetTransform] = new ActiveEffectData
+        m_activeEffects[effectKey] = new ActiveEffectData
         {
             ParticleSystem = ps,
-            PrefabSource = effectPrefab,
             Cts = cts
         };
         
@@ -143,11 +167,11 @@ public sealed class FxService : IGameService
         }
         catch (OperationCanceledException) 
         { 
-            ReturnToPool(targetTransform, ps, effectPrefab, cts, isCancelledExternally: true);
+            ReturnToPool(effectKey, ps, effectPrefab, cts, isCancelledExternally: true);
             return; 
         }
 
-        ReturnToPool(targetTransform, ps, effectPrefab, cts, isCancelledExternally: false);
+        ReturnToPool(effectKey, ps, effectPrefab, cts, isCancelledExternally: false);
     }
 
     private async UniTaskVoid LaunchEffectUnparented(ParticleSystem effectPrefab, Transform targetTransform, float duration)
@@ -184,13 +208,9 @@ public sealed class FxService : IGameService
         cts.Dispose();
     }
 
-    private void ReturnToPool(Transform targetTransform, ParticleSystem ps, ParticleSystem effectPrefab, CancellationTokenSource cts, bool isCancelledExternally)
+    private void ReturnToPool(EffectKey effectKey, ParticleSystem ps, ParticleSystem effectPrefab, CancellationTokenSource cts, bool isCancelledExternally)
     {
-        if (targetTransform != null)
-        {
-            m_activeEffects.Remove(targetTransform);
-        }
-
+        m_activeEffects.Remove(effectKey);
         cts?.Dispose();
 
         if (ps != null && ps.gameObject != null)
@@ -203,11 +223,28 @@ public sealed class FxService : IGameService
         }
     }
 
-    public void StopEffect(Transform targetTransform)
+    public void StopEffect(Transform targetTransform, ParticleSystem effectPrefab)
     {
-        if (targetTransform != null && m_activeEffects.TryGetValue(targetTransform, out var data))
+        if (targetTransform != null && effectPrefab != null)
         {
-            data.Cts?.Cancel();
+            var effectKey = new EffectKey(targetTransform, effectPrefab);
+            if (m_activeEffects.TryGetValue(effectKey, out var data))
+            {
+                data.Cts?.Cancel();
+            }
+        }
+    }
+
+    public void StopAllEffectsOnTarget(Transform targetTransform)
+    {
+        if (targetTransform == null) return;
+
+        foreach (var kvp in m_activeEffects)
+        {
+            if (kvp.Key.Target == targetTransform)
+            {
+                kvp.Value.Cts?.Cancel();
+            }
         }
     }
 
@@ -219,7 +256,7 @@ public sealed class FxService : IGameService
 
     #region Helper
     public void PlayHitEffect(Transform target, float duration)
-        => PlayEffect(m_configVfx.VfxPrefabHit,target, duration);
+        => PlayEffect(m_configVfx.VfxPrefabHit, target, duration);
     public void PlayEjectionEffect(Transform targetTransform, float duration)
         => PlayEffect(m_configVfx.VfxPrefabEjection, targetTransform, duration);
     
