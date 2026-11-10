@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Event_Bus;
 using UnityEngine;
 
 public class PlayerChainComponent : ActorComponent
@@ -31,6 +32,7 @@ public class PlayerChainComponent : ActorComponent
         ChainCount++;
         Debug.Log($"<color=green>COMBO {ChainCount} </color>");
         RestartComboTimer().Forget();
+        EventBus<PlayerComboEvent>.Raise(new PlayerComboEvent(ChainCount));
     }
 
     public override void Reset()
@@ -39,6 +41,7 @@ public class PlayerChainComponent : ActorComponent
         CancelTimer();
         ChainCount = 0;
         Debug.Log($"<color=red>COMBO {ChainCount} </color>");
+        EventBus<PlayerComboEvent>.Raise(new PlayerComboEvent(ChainCount));
     }
 
     private async UniTaskVoid RestartComboTimer()
