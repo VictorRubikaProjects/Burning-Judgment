@@ -25,8 +25,9 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _COLORMANAGER_WOLRDPOSGRADIENT
+  m_InvalidKeywords:
   - _COLORMANAGER_GRADIENT
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -38,6 +39,14 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_48792ab125914754a3ae524f2e5d935b_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_82afe3a8a22a4b2297f01150f8026baa_Texture_1_Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -59,11 +68,14 @@ Material:
     - _COLORMANAGER: 0
     - _DissolveAmount: 0
     - _DitherSize: 3
+    - _EntityPosition_GradientIntensity: 1
     - _Gradient_Edge1: 0.51
     - _Gradient_Edge2: 1.41
     - _Spherical_Mask: 1
     - _Spherical_Particle: 1
     - _WorldPosGradient: 1
+    - _usingDissolve: 1
+    - _usingSphericalMask: 1
     - _usingTexture: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
