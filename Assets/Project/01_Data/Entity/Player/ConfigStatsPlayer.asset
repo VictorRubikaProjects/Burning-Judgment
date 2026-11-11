@@ -109,7 +109,7 @@ MonoBehaviour:
   <DeathAnimation>k__BackingField:
     CrossFadeDuration: 0.1
     Speed: 1
-  <ChainDurationBeforeClear>k__BackingField: 3
-  <ChainIncrementation>k__BackingField: 0.2
-  <ChainDecrementation>k__BackingField: 1
-  <ChainDelayBeforeIncrementation>k__BackingField: 1
+  <ChainDurationBeforeClear>k__BackingField: 1
+  <ChainIncrementation>k__BackingField: 0.45
+  <ChainDecrementation>k__BackingField: 0.25
+  <ChainDelayBeforeIncrementation>k__BackingField: 0.5
