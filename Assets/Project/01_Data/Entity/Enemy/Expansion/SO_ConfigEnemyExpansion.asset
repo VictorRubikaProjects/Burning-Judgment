@@ -52,8 +52,7 @@ MonoBehaviour:
     m_Bits: 55
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
-  <DeathDelay>k__BackingField: 1.5
-  <Speed>k__BackingField: 3.5
+  <Speed>k__BackingField: 4
   <RotationSpeed>k__BackingField: 800
   <DistanceMin>k__BackingField: 0
   <DistanceMax>k__BackingField: 6
@@ -62,8 +61,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   <SightHeight>k__BackingField: 0.5
-  <ChargeDuration>k__BackingField: 2
-  <AttackCooldown>k__BackingField: 4
+  <ComboPlayerDecrease>k__BackingField: 0.5
+  <ChargeDuration>k__BackingField: 1
+  <AttackCooldown>k__BackingField: 3.5
   <AttackRadius>k__BackingField: 6.75
   <PlayerLayer>k__BackingField:
     serializedVersion: 2

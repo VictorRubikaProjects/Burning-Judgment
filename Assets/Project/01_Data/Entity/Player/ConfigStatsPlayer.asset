@@ -51,8 +51,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   <GroundCheckHeight>k__BackingField: 0
-  <GroundCheckDistance>k__BackingField: 1.5
-  <DashDistance>k__BackingField: 10
+  <GroundCheckDistance>k__BackingField: 1
+  <DashDistance>k__BackingField: 9
   <DashDuration>k__BackingField: 0.35
   <DashCurve>k__BackingField:
     serializedVersion: 2
@@ -78,7 +78,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <DashStrikeRadius>k__BackingField: 0.75
+  <DashStrikeRadius>k__BackingField: 1.75
   <DashStrikeLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 320
@@ -110,6 +110,6 @@ MonoBehaviour:
     CrossFadeDuration: 0.1
     Speed: 1
   <ChainDurationBeforeClear>k__BackingField: 1
-  <ChainIncrementation>k__BackingField: 0.45
+  <ChainIncrementation>k__BackingField: 0.35
   <ChainDecrementation>k__BackingField: 0.25
   <ChainDelayBeforeIncrementation>k__BackingField: 0.5

@@ -64,8 +64,8 @@ MonoBehaviour:
   <ComboPlayerDecrease>k__BackingField: 0.125
   <LockTime>k__BackingField: 0.25
   <LockToDashDelay>k__BackingField: 0.75
-  <DashDistance>k__BackingField: 8
-  <DashDuration>k__BackingField: 0.4
+  <DashDistance>k__BackingField: 6
+  <DashDuration>k__BackingField: 0.35
   <DashCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
