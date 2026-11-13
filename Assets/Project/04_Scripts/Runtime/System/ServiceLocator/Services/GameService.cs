@@ -130,7 +130,8 @@ public class GameService : IGameService
         {
             m_playerDataPersistent = new PlayerCharacter.PlayerPersistentData(m_playerCharacter.GetRuntimeStability());
         }
-
+        
+        m_playerCharacter.SetControlContext(PlayerControlContext.RoundCountdown);
         m_playerCharacter.SetPersistentData(m_playerDataPersistent);
         m_playerCharacter.SetIdle();
         m_playerCharacter.gameObject.SetActive(false);

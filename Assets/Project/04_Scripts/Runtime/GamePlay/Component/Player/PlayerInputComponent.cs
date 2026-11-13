@@ -32,8 +32,13 @@ public class PlayerInputComponent : ActorComponent
     public event Action OnHoldConfirmed;
     public event Action OnTouchReleased;
 
+    private PlayerCharacter m_pc;
+
+    private bool m_isEnable;
+
     public PlayerInputComponent(Actor owner, SO_PlayerStats stats, RectTransform joystickTransform) : base(owner)
     {
+        m_pc = owner as PlayerCharacter;
         m_stats = stats;
         m_joystickTransform = joystickTransform;
         m_joystickRestPosition = joystickTransform.position;
@@ -43,9 +48,18 @@ public class PlayerInputComponent : ActorComponent
             : joystickTransform.gameObject.AddComponent<CanvasGroup>();
 
         SetJoystickVisible(false);
+
+        m_pc.OnControlContextChanged += OnControlContextChanged;
     }
 
-    public override void Initialize()
+    public override void Initialize() => SetupInput();
+    public override void Dispose()
+    {
+        StopInput();
+        m_pc.OnControlContextChanged -= OnControlContextChanged;
+    }
+
+    private void SetupInput()
     {
         m_inputActions = new PlayerActions();
         m_inputActions.Gameplay.Enable();
@@ -56,9 +70,11 @@ public class PlayerInputComponent : ActorComponent
         m_inputActions.Gameplay.Move.started += OnMoveStarted;
         m_inputActions.Gameplay.Move.performed += OnMovePerformed;
         m_inputActions.Gameplay.Move.canceled += OnMoveCanceled;
+
+        m_isEnable = true;
     }
 
-    public override void Dispose()
+    private void StopInput()
     {
         m_inputActions.Gameplay.Touch.started -= OnTouchStarted;
         m_inputActions.Gameplay.Touch.canceled -= OnTouchCanceled;
@@ -69,6 +85,8 @@ public class PlayerInputComponent : ActorComponent
         
         m_inputActions.Gameplay.Disable();
         m_inputActions.Dispose();
+
+        m_isEnable = false;
     }
 
     public override void Update()
@@ -199,5 +217,19 @@ public class PlayerInputComponent : ActorComponent
         float ratio = stretchMagnitude / m_stats.MaxSwipeDistance;
 
         return Mathf.Clamp(ratio, m_stats.MinChargeRatio, 1f);
+    }
+
+    private void OnControlContextChanged(PlayerControlContext context)
+    {
+        if (PlayerActionPermissions.FromContext(context).InputAvailable)
+        {
+            if (m_isEnable) return;
+            SetupInput();
+        }
+        else
+        {
+            if (!m_isEnable) return;
+            StopInput();
+        }
     }
 }

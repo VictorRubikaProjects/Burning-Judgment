@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Event_Bus;
 using UnityEngine;
@@ -52,6 +53,10 @@ public class PlayerCharacter : Actor
     public DashComponent Dash { get; private set; }
     public PlayerChainComponent Chain { get; private set; }
     public DashIndicatorComponent DashIndicator { get; private set; }
+    
+    public PlayerControlContext ControlContext { get; private set; } = PlayerControlContext.RoundCountdown;
+    public PlayerActionPermissions ActionPermissions { get; private set; } = PlayerActionPermissions.FromContext(PlayerControlContext.RoundCountdown);
+    public event Action<PlayerControlContext> OnControlContextChanged;
 
     public Vector3 MoveDir => m_currentDashContext.Direction;
     public Vector3 PendingKnockbackDirection => m_pendingKnockbackDirection;
@@ -80,6 +85,9 @@ public class PlayerCharacter : Actor
     private PlayerFallState m_playerFallState;
 
     private EventBinding<ActorPushedEvent> m_playerPushedBinding;
+    private EventBinding<FloorStartedEvent> m_floorStartedBinding;
+    private EventBinding<RunEndedEvent> m_roundEndedBinding;
+    
     private SO_PlayerStats m_runtimeStats;
 
     private SO_PlayerStats ActiveStats => m_runtimeStats ? m_runtimeStats : baseStats;
@@ -117,7 +125,12 @@ public class PlayerCharacter : Actor
         Input.OnChargeStarted += HandleChargeStarted;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(HandleActorPushed);
+        m_floorStartedBinding = new EventBinding<FloorStartedEvent>(HandleFloorStarted);
+        m_roundEndedBinding = new EventBinding<RunEndedEvent>(HandleRunEnded);
+            
         EventBus<ActorPushedEvent>.Register(m_playerPushedBinding);
+        EventBus<FloorStartedEvent>.Register(m_floorStartedBinding);
+        EventBus<RunEndedEvent>.Register(m_roundEndedBinding);
     }
 
     private void OnDisable()
@@ -128,6 +141,8 @@ public class PlayerCharacter : Actor
         Input.OnChargeStarted -= HandleChargeStarted;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
+        EventBus<FloorStartedEvent>.Unregister(m_floorStartedBinding);
+        EventBus<RunEndedEvent>.Unregister(m_roundEndedBinding);
     }
 
     protected override void Update()
@@ -328,6 +343,17 @@ public class PlayerCharacter : Actor
 
     public PlayerPersistentData GetPersistentData() => new(GetStability());
     public float GetRuntimeStability() => ActiveStats.Stability;
+    
+    public void SetControlContext(PlayerControlContext context)
+    {
+        ControlContext = context;
+        ActionPermissions = PlayerActionPermissions.FromContext(context);
+        OnControlContextChanged?.Invoke(context);
+    }
+    
+    private void HandleFloorStarted(FloorStartedEvent e) => SetControlContext(PlayerControlContext.RoundGameplay);
+    
+    private void HandleRunEnded(RunEndedEvent e) => SetControlContext(PlayerControlContext.RoundLose);
 
     #endregion
 }
