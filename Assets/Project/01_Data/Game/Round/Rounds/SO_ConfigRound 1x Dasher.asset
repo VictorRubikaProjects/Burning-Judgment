@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigRound
   <RoundData>k__BackingField:
     <Map>k__BackingField:
-      asset: {fileID: 102900000, guid: f7d2143f6e193224ba643b6ebf1ba2b2, type: 3}
-      guid: f7d2143f6e193224ba643b6ebf1ba2b2
+      asset: {fileID: 102900000, guid: 8b9072066ece08d419efd644468bbd39, type: 3}
+      guid: 8b9072066ece08d419efd644468bbd39
     <EnemyTeams>k__BackingField:
     - {fileID: 11400000, guid: 686b8cf3fd13aab43b5d8f6c65fef2ba, type: 2}
     - {fileID: 11400000, guid: 994ab344cc124744db3730c70b3b787f, type: 2}
