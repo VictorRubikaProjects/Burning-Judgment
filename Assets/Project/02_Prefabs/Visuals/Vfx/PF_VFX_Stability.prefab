@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5107043113669248361}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.42, z: -0}
+  m_LocalPosition: {x: 0, y: -0.42, z: 3.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.5531546, g: 0.38069597, b: 0.5566038, a: 0.5882353}
+      maxColor: {r: 0.38679248, g: 0.16602886, b: 0.2864101, a: 0.3764706}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -980,7 +980,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 8.503314
+      scalar: 4.429076
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1033,7 +1033,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 15.233284
+      scalar: 6.776964
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4782,7 +4782,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 726201f78a5095e4f9ed802bdadde194, type: 2}
+  - {fileID: 2100000, guid: cb62516cf815edb428eef0948a014c76, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6250,9 +6250,9 @@ ParticleSystem:
   UVModule:
     serializedVersion: 2
     enabled: 1
-    mode: 1
-    timeMode: 0
-    fps: 30
+    mode: 0
+    timeMode: 2
+    fps: 5
     frameOverTime:
       serializedVersion: 2
       minMaxState: 1
@@ -9663,7 +9663,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 464617d3175a3b54d82f978bcd399f70, type: 2}
+  - {fileID: 2100000, guid: f3588c2503a5a3149908fdc2a57e13df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

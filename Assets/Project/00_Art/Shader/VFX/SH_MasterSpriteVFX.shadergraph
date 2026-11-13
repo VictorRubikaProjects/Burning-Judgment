@@ -336,6 +336,9 @@
         },
         {
             "m_Id": "e015725a4831497cb8fe75c0df3ade41"
+        },
+        {
+            "m_Id": "0acc811fc72b414eb4e21de370f351f2"
         }
     ],
     "m_GroupDatas": [
@@ -432,6 +435,20 @@
                     "m_Id": "03034465c6c64689a490edbe7479fc4a"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "0acc811fc72b414eb4e21de370f351f2"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "cdd7b9e9bf524da8b4733add850fd8f1"
+                },
+                "m_SlotId": 2
             }
         },
         {
@@ -1704,8 +1721,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1630.0,
-            "y": 2382.0,
+            "x": 1496.0001220703125,
+            "y": 2154.000244140625,
             "width": 130.0,
             "height": 118.0
         }
@@ -1782,7 +1799,7 @@
     "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
     "m_ObjectId": "01997e9af20a412a90e96846ee8264f2",
     "m_Id": 0,
-    "m_DisplayName": "usingSphericalMask",
+    "m_DisplayName": "SphericalMask",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2220,6 +2237,44 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.UVNode",
+    "m_ObjectId": "0acc811fc72b414eb4e21de370f351f2",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "UV",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 1851.0001220703125,
+            "y": 2304.000244140625,
+            "width": 208.0001220703125,
+            "height": 312.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "62da5d9206874b54aaca415f693d8293"
+        }
+    ],
+    "synonyms": [
+        "texcoords",
+        "coords",
+        "coordinates"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": false,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_OutputChannel": 0
 }
 
 {
@@ -3351,14 +3406,7 @@
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "2bad7226726d4220addcdbe1e4a78039",
     "m_Name": "",
-    "m_ChildObjectList": [
-        {
-            "m_Id": "663a834b75c74c4fb54ba6e240078b20"
-        },
-        {
-            "m_Id": "e0f00d87b138447e91468dab9974177b"
-        }
-    ]
+    "m_ChildObjectList": []
 }
 
 {
@@ -4557,16 +4605,22 @@
             "m_Id": "f8fb66545d3246439eccfdbe41ef009e"
         },
         {
-            "m_Id": "873ab9d1776d483daf97d396b546f973"
+            "m_Id": "8c75312f3eaa45dd8b2d50c31a62ff48"
         },
         {
             "m_Id": "e39814e525c24ea0af82fe15172e6617"
         },
         {
-            "m_Id": "8c75312f3eaa45dd8b2d50c31a62ff48"
+            "m_Id": "873ab9d1776d483daf97d396b546f973"
+        },
+        {
+            "m_Id": "663a834b75c74c4fb54ba6e240078b20"
         },
         {
             "m_Id": "fce4dd240f0d43d9affa86114c529a4b"
+        },
+        {
+            "m_Id": "e0f00d87b138447e91468dab9974177b"
         }
     ]
 }
@@ -5515,6 +5569,31 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "62da5d9206874b54aaca415f693d8293",
+    "m_Id": 0,
+    "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "6337d36c22f641de9b539849554951cf",
     "m_Id": 0,
@@ -5617,10 +5696,10 @@
     "promotedFromAssetID": "",
     "promotedFromCategoryName": "",
     "promotedOrdering": -1,
-    "m_Name": "hasPanner",
+    "m_Name": "Panner",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "hasPanner",
-    "m_DefaultReferenceName": "_hasPanner",
+    "m_RefNameGeneratedByDisplayName": "Panner",
+    "m_DefaultReferenceName": "_Panner",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -6284,10 +6363,10 @@
         "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1521.0,
-            "y": 2365.0,
-            "width": 79.0,
-            "height": 77.0
+            "x": 1387.0,
+            "y": 2137.000244140625,
+            "width": 79.0001220703125,
+            "height": 76.0
         }
     },
     "m_Slots": [
@@ -8215,8 +8294,8 @@
     "m_ObjectId": "9f1290862aef43759e6d61311160cba7",
     "m_Title": "Dither and Posterize",
     "m_Position": {
-        "x": 785.0001831054688,
-        "y": 329.00006103515627
+        "x": 785.0,
+        "y": 329.0
     }
 }
 
@@ -8440,8 +8519,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1451.0,
-            "y": 2479.0,
+            "x": 1317.0001220703125,
+            "y": 2251.000244140625,
             "width": 140.0,
             "height": 34.0
         }
@@ -8907,7 +8986,7 @@
     "m_Title": "Set alpha from Shuriken",
     "m_Position": {
         "x": 2499.0,
-        "y": 1207.9998779296875
+        "y": 1208.0
     }
 }
 
@@ -8971,9 +9050,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1909.0,
-            "y": 2337.0,
-            "width": 154.0,
+            "x": 1775.0001220703125,
+            "y": 2109.000244140625,
+            "width": 153.9998779296875,
             "height": 142.0
         }
     },
@@ -9999,8 +10078,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 2128.0,
-            "y": 2109.0,
+            "x": 2115.0,
+            "y": 2034.0,
             "width": 208.0,
             "height": 326.0
         }
@@ -10509,8 +10588,8 @@
     "m_ObjectId": "d7d38fe0b3774bfbb403cc6e37dc41a2",
     "m_Title": "Generate Spherical Mask For Particle",
     "m_Position": {
-        "x": 1296.0001220703125,
-        "y": 1195.0001220703125
+        "x": 1296.0,
+        "y": 1195.0
     }
 }
 
@@ -10566,8 +10645,8 @@
     "m_ObjectId": "dbb4811b956c4ee3946f4e73d76dc00d",
     "m_Title": "Gradient based on world pos",
     "m_Position": {
-        "x": -1197.0001220703125,
-        "y": -352.00006103515627
+        "x": -1197.0,
+        "y": -352.0
     }
 }
 
@@ -10805,10 +10884,10 @@
     "promotedFromAssetID": "",
     "promotedFromCategoryName": "",
     "promotedOrdering": -1,
-    "m_Name": "uppermask",
+    "m_Name": "UpperMask",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "uppermask",
-    "m_DefaultReferenceName": "_uppermask",
+    "m_RefNameGeneratedByDisplayName": "UpperMask",
+    "m_DefaultReferenceName": "_UpperMask",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -11408,8 +11487,8 @@
     "m_ObjectId": "f1b8ae2745ff434fa51b59043a452ef9",
     "m_Title": "Dissolve",
     "m_Position": {
-        "x": -3132.000244140625,
-        "y": 1405.0001220703125
+        "x": -3132.0,
+        "y": 1405.0
     }
 }
 
@@ -11990,10 +12069,10 @@
     "promotedFromAssetID": "",
     "promotedFromCategoryName": "",
     "promotedOrdering": -1,
-    "m_Name": "usingSphericalMask",
+    "m_Name": "SphericalMask",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "usingSphericalMask",
-    "m_DefaultReferenceName": "_usingSphericalMask",
+    "m_RefNameGeneratedByDisplayName": "SphericalMask",
+    "m_DefaultReferenceName": "_SphericalMask",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

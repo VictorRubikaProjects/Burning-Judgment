@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_VFX_EjectionTrail_Main
+  m_Shader: {fileID: -6465566751694194690, guid: d500c2a72c5e0d24aa4d6dc789e23eac, type: 3}
+  m_Parent: {fileID: 2100000, guid: da91d5b651edb954d89840099de2c749, type: 2}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _COLORMANAGER_WOLRDPOSGRADIENT
+  m_InvalidKeywords:
+  - _COLORMANAGER_GRADIENT
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _COLORMANAGER: 0
+    - _DitherSize: 3
+    - _EntityPosition_GradientIntensity: 1
+    - _Gradient_Edge1: 0.51
+    - _Gradient_Edge2: 1.41
+    - _Panner: 1
+    - _SphericalMask: 1
+    - _UpperMask: 1
+    - _usingDissolve: 1
+    - _usingSphericalMask: 1
+    - _usingTexture: 0
+    m_Colors:
+    - _BotColor: {r: 0.18892604, g: 0, b: 2.166354, a: 1}
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
+    - _NoiseSpeed: {r: 1, g: 0, b: 0, a: 0}
+    - _TopColor: {r: 0.3886423, g: 0.7292469, b: 1.4980394, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &6437660540628279384
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
