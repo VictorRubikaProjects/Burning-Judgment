@@ -1,3 +1,4 @@
+
 using System;
 
 public readonly struct PlayerActionPermissions
@@ -25,6 +26,7 @@ public readonly struct PlayerActionPermissions
             PlayerControlContext.RoundLose => new PlayerActionPermissions(
                 inputAvailable: false
             ),
+            _ => throw new ArgumentOutOfRangeException(nameof(context), context, null)
         };
     }
 }

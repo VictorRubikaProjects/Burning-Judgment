@@ -26,10 +26,6 @@ public class PlayerDashState : PlayerBaseState
     {
         IsFinished = false;
         HasHit = false;
-
-        PlayAnimation(DashHash);
-        
-        m_fxService.PlayDashEffect(m_owner.TransformCache,0.4f);
         
         m_owner.ConsumeDashRequest();
 
@@ -59,6 +55,8 @@ public class PlayerDashState : PlayerBaseState
         float durationDash = Mathf.Clamp01(m_owner.DashDistance / m_stats.DashDistance) * m_stats.DashDuration;
 
         m_audioService.PlaySfx(m_audioService.Bank.PlayerDashEvent,m_owner.TransformCache.position);
+        PlayAnimation(DashHash);
+        m_fxService.PlayDashEffect(m_owner.TransformCache,0.4f);
         
         try
         {
