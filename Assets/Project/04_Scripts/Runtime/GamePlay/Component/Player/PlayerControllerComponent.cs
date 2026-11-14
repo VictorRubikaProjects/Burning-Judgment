@@ -1,20 +1,18 @@
-using Event_Bus;
 using UnityEngine;
 
 public class PlayerControllerComponent : ActorComponent
 {
+    private const float DirectionEpsilon = 0.0001f;
+    private const float EnemyConeTolerance = 0f;
+    private const float StrikeableConeTolerance = 0.3f;
+
     private readonly Rigidbody m_rb;
     private readonly PlayerCharacter m_pc;
     private readonly SO_PlayerStats m_stats;
-    
+    private readonly Collider[] m_strikeHits = new Collider[16];
+
     private Quaternion m_targetRotation;
-    
-    private readonly Collider[] m_strikeHits = new Collider[8];
-    
-    public enum StrikeType
-    {
-        Roll, Dash
-    }
+    private bool m_hasTargetRotation;
 
     public PlayerControllerComponent(Actor owner, Rigidbody rb, SO_PlayerStats stats) : base(owner)
     {
@@ -39,43 +37,63 @@ public class PlayerControllerComponent : ActorComponent
     {
         if (m_pc.MoveDir == Vector3.zero) return;
         m_targetRotation = Quaternion.LookRotation(m_pc.MoveDir);
+        m_hasTargetRotation = true;
     }
 
     private void HandleRotation()
     {
-        if (m_targetRotation == Quaternion.identity) return;
-        m_targetRotation.Normalize();
+        if (!m_hasTargetRotation) return;
         m_rb.MoveRotation(m_targetRotation);
     }
-    
-    public StrikeResult TryStrike(float radius, LayerMask layers, StrikeType strikeType, float forceMultiplier = 1)
+
+    public readonly struct StrikeData
     {
-        Vector3 center = m_pc.TransformCache.position;
-        Vector3 forward = m_pc.MoveDir;
+        public float Radius { get; }
+        public LayerMask LayerMask { get; }
+        public float Offset { get; }
+        public bool IsAttacking { get; }
+        public float ForceMultiplier { get; }
+
+        public StrikeData(float radius, LayerMask layerMask, float offset, bool isAttacking, float forceMultiplier = 1)
+        {
+            Radius = radius;
+            LayerMask = layerMask;
+            Offset = offset;
+            IsAttacking = isAttacking;
+            ForceMultiplier = forceMultiplier;
+        }
+    }
+
+    public StrikeResult TryStrike(StrikeData data) => TryStrike(data, m_pc.MoveDir);
+
+    public StrikeResult TryStrike(StrikeData data, Vector3 direction)
+    {
+        direction.y = 0f;
+        if (direction.sqrMagnitude < DirectionEpsilon) return StrikeResult.Ignored;
+        direction.Normalize();
+
+        Vector3 origin = m_pc.TransformCache.position;
+        Vector3 center = origin + direction * data.Offset;
+        float tolerance = data.IsAttacking ? EnemyConeTolerance : StrikeableConeTolerance;
 
         int count = Physics.OverlapSphereNonAlloc(
             center,
-            radius,
+            data.Radius,
             m_strikeHits,
-            layers,
+            data.LayerMask,
             QueryTriggerInteraction.Ignore);
-        
-        float force = strikeType is StrikeType.Dash ? m_stats.PushForce : m_stats.PushForce / 2;
-        
-        StrikeContext context = new(center, forward, force * forceMultiplier, m_stats.Destabilization);
+
+        StrikeContext context = new(origin, direction, m_stats.PushForce * data.ForceMultiplier, m_stats.Destabilization);
 
         for (int i = 0; i < count; i++)
         {
             Collider hit = m_strikeHits[i];
 
-            if (!hit.TryGetComponent(out IStrikeable target)) continue;
-            
-            bool targetIsEnemy = target is EnemyBase;
-            
-            if (!IsInFront(hit, center, forward, targetIsEnemy ? 0f : 0.3f)) continue;
+            if (!IsInFront(hit, origin, direction, tolerance)) continue;
 
-            
-            StrikeResult result = target.OnStruck(context);
+            StrikeResult result = data.IsAttacking
+                ? StrikeEnemy(hit, context)
+                : StrikeTarget(hit, context);
 
             if (result.Accepted) return result;
         }
@@ -83,14 +101,23 @@ public class PlayerControllerComponent : ActorComponent
         return StrikeResult.Ignored;
     }
 
-    private static bool IsInFront(Collider collider, Vector3 origin, Vector3 forward, float tolerance = 0f)
+    private static StrikeResult StrikeEnemy(Collider hit, in StrikeContext context)
+    {
+        return hit.TryGetComponent(out EnemyBase enemy) ? enemy.OnStruck(context) : StrikeResult.Ignored;
+    }
+
+    private static StrikeResult StrikeTarget(Collider hit, in StrikeContext context)
+    {
+        return hit.TryGetComponent(out IStrikeable target) ? target.OnStruck(context) : StrikeResult.Ignored;
+    }
+
+    private static bool IsInFront(Collider collider, Vector3 origin, Vector3 direction, float tolerance)
     {
         Vector3 toClosest = collider.ClosestPoint(origin) - origin;
-        
         toClosest.y = 0f;
 
-        if (toClosest.sqrMagnitude < 0.0001f) return true;
-        
-        return Vector3.Dot(toClosest.normalized, forward) > tolerance;
+        if (toClosest.sqrMagnitude < DirectionEpsilon) return true;
+
+        return Vector3.Dot(toClosest.normalized, direction) > tolerance;
     }
 }

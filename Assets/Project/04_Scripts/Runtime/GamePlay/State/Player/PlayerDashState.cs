@@ -10,6 +10,7 @@ public class PlayerDashState : PlayerBaseState
     private readonly FxService m_fxService;
 
     private CancellationTokenSource m_ctsDash;
+    private Vector3 m_direction;
 
     public bool IsFinished { get; private set; }
     public bool HasHit { get; private set; }
@@ -24,22 +25,14 @@ public class PlayerDashState : PlayerBaseState
 
     public override void OnEnter()
     {
-        IsFinished = false;
         HasHit = false;
-        
         m_owner.ConsumeDashRequest();
-
-        m_ctsDash = new CancellationTokenSource();
-        
-        RunDashAsync(m_owner.MoveDir, m_ctsDash.Token).Forget();
+        StartDash(m_owner.MoveDir);
     }
 
     public override void OnExit()
     {
-        m_ctsDash?.Cancel();
-        m_ctsDash?.Dispose();
-        m_ctsDash = null;
-
+        CancelDash();
         m_owner.ResetDashDistance();
     }
 
@@ -49,65 +42,103 @@ public class PlayerDashState : PlayerBaseState
         HandleDashStrike();
     }
 
+    public void UpdateDashParameters(Vector3 newDirection, float newDistance)
+    {
+        HasHit = false;
+        StartDash(newDirection);
+    }
+
+    private void StartDash(Vector3 direction)
+    {
+        CancelDash();
+
+        IsFinished = false;
+        m_direction = direction;
+        m_ctsDash = new CancellationTokenSource();
+
+        RunDashAsync(direction, m_ctsDash.Token).Forget();
+    }
+
+    private void CancelDash()
+    {
+        m_ctsDash?.Cancel();
+        m_ctsDash?.Dispose();
+        m_ctsDash = null;
+    }
+
     private async UniTaskVoid RunDashAsync(Vector3 direction, CancellationToken token)
     {
+        float distance = m_owner.DashDistance;
+        float duration = ComputeDuration(distance);
 
-        float durationDash = Mathf.Clamp01(m_owner.DashDistance / m_stats.DashDistance) * m_stats.DashDuration;
-
-        m_audioService.PlaySfx(m_audioService.Bank.PlayerDashEvent,m_owner.TransformCache.position);
         PlayAnimation(DashHash);
-        m_fxService.PlayDashEffect(m_owner.TransformCache,0.4f);
-        
+        m_audioService.PlaySfx(m_audioService.Bank.PlayerDashEvent, m_owner.TransformCache.position);
+        m_fxService.PlayDashEffect(m_owner.TransformCache, 0.4f);
+
         try
         {
-            await m_owner.Dash.RollAsync(direction, token, durationDash, m_owner.DashDistance, m_stats.DashCurve, m_stats.ObstacleLayer);
+            await m_owner.Dash.RollAsync(direction, token, duration, distance, m_stats.DashCurve, m_stats.ObstacleLayer);
         }
         catch (OperationCanceledException)
         {
             return;
         }
 
+        if (token.IsCancellationRequested) return;
+
         IsFinished = true;
+    }
+
+    private float ComputeDuration(float distance)
+    {
+        if (m_stats.DashDistance <= 0f) return m_stats.DashDuration;
+        return Mathf.Clamp01(distance / m_stats.DashDistance) * m_stats.DashDuration;
+    }
+
+    private PlayerControllerComponent.StrikeData CreateAttackData(float forceMultiplier)
+    {
+        return new PlayerControllerComponent.StrikeData(
+            m_stats.DashAttackRadius,
+            m_stats.DashAttackLayer,
+            m_stats.DashAttackOffset,
+            true,
+            forceMultiplier);
+    }
+
+    private PlayerControllerComponent.StrikeData CreateStrikeData(float forceMultiplier)
+    {
+        return new PlayerControllerComponent.StrikeData(
+            m_stats.DashStrikeRadius,
+            m_stats.DashStrikeLayer,
+            m_stats.DashStrikeOffset,
+            false,
+            forceMultiplier);
     }
 
     private void HandleDashStrike()
     {
-        if (!m_owner.Dash.IsDashing || HasHit) return;
+        if (HasHit || !m_owner.Dash.IsDashing) return;
 
-        StrikeResult result = m_owner.Controller.TryStrike(
-            m_stats.DashStrikeRadius,
-            m_stats.DashStrikeLayer,
-            PlayerControllerComponent.StrikeType.Dash,
-            m_owner.Chain.ForceMultiplier);
+        float forceMultiplier = m_owner.Chain.ForceMultiplier;
 
-        if (!result.Accepted) return;
+        StrikeResult resultAttack = m_owner.Controller.TryStrike(CreateAttackData(forceMultiplier), m_direction);
+        StrikeResult resultStrike = m_owner.Controller.TryStrike(CreateStrikeData(forceMultiplier), m_direction);
+
+        if (!resultAttack.Accepted && !resultStrike.Accepted) return;
 
         HasHit = true;
-        
-        m_owner.Chain.RestartComboTimer();
-        
-        m_fxService.PlayerAttackPlayerEffect(m_owner.TransformCache, 0.5f);
 
+        m_owner.Chain.RestartComboTimer();
+
+        m_fxService.PlayerAttackPlayerEffect(m_owner.TransformCache, 0.5f);
         m_cameraService.Shake();
         m_fxService.HitStop();
-        m_audioService.PlaySfx(m_audioService.Bank.PlayerAttackEvent,m_owner.TransformCache.position);
+        m_audioService.PlaySfx(m_audioService.Bank.PlayerAttackEvent, m_owner.TransformCache.position);
 
-        if (result.CancelsDash)
+        if (resultAttack is { Accepted: true, CancelsDash: true } || resultStrike is { Accepted: true, CancelsDash: true })
         {
             m_ctsDash?.Cancel();
             IsFinished = true;
         }
-    }
-    
-    public void UpdateDashParameters(Vector3 newDirection, float newDistance)
-    {
-        IsFinished = false;
-        PlayAnimation(DashHash);
-
-        m_ctsDash?.Cancel();
-        m_ctsDash?.Dispose();
-        m_ctsDash = new CancellationTokenSource();
-
-        RunDashAsync(newDirection, m_ctsDash.Token).Forget();
     }
 }

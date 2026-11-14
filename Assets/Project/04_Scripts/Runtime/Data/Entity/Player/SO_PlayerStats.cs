@@ -1,4 +1,3 @@
-using FMODUnity;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Config/Actors/Player Stats", fileName = "SO_PlayerStats")]
@@ -7,7 +6,7 @@ public class SO_PlayerStats : SO_ActorsStats
     private const float MinGain = 0.1f;
     private const float MaxGain = 4f;
     private const float MinDuration = 0.01f;
-    
+
     [field: Space, Header("Dash")]
     [field: SerializeField, Range(0f, 20f)]
     [field: Tooltip("Distance parcourue par le dash, en unités.")]
@@ -24,12 +23,30 @@ public class SO_PlayerStats : SO_ActorsStats
         new Keyframe(1f, 1f, 0f, 0f)
     );
 
+    [field: Space, Header("Dash - Frappe des ennemis")]
     [field: SerializeField, Range(0.1f, 3f)]
-    [field: Tooltip("Rayon de la zone de frappe autour du joueur pendant le dash. Plus c'est grand, plus le dash pardonne une visée approximative.")]
-    public float DashStrikeRadius { get; private set; } = 0.75f;
-    
+    [field: Tooltip("Rayon de la zone qui touche les ennemis pendant le dash. Plus c'est grand, plus le dash pardonne une visée approximative.")]
+    public float DashAttackRadius { get; private set; } = 0.75f;
+
+    [field: SerializeField, Range(0f, 3f)]
+    [field: Tooltip("Décalage vers l'avant de la zone qui touche les ennemis, en unités. 0 = centrée sur le joueur.")]
+    public float DashAttackOffset { get; private set; }
+
     [field: SerializeField]
-    [field: Tooltip("Layers que le dash peut frapper : ennemis et éléments de LD avec lesquels on peut enchaîner.")]
+    [field: Tooltip("Layers des ennemis que le dash peut frapper.")]
+    public LayerMask DashAttackLayer { get; private set; }
+
+    [field: Space, Header("Dash - Frappe des éléments de LD")]
+    [field: SerializeField, Range(0.1f, 3f)]
+    [field: Tooltip("Rayon de la zone qui touche les éléments de LD frappables pendant le dash.")]
+    public float DashStrikeRadius { get; private set; } = 0.75f;
+
+    [field: SerializeField, Range(0f, 3f)]
+    [field: Tooltip("Décalage vers l'avant de la zone qui touche les éléments de LD, en unités. 0 = centrée sur le joueur (risque de frapper un élément simplement frôlé).")]
+    public float DashStrikeOffset { get; private set; }
+
+    [field: SerializeField]
+    [field: Tooltip("Layers des éléments de LD frappables avec lesquels on peut enchaîner.")]
     public LayerMask DashStrikeLayer { get; private set; }
 
     [field: Space, Header("Input")]
@@ -53,7 +70,7 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Distance maximale en pixels de l'étirement du joystick (ou swipe). Au-delà, la distance de dash/tir atteint 100% (ratio 1f).")]
     public float MaxSwipeDistance { get; private set; } = 400f;
 
-    [field: SerializeField, Range(0.00f, 1f)]
+    [field: SerializeField, Range(0f, 1f)]
     [field: Tooltip("Durée maximale en secondes pour effectuer un swipe. Au-delà, le joystick apparaît.")]
     public float MaxSwipeDuration { get; private set; } = 0.2f;
 
@@ -96,18 +113,18 @@ public class SO_PlayerStats : SO_ActorsStats
     public StateAnimationData DeathAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
 
     [field: Space, Header("Chain")]
-    [field: SerializeField, Range(0.0f,5f), Tooltip("Offset de temps pour valider un combo de chain.")]
+    [field: SerializeField, Range(0f, 5f)]
+    [field: Tooltip("Offset de temps pour valider un combo de chain.")]
     public float ChainDurationBeforeClear { get; private set; } = 3f;
-    
-    [field: SerializeField, Range(0.0f,5f)]
+
+    [field: SerializeField, Range(0f, 5f)]
     public float ChainIncrementation { get; private set; } = 3f;
-    
-    [field: SerializeField, Range(0f,5f)]
+
+    [field: SerializeField, Range(-5f, 0f)]
     public float ChainDecrementation { get; private set; } = -3f;
-    
-    [field: SerializeField, Range(0f,5f)]
+
+    [field: SerializeField, Range(0f, 5f)]
     public float ChainDelayBeforeIncrementation { get; private set; } = 1f;
-    
 
     public SO_PlayerStats CreateRuntimeCopy(in AugmentDeltas deltas)
     {

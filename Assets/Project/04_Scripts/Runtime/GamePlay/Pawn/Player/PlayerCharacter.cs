@@ -356,4 +356,22 @@ public class PlayerCharacter : Actor
     private void HandleRunEnded(RunEndedEvent e) => SetControlContext(PlayerControlContext.RoundLose);
 
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        if (ActiveStats != null)
+        {
+            Gizmos.color = Color.red;
+            
+            Gizmos.DrawWireSphere(
+                transform.position+ transform.forward * ActiveStats.DashAttackOffset,
+                ActiveStats.DashAttackRadius);
+            
+            Gizmos.color = Color.yellow;
+            
+            Gizmos.DrawWireSphere(
+                transform.position + transform.forward * ActiveStats.DashStrikeOffset,
+                ActiveStats.DashStrikeRadius);
+        }
+    }
 }
