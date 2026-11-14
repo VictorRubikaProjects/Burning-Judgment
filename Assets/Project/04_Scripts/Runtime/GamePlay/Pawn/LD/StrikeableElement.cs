@@ -3,9 +3,10 @@ using UnityEngine.Events;
 
 public class StrikeableElement : MonoBehaviour, IStrikeable
 {
-    [SerializeField] private bool cancelsDash = true;
-    [SerializeField] private bool allowsChain = true;
-    [SerializeField] private UnityEvent onStruck;
+    [Header("Strikeable Settings")]
+    [SerializeField] protected bool cancelsDash = true;
+    [SerializeField] protected bool allowsChain = true;
+    [SerializeField] protected UnityEvent onStruck;
 
     public StrikeResult OnStruck(in StrikeContext context)
     {

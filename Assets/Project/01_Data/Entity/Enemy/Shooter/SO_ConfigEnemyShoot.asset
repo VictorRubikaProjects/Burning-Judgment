@@ -51,8 +51,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   <GroundCheckHeight>k__BackingField: 0
-  <GroundCheckDistance>k__BackingField: 1.5
-  <DeathDelay>k__BackingField: 1.5
+  <GroundCheckDistance>k__BackingField: 3
   <Speed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 300
   <DistanceMin>k__BackingField: 6
@@ -62,5 +61,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   <SightHeight>k__BackingField: 0.5
+  <ComboPlayerDecrease>k__BackingField: 0.5
   <ProjectilePrefab>k__BackingField: {fileID: 6366994832525994504, guid: 287af6b2d5b85114682499fe4cdd77d5, type: 3}
   <FrequencyShoot>k__BackingField: 1

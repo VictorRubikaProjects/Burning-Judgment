@@ -81,7 +81,7 @@ public class PlayerControllerComponent : ActorComponent
             data.Radius,
             m_strikeHits,
             data.LayerMask,
-            QueryTriggerInteraction.Ignore);
+            QueryTriggerInteraction.Collide);
 
         StrikeContext context = new(origin, direction, m_stats.PushForce * data.ForceMultiplier, m_stats.Destabilization);
 

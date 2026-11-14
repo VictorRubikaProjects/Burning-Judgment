@@ -12,7 +12,7 @@ public class GameService : IGameService
     private TransitionService m_transitionService;
     private EnemySystem m_enemySystem;
     private SO_EntityPooling m_entityConfig;
-    private PlayerCharacter m_playerCharacter;
+    public PlayerCharacter Player { get; private set; }
     
     private readonly AugmentService m_augmentService;
     private readonly AudioService m_audioService;
@@ -92,14 +92,14 @@ public class GameService : IGameService
         
         await m_transitionService.ShowFloorAsync(CurrentFloor);
 
-        m_enemySystem.SetupFloor(m_playerCharacter);
+        m_enemySystem.SetupFloor(Player);
 
         EventBus<FloorStartedEvent>.Raise(new FloorStartedEvent(CurrentFloor));
     }
 
     public void OnPortalTaken()
     {
-        m_playerDataPersistent = m_playerCharacter.GetPersistentData();
+        m_playerDataPersistent = Player.GetPersistentData();
         EventBus<FloorCompletedEvent>.Raise(new FloorCompletedEvent(CurrentFloor));
         InternalPortalTransition().Forget();
     }
@@ -121,29 +121,29 @@ public class GameService : IGameService
 
     private async UniTask SpawnPlayer(bool isFirstFloor = false)
     {
-        if (m_playerCharacter == null)
+        if (Player == null)
         {
-            m_playerCharacter = Object.Instantiate(m_entityConfig.Player);
+            Player = Object.Instantiate(m_entityConfig.Player);
         }
 
         if (isFirstFloor)
         {
-            m_playerDataPersistent = new PlayerCharacter.PlayerPersistentData(m_playerCharacter.GetRuntimeStability());
+            m_playerDataPersistent = new PlayerCharacter.PlayerPersistentData(Player.GetRuntimeStability());
         }
         
-        m_playerCharacter.SetControlContext(PlayerControlContext.RoundCountdown);
-        m_playerCharacter.SetPersistentData(m_playerDataPersistent);
-        m_playerCharacter.SetIdle();
-        m_playerCharacter.gameObject.SetActive(false);
+        Player.SetControlContext(PlayerControlContext.RoundCountdown);
+        Player.SetPersistentData(m_playerDataPersistent);
+        Player.SetIdle();
+        Player.gameObject.SetActive(false);
 
         await UniTask.WaitForFixedUpdate();
 
-        m_playerCharacter.TransformCache.position = m_enemySystem.ConfigCurrentRound.PlayerSpawnPosition;
-        m_playerCharacter.TransformCache.rotation = Quaternion.identity;
+        Player.TransformCache.position = m_enemySystem.ConfigCurrentRound.PlayerSpawnPosition;
+        Player.TransformCache.rotation = Quaternion.identity;
 
         await UniTask.WaitForFixedUpdate();
 
-        m_playerCharacter.gameObject.SetActive(true);
+        Player.gameObject.SetActive(true);
     }
 
     public async UniTask LoadMenuFromGameplay()

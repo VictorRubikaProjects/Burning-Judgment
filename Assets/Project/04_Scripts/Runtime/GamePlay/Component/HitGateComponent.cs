@@ -13,11 +13,10 @@ public class HitGateComponent : ActorComponent, IDamageable
         m_invincibilityDuration = invincibilityDuration;
     }
 
-    public bool TakeDamage()
+    public void TakeDamage()
     {
-        if (!CanTakeDamage()) return false;
+        if (!CanTakeDamage()) return;
         StartInvincibility();
-        return true;
     }
 
     public bool CanTakeDamage() => !m_isInvincible;

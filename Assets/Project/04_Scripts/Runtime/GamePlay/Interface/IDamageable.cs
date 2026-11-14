@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    bool TakeDamage();
+    void TakeDamage();
     
     bool CanTakeDamage();
 }

@@ -1,3 +1,4 @@
+using System;
 using Event_Bus;
 using UnityEngine;
 
@@ -94,6 +95,7 @@ public abstract class EnemyBase : Actor, IStrikeable
         EventBus<ActorPushedEvent>.Unregister(m_eventBindingPushActor);
     }
 
+
     public override void Kill()
     {
         base.Kill();
@@ -102,12 +104,11 @@ public abstract class EnemyBase : Actor, IStrikeable
         
         m_isDead = true;
         
-        //ServiceLocator.Get<CameraService>().RemoveTarget(TransformCache);
-        
         EventBus<EnemyDiedEvent>.Raise(new EnemyDiedEvent(this));
         
         Destroy(gameObject);
     }
+    
 
     #region StateMachine
 
