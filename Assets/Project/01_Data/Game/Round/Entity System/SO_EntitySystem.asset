@@ -15,3 +15,5 @@ MonoBehaviour:
   <Player>k__BackingField: {fileID: 1563943224991897210, guid: cc78fc27ea2866840887678b8f1ff650, type: 3}
   <ConfigRounds>k__BackingField:
   - {fileID: 11400000, guid: 2700a66988822594c86807926490790d, type: 2}
+  - {fileID: 11400000, guid: 4906752d5392efb4291894b155b49538, type: 2}
+  - {fileID: 11400000, guid: 82fe64a8998de5a488851e0d0e72b010, type: 2}
