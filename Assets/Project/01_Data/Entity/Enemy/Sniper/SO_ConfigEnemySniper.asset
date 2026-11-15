@@ -53,10 +53,10 @@ MonoBehaviour:
   <GroundCheckHeight>k__BackingField: 0
   <GroundCheckDistance>k__BackingField: 1.5
   <Height>k__BackingField: 2
-  <Speed>k__BackingField: 3.5
+  <Speed>k__BackingField: 4.5
   <RotationSpeed>k__BackingField: 1800
-  <DistanceMin>k__BackingField: 8
-  <DistanceMax>k__BackingField: 12
+  <DistanceMin>k__BackingField: 12
+  <DistanceMax>k__BackingField: 24
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
@@ -64,10 +64,10 @@ MonoBehaviour:
   <SightHeight>k__BackingField: 0.5
   <ComboPlayerDecrease>k__BackingField: 0.5
   <ShotCooldown>k__BackingField: 3.5
-  <ShotRange>k__BackingField: 20
+  <ShotRange>k__BackingField: 24
   <TargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
-  <AimTrackingTime>k__BackingField: 1.5
-  <AimFrozenTime>k__BackingField: 0.5
+  <AimTrackingTime>k__BackingField: 1
+  <AimFrozenTime>k__BackingField: 1
   <ConeAngle>k__BackingField: 30

@@ -21,6 +21,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 686b8cf3fd13aab43b5d8f6c65fef2ba, type: 2}
     - {fileID: 11400000, guid: 60a5ce38c965ae74fa8354696ec16923, type: 2}
     - {fileID: 11400000, guid: 7720410445548824b8d944d095415975, type: 2}
+    - {fileID: 11400000, guid: a8623809a7df82e46af156702e46503f, type: 2}
   <PlayerSpawnPosition>k__BackingField: {x: 0, y: 0.78, z: 0}
   <EnemySpawnPositions>k__BackingField:
   - {x: -7.97, y: 1.1, z: 11.07}
