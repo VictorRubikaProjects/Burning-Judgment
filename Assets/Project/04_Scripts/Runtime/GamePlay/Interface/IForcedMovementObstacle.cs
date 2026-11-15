@@ -6,13 +6,15 @@ public readonly struct ForcedMovementHit
     public Vector3 Direction { get; }
     public Vector3 Normal { get; }
     public Vector3 Point { get; }
+    public float Distance { get; }
 
-    public ForcedMovementHit(GameObject mover, Vector3 direction, Vector3 normal, Vector3 point)
+    public ForcedMovementHit(GameObject mover, Vector3 direction, Vector3 normal, Vector3 point, float distance)
     {
         Mover = mover;
         Direction = direction;
         Normal = normal;
         Point = point;
+        Distance = distance;
     }
 }
 

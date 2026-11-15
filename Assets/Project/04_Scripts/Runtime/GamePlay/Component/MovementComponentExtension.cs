@@ -64,7 +64,7 @@ public static class MovementComponentExtension
             position = target;
 
             if (contact.HasObstacle && contact.Obstacle.OnForcedMovementHit(
-                    new ForcedMovementHit(rb.gameObject, contact.Direction, contact.Normal, contact.Point)))
+                    new ForcedMovementHit(rb.gameObject, contact.Direction, contact.Normal, contact.Point, distance)))
             {
                 return false;
             }

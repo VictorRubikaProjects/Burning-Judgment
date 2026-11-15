@@ -21,9 +21,11 @@ public class EnemyHitState : EnemyBaseState
     {
         base.OnEnter();
         IsFinished = false;
+
+        bool dealsDamage = Owner.PendingHitDealsDamage;
         Owner.ConsumeHitRequest();
 
-        Owner.HitGate.TakeDamage();
+        if (dealsDamage) Owner.HitGate.TakeDamage();
         
         StartKnockback(Owner.PendingKnockbackDirection, Owner.PendingKnockbackForce);
         

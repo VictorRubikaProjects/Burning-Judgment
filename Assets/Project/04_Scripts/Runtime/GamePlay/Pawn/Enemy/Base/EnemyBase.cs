@@ -32,6 +32,7 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
 
     public Vector3 PendingKnockbackDirection { get; private set; }
     public float PendingKnockbackForce { get; private set; }
+    public bool PendingHitDealsDamage { get; private set; } = true;
 
     public PlayerCharacter Player { get; private set; }
 
@@ -147,7 +148,11 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
     }
 
     public void RequestHit() => m_hitRequested = true;
-    public void ConsumeHitRequest() => m_hitRequested = false;
+    public void ConsumeHitRequest()
+    {
+        m_hitRequested = false;
+        PendingHitDealsDamage = true;
+    }
 
     public void RequestChase() => m_chaseRequested = true;
     public void ConsumeChaseRequest() => m_chaseRequested = false;
@@ -257,6 +262,7 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
 
         PendingKnockbackDirection = direction;
         PendingKnockbackForce = distance;
+        PendingHitDealsDamage = false;
         RequestHit();
     }
 }
