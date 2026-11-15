@@ -56,7 +56,7 @@ MonoBehaviour:
   <Speed>k__BackingField: 3.5
   <RotationSpeed>k__BackingField: 1800
   <DistanceMin>k__BackingField: 8
-  <DistanceMax>k__BackingField: 25
+  <DistanceMax>k__BackingField: 12
   <HitRadius>k__BackingField: 1
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
@@ -64,7 +64,7 @@ MonoBehaviour:
   <SightHeight>k__BackingField: 0.5
   <ComboPlayerDecrease>k__BackingField: 0.5
   <ShotCooldown>k__BackingField: 3.5
-  <ShotRange>k__BackingField: 25
+  <ShotRange>k__BackingField: 20
   <TargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
