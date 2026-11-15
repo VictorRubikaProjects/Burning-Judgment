@@ -33,13 +33,13 @@ public class EnemySniperAttackState : EnemyBaseState
 
         m_sniper.AimVisual.Show();
         UpdateVisual();
+        m_sniper.ConsumeShootRequest();
     }
 
     public override void OnExit()
     {
         base.OnExit();
         m_sniper.AimVisual.Hide();
-        m_sniper.ConsumeShootRequest();
     }
 
     public override void Update()
