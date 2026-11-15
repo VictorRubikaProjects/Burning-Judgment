@@ -58,7 +58,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 8
@@ -120,8 +120,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 47f57a9353a19834c9a1b471e1dcbaad, type: 2}
   cardUIPrefab: {fileID: 71655837406293977, guid: 96887fd7b723b7849bbf77338434c739, type: 3}
   numberCards: 2
-  layoutGroup: {fileID: 1058602764179593268}
-  spawnDuration: 0.5
+  layoutGroup: {fileID: 6495590908946746133}
+  spawnDuration: 0.7
 --- !u!1 &3534275692468699320
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5083418420755018563}
-  - component: {fileID: 1058602764179593268}
+  - component: {fileID: 6495590908946746133}
   m_Layer: 5
   m_Name: Layout Card
   m_TagString: Untagged
@@ -158,7 +158,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1058602764179593268
+--- !u!114 &6495590908946746133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,16 +167,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3534275692468699320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
     m_Left: 0
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: -400
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0

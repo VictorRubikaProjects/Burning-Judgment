@@ -25,4 +25,7 @@ public class SO_Card : ScriptableObject
     [field: SerializeField]
     [field: Tooltip("Variations de stats appliquées au joueur. Seules les valeurs différentes de 0 ont un effet. Positif = bon pour le joueur, négatif = malus.")]
     public AugmentDeltas Deltas { get; private set; }
+    
+    [field: SerializeField]
+    public CardRarity  Rarity { get; private set; }
 }

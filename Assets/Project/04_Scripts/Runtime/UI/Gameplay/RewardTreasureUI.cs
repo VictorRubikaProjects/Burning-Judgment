@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,26 +8,17 @@ public class RewardTreasureUI : MonoBehaviour
     [SerializeField] private List<SO_Card> cards;
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField, Min(0)] private int numberCards = 2;
-    [SerializeField] private HorizontalLayoutGroup layoutGroup;
-    [SerializeField, Min(0f)] private float spawnDuration = 0.5f;
+    [SerializeField] private VerticalLayoutGroup layoutGroup;
+    [SerializeField, Min(0f)] private float spawnDuration = 2f;
 
     private AugmentService m_augmentService;
     private List<CardUI> m_spawned = new();
 
-    private void Awake()
-    {
-        m_augmentService = ServiceLocator.Get<AugmentService>();
-    }
+    private void Awake() => m_augmentService = ServiceLocator.Get<AugmentService>();
 
-    private void OnEnable()
-    {
-        Setup();
-    }
+    private void OnEnable() => Setup();
 
-    private void OnDisable()
-    {
-        Clear();
-    }
+    private void OnDisable() => Clear();
 
     private void Setup()
     {
@@ -54,7 +44,7 @@ public class RewardTreasureUI : MonoBehaviour
 
             CardUI cardUI = Instantiate(cardUIPrefab, layoutGroup.transform);
 
-            cardUI.transform.localScale = Vector3.zero;
+            cardUI.transform.localScale = Vector3.one;
             cardUI.Setup(card);
             cardUI.OnChosen += HandleCardChosen;
 
@@ -74,12 +64,14 @@ public class RewardTreasureUI : MonoBehaviour
         m_spawned = new List<CardUI>();
     }
 
-    private void HandleCardChosen(SO_Card card)
+    private async void HandleCardChosen(CardUI clickedCard, SO_Card card)
     {
         foreach (CardUI spawned in m_spawned)
         {
             if (spawned) spawned.SetInteractable(false);
         }
+
+        await clickedCard.PlaySelectAnimationAsync(0.4f);
 
         m_augmentService.AddCard(card);
         gameObject.SetActive(false);
@@ -91,12 +83,7 @@ public class RewardTreasureUI : MonoBehaviour
         {
             if (!card) return;
 
-            await Tween.Scale(card.transform, Vector3.one, spawnDuration);
-        }
-
-        foreach (CardUI card in spawned)
-        {
-            if (card) card.SetInteractable(true);
+            await card.FlipAsync(spawnDuration);
         }
     }
 }
