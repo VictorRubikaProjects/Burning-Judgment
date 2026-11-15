@@ -119,7 +119,7 @@ public class PlayerDashState : PlayerBaseState
     {
         if (HasHit || !m_owner.Dash.IsDashing) return;
 
-        float forceMultiplier = m_owner.Chain.ForceMultiplier;
+        float forceMultiplier = m_owner.Chain.GetForceMultiplier;
 
         StrikeResult resultAttack = m_owner.Controller.TryStrike(CreateAttackData(forceMultiplier), m_direction);
         
@@ -133,7 +133,7 @@ public class PlayerDashState : PlayerBaseState
         
         PlayAttackAnimation();
         
-        m_owner.Chain.RestartComboTimer();
+        if (resultAttack.AllowsChain) m_owner.Chain.IncrementChain();
 
         m_fxService.PlayerAttackPlayerEffect(m_owner.TransformCache, 0.5f);
         m_cameraService.Shake();

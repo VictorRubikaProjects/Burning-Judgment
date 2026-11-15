@@ -34,6 +34,9 @@ public class HudManager : MonoBehaviour
         public Color tier3Color; 
     }
 
+    [Header("Configuration Asset")]
+    [SerializeField] private SO_HudConfig hudConfig;
+
     [Header("UI Controllers & Components")]
     [SerializeField] private Button[] optionButtons;
     [SerializeField] private Sprite[] spritesIndicatorStabilityPlayer;
@@ -48,34 +51,11 @@ public class HudManager : MonoBehaviour
     [SerializeField] private TMP_Text comboText;
     
     [SerializeField] private Image stabilityImage;
-
-    [Header("Combo Configuration")]
-    [SerializeField] private ComboAnimationConfig comboAnimation = new()
-    {
-        displayDuration = 1.5f,
-        hideDuration = 0.2f,
-        punchDuration = 0.25f,
-        punchScaleStrength = new Vector3(0.3f, 0.3f, 0.3f),
-        minTiltAngle = -12f,
-        maxTiltAngle = 12f,
-        tiltCycles = 2,
-        tiltCycleMode = CycleMode.Yoyo,
-        animationEase = Ease.Default
-    };
-
-    [SerializeField] private ComboColorConfig comboColors = new()
-    {
-        defaultColor = Color.white,
-        tier1Color = Color.yellow,
-        tier2Color = new Color(1f, 0.5f, 0f),
-        tier3Color = Color.red
-    };
     
     private OptionController m_optionController;
     
     private Sequence m_comboSequence;
-    
-    private Tween m_stabilityTween;
+    private Sequence m_stabilitySequence; 
     
     private EventBinding<PlayerComboEvent> m_eventBindingCombo;
     private EventBinding<PlayerStabilityUpdate> m_eventBindingStability;
@@ -106,7 +86,7 @@ public class HudManager : MonoBehaviour
     private void OnDestroy()
     {
         m_comboSequence.Stop();
-        m_stabilityTween.Stop();
+        m_stabilitySequence.Stop();
         m_optionController.Clean();
         EventBus<PlayerComboEvent>.Unregister(m_eventBindingCombo);
         EventBus<PlayerStabilityUpdate>.Unregister(m_eventBindingStability);
@@ -120,46 +100,48 @@ public class HudManager : MonoBehaviour
         rectTransform.localScale = Vector3.one;
         rectTransform.localEulerAngles = Vector3.zero;
         
-        m_sbCombo.Clear().Append("Combo ").Append($"{e.Multiplier:0.00}");
+        m_sbCombo.Clear().Append("Combo ").Append(e.Combo);
         comboText.text = m_sbCombo.ToString();
-        comboText.color = GetComboColor(e.Multiplier);
+        comboText.color = GetComboColor(e.Combo);
 
-        float randomTilt = UnityEngine.Random.Range(comboAnimation.minTiltAngle, comboAnimation.maxTiltAngle);
+        var animConfig = hudConfig.comboAnimation;
+        float randomTilt = UnityEngine.Random.Range(animConfig.minTiltAngle, animConfig.maxTiltAngle);
         
         m_comboSequence = Sequence.Create()
-            .Group(Tween.PunchScale(rectTransform, comboAnimation.punchScaleStrength, comboAnimation.punchDuration))
-            .Group(Tween.LocalEulerAngles(rectTransform, Vector3.zero, new Vector3(0f, 0f, randomTilt), comboAnimation.punchDuration, comboAnimation.animationEase, comboAnimation.tiltCycles, comboAnimation.tiltCycleMode))
-            .Chain(Tween.Delay(comboAnimation.displayDuration))
-            .Chain(Tween.Scale(rectTransform, Vector3.zero, comboAnimation.hideDuration));
+            .Group(Tween.PunchScale(rectTransform, animConfig.punchScaleStrength, animConfig.punchDuration))
+            .Group(Tween.LocalEulerAngles(rectTransform, Vector3.zero, new Vector3(0f, 0f, randomTilt), animConfig.punchDuration, animConfig.animationEase, animConfig.tiltCycles, animConfig.tiltCycleMode))
+            .Chain(Tween.Delay(animConfig.displayDuration))
+            .Chain(Tween.Scale(rectTransform, Vector3.zero, animConfig.hideDuration));
     }
 
-    private Color GetComboColor(float comboCount)
+    private Color GetComboColor(int comboCount)
     {
+        var colors = hudConfig.comboColors;
         return comboCount switch
         {
-            >= 15 => comboColors.tier3Color,
-            >= 7 => comboColors.tier2Color,
-            >= 3 => comboColors.tier1Color,
-            _ => comboColors.defaultColor
+            >= 15 => colors.tier3Color,
+            >= 7 => colors.tier2Color,
+            >= 3 => colors.tier1Color,
+            _ => colors.defaultColor
         };
     }
 
     private void OnStabilityChanged(PlayerStabilityUpdate e)
     {
-        m_stabilityTween.Stop();
+        m_stabilitySequence.Stop();
         
         stabilityImage.sprite = GetSpriteByStability(e.Stability);
         
-        float randomTilt = UnityEngine.Random.Range(10, 20);
+        var rectTransform = stabilityImage.rectTransform;
+        rectTransform.localScale = Vector3.one;
+        rectTransform.localEulerAngles = Vector3.zero;
         
-        m_stabilityTween = Tween.LocalEulerAngles(
-            stabilityImage.rectTransform,
-            Vector3.zero,
-            new Vector3(0f, 0f, randomTilt),
-            0.1f,
-            comboAnimation.animationEase,
-            comboAnimation.tiltCycles,
-            comboAnimation.tiltCycleMode);
+        float randomTilt = UnityEngine.Random.Range(hudConfig.stabilityMinTilt, hudConfig.stabilityMaxTilt);
+        var animConfig = hudConfig.comboAnimation; 
+        
+        m_stabilitySequence = Sequence.Create()
+            .Group(Tween.PunchScale(rectTransform, hudConfig.stabilityPunchScale, hudConfig.stabilityPunchDuration))
+            .Group(Tween.LocalEulerAngles(rectTransform, Vector3.zero, new Vector3(0f, 0f, randomTilt), hudConfig.stabilityPunchDuration, animConfig.animationEase, animConfig.tiltCycles, animConfig.tiltCycleMode));
     }
     
     private Sprite GetSpriteByStability(float eStability)

@@ -122,7 +122,6 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease += HandleJoystickRelease;
         Input.OnChargeUpdate += HandleChargeUpdate;
         Input.OnChargeEnd += HandleChargeEnd;
-        Input.OnChargeStarted += HandleChargeStarted;
 
         m_playerPushedBinding = new EventBinding<ActorPushedEvent>(HandleActorPushed);
         m_floorStartedBinding = new EventBinding<FloorStartedEvent>(HandleFloorStarted);
@@ -138,7 +137,6 @@ public class PlayerCharacter : Actor
         Input.OnJoystickRelease -= HandleJoystickRelease;
         Input.OnChargeUpdate -= HandleChargeUpdate;
         Input.OnChargeEnd -= HandleChargeEnd;
-        Input.OnChargeStarted -= HandleChargeStarted;
 
         EventBus<ActorPushedEvent>.Unregister(m_playerPushedBinding);
         EventBus<FloorStartedEvent>.Unregister(m_floorStartedBinding);
@@ -269,13 +267,6 @@ public class PlayerCharacter : Actor
         Vector3 targetPos = origin + direction * distance;
         
         DashIndicator.Show(origin, targetPos);
-
-        Chain.IncrementChain();
-    }
-
-    private void HandleChargeStarted()
-    {
-        Chain.StartChainForce().Forget();
     }
 
     private void HandleChargeEnd() => DashIndicator.Hide();
@@ -294,7 +285,6 @@ public class PlayerCharacter : Actor
         SetStability(KnockbackUtility.CalculateNewStability(e.Destabilization, e.Force, ActiveStats.Weight, GetStability()));
         RequestHit();
         DamagePopUp.Show(m_pendingKnockbackForce, TransformCache.position);
-        Chain.OnEnemyHit(e.ComboDecrease);
     }
 
     #endregion

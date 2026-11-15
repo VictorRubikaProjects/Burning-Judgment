@@ -18,7 +18,8 @@ public class BouncyWall : MonoBehaviour, IForcedMovementObstacle
     {
         if (hit.Mover.GetComponentInParent<IBounceable>() is not { } bounceable) return false;
         if (bounceable.BounceCount >= maxBounces) return false;
-
+        if (!bounceable.CanBounce()) return false;
+        
         Vector3 normal = hit.Normal;
         normal.y = 0f;
         if (normal.sqrMagnitude < DirectionEpsilon) return false;

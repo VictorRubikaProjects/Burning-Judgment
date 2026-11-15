@@ -2,10 +2,10 @@ using Event_Bus;
 
 public readonly struct PlayerComboEvent : IEvent
 {
-    public readonly float Multiplier;
+    public readonly int Combo;
 
-    public PlayerComboEvent(float multiplier)
+    public PlayerComboEvent(int combo)
     {
-        Multiplier = multiplier;
+        Combo = combo;
     }
 }

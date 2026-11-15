@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c221ff3e2288d1746a3063668dc65169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::HudManager
+  hudConfig: {fileID: 11400000, guid: d5f1fcf1e877ef74f86b70d7c70365ee, type: 2}
   optionButtons:
   - {fileID: 5439096320233248309}
   - {fileID: 6844672130175016573}
@@ -146,21 +147,6 @@ MonoBehaviour:
   levelIndicator: {fileID: 1395591524172511518}
   comboText: {fileID: 445202244354717755}
   stabilityImage: {fileID: 5024422197081148413}
-  comboAnimation:
-    displayDuration: 1.5
-    hideDuration: 0.2
-    punchDuration: 0.25
-    punchScaleStrength: {x: 0.3, y: 0.3, z: 0.3}
-    minTiltAngle: -12
-    maxTiltAngle: 12
-    tiltCycles: 2
-    tiltCycleMode: 1
-    animationEase: 0
-  comboColors:
-    defaultColor: {r: 1, g: 1, b: 1, a: 1}
-    tier1Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-    tier2Color: {r: 1, g: 0.5, b: 0, a: 1}
-    tier3Color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!223 &234158369408530662
 Canvas:
   m_ObjectHideFlags: 0

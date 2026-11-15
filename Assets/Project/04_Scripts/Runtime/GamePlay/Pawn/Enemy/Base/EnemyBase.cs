@@ -265,4 +265,6 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
         PendingHitDealsDamage = false;
         RequestHit();
     }
+
+    public bool CanBounce() => m_stateMachine.GetCurrentState() is EnemyHitState;
 }
