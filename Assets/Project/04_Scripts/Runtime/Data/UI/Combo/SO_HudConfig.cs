@@ -18,6 +18,12 @@ public class SO_HudConfig : ScriptableObject
         animationEase = Ease.Default
     };
 
+    [Header("Combo Dynamic Scaling")]
+    [Tooltip("Multiplicateur d'échelle ajouté par point de combo.")]
+    public float comboScaleGrowthRate = 0.04f; 
+    [Tooltip("Taille maximale du multiplicateur pour éviter un texte trop grand.")]
+    public float maxComboScaleMultiplier = 2.5f;
+
     [Header("Combo Colors")]
     public HudManager.ComboColorConfig comboColors = new()
     {

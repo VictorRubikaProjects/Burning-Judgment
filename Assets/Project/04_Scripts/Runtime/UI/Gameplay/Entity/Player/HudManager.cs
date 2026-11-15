@@ -95,20 +95,25 @@ public class HudManager : MonoBehaviour
     private void OnShowCombo(PlayerComboEvent e)
     {
         m_comboSequence.Stop();
-        
+    
         var rectTransform = comboText.rectTransform;
         rectTransform.localScale = Vector3.one;
         rectTransform.localEulerAngles = Vector3.zero;
-        
+    
         m_sbCombo.Clear().Append("Combo ").Append(e.Combo);
         comboText.text = m_sbCombo.ToString();
         comboText.color = GetComboColor(e.Combo);
 
         var animConfig = hudConfig.comboAnimation;
         float randomTilt = UnityEngine.Random.Range(animConfig.minTiltAngle, animConfig.maxTiltAngle);
-        
+    
+        float scaleMultiplier = 1f + (e.Combo * hudConfig.comboScaleGrowthRate);
+        scaleMultiplier = Mathf.Min(scaleMultiplier, hudConfig.maxComboScaleMultiplier);
+        Vector3 dynamicPunchScale = animConfig.punchScaleStrength * scaleMultiplier;
+       
+
         m_comboSequence = Sequence.Create()
-            .Group(Tween.PunchScale(rectTransform, animConfig.punchScaleStrength, animConfig.punchDuration))
+            .Group(Tween.PunchScale(rectTransform, dynamicPunchScale, animConfig.punchDuration))
             .Group(Tween.LocalEulerAngles(rectTransform, Vector3.zero, new Vector3(0f, 0f, randomTilt), animConfig.punchDuration, animConfig.animationEase, animConfig.tiltCycles, animConfig.tiltCycleMode))
             .Chain(Tween.Delay(animConfig.displayDuration))
             .Chain(Tween.Scale(rectTransform, Vector3.zero, animConfig.hideDuration));

@@ -22,6 +22,8 @@ MonoBehaviour:
     tiltCycles: 2
     tiltCycleMode: 1
     animationEase: 0
+  comboScaleGrowthRate: 0.1
+  maxComboScaleMultiplier: 2.5
   comboColors:
     defaultColor: {r: 1, g: 1, b: 1, a: 1}
     tier1Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
