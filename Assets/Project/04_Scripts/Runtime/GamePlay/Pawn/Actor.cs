@@ -12,7 +12,7 @@ public class Actor : Pawn
 
     protected virtual void SetStability(float stability)
     {
-        m_stability = Mathf.Clamp(stability, 0.0f, 1.0f);
+        m_stability = Mathf.Clamp(stability, 0.1f, 1.0f);
     }
 
     public virtual void Kill() { }
