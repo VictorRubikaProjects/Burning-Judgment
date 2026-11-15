@@ -2,7 +2,7 @@ using System;
 using Event_Bus;
 using UnityEngine;
 
-public abstract class EnemyBase : Actor, IStrikeable
+public abstract class EnemyBase : Actor, IStrikeable, IBounceable
 {
     #region Variables
 
@@ -40,6 +40,8 @@ public abstract class EnemyBase : Actor, IStrikeable
     public GroundCheckComponent GroundCheck { get; private set; }
 
     private EventBinding<ActorPushedEvent> m_eventBindingPushActor;
+    
+    public int BounceCount { get; private set; }
 
     #endregion
 
@@ -241,5 +243,20 @@ public abstract class EnemyBase : Actor, IStrikeable
         
         RequestHit();
         DamagePopUp.Show(PendingKnockbackForce, TransformCache.position);
+    }
+    
+    public void OnBounced(Vector3 direction, float distance)
+    {
+        BounceCount++;
+
+        if (m_stateMachine.GetCurrentState() is EnemyHitState hitState)
+        {
+            hitState.Relaunch(direction, distance);
+            return;
+        }
+
+        PendingKnockbackDirection = direction;
+        PendingKnockbackForce = distance;
+        RequestHit();
     }
 }

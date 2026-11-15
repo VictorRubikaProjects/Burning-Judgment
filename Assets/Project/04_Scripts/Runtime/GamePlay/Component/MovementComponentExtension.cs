@@ -55,13 +55,19 @@ public static class MovementComponentExtension
             previousProgress = progress;
 
             Vector3 origin = position + centerOffset;
-            Vector3 moved = ResolveMovement(origin, radius, delta, obstacleLayer, mode, out bool stopped);
+            Vector3 moved = ResolveMovement(origin, radius, delta, obstacleLayer, mode, out bool stopped, out ObstacleContact contact);
             Vector3 target = position + moved;
             
             if (groundCheck != null && !groundCheck.IsGrounded(target)) return false;
 
             rb.MovePosition(target);
             position = target;
+
+            if (contact.HasObstacle && contact.Obstacle.OnForcedMovementHit(
+                    new ForcedMovementHit(rb.gameObject, contact.Direction, contact.Normal, contact.Point)))
+            {
+                return false;
+            }
 
             if (stopped) return false;
         }
@@ -77,7 +83,20 @@ public static class MovementComponentExtension
         CollisionMode mode,
         out bool stopped)
     {
+        return ResolveMovement(origin, radius, delta, obstacleLayer, mode, out stopped, out _);
+    }
+
+    public static Vector3 ResolveMovement(
+        Vector3 origin,
+        float radius,
+        Vector3 delta,
+        LayerMask obstacleLayer,
+        CollisionMode mode,
+        out bool stopped,
+        out ObstacleContact contact)
+    {
         stopped = false;
+        contact = default;
 
         Vector3 moved = Vector3.zero;
         Vector3 remaining = delta;
@@ -103,6 +122,15 @@ public static class MovementComponentExtension
 
             float allowed = Mathf.Max(0f, hit.distance - SkinWidth);
             moved += stepDirection * allowed;
+
+            IForcedMovementObstacle obstacle = hit.collider.GetComponentInParent<IForcedMovementObstacle>();
+
+            if (obstacle != null)
+            {
+                contact = new ObstacleContact(obstacle, stepDirection, hit.normal, hit.point);
+                stopped = true;
+                return moved;
+            }
 
             Vector3 leftover = stepDirection * (remainingDistance - allowed);
 

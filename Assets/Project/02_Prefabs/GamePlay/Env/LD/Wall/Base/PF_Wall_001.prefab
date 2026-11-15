@@ -73,6 +73,10 @@ PrefabInstance:
       value: PF_Wall_001
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7c1eb9c32e7f7e545898016d60a2ba63, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7c1eb9c32e7f7e545898016d60a2ba63, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -82,9 +86,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7c1eb9c32e7f7e545898016d60a2ba63, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3762568332650106071}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7c1eb9c32e7f7e545898016d60a2ba63, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5268399507187358625}
   m_SourcePrefab: {fileID: 100100000, guid: 7c1eb9c32e7f7e545898016d60a2ba63, type: 3}
 --- !u!1 &5566233608439737682 stripped
@@ -92,23 +93,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7c1eb9c32e7f7e545898016d60a2ba63, type: 3}
   m_PrefabInstance: {fileID: 4755328588904468483}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3762568332650106071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5566233608439737682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8839bfd104d48999840912b9c9f02dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Project.Runtime::StrikeableElement
-  cancelsDash: 1
-  allowsChain: 1
-  onStruck:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &5268399507187358625
 BoxCollider:
   m_ObjectHideFlags: 0

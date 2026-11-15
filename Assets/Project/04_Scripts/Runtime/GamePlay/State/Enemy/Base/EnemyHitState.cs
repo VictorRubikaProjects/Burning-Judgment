@@ -25,12 +25,7 @@ public class EnemyHitState : EnemyBaseState
 
         Owner.HitGate.TakeDamage();
         
-        Owner.KnockBack.HitAsync(
-            Owner.PendingKnockbackDirection,
-            Owner.StatsBase.HitDuration,
-            Owner.PendingKnockbackForce,
-            Owner.StatsBase.HitKnockbackCurve,
-            Owner.StatsBase.ObstacleLayer).Forget();
+        StartKnockback(Owner.PendingKnockbackDirection, Owner.PendingKnockbackForce);
         
         m_fxService.PlayEjectionEffect(Owner.TransformCache, Owner.StatsBase.HitDuration);
         m_fxService.PlayHitEffect(Owner.TransformCache,Owner.StatsBase.HitDuration);
@@ -53,6 +48,22 @@ public class EnemyHitState : EnemyBaseState
     {
         base.FixedUpdate();
         if (Owner.KnockBack.IsActive) ExecuteStrikeHit();
+    }
+
+    public void Relaunch(Vector3 direction, float distance)
+    {
+        IsFinished = false;
+        StartKnockback(direction, distance);
+    }
+
+    private void StartKnockback(Vector3 direction, float distance)
+    {
+        Owner.KnockBack.HitAsync(
+            direction,
+            Owner.StatsBase.HitDuration,
+            distance,
+            Owner.StatsBase.HitKnockbackCurve,
+            Owner.StatsBase.ObstacleLayer).Forget();
     }
 
     private void ExecuteStrikeHit()
