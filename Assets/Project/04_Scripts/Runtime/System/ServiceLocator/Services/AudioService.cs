@@ -59,15 +59,14 @@ public class AudioService : IGameService
     
     private Bus GetBusSafe(string path)
     {
-        try
+        Bus bus = RuntimeManager.GetBus(path);
+    
+        if (!bus.isValid())
         {
-            return RuntimeManager.GetBus(path);
+            Debug.LogError($"[AudioService] FMOD Bus is invalid or path not found: '{path}'. Check your SO_AudioConfig and FMOD Studio hierarchy.");
         }
-        catch (EventNotFoundException)
-        {
-            Debug.LogError($"[AudioService] Bus not found: {path}");
-            return default;
-        }
+    
+        return bus;
     }
 
     private void ReleaseAllInstances()
