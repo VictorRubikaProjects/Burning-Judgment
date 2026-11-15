@@ -5,6 +5,8 @@ using UnityEngine;
 public class StateMachine 
 {
     private StateNode m_current;
+
+    private IState m_previousState;
     
     Dictionary<Type,StateNode> m_nodes = new();
     
@@ -38,12 +40,14 @@ public class StateMachine
     {
         if (state == m_current.State) return;
         
+        m_previousState = m_current.State;
+        
         var previousState = m_current.State;
         var nextState = m_nodes[state.GetType()].State;
         
         previousState?.OnExit();
         nextState?.OnEnter();
-        
+
         m_current = m_nodes[state.GetType()];
     }
 
@@ -88,4 +92,6 @@ public class StateMachine
     }
     
     public IState GetCurrentState() =>  m_current.State;
+
+    public IState GetPreviousState() => m_previousState;
 }

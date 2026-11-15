@@ -93,10 +93,6 @@ public class SO_PlayerStats : SO_ActorsStats
     public StateAnimationData IdleAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
 
     [field: SerializeField]
-    [field: Tooltip("Transition et vitesse de l'animation de roll.")]
-    public StateAnimationData RollAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
-
-    [field: SerializeField]
     [field: Tooltip("Transition et vitesse de l'animation de dash.")]
     public StateAnimationData DashAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
 
@@ -109,8 +105,8 @@ public class SO_PlayerStats : SO_ActorsStats
     public StateAnimationData HitAnimation { get; private set; } = new() { CrossFadeDuration = 0.05f, Speed = 1f };
 
     [field: SerializeField]
-    [field: Tooltip("Transition et vitesse de l'animation de mort.")]
-    public StateAnimationData DeathAnimation { get; private set; } = new() { CrossFadeDuration = 0.1f, Speed = 1f };
+    [field: Tooltip("Transition et vitesse de l'animation quand le joueur prend un coup.")]
+    public StateAnimationData AttackAnimation { get; private set; } = new() { CrossFadeDuration = 0.05f, Speed = 1f };
 
     [field: Space, Header("Chain")]
     [field: SerializeField, Range(0f, 5f)]

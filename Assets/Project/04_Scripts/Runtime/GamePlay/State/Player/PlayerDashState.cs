@@ -130,7 +130,9 @@ public class PlayerDashState : PlayerBaseState
         if (!resultAttack.Accepted && !resultStrike.Accepted) return;
 
         HasHit = true;
-
+        
+        PlayAttackAnimation();
+        
         m_owner.Chain.RestartComboTimer();
 
         m_fxService.PlayerAttackPlayerEffect(m_owner.TransformCache, 0.5f);

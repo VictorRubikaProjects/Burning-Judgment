@@ -7,11 +7,10 @@ public abstract class PlayerBaseState : IState
     protected readonly SO_PlayerStats m_stats;
 
     protected static readonly int IdleHash = Animator.StringToHash("Idle");
-    protected static readonly int RollHash = Animator.StringToHash("Roll");
     protected static readonly int DashHash = Animator.StringToHash("Dash");
     protected static readonly int FallHash = Animator.StringToHash("Fall");
     protected static readonly int HitHash = Animator.StringToHash("Hit");
-    protected static readonly int DeathHash = Animator.StringToHash("Death");
+    protected static readonly int AttackHash = Animator.StringToHash("Attack");
 
     private readonly StateAnimationData m_animationData;
 
@@ -31,6 +30,12 @@ public abstract class PlayerBaseState : IState
     {
         m_animator.speed = m_animationData.Speed;
         m_animator.CrossFade(hash, m_animationData.CrossFadeDuration);
+    }
+
+    protected void PlayAttackAnimation()
+    {
+        m_animator.speed = m_stats.AttackAnimation.Speed;
+        m_animator.CrossFade(AttackHash,m_stats.AttackAnimation.CrossFadeDuration);
     }
 
     public virtual void OnEnter() { }

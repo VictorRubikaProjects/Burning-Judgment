@@ -320,6 +320,9 @@ public class PlayerCharacter : Actor
 
     #region Pure Utilities
 
+    public bool IsPreviousStateDash() => m_stateMachine.GetPreviousState() == m_playerDashState;
+    public bool HasHitInDashState() => m_playerDashState.HasHit;
+
     private bool CanAct() => m_stateMachine.GetCurrentState() is not (PlayerHitState or PlayerFallState or PlayerDeathState);
 
     private float ComputeDashDistance(float ratio) => ActiveStats.DashDistance * Mathf.Clamp01(ratio);
@@ -328,12 +331,10 @@ public class PlayerCharacter : Actor
 
     private bool TryRaycastObstacle(in Vector3 origin, in Vector3 direction, ref float distance)
     {
-        if (Physics.Raycast(origin + Vector3.up * 0.5f, direction, out RaycastHit hit, distance, ActiveStats.ObstacleLayer, QueryTriggerInteraction.Ignore))
-        {
-            distance = hit.distance;
-            return true;
-        }
-        return false;
+        if (!Physics.Raycast(origin + Vector3.up * 0.5f, direction, out RaycastHit hit, distance,
+                ActiveStats.ObstacleLayer, QueryTriggerInteraction.Ignore)) return false;
+        distance = hit.distance;
+        return true;
     }
     
     public void SetPersistentData(PlayerPersistentData data)
