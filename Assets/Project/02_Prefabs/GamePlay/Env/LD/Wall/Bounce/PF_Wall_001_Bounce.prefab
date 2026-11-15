@@ -10,31 +10,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4798336
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.20320797
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.908188
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.68301266
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.6830128
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.18301272
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.1830127
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -46,11 +46,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5076941431823955944, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5566233608439737682, guid: d90c063e93f97994698b3069eb1dbb4a, type: 3}
       propertyPath: m_Name
-      value: PF_Wall_001_Bounce Variant
+      value: PF_Wall_001_Bounce
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -78,4 +78,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::BouncyWall
   bounceDistance: 4
-  maxBounces: 3
+  maxBounces: 99
