@@ -1,86 +1,126 @@
-using System;
+using System.Collections.Generic;
+using Event_Bus;
 using PrimeTween;
 using UnityEngine;
 
 public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
 {
+    private const float MinFrequency = 0.01f;
+    private const float TargetHeight = 2f;
+    private const float GroundOffset = 0.1f;
+    private const int PlacementAttempts = 100;
+    private const float RotationAngle = 90f;
+    private const float RotationStepDuration = 0.8f;
+
+    private static readonly Color ColorMaxLife = Color.green;
+    private static readonly Color ColorMinLife = Color.red;
+
     [Header("Spawner Settings")]
     [SerializeField] protected int life;
-    [SerializeField] protected float frequency;
+    [SerializeField, Min(MinFrequency)] protected float frequency = 1f;
     [SerializeField] protected float range;
+    [SerializeField, Min(1)] protected int maxAlive = 10;
     [Space]
     [SerializeField] protected EnemyBase[] enemies;
     [SerializeField] protected LayerMask layerGround;
+    [SerializeField] protected LayerMask layerBlocking;
     [Space]
     [SerializeField] protected MeshRenderer rendererVisual;
     [SerializeField] private Transform visual;
-    
+
+    private readonly List<EnemyBase> m_spawned = new();
+
     private FrequencyTimer m_frequencyTimer;
-    
-    private bool m_isDestroyed;
-    private bool m_isOnTargetPoint = false;
-    
+    private GameService m_gameService;
     private Material m_materialInstance;
+    private Tween m_currentTween;
+    private Sequence m_rotationSequence;
 
+    private bool m_isDestroyed;
     private int m_maxLife;
-
-    private float m_targetHeight = 2f;
-
-    private Color m_colorMaxLife = Color.green;
-    private Color m_colorMinLife = Color.red;
-
-    private Tween m_currentTween; 
-
-    private void Kill()
-    {
-        if (m_isDestroyed) return;
-        m_isDestroyed = true;
-        Destroy(gameObject);
-    }
 
     private void Awake()
     {
-        m_frequencyTimer = new FrequencyTimer(1f/frequency);
-        
+        m_frequencyTimer = new FrequencyTimer(1f / Mathf.Max(MinFrequency, frequency));
         m_frequencyTimer.OnTick += SpawnEnemy;
-        
         m_frequencyTimer.Reset();
         m_frequencyTimer.Start();
-        
+
         if (rendererVisual)
         {
-            m_materialInstance = new Material(rendererVisual.material);
-            rendererVisual.material = m_materialInstance;
+            m_materialInstance = rendererVisual.material;
         }
-        
+
         m_maxLife = life;
-        
         UpdateColorLife();
-        
-        
+
         onStruck.AddListener(TakeDamage);
     }
 
     private void Start()
     {
+        m_gameService = ServiceLocator.Get<GameService>();
+
+        if (!visual) return;
+
         float startY = visual.localPosition.y;
-        float endY = startY + m_targetHeight;
 
         m_currentTween = Tween.LocalPositionY(
             visual,
             startValue: startY,
-            endValue: endY,
+            endValue: startY + TargetHeight,
             duration: 1f,
             cycles: -1,
             cycleMode: CycleMode.Yoyo,
-            ease: Ease.InOutSine 
-        );
+            ease: Ease.InOutSine);
+
+        StartRotation();
+    }
+
+    private void StartRotation()
+    {
+        Vector3 baseAngles = visual.localEulerAngles;
+        Vector3 stepX = baseAngles + new Vector3(RotationAngle, 0f, 0f);
+        Vector3 stepY = stepX + new Vector3(0f, RotationAngle, 0f);
+        Vector3 stepZ = stepY + new Vector3(0f, 0f, RotationAngle);
+
+        m_rotationSequence = Sequence.Create(cycles: -1, cycleMode: Sequence.SequenceCycleMode.Yoyo)
+            .Chain(Tween.LocalEulerAngles(visual, baseAngles, stepX, RotationStepDuration, Ease.InOutSine))
+            .Chain(Tween.LocalEulerAngles(visual, stepX, stepY, RotationStepDuration, Ease.InOutSine))
+            .Chain(Tween.LocalEulerAngles(visual, stepY, stepZ, RotationStepDuration, Ease.InOutSine));
+    }
+
+    private void OnDestroy()
+    {
+        if (m_frequencyTimer != null)
+        {
+            m_frequencyTimer.OnTick -= SpawnEnemy;
+            m_frequencyTimer.Stop();
+            m_frequencyTimer.Dispose();
+            m_frequencyTimer = null;
+        }
+
+        if (m_materialInstance != null)
+        {
+            Destroy(m_materialInstance);
+            m_materialInstance = null;
+        }
+
+        if (m_currentTween.isAlive)
+        {
+            m_currentTween.Stop();
+        }
+
+        if (m_rotationSequence.isAlive)
+        {
+            m_rotationSequence.Stop();
+        }
+
+        onStruck.RemoveListener(TakeDamage);
     }
 
     private void SpawnEnemy()
     {
-        Debug.Log("CC");
-        
         if (m_isDestroyed) return;
 
         if (enemies == null || enemies.Length == 0)
@@ -89,89 +129,69 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
             return;
         }
 
-        int randomIndex = UnityEngine.Random.Range(0, enemies.Length);
-        EnemyBase enemy = Instantiate(enemies[randomIndex]);
-        enemy.gameObject.SetActive(false);
+        m_spawned.RemoveAll(e => e == null || !e.gameObject.activeInHierarchy);
+        if (m_spawned.Count >= maxAlive) return;
 
-        bool findGoodPlacement = false;
-        int securityCount = 100;
-        Vector3 spawnPosition = Vector3.zero;
+        EnemyBase prefab = enemies[Random.Range(0, enemies.Length)];
+        float height = prefab.StatsBase.Height;
 
-        while (!findGoodPlacement)
+        if (!TryFindSpawnPosition(height, out Vector3 spawnPosition)) return;
+
+        EnemyBase enemy = Instantiate(prefab, spawnPosition, Quaternion.identity);
+        enemy.SetupPlayerRef(m_gameService.Player);
+        m_spawned.Add(enemy);
+        EventBus<EnemySpawnedEvent>.Raise(new EnemySpawnedEvent(enemy));
+    }
+
+    private bool TryFindSpawnPosition(float height, out Vector3 position)
+    {
+        float halfHeight = height * 0.5f;
+
+        for (int i = 0; i < PlacementAttempts; i++)
         {
-            if (securityCount <= 0) break;
-            
-            securityCount--;
-            
-            Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * range;
+            Vector2 randomCircle = Random.insideUnitCircle * range;
             Vector3 rayStart = transform.position + new Vector3(randomCircle.x, range, randomCircle.y);
 
             if (!Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, range * 2f, layerGround)) continue;
 
-            float offset = 0.1f;
-            
-            spawnPosition = hit.point + new Vector3(0, (enemy.StatsBase.Height / 2) + offset, 0);
-            
-            findGoodPlacement = true;
+            Vector3 candidate = hit.point + new Vector3(0f, halfHeight + GroundOffset, 0f);
+
+            if (Physics.CheckSphere(candidate, halfHeight, layerBlocking, QueryTriggerInteraction.Ignore)) continue;
+
+            position = candidate;
+            return true;
         }
 
-        if (!findGoodPlacement)
-        {
-            Destroy(enemy.gameObject);
-            return;
-        }
-
-        enemy.transform.position = spawnPosition;
-        
-        if (enemy.TransformCache != null)
-        {
-            enemy.TransformCache.position = spawnPosition;
-        }
-        
-        enemy.SetupPlayerRef(ServiceLocator.Get<GameService>().Player);
-        enemy.gameObject.SetActive(true);
-    }
-
-    private void OnDestroy()
-    {
-        if (m_frequencyTimer != null)
-        {
-            m_frequencyTimer.OnTick -= SpawnEnemy; 
-            m_frequencyTimer.Stop();
-            m_frequencyTimer.Dispose();
-        }
-        
-        if (m_materialInstance != null)
-        {
-            Destroy(m_materialInstance);
-            m_materialInstance = null;
-        }
-
-        m_currentTween.Stop();
-        
-        onStruck.RemoveListener(TakeDamage);
+        position = Vector3.zero;
+        return false;
     }
 
     public void TakeDamage()
     {
-        if (!CanTakeDamage())
-        {
-            Kill();
-            return;
-        }
-        
+        if (m_isDestroyed) return;
+
         life = Mathf.Max(0, life - 1);
         UpdateColorLife();
+
+        if (life <= 0)
+        {
+            Kill();
+        }
     }
 
     public bool CanTakeDamage() => life > 0;
 
+    private void Kill()
+    {
+        if (m_isDestroyed) return;
+        m_isDestroyed = true;
+        Destroy(gameObject);
+    }
+
     private void UpdateColorLife()
     {
-        if (m_materialInstance != null && m_maxLife > 0)
-        {
-            m_materialInstance.color = Color.Lerp(m_colorMinLife, m_colorMaxLife, life / (float)m_maxLife);
-        }
+        if (m_materialInstance == null || m_maxLife <= 0) return;
+        m_materialInstance.color = Color.Lerp(ColorMinLife, ColorMaxLife, life / (float)m_maxLife);
     }
 
     private void OnDrawGizmos()

@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 898263694142955628}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &7913672937154706736
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -177,11 +177,15 @@ MonoBehaviour:
   life: 3
   frequency: 10
   range: 5
+  maxAlive: 10
   enemies:
   - {fileID: 2147446832788465838, guid: f826ae6787afd7944ade27174d20d6e2, type: 3}
   - {fileID: 1511189929643106263, guid: e1c41c196493dfd4eab53f7b7c988841, type: 3}
   layerGround:
     serializedVersion: 2
     m_Bits: 23
+  layerBlocking:
+    serializedVersion: 2
+    m_Bits: 960
   rendererVisual: {fileID: 7913672937154706736}
   visual: {fileID: 2240089679240812553}

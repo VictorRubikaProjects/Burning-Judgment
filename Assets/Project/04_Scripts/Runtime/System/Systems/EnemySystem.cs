@@ -12,6 +12,7 @@ public class EnemySystem
     private SO_ConfigRound m_configCurrentRound;
     
     private EventBinding<EnemyDiedEvent> m_eventBindingEnemyDied;
+    private EventBinding<EnemySpawnedEvent> m_eventBindingEnemySpawned;
     
     private readonly AudioService m_audioService;
 
@@ -25,11 +26,15 @@ public class EnemySystem
     {
         m_eventBindingEnemyDied = new EventBinding<EnemyDiedEvent>(OnEnemyDied);
         EventBus<EnemyDiedEvent>.Register(m_eventBindingEnemyDied);
+
+        m_eventBindingEnemySpawned = new EventBinding<EnemySpawnedEvent>(OnEnemySpawned);
+        EventBus<EnemySpawnedEvent>.Register(m_eventBindingEnemySpawned);
     }
 
     public void Dispose()
     {
         EventBus<EnemyDiedEvent>.Unregister(m_eventBindingEnemyDied);
+        EventBus<EnemySpawnedEvent>.Unregister(m_eventBindingEnemySpawned);
     }
 
     public void SetupFloor(PlayerCharacter player)
@@ -70,6 +75,12 @@ public class EnemySystem
 
             m_aliveEnemies.Add(enemyObj);
         }
+    }
+
+    private void OnEnemySpawned(EnemySpawnedEvent e)
+    {
+        if (e.Enemy == null || m_aliveEnemies.Contains(e.Enemy)) return;
+        m_aliveEnemies.Add(e.Enemy);
     }
 
     private void OnEnemyDied(EnemyDiedEvent e)

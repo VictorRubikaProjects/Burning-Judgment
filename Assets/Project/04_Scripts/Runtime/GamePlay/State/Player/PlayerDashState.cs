@@ -122,7 +122,10 @@ public class PlayerDashState : PlayerBaseState
         float forceMultiplier = m_owner.Chain.ForceMultiplier;
 
         StrikeResult resultAttack = m_owner.Controller.TryStrike(CreateAttackData(forceMultiplier), m_direction);
-        StrikeResult resultStrike = m_owner.Controller.TryStrike(CreateStrikeData(forceMultiplier), m_direction);
+        
+        StrikeResult resultStrike = resultAttack.Accepted
+            ? StrikeResult.Ignored
+            : m_owner.Controller.TryStrike(CreateStrikeData(forceMultiplier), m_direction);
 
         if (!resultAttack.Accepted && !resultStrike.Accepted) return;
 
