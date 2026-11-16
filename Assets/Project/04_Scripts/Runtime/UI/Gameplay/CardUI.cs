@@ -41,16 +41,18 @@ public class CardUI : MonoBehaviour
         if (foreground) foreground.SetActive(false);
         if (background) background.SetActive(true);
         transform.localEulerAngles = new Vector3(0f, 180f, 0f);
-        transform.localScale = Vector3.one;
+        transform.localScale = Vector3.zero;
 
         SetInteractable(false);
     }
 
     public async UniTask FlipAsync(float duration)
     {
+        await Tween.Scale(transform,Vector3.one,duration/2,ease: Ease.InOutQuad);
+        
         bool swapped = false;
 
-        await Tween.LocalEulerAngles(transform, startValue: new Vector3(0f, 180f, 0f), endValue: Vector3.zero, duration: duration, ease: Ease.InOutQuad)
+        await Tween.LocalEulerAngles(transform, startValue: new Vector3(0f, 180f, 0f), endValue: Vector3.zero, duration: duration/2, ease: Ease.InOutQuad)
             .OnUpdate(transform, (target, tween) =>
             {
                 if (!swapped && target.localEulerAngles.y <= 90f)

@@ -44,7 +44,7 @@ public class RewardTreasureUI : MonoBehaviour
 
             CardUI cardUI = Instantiate(cardUIPrefab, layoutGroup.transform);
 
-            cardUI.transform.localScale = Vector3.one;
+            cardUI.transform.localScale = Vector3.zero;
             cardUI.Setup(card);
             cardUI.OnChosen += HandleCardChosen;
 
