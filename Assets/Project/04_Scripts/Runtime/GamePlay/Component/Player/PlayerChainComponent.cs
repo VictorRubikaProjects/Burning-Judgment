@@ -29,7 +29,6 @@ public class PlayerChainComponent : ActorComponent
     public void IncrementChain()
     {
         ChainCount++;
-        Debug.Log($"<color=green>COMBO {ChainCount} </color>");
         RestartComboTimer().Forget();
         EventBus<PlayerComboEvent>.Raise(new PlayerComboEvent(ChainCount));
     }
@@ -39,7 +38,6 @@ public class PlayerChainComponent : ActorComponent
         base.Reset();
         CancelTimer();
         ChainCount = 0;
-        Debug.Log($"<color=red>COMBO {ChainCount} </color>");
         EventBus<PlayerComboEvent>.Raise(new PlayerComboEvent(ChainCount));
     }
 

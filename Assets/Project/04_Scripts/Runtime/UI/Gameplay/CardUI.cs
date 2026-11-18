@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +8,8 @@ using PrimeTween;
 
 public class CardUI : MonoBehaviour
 {
-    [Header("References")]
+    [Header("References")] 
+    [SerializeField] private CanvasGroup alphaCard;
     [SerializeField] private Image imageIcon;
     [SerializeField] private Button buttonAction;
     [SerializeField] private TMP_Text textName;
@@ -66,12 +68,18 @@ public class CardUI : MonoBehaviour
         SetInteractable(false);
     }
 
-    public async UniTask FlipAsync(float duration)
+    public async UniTask FlipAsync(float duration, CancellationTokenSource cts, int index)
     {
-        await Tween.Scale(transform, Vector3.one, duration / 2, ease: Ease.InOutQuad);
+        duration *= (index + 1);
+        
+        await Tween.Scale(transform, Vector3.one, duration, ease: Ease.InOutElastic);
         
         bool swapped = false;
+        
+        await UniTask.WaitUntilCanceled(cts.Token);
 
+        duration *= 1.2f;
+        
         await Tween.LocalEulerAngles(transform, startValue: new Vector3(0f, 180f, 0f), endValue: Vector3.zero, duration: duration / 2, ease: Ease.InOutQuad)
             .OnUpdate(transform, (target, tween) =>
             {
@@ -93,8 +101,17 @@ public class CardUI : MonoBehaviour
     public async UniTask PlaySelectAnimationAsync(float duration = 0.4f)
     {
         SetInteractable(false);
+        
         await Tween.Scale(transform, endValue: Vector3.one * 1.15f, duration: duration * 0.3f, ease: Ease.OutQuad);
         await Tween.Scale(transform, endValue: Vector3.zero, duration: duration * 0.7f, ease: Ease.InQuad);
+    }
+
+    public async UniTask PlayNonSelectAnimationAsync(float duration = 0.4f)
+    {
+        SetInteractable(false);
+        //await Tween.Scale(transform, endValue: Vector3.zero, duration);
+        //I prefer the upper style but Bove do not sadly what an idiot
+        await Tween.Alpha(alphaCard, endValue: 0f, duration, Ease.OutCirc);
     }
 
     public void SetInteractable(bool value) => buttonAction.interactable = value;

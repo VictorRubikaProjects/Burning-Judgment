@@ -40,6 +40,13 @@ public class EnemyDashAttackState : EnemyBaseState
         
         m_timerChargeAttack.OnTimerStop += Attack;
         m_timerChargeAttack.Start();
+        
+        if (Owner.Animator != null)
+        {
+            Owner.Animator.Play(ChargeAttackHash);
+            Owner.Animator.speed = m_dasher.Stats.LockTime;
+            Owner.Animator.CrossFade(ChargeAttackHash, 0.1f);
+        }
     }
 
     public override void OnExit()
@@ -47,7 +54,9 @@ public class EnemyDashAttackState : EnemyBaseState
         m_isAttacking = false;
         m_timerChargeAttack.OnTimerStop -= Attack;
         m_timerChargeAttack.Stop();
-        
+
+        if (Owner.Animator != null) Owner.Animator.speed = 1;
+
         m_dasher.DashIndicator.Hide();
         
         m_cts?.Cancel();
@@ -100,6 +109,12 @@ public class EnemyDashAttackState : EnemyBaseState
             direction.Normalize();
 
             m_dasher.DashIndicator.Hide();
+            
+            if (Owner.Animator)
+            {
+                Owner.Animator.Play(AttackHash);
+                Owner.Animator.CrossFade(AttackHash, 0.1f);
+            }
 
             m_isAttacking = true;
 

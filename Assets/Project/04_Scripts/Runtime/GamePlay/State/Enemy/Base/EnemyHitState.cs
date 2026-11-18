@@ -60,6 +60,12 @@ public class EnemyHitState : EnemyBaseState
 
     private void StartKnockback(Vector3 direction, float distance)
     {
+        if (Owner.Animator)
+        {
+           Owner.Animator.Play(HitHash);
+            Owner.Animator.CrossFade(HitHash, 0.1f); 
+        }
+        
         Owner.KnockBack.HitAsync(
             direction,
             Owner.StatsBase.HitDuration,

@@ -9,6 +9,13 @@ public class EnemyFallState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
+        
+        if (Owner.Animator)
+        {
+            Owner.Animator.Play(HitHash);
+            Owner.Animator.CrossFade(HitHash, 0.1f);
+        }
+        
         FallAsync().Forget();
     }
 

@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 6421712708583034925}
   - component: {fileID: 4647943311953616220}
   - component: {fileID: 71655837406293977}
+  - component: {fileID: 7847659552816450098}
   m_Layer: 5
   m_Name: PF_Card
   m_TagString: Untagged
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8c75a162764925b878f9985e8d4f22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::CardUI
+  alphaCard: {fileID: 7847659552816450098}
   imageIcon: {fileID: 4652786958335970586}
   buttonAction: {fileID: 4647943311953616220}
   textName: {fileID: 9196910575769944813}
@@ -227,6 +229,18 @@ MonoBehaviour:
   background: {fileID: 665749325325279850}
   imageCardBackground: {fileID: 2346219862148679842}
   imageForeGround: {fileID: 2200262262514129396}
+--- !u!225 &7847659552816450098
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6082766211321894164}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6179967529221696351
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,8 +9,16 @@ public class EnemyChaseState : EnemyBaseState
     public override void OnEnter()
     {
         base.OnEnter();
+        
         IsFinished = false;
+        
         Owner.ConsumeChaseRequest();
+
+        if (Owner.Animator)
+        {
+            Owner.Animator.Play(LocomotionHash);
+            Owner.Animator.CrossFade(LocomotionHash, 0.1f);
+        }
     }
 
     public override void Update()

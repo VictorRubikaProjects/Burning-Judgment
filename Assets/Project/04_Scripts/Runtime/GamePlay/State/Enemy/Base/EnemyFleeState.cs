@@ -22,6 +22,13 @@ public class EnemyFleeState : EnemyBaseState
         
         m_timerDesperateAct.OnTimerStop += OnTimerStop;
         m_timerDesperateAct.Start();
+        
+        if (Owner.Animator)
+        {
+            Owner.Animator.Play(LocomotionHash);
+            Owner.Animator.CrossFade(LocomotionHash, 0.1f);
+        }
+        
     }
 
     public override void Update()

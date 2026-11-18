@@ -1,4 +1,3 @@
-using System;
 using Event_Bus;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
     [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
     [field: SerializeField] public Transform FeetTransform { get; protected set; }
     [field: SerializeField] public Collider ColliderEnemy { get; protected set; }
+    [field: SerializeField] public Animator Animator { get; protected set; }
 
     public enum PositionNeed { None, Approach, Retreat, Reposition }
     
@@ -109,7 +109,7 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
         
         EventBus<EnemyDiedEvent>.Raise(new EnemyDiedEvent(this));
         ServiceLocator.Get<FxService>().PlayKillConfirmEffect(TargetTransform,1f);
-        
+        ServiceLocator.Get<CameraService>().Shake();
         Destroy(gameObject);
     }
     
