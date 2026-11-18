@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e782b863ccb00584ea551e8ea1abbe25, type: 3}
+  m_Name: SO_RarityDropTable
+  m_EditorClassIdentifier: Project.Runtime::SO_RarityDropTable
+  weights:
+  - Rarity: 0
+    Weight: 70
+  - Rarity: 1
+    Weight: 25
+  - Rarity: 2
+    Weight: 5

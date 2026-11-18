@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac852cecb844b4fa6fd348d02ff0c90, type: 3}
+  m_Name: Card_Common_01
+  m_EditorClassIdentifier: Project.Runtime::SO_Card
+  <DisplayName>k__BackingField: CouCou
+  <Description>k__BackingField: 'Salut moi c''est bove bovito '
+  <Icon>k__BackingField: {fileID: 21300000, guid: 9742290cf07cb3948884f7676b55369b, type: 3}
+  <IsStackable>k__BackingField: 1
+  <Deltas>k__BackingField:
+    <DashDistance>k__BackingField: 32
+    <DashWidth>k__BackingField: 43
+    <DashSpeed>k__BackingField: 76
+    <PushForce>k__BackingField: 59
+    <Weight>k__BackingField: 54
+    <Stability>k__BackingField: 46
+    <CriticalChance>k__BackingField: 70
+    <CriticalDamage>k__BackingField: 61
+    <ComboMultiplier>k__BackingField: 68
+  <Rarity>k__BackingField: 0

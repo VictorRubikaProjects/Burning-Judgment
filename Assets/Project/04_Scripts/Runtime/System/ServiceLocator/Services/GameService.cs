@@ -1,12 +1,16 @@
+using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Event_Bus;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 public class GameService : IGameService
 {
     public bool IsInitialized { get; set; }
     public int CurrentFloor { get; private set; }
+    public int CountFloorCleared { get; private set; }
 
     private SceneService m_sceneService;
     private TransitionService m_transitionService;
@@ -19,11 +23,19 @@ public class GameService : IGameService
 
     private PlayerCharacter.PlayerPersistentData m_playerDataPersistent;
 
-    public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService)
+    private RewardTreasureUI m_rewardCard;
+    
+    private EventBinding<FloorClearedEvent> m_eventBindingFloorCleared;
+    
+    private const int CountFloorClearedSpawnNeeded = 3;
+
+    public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService, RewardTreasureUI rewardCard)
     {
         m_entityConfig = entityConfig;
         m_augmentService = augmentService;
         m_audioService = audioService;
+
+        m_rewardCard = rewardCard;
     }
 
     public void Dispose() 
@@ -39,12 +51,46 @@ public class GameService : IGameService
         m_enemySystem = new EnemySystem(m_entityConfig); 
         m_enemySystem.Initialize();
 
+        m_eventBindingFloorCleared = new EventBinding<FloorClearedEvent>(OnFloorCleared);
+        EventBus<FloorClearedEvent>.Register(m_eventBindingFloorCleared);
+
         return UniTask.CompletedTask;
     }
+
+    private void OnFloorCleared(FloorClearedEvent e) => FloorClearedAsync().Forget();
+
+    private async UniTask FloorClearedAsync()
+    {
+        CountFloorCleared++;
+
+        bool cardSpawned = CountFloorCleared % CountFloorClearedSpawnNeeded == 0;
+        float timeWaiting = cardSpawned ? 0.5f : 1.5f;
+        
+        if (cardSpawned)
+        {
+            Player.SetControlContext(PlayerControlContext.RoundWon);
+            
+            RewardTreasureUI reward = Object.Instantiate(m_rewardCard);
+            CancellationTokenSource ctsReward = new CancellationTokenSource();
+            reward.Setup(ctsReward);
+
+            await UniTask.WaitUntilCanceled(ctsReward.Token);
+        }
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(timeWaiting));
+        
+        m_playerDataPersistent = Player.GetPersistentData();
+        
+        EventBus<FloorCompletedEvent>.Raise(new FloorCompletedEvent(CurrentFloor));
+        
+        InternalPortalTransition().Forget();
+    }
+    
 
     public void ShutDownService() 
     {
         m_enemySystem?.Dispose();
+        EventBus<FloorClearedEvent>.Unregister(m_eventBindingFloorCleared);
     }
 
     public void Tick() { }
@@ -64,6 +110,7 @@ public class GameService : IGameService
         m_audioService.PlaySfx(m_audioService.Bank.StartGameEvent);
         
         CurrentFloor = 0;
+        CountFloorCleared = 0;
         m_augmentService.Reset();
 
         EventBus<RunStartedEvent>.Raise(new RunStartedEvent());
@@ -74,7 +121,7 @@ public class GameService : IGameService
         await m_transitionService.CircleTransitionFadeOut();
     }
 
-    public async UniTask StartFloor(bool isFirstFloor = false)
+    private async UniTask StartFloor(bool isFirstFloor = false)
     {
         CurrentFloor++;
 

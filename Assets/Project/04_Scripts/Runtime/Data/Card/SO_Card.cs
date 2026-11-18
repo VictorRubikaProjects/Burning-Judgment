@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(menuName = "Config/Card", fileName = "SO_Card")]
+[CreateAssetMenu(menuName = "Config/Card/Card", fileName = "SO_Card")]
 public class SO_Card : ScriptableObject
 {
     [field: Header("Visuals")]
@@ -27,5 +27,6 @@ public class SO_Card : ScriptableObject
     public AugmentDeltas Deltas { get; private set; }
     
     [field: SerializeField]
-    public CardRarity  Rarity { get; private set; }
+    [field: Tooltip("Rareté de la carte (détermine son thème visuel via la database).")]
+    public CardRarity Rarity { get; private set; }
 }

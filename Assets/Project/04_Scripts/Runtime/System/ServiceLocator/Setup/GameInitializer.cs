@@ -8,6 +8,8 @@ public class GameInitializer
     private SO_AudioConfig m_audioConfig;
     private SO_EntityPooling m_entityPoolConfig;
     private SO_ConfigVfx m_configVfx;
+
+    private RewardTreasureUI m_treasureCard;
     
     private SceneService m_sceneService;
     private SaveService m_saveService;
@@ -20,12 +22,14 @@ public class GameInitializer
 
     public bool IsInitialized { get; private set; } = false;
 
-    public void Initialize(SO_GameConfig gameConfig, SO_AudioConfig audioConfig, SO_EntityPooling entityPoolConfig, SO_ConfigVfx configVfx)
+    public void Initialize(SO_GameConfig gameConfig, SO_AudioConfig audioConfig, SO_EntityPooling entityPoolConfig, SO_ConfigVfx configVfx, RewardTreasureUI treasureCard)
     {
         m_gameConfig = gameConfig;
         m_audioConfig = audioConfig;
         m_entityPoolConfig = entityPoolConfig;
         m_configVfx =  configVfx;
+        
+        m_treasureCard = treasureCard;
         
         CreateServices();
         
@@ -67,7 +71,7 @@ public class GameInitializer
 
         m_augmentService =  new AugmentService();
         
-        m_gameService = new GameService(m_entityPoolConfig, m_augmentService,m_audioService);
+        m_gameService = new GameService(m_entityPoolConfig, m_augmentService,m_audioService,m_treasureCard);
         
     }
     

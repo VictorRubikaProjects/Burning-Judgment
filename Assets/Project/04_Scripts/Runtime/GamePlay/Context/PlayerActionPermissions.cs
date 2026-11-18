@@ -21,7 +21,7 @@ public readonly struct PlayerActionPermissions
                 inputAvailable: true
             ),
             PlayerControlContext.RoundWon => new PlayerActionPermissions(
-                inputAvailable: true
+                inputAvailable: false
             ),
             PlayerControlContext.RoundLose => new PlayerActionPermissions(
                 inputAvailable: false

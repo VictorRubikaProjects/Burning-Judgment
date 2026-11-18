@@ -1,51 +1,49 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RewardTreasureUI : MonoBehaviour
 {
-    [SerializeField] private List<SO_Card> cards;
+    [SerializeField] private List<SO_Card> cards; 
+    [SerializeField] private SO_RarityDropTable dropTable; 
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField, Min(0)] private int numberCards = 2;
     [SerializeField] private VerticalLayoutGroup layoutGroup;
     [SerializeField, Min(0f)] private float spawnDuration = 2f;
 
+    [Header("Theming")]
+    [SerializeField] private SO_CardThemeDatabase themeDatabase;
+
     private AugmentService m_augmentService;
     private List<CardUI> m_spawned = new();
+    
+    private CancellationTokenSource m_ctReward;
 
     private void Awake() => m_augmentService = ServiceLocator.Get<AugmentService>();
 
-    private void OnEnable() => Setup();
-
     private void OnDisable() => Clear();
 
-    private void Setup()
+    public void Setup(CancellationTokenSource cts)
     {
-        List<SO_Card> pool = new List<SO_Card>();
+        m_ctReward = cts;
+        
+        List<SO_Card> drawnCards = m_augmentService.DrawCards(cards, dropTable, numberCards);
 
-        m_augmentService.FillAvailableCards(cards, pool);
-
-        int count = Mathf.Min(pool.Count, numberCards);
-
-        if (count == 0)
+        if (drawnCards.Count == 0)
         {
             gameObject.SetActive(false);
             return;
         }
 
-        m_spawned = new List<CardUI>(count);
+        m_spawned = new List<CardUI>(drawnCards.Count);
 
-        for (int i = 0; i < count; i++)
+        foreach (SO_Card card in drawnCards)
         {
-            int index = Random.Range(0, pool.Count);
-            SO_Card card = pool[index];
-            pool.RemoveAt(index);
-
             CardUI cardUI = Instantiate(cardUIPrefab, layoutGroup.transform);
-
             cardUI.transform.localScale = Vector3.zero;
-            cardUI.Setup(card);
+            cardUI.Setup(card, themeDatabase);
             cardUI.OnChosen += HandleCardChosen;
 
             m_spawned.Add(cardUI);
@@ -60,8 +58,7 @@ public class RewardTreasureUI : MonoBehaviour
         {
             if (card) Destroy(card.gameObject);
         }
-
-        m_spawned = new List<CardUI>();
+        m_spawned.Clear();
     }
 
     private async void HandleCardChosen(CardUI clickedCard, SO_Card card)
@@ -75,6 +72,7 @@ public class RewardTreasureUI : MonoBehaviour
 
         m_augmentService.AddCard(card);
         gameObject.SetActive(false);
+        m_ctReward.Cancel();
     }
 
     private async UniTaskVoid AnimateSpawnAsync(List<CardUI> spawned)
@@ -82,7 +80,6 @@ public class RewardTreasureUI : MonoBehaviour
         foreach (CardUI card in spawned)
         {
             if (!card) return;
-
             await card.FlipAsync(spawnDuration);
         }
     }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ae9da5b2f87294e905ad4b1eea4dca, type: 3}
+  m_Name: SO_CardThemeDatabase
+  m_EditorClassIdentifier: Project.Runtime::SO_CardThemeDatabase
+  rarityThemes:
+  - {fileID: 11400000, guid: a5e4c28cb005d624c83dae1e6d44dd4b, type: 2}
+  - {fileID: 11400000, guid: 8f292b31552f9d5419537b19491ad87e, type: 2}
+  - {fileID: 11400000, guid: fb4964f6454185b4aad0dab5b0f4819e, type: 2}

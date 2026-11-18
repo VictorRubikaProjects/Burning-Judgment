@@ -16,12 +16,29 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Durée du dash en secondes. Plus c'est court, plus le dash est rapide.")]
     public float DashDuration { get; private set; } = 0.2f;
 
+    [field: SerializeField, Range(0.1f, 5f)]
+    [field: Tooltip("Largeur du dash.")]
+    public float DashWidth { get; private set; } = 1f;
+
     [field: SerializeField]
     [field: Tooltip("Forme de l'accélération du dash. X : temps (0 = début, 1 = fin). Y : distance parcourue (0 = départ, 1 = arrivée).")]
     public AnimationCurve DashCurve { get; private set; } = new(
         new Keyframe(0f, 0f, 0f, 2f),
         new Keyframe(1f, 1f, 0f, 0f)
     );
+
+    [field: Space, Header("Combat & Stats")]
+    [field: SerializeField, Range(0f, 100f)]
+    [field: Tooltip("Chance critique en pourcent.")]
+    public float CriticalChance { get; private set; } = 5f;
+
+    [field: SerializeField, Range(1f, 5f)]
+    [field: Tooltip("Multiplicateur des dégâts critiques.")]
+    public float CriticalDamage { get; private set; } = 1.5f;
+
+    [field: SerializeField, Range(1f, 5f)]
+    [field: Tooltip("Multiplicateur du combo.")]
+    public float ComboMultiplier { get; private set; } = 1f;
 
     [field: Space, Header("Dash - Frappe des ennemis")]
     [field: SerializeField, Range(0.1f, 3f)]
@@ -109,7 +126,7 @@ public class SO_PlayerStats : SO_ActorsStats
     public StateAnimationData AttackAnimation { get; private set; } = new() { CrossFadeDuration = 0.05f, Speed = 1f };
 
     [field: Space, Header("Chain")]
-    [field: SerializeField, Range(0.0f,5f), Tooltip("Offset de temps pour valider un combo de chain.")]
+    [field: SerializeField, Range(0.0f, 5f), Tooltip("Offset de temps pour valider un combo de chain.")]
     public float ChainDurationBeforeClear { get; private set; } = 3f;
     [field: SerializeField, Range(0f, 1f)]
     [field: Tooltip("Bonus de force en pourcentage ajouté par palier de chaîne. 15 = +15% de la force de base par chaîne (3 chaînes = +45%).")]
@@ -126,9 +143,15 @@ public class SO_PlayerStats : SO_ActorsStats
     private void Apply(in AugmentDeltas deltas)
     {
         DashDistance *= Gain(deltas.DashDistance);
-        PushForce *= Gain(deltas.PushForce);
-        InvincibilityDuration *= Gain(deltas.Invincibility);
+        DashWidth *= Gain(deltas.DashWidth);
         DashDuration = Mathf.Max(MinDuration, DashDuration / Gain(deltas.DashSpeed));
+        
+        PushForce *= Gain(deltas.PushForce);
+        Weight *= Gain(deltas.Weight);
+        Stability *= Gain(deltas.Stability);
+        CriticalChance += deltas.CriticalChance; 
+        CriticalDamage *= Gain(deltas.CriticalDamage);
+        ComboMultiplier *= Gain(deltas.ComboMultiplier);
     }
 
     private static float Gain(float percent) => Mathf.Clamp(1f + percent / 100f, MinGain, MaxGain);

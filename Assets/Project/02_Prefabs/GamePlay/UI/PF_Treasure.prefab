@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4342938734988354206}
   - component: {fileID: 7696931208995325404}
   m_Layer: 5
-  m_Name: PF_Canvas_Treasure
+  m_Name: PF_Treasure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,13 +116,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::RewardTreasureUI
   cards:
-  - {fileID: 11400000, guid: f80b28c7ed03c9f4191360821d2683b4, type: 2}
-  - {fileID: 11400000, guid: b7453e7efbf9dac4fbf24fd4f600c31b, type: 2}
-  - {fileID: 11400000, guid: 4e1dc9a339b25d740bc87a241b03e066, type: 2}
+  - {fileID: 11400000, guid: 11fdf55dbc074254198a319eefea0262, type: 2}
+  - {fileID: 11400000, guid: 5c6fb403dd4674440859b9d88e139782, type: 2}
+  - {fileID: 11400000, guid: 4cbe330a9c0fefe45a461694d6d4b740, type: 2}
+  - {fileID: 11400000, guid: e0813105fb5677549afa4d1217ad3136, type: 2}
+  - {fileID: 11400000, guid: 74a40c482dc21204cafa420a797d713b, type: 2}
+  - {fileID: 11400000, guid: 3f52c309fc9982447a3593d30757cde2, type: 2}
+  - {fileID: 11400000, guid: 8e524d635b037e84b99a5a798ac30963, type: 2}
+  - {fileID: 11400000, guid: 71c019209f204eb45a13ff55d1fdc9d5, type: 2}
+  - {fileID: 11400000, guid: 074cf06af9b1b0147877677fe16abbc1, type: 2}
+  - {fileID: 11400000, guid: 4552791e0742a5a4bbb5757981369c5f, type: 2}
+  - {fileID: 11400000, guid: 504944b71d672a544bbd96fd25ed441d, type: 2}
+  - {fileID: 11400000, guid: ff6d3c9563648c148b913f389cce475b, type: 2}
+  - {fileID: 11400000, guid: c8e64e7dc42e34f439bfe844d6c43612, type: 2}
+  - {fileID: 11400000, guid: 3fcb6f80388e40f4da16ab002ff2dc8b, type: 2}
+  - {fileID: 11400000, guid: 2097969f2d1910141bd4e84320a51a17, type: 2}
+  - {fileID: 11400000, guid: 5546bc999f9d6634c9a44c005af836a0, type: 2}
+  - {fileID: 11400000, guid: 9abed934a53a5144db414335168f14c8, type: 2}
+  - {fileID: 11400000, guid: 29dbda528ec60144daeb8521d1be7664, type: 2}
+  - {fileID: 11400000, guid: 2cab15bdc18745f4babc45c25d42ece4, type: 2}
+  - {fileID: 11400000, guid: 3bbdf0d97eefa6d4b920a9d0a687a66c, type: 2}
+  - {fileID: 11400000, guid: 497c0e44cd0a3a547866eaae0219ab9d, type: 2}
+  dropTable: {fileID: 11400000, guid: 9a914834783fda24a95c530de7d4f4c5, type: 2}
   cardUIPrefab: {fileID: 71655837406293977, guid: 96887fd7b723b7849bbf77338434c739, type: 3}
   numberCards: 3
   layoutGroup: {fileID: 6495590908946746133}
   spawnDuration: 0.6
+  themeDatabase: {fileID: 11400000, guid: ae9ed2e15956dde40aaef8ecdf16c546, type: 2}
 --- !u!1 &3534275692468699320
 GameObject:
   m_ObjectHideFlags: 0

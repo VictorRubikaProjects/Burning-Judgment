@@ -26,5 +26,9 @@ public class EnemyFallState : EnemyBaseState
         
         Owner.Rigidbody.linearVelocity = Vector3.zero;
         Owner.Rigidbody.angularVelocity = Vector3.zero;
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        
+        Owner.Kill();
     }
 }
