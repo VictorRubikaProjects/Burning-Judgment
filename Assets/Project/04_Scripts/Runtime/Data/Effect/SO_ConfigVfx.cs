@@ -8,4 +8,5 @@ public class SO_ConfigVfx : ScriptableObject
     [field: SerializeField] public ParticleSystem VfxPrefabDash { get; private set; }
     [field: SerializeField] public ParticleSystem VfxPrefabAttackPlayer { get; private set; }
     [field: SerializeField] public ParticleSystem VfxPrefabHit { get; private set; }
+    [field: SerializeField] public ParticleSystem VfxPrefabConfirmKill { get; private set; }
 }

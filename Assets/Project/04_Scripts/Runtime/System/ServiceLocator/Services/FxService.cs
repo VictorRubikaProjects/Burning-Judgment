@@ -120,7 +120,7 @@ public sealed class FxService : IGameService
         return pool;
     }
 
-    private async UniTaskVoid LaunchEffect(ParticleSystem effectPrefab, Transform targetTransform, float duration)
+    private async UniTaskVoid LaunchEffectAsync(ParticleSystem effectPrefab, Transform targetTransform, float duration)
     {
         if (effectPrefab == null || targetTransform == null) return;
 
@@ -174,7 +174,7 @@ public sealed class FxService : IGameService
         ReturnToPool(effectKey, ps, effectPrefab, cts, isCancelledExternally: false);
     }
 
-    private async UniTaskVoid LaunchEffectUnparented(ParticleSystem effectPrefab, Transform targetTransform, float duration)
+    private async UniTaskVoid LaunchEffectUnparentedAsync(ParticleSystem effectPrefab, Transform targetTransform, float duration)
     {
         if (effectPrefab == null || targetTransform == null) return;
 
@@ -249,10 +249,10 @@ public sealed class FxService : IGameService
     }
 
     public void PlayEffect(ParticleSystem effectPrefab, Transform targetTransform, float duration)
-        => LaunchEffect(effectPrefab, targetTransform, duration).Forget();
+        => LaunchEffectAsync(effectPrefab, targetTransform, duration).Forget();
 
     public void PlayEffectAtTargetPosition(ParticleSystem effectPrefab, Transform targetTransform, float duration)
-        => LaunchEffectUnparented(effectPrefab, targetTransform, duration).Forget();
+        => LaunchEffectUnparentedAsync(effectPrefab, targetTransform, duration).Forget();
 
     #region Helper
     public void PlayHitEffect(Transform target, float duration)
@@ -268,5 +268,8 @@ public sealed class FxService : IGameService
     
     public void PlayChainSuccessEffect(Transform targetTransform, float duration) 
         => PlayEffectAtTargetPosition(m_configVfx.VfxPrefabChainInputSuccess, targetTransform, duration);
+    
+    public void PlayKillConfirmEffect(Transform targetTransform, float duration)
+    => PlayEffectAtTargetPosition(m_configVfx.VfxPrefabConfirmKill, targetTransform, duration);
     #endregion
 }

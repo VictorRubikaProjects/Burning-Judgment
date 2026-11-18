@@ -108,6 +108,7 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
         m_isDead = true;
         
         EventBus<EnemyDiedEvent>.Raise(new EnemyDiedEvent(this));
+        ServiceLocator.Get<FxService>().PlayKillConfirmEffect(TargetTransform,1f);
         
         Destroy(gameObject);
     }
