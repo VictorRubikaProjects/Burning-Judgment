@@ -1,3 +1,5 @@
+using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerFallState : PlayerBaseState
@@ -19,5 +21,13 @@ public class PlayerFallState : PlayerBaseState
         
         m_rb.isKinematic = false;
         m_rb.useGravity = true;
+        
+        FallAsync().Forget();
+    }
+
+    private async UniTask FallAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(1f));
+        m_owner.Kill();
     }
 }

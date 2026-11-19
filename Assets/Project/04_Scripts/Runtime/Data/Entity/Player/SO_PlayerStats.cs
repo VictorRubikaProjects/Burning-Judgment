@@ -16,10 +16,6 @@ public class SO_PlayerStats : SO_ActorsStats
     [field: Tooltip("Durée du dash en secondes. Plus c'est court, plus le dash est rapide.")]
     public float DashDuration { get; private set; } = 0.2f;
 
-    [field: SerializeField, Range(0.1f, 5f)]
-    [field: Tooltip("Largeur du dash.")]
-    public float DashWidth { get; private set; } = 1f;
-
     [field: SerializeField]
     [field: Tooltip("Forme de l'accélération du dash. X : temps (0 = début, 1 = fin). Y : distance parcourue (0 = départ, 1 = arrivée).")]
     public AnimationCurve DashCurve { get; private set; } = new(
@@ -143,7 +139,7 @@ public class SO_PlayerStats : SO_ActorsStats
     private void Apply(in AugmentDeltas deltas)
     {
         DashDistance *= Gain(deltas.DashDistance);
-        DashWidth *= Gain(deltas.DashWidth);
+        DashAttackRadius *= Gain(deltas.DashAttackRadius);
         DashDuration = Mathf.Max(MinDuration, DashDuration / Gain(deltas.DashSpeed));
         
         PushForce *= Gain(deltas.PushForce);
