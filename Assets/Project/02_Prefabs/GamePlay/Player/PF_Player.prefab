@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 4455163777241542802}
   - component: {fileID: 1563943224991897210}
   - component: {fileID: 8638680600792434940}
+  - component: {fileID: 5043811014391476471}
   - component: {fileID: 4374285692015904546}
   - component: {fileID: 6773298274157356297}
   m_Layer: 7
@@ -184,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f0726b967cc9e4bb2198109689f9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::PlayerCharacter
+  stabilityVisuals: {fileID: 5043811014391476471}
   rb: {fileID: 6773298274157356297}
   animator: {fileID: 9130273571037338482}
   feetTransform: {fileID: 4256807357542900472}
@@ -211,6 +213,22 @@ MonoBehaviour:
   moveSpeed: 1
   lifeTime: 1
   offsetY: 1
+--- !u!114 &5043811014391476471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976233887079919446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c9042b24e5c4e4fa1bd1e60c78ca86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::StabilityVisuals
+  smokeThreshold: 0.7
+  sparkThreshold: 0.4
+  fireThreshold: 0.2
+  stopEmittingOnly: 1
 --- !u!136 &4374285692015904546
 CapsuleCollider:
   m_ObjectHideFlags: 0

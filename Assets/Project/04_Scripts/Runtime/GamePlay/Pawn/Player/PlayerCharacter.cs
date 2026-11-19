@@ -19,7 +19,7 @@ public class PlayerCharacter : Actor
     
     public struct PlayerPersistentData
     {
-        public float Stability;
+        public readonly float Stability;
 
         public PlayerPersistentData(float stability)
         {
@@ -56,6 +56,7 @@ public class PlayerCharacter : Actor
     
     public PlayerControlContext ControlContext { get; private set; } = PlayerControlContext.RoundCountdown;
     public PlayerActionPermissions ActionPermissions { get; private set; } = PlayerActionPermissions.FromContext(PlayerControlContext.RoundCountdown);
+    
     public event Action<PlayerControlContext> OnControlContextChanged;
 
     public Vector3 MoveDir => m_currentDashContext.Direction;
@@ -303,6 +304,7 @@ public class PlayerCharacter : Actor
     {
         if (m_isDead) return;
         m_isDead = true;
+        ServiceLocator.Get<CameraService>().RemoveTarget(transform);
         ServiceLocator.Get<GameService>().EndRun();
     }
 

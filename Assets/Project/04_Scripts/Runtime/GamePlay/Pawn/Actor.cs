@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class Actor : Pawn
 {
+    [SerializeField] private StabilityVisuals stabilityVisuals;
+    
     private readonly List<ActorComponent> m_components = new();
 
     private float m_stability;
+    
     protected bool m_isDead;
     
     public float GetStability() => m_stability;
@@ -13,6 +16,7 @@ public class Actor : Pawn
     protected virtual void SetStability(float stability)
     {
         m_stability = Mathf.Clamp(stability, 0.1f, 1.0f);
+        stabilityVisuals.SetStabilityVisuals(m_stability);
     }
 
     public virtual void Kill() { }

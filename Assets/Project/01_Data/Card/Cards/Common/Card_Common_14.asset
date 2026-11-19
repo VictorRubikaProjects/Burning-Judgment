@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Card_Common_14
   m_EditorClassIdentifier: Project.Runtime::SO_Card
   <DisplayName>k__BackingField: ID22
-  <Description>k__BackingField: "Poids +\nStabilit\xE9 + "
+  <Description>k__BackingField: J'ai manger plein de caca aujourd'hui j'ai manger
+    plein de caca aujourd'hui
   <Icon>k__BackingField: {fileID: 21300000, guid: 9742290cf07cb3948884f7676b55369b, type: 3}
   <IsStackable>k__BackingField: 1
   <Deltas>k__BackingField:

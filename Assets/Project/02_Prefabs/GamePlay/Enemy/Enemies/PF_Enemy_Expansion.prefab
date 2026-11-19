@@ -179,10 +179,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07366f51f1424c79be0276ecd4d60297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyExpansion
+  stabilityVisuals: {fileID: 5403164121983525843}
   <Rigidbody>k__BackingField: {fileID: 3270621082815049600}
   <DamagePopUp>k__BackingField: {fileID: 3951912321538186619}
   <FeetTransform>k__BackingField: {fileID: 1440780938651814500}
   <ColliderEnemy>k__BackingField: {fileID: 3566398422551106428}
+  <Animator>k__BackingField: {fileID: 0}
   stats: {fileID: 11400000, guid: 75dc8c98f59bb2b4c88a6b4e6a7c499a, type: 2}
   materialChargeAttack: {fileID: 2100000, guid: 5a7670149ab14b346a0725d5098df67e, type: 2}
   rendererEnemy: {fileID: 6429605846392613010}
@@ -212,3 +214,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b8d003dcc9b55418bf844511644aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::DamagePopUp
+--- !u!114 &5403164121983525843 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5588419528940187450, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 537591743468752105}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683490832093399852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c9042b24e5c4e4fa1bd1e60c78ca86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::StabilityVisuals

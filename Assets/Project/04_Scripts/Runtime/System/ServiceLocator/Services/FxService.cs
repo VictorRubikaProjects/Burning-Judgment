@@ -10,7 +10,7 @@ public sealed class FxService : IGameService
 {
     private TimeEffect m_timeEffect;
     
-    private readonly SO_ConfigVfx m_configVfx;
+    public SO_ConfigVfx ConfigVfx { get; private set; }
 
     private readonly Dictionary<ParticleSystem, IObjectPool<ParticleSystem>> m_effectPools = new();
     
@@ -64,7 +64,7 @@ public sealed class FxService : IGameService
 
     public FxService(SO_ConfigVfx configVfx)
     {
-        m_configVfx = configVfx;
+        ConfigVfx = configVfx;
         
     }
     
@@ -256,20 +256,20 @@ public sealed class FxService : IGameService
 
     #region Helper
     public void PlayHitEffect(Transform target, float duration)
-        => PlayEffect(m_configVfx.VfxPrefabHit, target, duration);
+        => PlayEffect(ConfigVfx.VfxPrefabHit, target, duration);
     public void PlayEjectionEffect(Transform targetTransform, float duration)
-        => PlayEffect(m_configVfx.VfxPrefabEjection, targetTransform, duration);
+        => PlayEffect(ConfigVfx.VfxPrefabEjection, targetTransform, duration);
     
     public void PlayerAttackPlayerEffect(Transform playerTransform, float duration)
-        => PlayEffect(m_configVfx.VfxPrefabAttackPlayer, playerTransform, duration);
+        => PlayEffect(ConfigVfx.VfxPrefabAttackPlayer, playerTransform, duration);
     
     public void PlayDashEffect(Transform targetTransform, float duration)
-        => PlayEffect(m_configVfx.VfxPrefabDash, targetTransform, duration);
+        => PlayEffect(ConfigVfx.VfxPrefabDash, targetTransform, duration);
     
     public void PlayChainSuccessEffect(Transform targetTransform, float duration) 
-        => PlayEffectAtTargetPosition(m_configVfx.VfxPrefabChainInputSuccess, targetTransform, duration);
+        => PlayEffectAtTargetPosition(ConfigVfx.VfxPrefabChainInputSuccess, targetTransform, duration);
     
     public void PlayKillConfirmEffect(Transform targetTransform, float duration)
-    => PlayEffectAtTargetPosition(m_configVfx.VfxPrefabConfirmKill, targetTransform, duration);
+    => PlayEffectAtTargetPosition(ConfigVfx.VfxPrefabConfirmKill, targetTransform, duration);
     #endregion
 }

@@ -225,6 +225,7 @@ MonoBehaviour:
   buttonAction: {fileID: 4647943311953616220}
   textName: {fileID: 9196910575769944813}
   textDescription: {fileID: 1315601885299198650}
+  statsSummary: {fileID: 8858644917370455747}
   foreground: {fileID: 5788842177379742967}
   background: {fileID: 665749325325279850}
   imageCardBackground: {fileID: 2346219862148679842}
@@ -267,7 +268,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6179967529221696351}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0000076293945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -275,8 +276,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -293.3954, y: -131.80249}
-  m_SizeDelta: {x: 168.6992, y: 224.6192}
+  m_AnchoredPosition: {x: -134.87265, y: -117.842224}
+  m_SizeDelta: {x: 485.75, y: 210.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4951766416520384842
 CanvasRenderer:
@@ -343,9 +344,9 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 42.6
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -408,7 +409,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7013641178913601657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -416,7 +417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -159.73756, y: 41}
+  m_AnchoredPosition: {x: -159.73756, y: 50}
   m_SizeDelta: {x: 436.0149, y: 107.366}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5256136617627272368

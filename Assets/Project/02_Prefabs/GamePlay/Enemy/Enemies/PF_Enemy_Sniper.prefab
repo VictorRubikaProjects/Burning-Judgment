@@ -286,6 +286,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3512228309614343052}
   m_SourcePrefab: {fileID: 100100000, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+--- !u!114 &2845948801606163119 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5588419528940187450, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
+  m_PrefabInstance: {fileID: 7705899380321744277}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852325899519160912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c9042b24e5c4e4fa1bd1e60c78ca86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Project.Runtime::StabilityVisuals
 --- !u!54 &4676608833685133052 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 3032748135735321449, guid: 8fb37452fe535f24aa2e55b157de9397, type: 3}
@@ -329,10 +340,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d73badefa12431896fa04058983fd62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemySniper
+  stabilityVisuals: {fileID: 2845948801606163119}
   <Rigidbody>k__BackingField: {fileID: 4676608833685133052}
   <DamagePopUp>k__BackingField: {fileID: 6583472306031191047}
   <FeetTransform>k__BackingField: {fileID: 9114050749522211608}
   <ColliderEnemy>k__BackingField: {fileID: 6700043459764791808}
+  <Animator>k__BackingField: {fileID: 0}
   stats: {fileID: 11400000, guid: 72752c4124e23b74fb67a1585a920db6, type: 2}
   <ShootPoint>k__BackingField: {fileID: 2580230676802955762}
   <AimVisual>k__BackingField: {fileID: 1645958956491001147}

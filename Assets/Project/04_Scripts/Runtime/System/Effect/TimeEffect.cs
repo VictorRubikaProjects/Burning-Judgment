@@ -6,7 +6,7 @@ using UnityEngine;
 public class TimeEffect
 {
     private CancellationTokenSource m_ctsHitStop = new();
-    private bool hitStopRunning = false;
+    private bool hitStopRunning;
 
     public async UniTaskVoid HitStop()
     {
@@ -22,7 +22,7 @@ public class TimeEffect
         try
         {
             Time.timeScale = 0f;
-            await UniTask.Delay(TimeSpan.FromSeconds(0.05f), ignoreTimeScale: true, cancellationToken: m_ctsHitStop.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f), ignoreTimeScale: true, cancellationToken: m_ctsHitStop.Token);
             Time.timeScale = originalTimeScale;
             hitStopRunning = false;
         }

@@ -14,6 +14,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Button buttonAction;
     [SerializeField] private TMP_Text textName;
     [SerializeField] private TMP_Text textDescription;
+    [SerializeField] private TMP_Text statsSummary;
     [SerializeField] private GameObject foreground;
     [SerializeField] private GameObject background;
 
@@ -21,7 +22,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Image imageCardBackground;
     [SerializeField] private Image imageForeGround;        
 
-    private SO_Card m_card;
+    private SO_Card m_cardData;
 
     public event Action<CardUI, SO_Card> OnChosen;
 
@@ -37,7 +38,7 @@ public class CardUI : MonoBehaviour
 
     public void Setup(SO_Card card, SO_CardThemeDatabase themeDatabase)
     {
-        m_card = card;
+        m_cardData = card;
 
         imageIcon.sprite = card.Icon;
         imageIcon.enabled = card.Icon != null;
@@ -62,9 +63,12 @@ public class CardUI : MonoBehaviour
 
         if (foreground) foreground.SetActive(false);
         if (background) background.SetActive(true);
+        
         transform.localEulerAngles = new Vector3(0f, 180f, 0f);
         transform.localScale = Vector3.zero;
 
+        statsSummary.text = themeDatabase.GetStatsSummaryByDeltas(m_cardData.Deltas);
+        
         SetInteractable(false);
     }
 
@@ -116,5 +120,5 @@ public class CardUI : MonoBehaviour
 
     public void SetInteractable(bool value) => buttonAction.interactable = value;
 
-    private void HandleClick() => OnChosen?.Invoke(this, m_card);
+    private void HandleClick() => OnChosen?.Invoke(this, m_cardData);
 }

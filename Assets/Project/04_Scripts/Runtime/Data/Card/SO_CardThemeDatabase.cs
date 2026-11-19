@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Config/Card/Card Theme Database", fileName = "SO_CardThemeDatabase")]
 public class SO_CardThemeDatabase : ScriptableObject
 {
-    [SerializeField] private List<SO_CardRarityTheme> rarityThemes = new List<SO_CardRarityTheme>();
+    [SerializeField] private List<SO_CardRarityTheme> rarityThemes = new();
+    
     private Dictionary<CardRarity, SO_CardRarityTheme> m_themeCache;
 
     private void InitCache()
@@ -30,5 +32,28 @@ public class SO_CardThemeDatabase : ScriptableObject
         }
         Debug.LogWarning($"Aucun thème trouvé pour la rareté : {rarity}");
         return null;
+    }
+
+    public string GetStatsSummaryByDeltas(AugmentDeltas deltas)
+    {
+        string stats = "";
+
+        List<Tuple<string, float>> statsList = deltas.GetAllAugmentFromDelta();
+
+        foreach (var stat in statsList)
+        {
+            if (stat == null || stat.Item2 == 0) continue;
+
+            string name = $" {stat.Item1}";
+            
+            bool positiveAugment = stat.Item2 > 0;
+
+            name += positiveAugment ? stat.Item2 >= 30 ?
+                    " ++\n" : " +\n" : stat.Item2 <= 30 ? " --\n" : " -\n";
+
+            stats += name;
+        }
+
+        return stats;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -40,7 +41,24 @@ public struct AugmentDeltas
 
     [field: SerializeField, Range(-90f, 100f)]
     [field: Tooltip("Variation du multiplicateur du combo.")]
-    public float ComboMultiplier { get; private set; } 
+    public float ComboMultiplier { get; private set; }
+
+    public List<Tuple<string, float>> GetAllAugmentFromDelta()
+    {
+        List<Tuple<string, float>> delta = new List<Tuple<string, float>>
+        {
+            new("Dash Distance", DashMaxDistance),
+            new("Attack Range", DashAttackRadius),
+            new("Speed", DashSpeed),
+            new("Strenght", PushForce), 
+            new("Weight", Weight),
+            new("Stability", Stability),
+            new("Crit Chance", CriticalChance),
+            new("Crit Damage", CriticalDamage),
+            new("Combo Multiplier", ComboMultiplier)
+        };
+        return delta;
+    }
 
     public static AugmentDeltas operator +(AugmentDeltas a, AugmentDeltas b)
     {
