@@ -68,8 +68,9 @@ public class PlayerDashState : PlayerBaseState
 
     private async UniTaskVoid RunDashAsync(Vector3 direction, CancellationToken token)
     {
+        float speed = m_stats.DashSpeed;
         float distance = m_owner.DashDistance;
-        float duration = ComputeDuration(distance);
+        float duration = distance / speed;
 
         PlayAnimation(DashHash);
         m_audioService.PlaySfx(m_audioService.Bank.PlayerDashEvent, m_owner.TransformCache.position);
@@ -87,12 +88,6 @@ public class PlayerDashState : PlayerBaseState
         if (token.IsCancellationRequested) return;
 
         IsFinished = true;
-    }
-
-    private float ComputeDuration(float distance)
-    {
-        if (m_stats.DashDistance <= 0f) return m_stats.DashDuration;
-        return Mathf.Clamp01(distance / m_stats.DashDistance) * m_stats.DashDuration;
     }
 
     private PlayerControllerComponent.StrikeData CreateAttackData(float forceMultiplier)

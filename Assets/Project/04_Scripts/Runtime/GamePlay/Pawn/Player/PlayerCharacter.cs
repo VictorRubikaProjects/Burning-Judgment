@@ -297,7 +297,7 @@ public class PlayerCharacter : Actor
     public void ConsumeHitRequest() => m_hitRequested = false;
 
     public void SetIdle() => m_stateMachine.SetState(m_playerIdleState);
-    public void ResetDashDistance() => m_currentDashContext = new DashContext(m_currentDashContext.Direction, ActiveStats.DashDistance);
+    public void ResetDashDistance() => m_currentDashContext = new DashContext(m_currentDashContext.Direction, ActiveStats.DashMaxDistance);
 
     public override void Kill()
     {
@@ -315,7 +315,7 @@ public class PlayerCharacter : Actor
 
     private bool CanAct() => m_stateMachine.GetCurrentState() is not (PlayerHitState or PlayerFallState or PlayerDeathState);
 
-    private float ComputeDashDistance(float ratio) => ActiveStats.DashDistance * Mathf.Clamp01(ratio);
+    private float ComputeDashDistance(float ratio) => ActiveStats.DashMaxDistance * Mathf.Clamp01(ratio);
 
     private static Vector3 ToWorldDirection(in Vector2 dir) => new(dir.x, 0f, dir.y);
 

@@ -8,13 +8,12 @@ public class SO_PlayerStats : SO_ActorsStats
     private const float MinDuration = 0.01f;
 
     [field: Space, Header("Dash")]
+    [field: SerializeField, Range(0,100)]
+    public float DashSpeed { get; private set; } = 5f;
+    
     [field: SerializeField, Range(0f, 20f)]
     [field: Tooltip("Distance parcourue par le dash, en unités.")]
-    public float DashDistance { get; private set; } = 7f;
-
-    [field: SerializeField, Range(0.01f, 1f)]
-    [field: Tooltip("Durée du dash en secondes. Plus c'est court, plus le dash est rapide.")]
-    public float DashDuration { get; private set; } = 0.2f;
+    public float DashMaxDistance { get; private set; } = 7f;
 
     [field: SerializeField]
     [field: Tooltip("Forme de l'accélération du dash. X : temps (0 = début, 1 = fin). Y : distance parcourue (0 = départ, 1 = arrivée).")]
@@ -138,14 +137,14 @@ public class SO_PlayerStats : SO_ActorsStats
 
     private void Apply(in AugmentDeltas deltas)
     {
-        DashDistance *= Gain(deltas.DashDistance);
+        DashMaxDistance *= Gain(deltas.DashMaxDistance);
         DashAttackRadius *= Gain(deltas.DashAttackRadius);
-        DashDuration = Mathf.Max(MinDuration, DashDuration / Gain(deltas.DashSpeed));
+        DashSpeed *= Gain(deltas.DashSpeed);
         
         PushForce *= Gain(deltas.PushForce);
         Weight *= Gain(deltas.Weight);
         Stability *= Gain(deltas.Stability);
-        CriticalChance += deltas.CriticalChance; 
+        CriticalChance += deltas.CriticalChance;
         CriticalDamage *= Gain(deltas.CriticalDamage);
         ComboMultiplier *= Gain(deltas.ComboMultiplier);
     }
