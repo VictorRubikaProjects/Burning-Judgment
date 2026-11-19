@@ -7,7 +7,7 @@ public struct AugmentDeltas
     [field: Header("Dash")]
     [field: SerializeField, Range(-90f, 100f)]
     [field: Tooltip("Variation en % de la longueur maximale du dash.")]
-    public float DashDistance { get; private set; } 
+    public float DashMaxDistance { get; private set; } 
 
     [field: SerializeField, Range(-90f, 100f)]
     [field: Tooltip("Variation en % de la largeur du dash.")]
@@ -46,7 +46,7 @@ public struct AugmentDeltas
     {
         return new AugmentDeltas
         {
-            DashDistance = a.DashDistance + b.DashDistance,
+            DashMaxDistance = a.DashMaxDistance + b.DashMaxDistance,
             DashAttackRadius = a.DashAttackRadius + b.DashAttackRadius,
             DashSpeed = a.DashSpeed + b.DashSpeed,
             PushForce = a.PushForce + b.PushForce,
