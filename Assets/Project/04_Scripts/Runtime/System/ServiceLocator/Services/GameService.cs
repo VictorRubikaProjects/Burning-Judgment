@@ -27,7 +27,7 @@ public class GameService : IGameService
     
     private EventBinding<FloorClearedEvent> m_eventBindingFloorCleared;
     
-    private const int CountFloorClearedSpawnNeeded = 1;
+    private const int CountFloorClearedSpawnNeeded = 3;
 
     public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService, RewardTreasureUI rewardCard)
     {
