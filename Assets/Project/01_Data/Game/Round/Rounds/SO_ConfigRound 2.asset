@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e02085a060eb640814d3c36d65157f, type: 3}
+  m_Name: SO_ConfigRound 2
+  m_EditorClassIdentifier: Project.Runtime::SO_ConfigRound
+  <RoundData>k__BackingField:
+    <Map>k__BackingField:
+      asset: {fileID: 102900000, guid: 010c2f9f3d24c914281d8650bea7f0e0, type: 3}
+      guid: 010c2f9f3d24c914281d8650bea7f0e0
+    <EnemyTeams>k__BackingField:
+    - {fileID: 11400000, guid: 686b8cf3fd13aab43b5d8f6c65fef2ba, type: 2}
+    - {fileID: 11400000, guid: 60a5ce38c965ae74fa8354696ec16923, type: 2}
+    - {fileID: 11400000, guid: e69ec5d8c6b199c47b8a8de50076b7d3, type: 2}
+    - {fileID: 11400000, guid: 80c80004229739e4580d76c4252c50bb, type: 2}
+    - {fileID: 11400000, guid: 7720410445548824b8d944d095415975, type: 2}
+  <PlayerSpawnPosition>k__BackingField: {x: 0, y: 1, z: 0}
+  <EnemySpawnPositions>k__BackingField:
+  - {x: 5, y: 1, z: -5}
+  - {x: 5, y: 1, z: 10}
+  - {x: -5, y: 1, z: -5}
+  - {x: -5, y: 1, z: 10}
+  <SpawnRadius>k__BackingField: 1

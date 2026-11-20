@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29e02085a060eb640814d3c36d65157f, type: 3}
-  m_Name: SO_ConfigRound 1x Dasher
+  m_Name: SO_ConfigRound 1
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigRound
   <RoundData>k__BackingField:
     <Map>k__BackingField:
-      asset: {fileID: 102900000, guid: 8b9072066ece08d419efd644468bbd39, type: 3}
-      guid: 8b9072066ece08d419efd644468bbd39
+      asset: {fileID: 102900000, guid: a55d96aa2c034b84ab7d904dd6962e3d, type: 3}
+      guid: a55d96aa2c034b84ab7d904dd6962e3d
     <EnemyTeams>k__BackingField:
     - {fileID: 11400000, guid: 686b8cf3fd13aab43b5d8f6c65fef2ba, type: 2}
-    - {fileID: 11400000, guid: 994ab344cc124744db3730c70b3b787f, type: 2}
     - {fileID: 11400000, guid: 60a5ce38c965ae74fa8354696ec16923, type: 2}
-  <PlayerSpawnPosition>k__BackingField: {x: 0, y: 0.78, z: 0}
+    - {fileID: 11400000, guid: e69ec5d8c6b199c47b8a8de50076b7d3, type: 2}
+    - {fileID: 11400000, guid: 80c80004229739e4580d76c4252c50bb, type: 2}
+    - {fileID: 11400000, guid: 7720410445548824b8d944d095415975, type: 2}
+  <PlayerSpawnPosition>k__BackingField: {x: 0, y: 1, z: 0}
   <EnemySpawnPositions>k__BackingField:
-  - {x: -7.97, y: 1.1, z: 11.07}
-  - {x: 6.46, y: 1.1, z: 11.37}
-  - {x: -6.33, y: 1.1, z: -1.72}
-  - {x: 3.72, y: 1.1, z: -3.49}
+  - {x: 5, y: 1, z: -5}
+  - {x: 5, y: 1, z: 10}
+  - {x: -5, y: 1, z: -5}
+  - {x: -5, y: 1, z: 10}
   <SpawnRadius>k__BackingField: 1

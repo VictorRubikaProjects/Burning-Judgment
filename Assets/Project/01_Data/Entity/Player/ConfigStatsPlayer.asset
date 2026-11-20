@@ -91,8 +91,8 @@ MonoBehaviour:
   <CriticalChance>k__BackingField: 5
   <CriticalDamage>k__BackingField: 1.5
   <ComboMultiplier>k__BackingField: 1
-  <DashAttackRadius>k__BackingField: 0.7
-  <DashAttackOffset>k__BackingField: 1.2
+  <DashAttackRadius>k__BackingField: 1.25
+  <DashAttackOffset>k__BackingField: 1.25
   <DashAttackLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
@@ -102,7 +102,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   <MinChargeRatio>k__BackingField: 0
-  <MinStickMagnitude>k__BackingField: 0.3
+  <MinStickMagnitude>k__BackingField: 0
   <InvertStickDirection>k__BackingField: 0
   <MinSwipeDistance>k__BackingField: 50
   <MaxSwipeDistance>k__BackingField: 200
