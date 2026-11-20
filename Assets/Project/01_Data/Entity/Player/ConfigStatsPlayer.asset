@@ -125,5 +125,5 @@ MonoBehaviour:
   <AttackAnimation>k__BackingField:
     CrossFadeDuration: 0
     Speed: 1
-  <ChainDurationBeforeClear>k__BackingField: 1.5
-  <ChainBonusPercent>k__BackingField: 0.3
+  <ChainDurationBeforeClear>k__BackingField: 1.2
+  <ChainBonusPercent>k__BackingField: 0.15
