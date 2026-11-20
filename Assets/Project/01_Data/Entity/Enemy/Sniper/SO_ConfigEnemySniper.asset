@@ -68,6 +68,6 @@ MonoBehaviour:
   <TargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
-  <AimTrackingTime>k__BackingField: 2
-  <AimFrozenTime>k__BackingField: 1
+  <AimTrackingTime>k__BackingField: 1.5
+  <AimFrozenTime>k__BackingField: 1.5
   <ConeAngle>k__BackingField: 30
