@@ -91,7 +91,7 @@ MonoBehaviour:
   <CriticalChance>k__BackingField: 5
   <CriticalDamage>k__BackingField: 1.5
   <ComboMultiplier>k__BackingField: 1
-  <DashAttackRadius>k__BackingField: 0.7
+  <DashAttackRadius>k__BackingField: 1.5
   <DashAttackOffset>k__BackingField: 1.2
   <DashAttackLayer>k__BackingField:
     serializedVersion: 2
