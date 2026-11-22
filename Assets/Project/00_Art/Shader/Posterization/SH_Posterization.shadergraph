@@ -1971,7 +1971,7 @@
     "m_Title": "Wolrd Depth Gradient ",
     "m_Position": {
         "x": 605.0,
-        "y": -364.0001220703125
+        "y": -364.0
     }
 }
 
@@ -2493,7 +2493,7 @@
     "m_ObjectId": "3a319a7d5bd94978afb60f6e5d09840e",
     "m_Title": "Position normalisée dans la BB du mesh",
     "m_Position": {
-        "x": -3877.000244140625,
+        "x": -3877.0,
         "y": 286.0
     }
 }
@@ -5686,7 +5686,7 @@
     "m_Title": "Variation de noise sur la normale",
     "m_Position": {
         "x": -4333.0,
-        "y": -182.0001220703125
+        "y": -182.0
     }
 }
 
@@ -5890,7 +5890,7 @@
     "m_ZTestMode": 4,
     "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
-    "m_RenderFace": 0,
+    "m_RenderFace": 2,
     "m_AlphaClip": true,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
@@ -6296,7 +6296,7 @@
     "m_Title": "Calcul du lighting",
     "m_Position": {
         "x": -1999.0,
-        "y": -155.0001220703125
+        "y": -155.0
     }
 }
 
