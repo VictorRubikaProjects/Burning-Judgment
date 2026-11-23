@@ -36,7 +36,7 @@ public class SteeringComponent : ActorComponent
 
         float radius = MovementComponentExtension.GetCastRadius(m_collider);
         Vector3 origin = position + MovementComponentExtension.GetCenterOffset(m_collider, startPosition);
-        float stepDistance = moveSpeed * Time.fixedDeltaTime;
+        float stepDistance = moveSpeed * Time.fixedDeltaTime * GetMultiplierSpeed();
 
         Vector3 baseDir = PickFreeDirection(origin, radius, desiredDir, stepDistance + AvoidanceDistanceMargin);
         bool found = TryFindMove(position, origin, radius, baseDir, stepDistance, out Vector3 moved);
@@ -51,6 +51,11 @@ public class SteeringComponent : ActorComponent
         Vector3 toTarget = targetPosition - currentPosition;
         toTarget.y = 0f;
         return toTarget == Vector3.zero ? Vector3.zero : toTarget.normalized;
+    }
+
+    private float GetMultiplierSpeed()
+    {
+        return Owner.IsInZone(ZoneType.Glue) ? 0.4f : 1f;
     }
 
     private Vector3 PickFreeDirection(Vector3 origin, float radius, Vector3 desiredDir, float checkDistance)
