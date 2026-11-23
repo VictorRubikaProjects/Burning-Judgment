@@ -45,6 +45,8 @@ public class AudioService : IGameService
 
         m_eventInstances = new List<EventInstance>();
 
+        m_masterBus.setVolume(1f);
+
         return UniTask.CompletedTask;
     }
 

@@ -33,6 +33,7 @@ public class PlayerCharacter : Actor, IBounceable
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
     [SerializeField] private Transform feetTransform;
+    [SerializeField] private Transform weaponTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
     [SerializeField] private RectTransform joystickRectT;
     [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
@@ -67,6 +68,7 @@ public class PlayerCharacter : Actor, IBounceable
     public bool PendingHitDealsDamage { get; private set; } = true;
     
     public Transform FeetTransform => feetTransform;
+    public Transform WeaponTransform => weaponTransform;
     
     public string CurrentStateName => m_stateMachine?.GetCurrentState()?.ToString() ?? "None";
 

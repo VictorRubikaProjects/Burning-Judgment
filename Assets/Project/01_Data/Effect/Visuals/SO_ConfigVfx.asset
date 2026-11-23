@@ -14,8 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Runtime::SO_ConfigVfx
   <VfxPrefabEjection>k__BackingField: {fileID: 6632970447897807731, guid: c1479855215624c4aaa191d5b980dd99, type: 3}
   <VfxPrefabChainInputSuccess>k__BackingField: {fileID: 8299483044362581044, guid: 6a5bf1ecf4d152843b77c52e17dbff40, type: 3}
-  <VfxPrefabDash>k__BackingField: {fileID: 9149213220067885641, guid: 37f6fb6e6e30b6640902fba7bfdc6fdc, type: 3}
   <VfxPrefabAttackPlayer>k__BackingField: {fileID: 1064298706896255859, guid: 74373cab77cd9eb4fb120a4b796f5658, type: 3}
   <VfxPrefabHit>k__BackingField: {fileID: 8551891807610761133, guid: bd203bed1c8eb984bb2d7264999a811b, type: 3}
   <VfxPrefabConfirmKill>k__BackingField: {fileID: 2883535467260916605, guid: e6d601db05536af4a979a87194de39ed, type: 3}
-  <VfxPrefabStability>k__BackingField: {fileID: 6066328274104421891, guid: 5d1a1e86245d4e940b7df9f5676b510b, type: 3}
+  <VfxPrefabDasherAttack>k__BackingField: {fileID: 9149213220067885641, guid: 37f6fb6e6e30b6640902fba7bfdc6fdc, type: 3}
+  vfxPrefabsDash:
+  - <VfxDash>k__BackingField: {fileID: 1695883334581801340, guid: 91e858f81acda6849b4a8f182ce97b9b, type: 3}
+    <ComboThreshold>k__BackingField: 0
+  - <VfxDash>k__BackingField: {fileID: 8125925734324108863, guid: 7afa6d03dec8ced47bc710af9bc432c5, type: 3}
+    <ComboThreshold>k__BackingField: 3
+  - <VfxDash>k__BackingField: {fileID: 1004941436126882141, guid: 5128f962d53f16240b7c61a009ade10a, type: 3}
+    <ComboThreshold>k__BackingField: 5
+  vfxPrefabsStability:
+  - <VfxStability>k__BackingField: {fileID: 1509283816869424513, guid: 10586076e0444cd40bc343f57ed54c93, type: 3}
+    <MinStability>k__BackingField: 0.1
+    <MaxStability>k__BackingField: 0.4
+  - <VfxStability>k__BackingField: {fileID: 1709263842282584315, guid: d9387bf9bcbc2bb46bc8f2049683e850, type: 3}
+    <MinStability>k__BackingField: 0.4
+    <MaxStability>k__BackingField: 0.7
+  - <VfxStability>k__BackingField: {fileID: 8957123369675068287, guid: dbc0fae02fe2fdd4abd7903fa4882f6b, type: 3}
+    <MinStability>k__BackingField: 0.7
+    <MaxStability>k__BackingField: 1

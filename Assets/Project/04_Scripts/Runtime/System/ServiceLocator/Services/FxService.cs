@@ -263,8 +263,10 @@ public sealed class FxService : IGameService
     public void PlayerAttackPlayerEffect(Transform playerTransform, float duration)
         => PlayEffect(ConfigVfx.VfxPrefabAttackPlayer, playerTransform, duration);
     
-    public void PlayDashEffect(Transform targetTransform, float duration)
-        => PlayEffect(ConfigVfx.VfxPrefabDash, targetTransform, duration);
+    public void PlayDashEffect(Transform targetTransform, float duration,int combo)
+        => PlayEffect(ConfigVfx.GetVfxDashByComboIndex(combo), targetTransform, duration);
+    public void PlayDasherAttack(Transform targetTransform, float duration)
+        => PlayEffect(ConfigVfx.VfxPrefabDasherAttack, targetTransform, duration);
     
     public void PlayChainSuccessEffect(Transform targetTransform, float duration) 
         => PlayEffectAtTargetPosition(ConfigVfx.VfxPrefabChainInputSuccess, targetTransform, duration);

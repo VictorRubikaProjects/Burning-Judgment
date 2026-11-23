@@ -9,7 +9,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button creditsButton;
-    [SerializeField] private Button exitButton;
     [SerializeField] private Button[] optionButtons; 
     
     [Header("Panels / Canvas Groups")]
@@ -18,7 +17,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button closeCreditsButton;     
 
     [Header("Slider")]
-    [SerializeField] private Slider volumeSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider musicSlider;
     
@@ -44,7 +42,6 @@ public class MenuManager : MonoBehaviour
         playButton.onClick.AddListener(LoadGame);
         settingsButton.onClick.AddListener(OpenSettings);
         creditsButton.onClick.AddListener(OpenCredits);
-        exitButton.onClick.AddListener(ExitGame);
         
         if (closeCreditsButton != null)
         {
@@ -54,7 +51,6 @@ public class MenuManager : MonoBehaviour
         m_optionController = new OptionController(
             optionButtons,
             optionCanvasGroup,
-            volumeSlider,
             sfxSlider,
             musicSlider,
             pauseTime: false);
@@ -147,6 +143,5 @@ public class MenuManager : MonoBehaviour
         playButton.interactable = state;
         settingsButton.interactable = state;
         creditsButton.interactable = state;
-        exitButton.interactable = state;
     }
 }

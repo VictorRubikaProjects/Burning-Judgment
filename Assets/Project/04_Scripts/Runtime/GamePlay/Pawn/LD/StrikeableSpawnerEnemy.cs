@@ -12,9 +12,6 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
     private const float RotationAngle = 90f;
     private const float RotationStepDuration = 0.8f;
 
-    private static readonly Color ColorMaxLife = Color.green;
-    private static readonly Color ColorMinLife = Color.red;
-
     [Header("Spawner Settings")]
     [SerializeField] protected int life;
     [SerializeField, Min(MinFrequency)] protected float frequency = 1f;
@@ -25,14 +22,12 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
     [SerializeField] protected LayerMask layerGround;
     [SerializeField] protected LayerMask layerBlocking;
     [Space]
-    [SerializeField] protected MeshRenderer rendererVisual;
     [SerializeField] private Transform visual;
 
     private readonly List<EnemyBase> m_spawned = new();
 
     private FrequencyTimer m_frequencyTimer;
     private GameService m_gameService;
-    private Material m_materialInstance;
     private Tween m_currentTween;
     private Sequence m_rotationSequence;
 
@@ -46,15 +41,11 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
         m_frequencyTimer.Reset();
         m_frequencyTimer.Start();
 
-        if (rendererVisual)
-        {
-            m_materialInstance = rendererVisual.material;
-        }
-
         m_maxLife = life;
-        UpdateColorLife();
 
         onStruck.AddListener(TakeDamage);
+
+        EventBus<SpawnerSpawnedEvent>.Raise(new SpawnerSpawnedEvent(this));
     }
 
     private void Start()
@@ -98,12 +89,6 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
             m_frequencyTimer.Stop();
             m_frequencyTimer.Dispose();
             m_frequencyTimer = null;
-        }
-
-        if (m_materialInstance != null)
-        {
-            Destroy(m_materialInstance);
-            m_materialInstance = null;
         }
 
         if (m_currentTween.isAlive)
@@ -171,7 +156,6 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
         if (m_isDestroyed) return;
 
         life = Mathf.Max(0, life - 1);
-        UpdateColorLife();
 
         if (life <= 0)
         {
@@ -185,14 +169,11 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
     {
         if (m_isDestroyed) return;
         m_isDestroyed = true;
+
+        EventBus<SpawnerDiedEvent>.Raise(new SpawnerDiedEvent(this));
         Destroy(gameObject);
     }
 
-    private void UpdateColorLife()
-    {
-        if (m_materialInstance == null || m_maxLife <= 0) return;
-        m_materialInstance.color = Color.Lerp(ColorMinLife, ColorMaxLife, life / (float)m_maxLife);
-    }
 
     private void OnDrawGizmos()
     {

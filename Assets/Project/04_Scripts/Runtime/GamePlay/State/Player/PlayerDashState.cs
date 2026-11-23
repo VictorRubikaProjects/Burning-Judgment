@@ -74,7 +74,7 @@ public class PlayerDashState : PlayerBaseState
 
         PlayAnimation(DashHash);
         m_audioService.PlaySfx(m_audioService.Bank.PlayerDashEvent, m_owner.TransformCache.position);
-        m_fxService.PlayDashEffect(m_owner.TransformCache, 0.4f);
+        m_fxService.PlayDashEffect(m_owner.WeaponTransform, duration,m_owner.Chain.ChainCount);
 
         try
         {

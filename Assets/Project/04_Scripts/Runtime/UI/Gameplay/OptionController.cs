@@ -8,7 +8,6 @@ public class OptionController
 {
     private Button[] m_optionButtons;
     
-    private Slider m_sliderMaster;
     private Slider m_sliderSfx;
     private Slider m_sliderMusic;
     
@@ -30,7 +29,6 @@ public class OptionController
     public OptionController(
         Button[] optionButtons, 
         CanvasGroup optionPanel,
-        Slider sliderMaster,
         Slider sliderSfx,
         Slider sliderMusic, 
         bool pauseTime = true, 
@@ -45,7 +43,6 @@ public class OptionController
         
         if (startingAlpha == 0) m_optionPanel.blocksRaycasts = false;
         
-        m_sliderMaster = sliderMaster;
         m_sliderSfx = sliderSfx;
         m_sliderMusic = sliderMusic;
         
@@ -106,9 +103,6 @@ public class OptionController
 
         SettingsData settings = m_saveService.Settings;
 
-        if (m_sliderMaster)
-            m_sliderMaster.SetValueWithoutNotify(settings.MasterVolume);
-
         if (m_sliderMusic)
             m_sliderMusic.SetValueWithoutNotify(settings.MusicVolume);
 
@@ -165,7 +159,6 @@ public class OptionController
         foreach (Button button in m_optionButtons)
             button.onClick.AddListener(ToggleOption);
         
-        if (m_sliderMaster != null) m_sliderMaster.onValueChanged.AddListener(OnMasterVolumeChanged);
         if (m_sliderSfx != null) m_sliderSfx.onValueChanged.AddListener(OnSfxVolumeChanged);
         if (m_sliderMusic != null) m_sliderMusic.onValueChanged.AddListener(OnMusicVolumeChanged);
     }
@@ -175,7 +168,6 @@ public class OptionController
         foreach (Button button in m_optionButtons)
             button.onClick.RemoveListener(ToggleOption);
         
-        if (m_sliderMaster != null) m_sliderMaster.onValueChanged.RemoveListener(OnMasterVolumeChanged);
         if (m_sliderSfx != null) m_sliderSfx.onValueChanged.RemoveListener(OnSfxVolumeChanged);
         if (m_sliderMusic != null) m_sliderMusic.onValueChanged.RemoveListener(OnMusicVolumeChanged);
     }

@@ -18,6 +18,7 @@ public class EnemyDashAttackState : EnemyBaseState
     private readonly Collider[] m_strikeHits = new Collider[4];
     
     private CameraService m_cameraService;
+    private FxService m_fxService;
     
     private static readonly int m_idPropMaterialProgressionHash = Shader.PropertyToID("_Progression");
 
@@ -26,6 +27,7 @@ public class EnemyDashAttackState : EnemyBaseState
         m_dasher = owner;
         m_timerChargeAttack = new CountdownTimer(owner.Stats.LockTime);
         m_cameraService = ServiceLocator.Get<CameraService>();
+        m_fxService = ServiceLocator.Get<FxService>();
     }
 
     public override void OnEnter()
@@ -117,6 +119,8 @@ public class EnemyDashAttackState : EnemyBaseState
             }
 
             m_isAttacking = true;
+            
+            m_fxService.PlayDasherAttack(Owner.TransformCache,0.35f);
 
             var dashTask = m_dasher.Dash.DashAsync(
                 direction,
