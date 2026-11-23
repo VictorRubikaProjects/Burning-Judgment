@@ -8,7 +8,7 @@ public class DashComponent : ActorComponent
     private readonly Rigidbody m_rb;
     private readonly GroundCheckComponent m_groundCheck;
     private readonly Collider m_collider;
-    
+
     private CancellationTokenSource m_dashCts;
 
     public bool IsDashing { get; private set; }
@@ -18,6 +18,17 @@ public class DashComponent : ActorComponent
         m_rb = rb;
         m_groundCheck = groundCheck;
         m_collider = rb.GetComponentInChildren<Collider>();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        if (m_dashCts != null)
+        {
+            m_dashCts.Cancel();
+            m_dashCts.Dispose();
+            m_dashCts = null;
+        }
     }
 
     public UniTask<bool> DashAsync(
@@ -30,17 +41,7 @@ public class DashComponent : ActorComponent
     {
         return RunAsync(direction, token, duration, distance, curve, obstacleLayer, MovementComponentExtension.CollisionMode.Slide);
     }
-
-    public UniTask<bool> RollAsync(
-        Vector3 direction,
-        CancellationToken token,
-        float duration,
-        float distance,
-        AnimationCurve curve,
-        LayerMask obstacleLayer)
-    {
-        return RunAsync(direction, token, duration, distance, curve, obstacleLayer, MovementComponentExtension.CollisionMode.Slide);
-    }
+    
 
     private async UniTask<bool> RunAsync(
         Vector3 direction,
@@ -60,7 +61,17 @@ public class DashComponent : ActorComponent
         try
         {
             return await MovementComponentExtension.MoveAsync(
-                m_rb, m_collider, direction, cts.Token, duration, distance, curve, obstacleLayer, mode, m_groundCheck);
+                m_rb,
+                m_collider,
+                direction,
+                cts.Token,
+                duration,
+                distance,
+                curve,
+                obstacleLayer,
+                mode,
+                m_groundCheck,
+                Owner);
         }
         finally
         {

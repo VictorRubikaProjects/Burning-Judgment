@@ -46,11 +46,9 @@ public class KnockbackComponent : ActorComponent
         m_cts = cts;
         IsActive = true;
 
-        bool completed;
-
         try
         {
-            completed = await MovementComponentExtension.MoveAsync(
+            return await MovementComponentExtension.MoveAsync(
                 m_rb,
                 m_collider,
                 direction,
@@ -59,15 +57,26 @@ public class KnockbackComponent : ActorComponent
                 distance,
                 curve,
                 obstacleLayer,
-                MovementComponentExtension.CollisionMode.Slide);
+                MovementComponentExtension.CollisionMode.Slide,
+                null,
+                Owner);
         }
         catch (OperationCanceledException)
         {
             return false;
         }
-
-        if (m_cts == cts) IsActive = false;
-
-        return completed;
+        finally
+        {
+            if (m_cts == cts)
+            {
+                IsActive = false;
+                m_cts.Dispose();
+                m_cts = null;
+            }
+            else
+            {
+                cts.Dispose();
+            }
+        }
     }
 }

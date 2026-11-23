@@ -321,10 +321,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2421695428002651684, guid: 00be32ccb822f2148a75a19c48e39f81, type: 3}
-      propertyPath: rewardCard
-      value: 
-      objectReference: {fileID: 7696931208995325404, guid: 5ab19f3309ac98b4c94c6dd0d3c7fe68, type: 3}
     - target: {fileID: 8918887504490836716, guid: 00be32ccb822f2148a75a19c48e39f81, type: 3}
       propertyPath: m_Name
       value: PF_BootStrap

@@ -78,7 +78,7 @@ public class PlayerDashState : PlayerBaseState
 
         try
         {
-            await m_owner.Dash.RollAsync(direction, token, duration, distance, m_stats.DashCurve, m_stats.ObstacleLayer);
+            await m_owner.Dash.DashAsync(direction, token, duration, distance, m_stats.DashCurve, m_stats.ObstacleLayer);
         }
         catch (OperationCanceledException)
         {

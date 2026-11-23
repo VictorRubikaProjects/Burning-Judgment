@@ -48,4 +48,5 @@ MonoBehaviour:
   audioConfig: {fileID: 11400000, guid: 707a1f418f384e54187055a2c5a2e79f, type: 2}
   entityPoolConfig: {fileID: 11400000, guid: 7fb707a09f242d04898251a1893a8bc9, type: 2}
   configVfx: {fileID: 11400000, guid: c65dc7043c393f24da28a70cb6b082fa, type: 2}
+  rewardCard: {fileID: 7696931208995325404, guid: 5ab19f3309ac98b4c94c6dd0d3c7fe68, type: 3}
   MaxFrames: 60

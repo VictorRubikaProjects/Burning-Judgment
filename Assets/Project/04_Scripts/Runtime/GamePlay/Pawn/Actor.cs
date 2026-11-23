@@ -1,16 +1,26 @@
 using System.Collections.Generic;
+using Helpers.Runtime.Math;
 using UnityEngine;
 
 public class Actor : Pawn
 {
     [SerializeField] private StabilityVisuals stabilityVisuals;
-    
+
     private readonly List<ActorComponent> m_components = new();
 
     private float m_stability;
-    
+    private int m_zoneMask;
+
     protected bool m_isDead;
-    
+
+    public int ZoneMask => m_zoneMask;
+
+    public bool IsInZone(ZoneType zoneType) => m_zoneMask.ContainsFlag((int)zoneType);
+
+    public void AddZoneFlag(ZoneType zoneType) => m_zoneMask = m_zoneMask.AddFlag((int)zoneType);
+
+    public void RemoveZoneFlag(ZoneType zoneType) => m_zoneMask = m_zoneMask.RemoveFlag((int)zoneType);
+
     public float GetStability() => m_stability;
 
     protected virtual void SetStability(float stability)
@@ -75,5 +85,4 @@ public class Actor : Pawn
             component.OnDrawGizmosSelected();
         }
     }
-    
 }
