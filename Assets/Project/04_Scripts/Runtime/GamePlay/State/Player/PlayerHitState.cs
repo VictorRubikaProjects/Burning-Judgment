@@ -23,25 +23,14 @@ public class PlayerHitState : PlayerBaseState
 
         m_isFinished = false;
 
+        bool dealsDamage = m_owner.PendingHitDealsDamage;
         m_owner.ConsumeHitRequest();
-        m_owner.Aspect.HurtVisuals();
-
-        PlayAnimation(HitHash);
-
-        m_owner.HitGate.TakeDamage();
-
-        m_owner.KnockBack.HitAsync(
-            m_owner.PendingKnockbackDirection,
-            m_stats.HitDuration,
-            m_owner.PendingKnockbackForce,
-            m_stats.HitKnockbackCurve,
-            m_stats.ObstacleLayer).Forget();
+        
+        if (dealsDamage) m_owner.HitGate.TakeDamage();
+        
+        StartKnockback(m_owner.PendingKnockbackDirection, m_owner.PendingKnockbackForce);
         
         m_owner.Chain.Reset();
-        
-        m_audioService.PlaySfx(m_audioService.Bank.PlayerHitEvent,m_owner.TransformCache.position);
-        m_fxService.PlayEjectionEffect(m_owner.TransformCache,m_stats.HitDuration);
-        m_fxService.PlayHitEffect(m_owner.TransformCache,m_stats.HitDuration);
     }
 
     public override void Update()
@@ -55,5 +44,32 @@ public class PlayerHitState : PlayerBaseState
     {
         base.OnExit();
         m_owner.KnockBack.Cancel();
+    }
+    
+    public void Relaunch(Vector3 direction, float distance)
+    {
+        m_isFinished = false;
+        StartKnockback(direction, distance);
+    }
+    
+    private void StartKnockback(Vector3 direction, float distance)
+    {
+        if (m_animator)
+        {
+            PlayAnimation(HitHash);
+        }
+        
+        m_audioService.PlaySfx(m_audioService.Bank.PlayerHitEvent,m_owner.TransformCache.position);
+        m_fxService.PlayEjectionEffect(m_owner.TransformCache,m_stats.HitDuration);
+        m_fxService.PlayHitEffect(m_owner.TransformCache,m_stats.HitDuration);
+        
+        m_owner.Aspect.HurtVisuals();
+        
+        m_owner.KnockBack.HitAsync(
+            direction,
+            m_stats.HitDuration,
+            distance,
+            m_stats.HitKnockbackCurve,
+            m_stats.ObstacleLayer).Forget();
     }
 }

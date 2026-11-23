@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using Event_Bus;
 using UnityEngine;
 
-public class PlayerCharacter : Actor
+public class PlayerCharacter : Actor, IBounceable
 {
     public readonly struct DashContext
     {
@@ -64,6 +64,7 @@ public class PlayerCharacter : Actor
     
     public float DashDistance => m_currentDashContext.Distance;
     public float PendingKnockbackForce => m_pendingKnockbackForce;
+    public bool PendingHitDealsDamage { get; private set; } = true;
     
     public Transform FeetTransform => feetTransform;
     
@@ -92,6 +93,8 @@ public class PlayerCharacter : Actor
     private SO_PlayerStats m_runtimeStats;
 
     private SO_PlayerStats ActiveStats => m_runtimeStats ? m_runtimeStats : baseStats;
+    
+    public int BounceCount { get; private set; }
 
     protected override void SetStability(float stability)
     {
@@ -295,7 +298,11 @@ public class PlayerCharacter : Actor
     public void RequestDash() => m_wantsDash = true;
     public void ConsumeDashRequest() => m_wantsDash = false;
     public void RequestHit() => m_hitRequested = true;
-    public void ConsumeHitRequest() => m_hitRequested = false;
+    public void ConsumeHitRequest()
+    {
+        m_hitRequested = false;
+        PendingHitDealsDamage = true;
+    }
 
     public void SetIdle() => m_stateMachine.SetState(m_playerIdleState);
     public void ResetDashDistance() => m_currentDashContext = new DashContext(m_currentDashContext.Direction, ActiveStats.DashMaxDistance);
@@ -367,4 +374,28 @@ public class PlayerCharacter : Actor
                 ActiveStats.DashStrikeRadius);
         }
     }
+
+    #region IBounceable Implementation
+    
+    public void OnBounced(Vector3 direction, float distance)
+    {
+        BounceCount++;
+
+        if (m_stateMachine.GetCurrentState() is PlayerHitState hitState)
+        {
+            hitState.Relaunch(direction, distance);
+            return;
+        }
+
+        m_pendingKnockbackDirection = direction;
+        m_pendingKnockbackForce = distance;
+        PendingHitDealsDamage = false;
+        RequestHit();
+    }
+
+    public bool CanBounce() => m_stateMachine.GetCurrentState() is PlayerHitState;
+
+    #endregion
+
+
 }
