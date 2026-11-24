@@ -28,10 +28,6 @@ public struct AugmentDeltas
     public float Weight { get; private set; } 
 
     [field: SerializeField, Range(-90f, 100f)]
-    [field: Tooltip("Variation en % de stabilité / pourcentage.")]
-    public float Stability { get; private set; }
-
-    [field: SerializeField, Range(-90f, 100f)]
     [field: Tooltip("Variation de la chance critique.")]
     public float CriticalChance { get; private set; }
 
@@ -52,7 +48,6 @@ public struct AugmentDeltas
             new("Speed", DashSpeed),
             new("Strenght", PushForce), 
             new("Weight", Weight),
-            new("Stability", Stability),
             new("Crit Chance", CriticalChance),
             new("Crit Damage", CriticalDamage),
             new("Combo Multiplier", ComboMultiplier)
@@ -69,7 +64,6 @@ public struct AugmentDeltas
             DashSpeed = a.DashSpeed + b.DashSpeed,
             PushForce = a.PushForce + b.PushForce,
             Weight = a.Weight + b.Weight,
-            Stability = a.Stability + b.Stability,
             CriticalChance = a.CriticalChance + b.CriticalChance,
             CriticalDamage = a.CriticalDamage + b.CriticalDamage,
             ComboMultiplier = a.ComboMultiplier + b.ComboMultiplier

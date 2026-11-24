@@ -143,7 +143,6 @@ public class SO_PlayerStats : SO_ActorsStats
         
         PushForce *= Gain(deltas.PushForce);
         Weight *= Gain(deltas.Weight);
-        Stability *= Gain(deltas.Stability);
         CriticalChance += deltas.CriticalChance;
         CriticalDamage *= Gain(deltas.CriticalDamage);
         ComboMultiplier *= Gain(deltas.ComboMultiplier);
