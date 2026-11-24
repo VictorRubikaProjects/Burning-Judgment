@@ -29,6 +29,8 @@ public class GameService : IGameService
     private EventBinding<FloorClearedEvent> m_eventBindingFloorCleared;
     
     private const int CountFloorClearedSpawnNeeded = 3;
+    
+    private const float RoundAnnouncementDuration = 2f;
 
     public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService, RewardTreasureUI rewardCard)
     {
@@ -147,7 +149,9 @@ public class GameService : IGameService
         
         await SpawnActors(actors);
         
-        await UniTask.Delay(TimeSpan.FromSeconds(1)); // fx announce round
+        EventBus<RoundAnnouncement>.Raise(new RoundAnnouncement(RoundAnnouncementDuration));
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(RoundAnnouncementDuration));
 
         EventBus<FloorStartedEvent>.Raise(new FloorStartedEvent(CurrentFloor));
     }
@@ -201,7 +205,7 @@ public class GameService : IGameService
 
     private async UniTask SpawnActors(List<Actor> actors)
     {
-        float duration = 1.5f;
+        float duration = 0.3f;
         
         foreach (var actor in actors)
         {

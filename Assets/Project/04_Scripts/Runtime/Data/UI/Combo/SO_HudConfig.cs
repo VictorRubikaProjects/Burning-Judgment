@@ -4,8 +4,34 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HudConfig", menuName = "UI/Hud Config")]
 public class SO_HudConfig : ScriptableObject
 {
+    [System.Serializable]
+    public struct ComboAnimationConfig
+    {
+        [Header("Timing")]
+        public float displayDuration;
+        public float hideDuration;
+        public float punchDuration;
+
+        [Header("Effects")]
+        public Vector3 punchScaleStrength;
+        public float minTiltAngle;
+        public float maxTiltAngle;
+        public int tiltCycles;
+        public CycleMode tiltCycleMode;
+        public Ease animationEase;
+    }
+
+    [System.Serializable]
+    public struct ComboColorConfig
+    {
+        public Color defaultColor;
+        public Color tier1Color;
+        public Color tier2Color;
+        public Color tier3Color;
+    }
+
     [Header("Combo Animation")]
-    public HudManager.ComboAnimationConfig comboAnimation = new()
+    public ComboAnimationConfig comboAnimation = new()
     {
         displayDuration = 1.5f,
         hideDuration = 0.2f,
@@ -20,12 +46,12 @@ public class SO_HudConfig : ScriptableObject
 
     [Header("Combo Dynamic Scaling")]
     [Tooltip("Multiplicateur d'échelle ajouté par point de combo.")]
-    public float comboScaleGrowthRate = 0.04f; 
+    public float comboScaleGrowthRate = 0.04f;
     [Tooltip("Taille maximale du multiplicateur pour éviter un texte trop grand.")]
     public float maxComboScaleMultiplier = 2.5f;
 
     [Header("Combo Colors")]
-    public HudManager.ComboColorConfig comboColors = new()
+    public ComboColorConfig comboColors = new()
     {
         defaultColor = Color.white,
         tier1Color = Color.yellow,
