@@ -49,20 +49,33 @@ public class PlayerInputComponent : ActorComponent
 
         SetJoystickVisible(false);
 
-        m_pc.OnControlContextChanged += OnControlContextChanged;
+        if (m_pc != null)
+        {
+            m_pc.OnControlContextChanged += OnControlContextChanged;
+        }
     }
 
-    public override void Initialize() => SetupInput();
+    public override void Initialize()
+    {
+        SetupInput();
+        bool canInput = m_pc != null && PlayerActionPermissions.FromContext(m_pc.ControlContext).InputAvailable;
+        SetInputEnabled(canInput);
+    }
+
     public override void Dispose()
     {
         StopInput();
-        m_pc.OnControlContextChanged -= OnControlContextChanged;
+        if (m_pc != null)
+        {
+            m_pc.OnControlContextChanged -= OnControlContextChanged;
+        }
     }
 
     private void SetupInput()
     {
+        if (m_inputActions != null) return;
+
         m_inputActions = new PlayerActions();
-        m_inputActions.Gameplay.Enable();
 
         m_inputActions.Gameplay.Touch.started += OnTouchStarted;
         m_inputActions.Gameplay.Touch.canceled += OnTouchCanceled;
@@ -71,22 +84,47 @@ public class PlayerInputComponent : ActorComponent
         m_inputActions.Gameplay.Move.performed += OnMovePerformed;
         m_inputActions.Gameplay.Move.canceled += OnMoveCanceled;
 
-        m_isEnable = true;
+        m_inputActions.Gameplay.Disable();
+        m_isEnable = false;
     }
 
     private void StopInput()
     {
+        if (m_inputActions == null) return;
+
+        SetInputEnabled(false);
+
         m_inputActions.Gameplay.Touch.started -= OnTouchStarted;
         m_inputActions.Gameplay.Touch.canceled -= OnTouchCanceled;
 
         m_inputActions.Gameplay.Move.started -= OnMoveStarted;
         m_inputActions.Gameplay.Move.performed -= OnMovePerformed;
         m_inputActions.Gameplay.Move.canceled -= OnMoveCanceled;
-        
-        m_inputActions.Gameplay.Disable();
-        m_inputActions.Dispose();
 
-        m_isEnable = false;
+        m_inputActions.Dispose();
+        m_inputActions = null;
+    }
+
+    private void SetInputEnabled(bool enabled)
+    {
+        if (m_inputActions == null || m_isEnable == enabled) return;
+
+        m_isEnable = enabled;
+
+        if (enabled)
+        {
+            m_inputActions.Gameplay.Enable();
+        }
+        else
+        {
+            m_inputActions.Gameplay.Disable();
+            m_isTouching = false;
+            m_isCharging = false;
+            m_isJoystickVisible = false;
+            m_isStickEngaged = false;
+            m_joystickGroup.alpha = 0f;
+            m_joystickTransform.position = m_joystickRestPosition;
+        }
     }
 
     public override void Update()
@@ -140,7 +178,7 @@ public class PlayerInputComponent : ActorComponent
     private void ShowJoystickAfterHold()
     {
         if (!m_isTouching || m_isJoystickVisible) return;
-        if (TouchElapsed < m_stats.MaxSwipeDuration) return;
+        if (touchElapsed < m_stats.MaxSwipeDuration) return;
 
         SetJoystickVisible(true);
         OnHoldConfirmed?.Invoke();
@@ -152,14 +190,14 @@ public class PlayerInputComponent : ActorComponent
         m_joystickGroup.alpha = visible ? 1f : 0f;
     }
 
-    private float TouchElapsed => Time.unscaledTime - m_touchStartTime;
+    private float touchElapsed => Time.unscaledTime - m_touchStartTime;
 
     private void TryEmitSwipe()
     {
         Vector2 currentPosition = m_inputActions.Gameplay.Position.ReadValue<Vector2>();
         Vector2 swipeVector = currentPosition - m_touchStartPosition;
 
-        bool isQuickEnough = TouchElapsed <= m_stats.MaxSwipeDuration;
+        bool isQuickEnough = touchElapsed <= m_stats.MaxSwipeDuration;
 
         if (!isQuickEnough) return;
 
@@ -193,7 +231,7 @@ public class PlayerInputComponent : ActorComponent
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         if (!m_isCharging) return;
-        
+
         m_lastDirection = Vector2.zero;
     }
 
@@ -206,7 +244,7 @@ public class PlayerInputComponent : ActorComponent
     private void EngageStick()
     {
         m_isStickEngaged = true;
-        
+
         OnChargeStarted?.Invoke();
     }
 
@@ -221,15 +259,6 @@ public class PlayerInputComponent : ActorComponent
 
     private void OnControlContextChanged(PlayerControlContext context)
     {
-        if (PlayerActionPermissions.FromContext(context).InputAvailable)
-        {
-            if (m_isEnable) return;
-            SetupInput();
-        }
-        else
-        {
-            if (!m_isEnable) return;
-            StopInput();
-        }
+        SetInputEnabled(PlayerActionPermissions.FromContext(context).InputAvailable);
     }
 }
