@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Event_Bus;
@@ -118,13 +119,14 @@ public class GameService : IGameService
         await m_transitionService.CircleTransitionFadeIn();
         await unloadPreviousSceneAction();
         await StartFloor(true);
-        await m_transitionService.CircleTransitionFadeOut();
     }
 
     private async UniTask StartFloor(bool isFirstFloor = false)
     {
         CurrentFloor++;
 
+        List<Actor> actors = new List<Actor>();
+        
         UniTask taskDeloadGameplay = isFirstFloor 
             ? UniTask.CompletedTask 
             : m_sceneService.UnloadScene(m_enemySystem.ConfigCurrentRound.RoundData.Map.Name);
@@ -135,11 +137,17 @@ public class GameService : IGameService
 
         await UniTask.WhenAll(taskLoadGameplay, taskDeloadGameplay);
         
-        await SpawnPlayer(isFirstFloor);
+        actors.Add( await SpawnPlayer(isFirstFloor) ); 
         
         await m_transitionService.ShowFloorAsync(CurrentFloor);
 
-        m_enemySystem.SetupFloor(Player);
+        actors.AddRange(m_enemySystem.SetupFloor(Player));
+        
+        await m_transitionService.CircleTransitionFadeOut();
+        
+        await SpawnActors(actors);
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(1)); // fx announce round
 
         EventBus<FloorStartedEvent>.Raise(new FloorStartedEvent(CurrentFloor));
     }
@@ -166,7 +174,7 @@ public class GameService : IGameService
     }
     
 
-    private async UniTask SpawnPlayer(bool isFirstFloor = false)
+    private async UniTask<PlayerCharacter> SpawnPlayer(bool isFirstFloor = false)
     {
         if (Player == null)
         {
@@ -188,9 +196,26 @@ public class GameService : IGameService
         Player.TransformCache.position = m_enemySystem.ConfigCurrentRound.PlayerSpawnPosition;
         Player.TransformCache.rotation = Quaternion.identity;
 
-        await UniTask.WaitForFixedUpdate();
+        return Player;
+    }
 
-        Player.gameObject.SetActive(true);
+    private async UniTask SpawnActors(List<Actor> actors)
+    {
+        float duration = 1.5f;
+        
+        foreach (var actor in actors)
+        {
+            SpawnActor(actor,duration).Forget();
+        }
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+    }
+
+    private async UniTask SpawnActor(Actor actor, float duration)
+    {
+        //do fx
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        actor.gameObject.SetActive(true);
     }
 
     public async UniTask LoadMenuFromGameplay()

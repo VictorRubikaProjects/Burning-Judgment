@@ -124,6 +124,7 @@ public class StrikeableSpawnerEnemy : StrikeableElement, IDamageable
 
         EnemyBase enemy = Instantiate(prefab, spawnPosition, Quaternion.identity);
         enemy.SetupPlayerRef(m_gameService.Player);
+        enemy.SetControlContext(EnemyControlContext.RoundGameplay);
         m_spawned.Add(enemy);
         EventBus<EnemySpawnedEvent>.Raise(new EnemySpawnedEvent(enemy));
     }

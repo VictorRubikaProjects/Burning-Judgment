@@ -13,6 +13,9 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
 
     public enum PositionNeed { None, Approach, Retreat, Reposition }
     
+    public EnemyActionPermissions ActionPermissions { get; private set; } = EnemyActionPermissions.FromContext(EnemyControlContext.RoundCountdown);
+    public EnemyControlContext ControlContext { get; private set; } = EnemyControlContext.RoundCountdown;
+    
     public abstract SO_ConfigEnemy StatsBase { get; }
     
     public SteeringComponent Steering { get; private set; }
@@ -41,6 +44,7 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
     public GroundCheckComponent GroundCheck { get; private set; }
 
     private EventBinding<ActorPushedEvent> m_eventBindingPushActor;
+    private EventBinding<FloorStartedEvent> m_eventBindingFloorStarted;
     
     public int BounceCount { get; private set; }
 
@@ -77,12 +81,16 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
 
     protected override void Update()
     {
+        if (!ActionPermissions.CanAct) return;
+        
         base.Update();
         m_stateMachine.Update();
     }
 
     protected override void FixedUpdate()
     {
+        if (!ActionPermissions.CanAct) return;
+        
         base.FixedUpdate();
         m_stateMachine.FixedUpdate();
     }
@@ -90,12 +98,16 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
     private void OnEnable()
     {
         m_eventBindingPushActor = new EventBinding<ActorPushedEvent>(OnActorPushed);
+        m_eventBindingFloorStarted = new EventBinding<FloorStartedEvent>(OnFloorStarted);
         EventBus<ActorPushedEvent>.Register(m_eventBindingPushActor);
+        EventBus<FloorStartedEvent>.Register(m_eventBindingFloorStarted);
     }
+
 
     private void OnDisable()
     {
         EventBus<ActorPushedEvent>.Unregister(m_eventBindingPushActor);
+        EventBus<FloorStartedEvent>.Unregister(m_eventBindingFloorStarted);
     }
 
 
@@ -268,4 +280,12 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
     }
 
     public bool CanBounce() => m_stateMachine.GetCurrentState() is EnemyHitState;
+    
+    public void SetControlContext(EnemyControlContext context)
+    {
+        ControlContext = context;
+        ActionPermissions = EnemyActionPermissions.FromContext(context);
+    }
+    
+    private void OnFloorStarted(FloorStartedEvent obj) => SetControlContext(EnemyControlContext.RoundGameplay);
 }

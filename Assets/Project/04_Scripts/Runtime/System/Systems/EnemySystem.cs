@@ -48,7 +48,7 @@ public class EnemySystem
         EventBus<SpawnerDiedEvent>.Unregister(m_eventBindingSpawnerDied);
     }
 
-    public void SetupFloor(PlayerCharacter player)
+    public List<EnemyBase> SetupFloor(PlayerCharacter player)
     {
         m_aliveEnemies.Clear();
         m_aliveSpawner.RemoveAll(spawner => spawner == null);
@@ -60,7 +60,7 @@ public class EnemySystem
         {
             Debug.LogWarning("Aucun point de spawn défini dans le round courant !");
             CheckFloorCleared();
-            return;
+            return m_aliveEnemies;
         }
 
         List<int> spawnIndices = new List<int>();
@@ -85,7 +85,9 @@ public class EnemySystem
             enemyObj.SetupPlayerRef(player);
 
             m_aliveEnemies.Add(enemyObj);
+            enemyObj.gameObject.SetActive(false);
         }
+        return m_aliveEnemies;
     }
 
     private void OnEnemySpawned(EnemySpawnedEvent e)
