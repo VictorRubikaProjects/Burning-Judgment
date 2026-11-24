@@ -17,7 +17,7 @@ MonoBehaviour:
   <DefaultScaling>k__BackingField: 1
   <BadScaling>k__BackingField: 2
   <Stability>k__BackingField: 1
-  <Destabilization>k__BackingField: 0.33
+  <Destabilization>k__BackingField: 0.12
   <ObstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 832

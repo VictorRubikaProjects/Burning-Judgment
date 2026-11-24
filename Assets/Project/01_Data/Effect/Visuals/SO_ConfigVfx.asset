@@ -28,10 +28,10 @@ MonoBehaviour:
   vfxPrefabsStability:
   - <VfxStability>k__BackingField: {fileID: 1509283816869424513, guid: 10586076e0444cd40bc343f57ed54c93, type: 3}
     <MinStability>k__BackingField: 0.1
-    <MaxStability>k__BackingField: 0.4
+    <MaxStability>k__BackingField: 0.15
   - <VfxStability>k__BackingField: {fileID: 1709263842282584315, guid: d9387bf9bcbc2bb46bc8f2049683e850, type: 3}
-    <MinStability>k__BackingField: 0.4
-    <MaxStability>k__BackingField: 0.7
+    <MinStability>k__BackingField: 0.15
+    <MaxStability>k__BackingField: 0.35
   - <VfxStability>k__BackingField: {fileID: 8957123369675068287, guid: dbc0fae02fe2fdd4abd7903fa4882f6b, type: 3}
-    <MinStability>k__BackingField: 0.7
-    <MaxStability>k__BackingField: 1
+    <MinStability>k__BackingField: 0.35
+    <MaxStability>k__BackingField: 0.5
