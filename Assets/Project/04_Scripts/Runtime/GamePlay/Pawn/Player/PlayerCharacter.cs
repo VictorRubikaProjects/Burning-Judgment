@@ -196,7 +196,7 @@ public class PlayerCharacter : Actor, IBounceable
         Controller = new PlayerControllerComponent(this, rb, ActiveStats);
         Aspect = new PlayerAspectComponent(this, playerMaterial, playerRenderer, ActiveStats);
         Chain = new PlayerChainComponent(this, ActiveStats);
-        DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite);
+        DashIndicator = new DashIndicatorComponent(this, dashIndicatorSprite,width:m_runtimeStats.DashAttackRadius * 5);
     }
 
     private void RegisterActorComponents()
