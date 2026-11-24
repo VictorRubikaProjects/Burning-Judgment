@@ -19,8 +19,10 @@ MonoBehaviour:
     <EnemyTeams>k__BackingField:
     - {fileID: 11400000, guid: 686b8cf3fd13aab43b5d8f6c65fef2ba, type: 2}
     - {fileID: 11400000, guid: 60a5ce38c965ae74fa8354696ec16923, type: 2}
-    - {fileID: 11400000, guid: 80c80004229739e4580d76c4252c50bb, type: 2}
     - {fileID: 11400000, guid: e69ec5d8c6b199c47b8a8de50076b7d3, type: 2}
+    - {fileID: 11400000, guid: 80c80004229739e4580d76c4252c50bb, type: 2}
+    - {fileID: 11400000, guid: 7720410445548824b8d944d095415975, type: 2}
+    - {fileID: 11400000, guid: 4d64f92da94d27540890a020005df721, type: 2}
   <PlayerSpawnPosition>k__BackingField: {x: 0, y: 1, z: 0}
   <EnemySpawnPositions>k__BackingField:
   - {x: 5, y: 1, z: -5}
