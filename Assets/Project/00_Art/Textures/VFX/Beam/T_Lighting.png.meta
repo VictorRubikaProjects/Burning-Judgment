@@ -1,0 +1,383 @@
+fileFormatVersion: 2
+guid: 86017bebb091d06458ab33daf234b714
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: T_Lighting_0
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 43
+        width: 54
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5316219, y: 0.023568437}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e5b3efda9949464ca10567c32fda5fe
+      internalID: 660990784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_1
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 44
+        width: 50
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5316219, y: 0.023568437}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ac2270cce2c8864bac36bd3b8e08416
+      internalID: -432403267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_2
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 44
+        width: 46
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5316219, y: 0.023568437}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b23e4303060a32a49bd57e7eef07adb0
+      internalID: -712007796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_3
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 45
+        width: 24
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5316219, y: 0.023568437}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ad345625fc964c4da2d532c614c9f99
+      internalID: -297588791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_4
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 45
+        width: 21
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5316219, y: 0.023568437}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1139b960151b68d459f871df9bfbbf23
+      internalID: 172005708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_5
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 44
+        width: 21
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5316219, y: 0.023568437}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6acc540bc1a68384fb4863e9c1928b70
+      internalID: -647069331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_6
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 43
+        width: 79
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5316219, y: 0.023568437}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0f54d0890342b6459c0f7ddeb65b70f
+      internalID: -1645427883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_7
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 44
+        width: 47
+        height: 293
+      alignment: 9
+      pivot: {x: 0.4680429, y: 0.020654516}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4e180640782870459f12c8f3dcb71c7
+      internalID: 42026377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_8
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 44
+        width: 42
+        height: 293
+      alignment: 9
+      pivot: {x: 0.4680429, y: 0.020654516}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0408a4aca65a36b44bf69e85cc00973e
+      internalID: 872024146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_9
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 44
+        width: 36
+        height: 293
+      alignment: 9
+      pivot: {x: 0.4680429, y: 0.020654516}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89392f32e006c50499fab30d3176beee
+      internalID: -1654225176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: T_Lighting_10
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 44
+        width: 22
+        height: 293
+      alignment: 9
+      pivot: {x: 0.4680429, y: 0.020654516}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56d0cd1796d031e458e0d03f55bc6312
+      internalID: 129160988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: f1379f6d38df85e42b9447667bf2b0bf
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      T_Lighting_0: 660990784
+      T_Lighting_1: -432403267
+      T_Lighting_10: 129160988
+      T_Lighting_2: -712007796
+      T_Lighting_3: -297588791
+      T_Lighting_4: 172005708
+      T_Lighting_5: -647069331
+      T_Lighting_6: -1645427883
+      T_Lighting_7: 42026377
+      T_Lighting_8: 872024146
+      T_Lighting_9: -1654225176
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

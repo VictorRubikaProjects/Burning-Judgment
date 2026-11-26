@@ -7,7 +7,6 @@ public abstract class EnemyBase : Actor, IStrikeable, IBounceable
 
     [field: SerializeField] public Rigidbody Rigidbody { get; protected set; }
     [field: SerializeField] public DamagePopUp DamagePopUp { get; protected set; }
-    [field: SerializeField] public Transform FeetTransform { get; protected set; }
     [field: SerializeField] public Collider ColliderEnemy { get; protected set; }
     [field: SerializeField] public Animator Animator { get; protected set; }
 

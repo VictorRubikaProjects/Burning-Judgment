@@ -15,7 +15,10 @@ public class GameService : IGameService
 
     private SceneService m_sceneService;
     private TransitionService m_transitionService;
+    private FxService m_fxService;
+    
     private EnemySystem m_enemySystem;
+    
     private SO_EntityPooling m_entityConfig;
     public PlayerCharacter Player { get; private set; }
     
@@ -32,11 +35,12 @@ public class GameService : IGameService
     
     private const float RoundAnnouncementDuration = 2f;
 
-    public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService, RewardTreasureUI rewardCard)
+    public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService, RewardTreasureUI rewardCard, FxService fxService)
     {
         m_entityConfig = entityConfig;
         m_augmentService = augmentService;
         m_audioService = audioService;
+        m_fxService = fxService;
 
         m_rewardCard = rewardCard;
     }
@@ -217,7 +221,7 @@ public class GameService : IGameService
 
     private async UniTask SpawnActor(Actor actor, float duration)
     {
-        //do fx
+        m_fxService.PlaySpawnEffect(actor.FeetTransform,5f);
         await UniTask.Delay(TimeSpan.FromSeconds(duration));
         actor.gameObject.SetActive(true);
     }

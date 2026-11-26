@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Actor : Pawn
 {
+    
+    [SerializeField] public Transform FeetTransform;
     [SerializeField] private StabilityVisuals stabilityVisuals;
 
     private readonly List<ActorComponent> m_components = new();

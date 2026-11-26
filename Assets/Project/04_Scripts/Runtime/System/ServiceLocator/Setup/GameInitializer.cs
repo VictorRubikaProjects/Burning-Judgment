@@ -71,7 +71,7 @@ public class GameInitializer
 
         m_augmentService =  new AugmentService();
         
-        m_gameService = new GameService(m_entityPoolConfig, m_augmentService,m_audioService,m_treasureCard);
+        m_gameService = new GameService(m_entityPoolConfig, m_augmentService,m_audioService,m_treasureCard,m_fxService);
         
     }
     

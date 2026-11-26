@@ -273,5 +273,7 @@ public sealed class FxService : IGameService
     
     public void PlayKillConfirmEffect(Transform targetTransform, float duration)
     => PlayEffectAtTargetPosition(ConfigVfx.VfxPrefabConfirmKill, targetTransform, duration);
+    public void PlaySpawnEffect(Transform targetTransform, float duration) 
+    => PlayEffectAtTargetPosition(ConfigVfx.VfxPrefabSpawn, targetTransform, duration);
     #endregion
 }

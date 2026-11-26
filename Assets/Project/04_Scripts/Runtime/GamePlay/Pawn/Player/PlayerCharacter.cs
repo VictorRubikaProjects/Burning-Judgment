@@ -32,7 +32,6 @@ public class PlayerCharacter : Actor, IBounceable
     [Header("References")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Animator animator;
-    [SerializeField] private Transform feetTransform;
     [SerializeField] private Transform weaponTransform;
     [SerializeField] private SpriteRenderer dashIndicatorSprite;
     [SerializeField] private RectTransform joystickRectT;
@@ -67,7 +66,6 @@ public class PlayerCharacter : Actor, IBounceable
     public float PendingKnockbackForce => m_pendingKnockbackForce;
     public bool PendingHitDealsDamage { get; private set; } = true;
     
-    public Transform FeetTransform => feetTransform;
     public Transform WeaponTransform => weaponTransform;
     
     public string CurrentStateName => m_stateMachine?.GetCurrentState()?.ToString() ?? "None";
@@ -265,7 +263,7 @@ public class PlayerCharacter : Actor, IBounceable
         }
 
         Vector3 direction = ToWorldDirection(in dir);
-        Vector3 origin = feetTransform.position;
+        Vector3 origin = FeetTransform.position;
         float distance = ComputeDashDistance(ratio);
 
         TryRaycastObstacle(in origin, in direction, ref distance);

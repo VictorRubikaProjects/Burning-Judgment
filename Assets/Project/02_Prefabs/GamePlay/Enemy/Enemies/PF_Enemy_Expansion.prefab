@@ -179,10 +179,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07366f51f1424c79be0276ecd4d60297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyExpansion
+  FeetTransform: {fileID: 1440780938651814500}
   stabilityVisuals: {fileID: 5403164121983525843}
   <Rigidbody>k__BackingField: {fileID: 3270621082815049600}
   <DamagePopUp>k__BackingField: {fileID: 3951912321538186619}
-  <FeetTransform>k__BackingField: {fileID: 1440780938651814500}
   <ColliderEnemy>k__BackingField: {fileID: 3566398422551106428}
   <Animator>k__BackingField: {fileID: 0}
   stats: {fileID: 11400000, guid: 75dc8c98f59bb2b4c88a6b4e6a7c499a, type: 2}

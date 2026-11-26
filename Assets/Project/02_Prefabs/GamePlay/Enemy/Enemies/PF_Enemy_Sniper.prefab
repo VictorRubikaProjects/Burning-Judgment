@@ -340,10 +340,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d73badefa12431896fa04058983fd62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemySniper
+  FeetTransform: {fileID: 9114050749522211608}
   stabilityVisuals: {fileID: 2845948801606163119}
   <Rigidbody>k__BackingField: {fileID: 4676608833685133052}
   <DamagePopUp>k__BackingField: {fileID: 6583472306031191047}
-  <FeetTransform>k__BackingField: {fileID: 9114050749522211608}
   <ColliderEnemy>k__BackingField: {fileID: 6700043459764791808}
   <Animator>k__BackingField: {fileID: 0}
   stats: {fileID: 11400000, guid: 72752c4124e23b74fb67a1585a920db6, type: 2}

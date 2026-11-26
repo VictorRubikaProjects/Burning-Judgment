@@ -10,6 +10,7 @@ public class SO_ConfigVfx : ScriptableObject
     [field: SerializeField] public ParticleSystem VfxPrefabHit { get; private set; }
     [field: SerializeField] public ParticleSystem VfxPrefabConfirmKill { get; private set; }
     [field: SerializeField] public ParticleSystem VfxPrefabDasherAttack { get; private set; }
+    [field: SerializeField] public ParticleSystem VfxPrefabSpawn{ get; private set; }
 
     [SerializeField] private VfxDashData[] vfxPrefabsDash = Array.Empty<VfxDashData>();
     [SerializeField] private VfxStabilityData[] vfxPrefabsStability = Array.Empty<VfxStabilityData>();

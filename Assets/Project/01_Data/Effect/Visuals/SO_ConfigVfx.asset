@@ -18,6 +18,7 @@ MonoBehaviour:
   <VfxPrefabHit>k__BackingField: {fileID: 8551891807610761133, guid: bd203bed1c8eb984bb2d7264999a811b, type: 3}
   <VfxPrefabConfirmKill>k__BackingField: {fileID: 2883535467260916605, guid: e6d601db05536af4a979a87194de39ed, type: 3}
   <VfxPrefabDasherAttack>k__BackingField: {fileID: 9149213220067885641, guid: 37f6fb6e6e30b6640902fba7bfdc6fdc, type: 3}
+  <VfxPrefabSpawn>k__BackingField: {fileID: 6189902210033653456, guid: e724012d89989ca4e9dc13197be63791, type: 3}
   vfxPrefabsDash:
   - <VfxDash>k__BackingField: {fileID: 1695883334581801340, guid: 91e858f81acda6849b4a8f182ce97b9b, type: 3}
     <ComboThreshold>k__BackingField: 0

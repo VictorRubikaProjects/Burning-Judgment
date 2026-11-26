@@ -142,10 +142,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1358c33444a4fb0858bf92c2f3f7fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyShooter
+  FeetTransform: {fileID: 2365119187167855627}
   stabilityVisuals: {fileID: 8779728834624859580}
   <Rigidbody>k__BackingField: {fileID: 2184155058998813167}
   <DamagePopUp>k__BackingField: {fileID: 429032386074956564}
-  <FeetTransform>k__BackingField: {fileID: 2365119187167855627}
   <ColliderEnemy>k__BackingField: {fileID: 167298974230453523}
   <Animator>k__BackingField: {fileID: 0}
   stats: {fileID: 11400000, guid: aebb328231d49b748bc44e014ee6f533, type: 2}
