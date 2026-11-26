@@ -207,7 +207,6 @@ MonoBehaviour:
   cards:
   - {fileID: 11400000, guid: 11fdf55dbc074254198a319eefea0262, type: 2}
   - {fileID: 11400000, guid: 5c6fb403dd4674440859b9d88e139782, type: 2}
-  - {fileID: 11400000, guid: 4cbe330a9c0fefe45a461694d6d4b740, type: 2}
   - {fileID: 11400000, guid: e0813105fb5677549afa4d1217ad3136, type: 2}
   - {fileID: 11400000, guid: 74a40c482dc21204cafa420a797d713b, type: 2}
   - {fileID: 11400000, guid: 3f52c309fc9982447a3593d30757cde2, type: 2}
@@ -218,18 +217,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 63473abb698e9ee4185fc7dfd61dce72, type: 2}
   - {fileID: 11400000, guid: 3d5432b28e4c6204c808aa1e3feb51c9, type: 2}
   - {fileID: 11400000, guid: 6ba148f5c644fe04baeba3385804b7c2, type: 2}
-  - {fileID: 11400000, guid: e22e12b26eef1df45a18a408bec13e5c, type: 2}
-  - {fileID: 11400000, guid: a9ae912f16cbdd748b8e8ea5b8be3ca9, type: 2}
-  - {fileID: 11400000, guid: e64ad50d76acaf945848888b793487ba, type: 2}
-  - {fileID: 11400000, guid: dc4a225fceb19974ebca8dd2db4e9655, type: 2}
-  - {fileID: 11400000, guid: e35bb95607fae8a4db7a0dce8f6ee1d7, type: 2}
   - {fileID: 11400000, guid: 71c019209f204eb45a13ff55d1fdc9d5, type: 2}
-  - {fileID: 11400000, guid: 074cf06af9b1b0147877677fe16abbc1, type: 2}
   - {fileID: 11400000, guid: 4552791e0742a5a4bbb5757981369c5f, type: 2}
-  - {fileID: 11400000, guid: 504944b71d672a544bbd96fd25ed441d, type: 2}
-  - {fileID: 11400000, guid: ff6d3c9563648c148b913f389cce475b, type: 2}
-  - {fileID: 11400000, guid: c8e64e7dc42e34f439bfe844d6c43612, type: 2}
-  - {fileID: 11400000, guid: 3fcb6f80388e40f4da16ab002ff2dc8b, type: 2}
+  - {fileID: 11400000, guid: 89057ec4f21e57e4dae178ba87f62eb3, type: 2}
+  - {fileID: 11400000, guid: 0d706d7322cbc564c995669b9822a754, type: 2}
   dropTable: {fileID: 11400000, guid: 9a914834783fda24a95c530de7d4f4c5, type: 2}
   cardUIPrefab: {fileID: 71655837406293977, guid: 96887fd7b723b7849bbf77338434c739, type: 3}
   numberCards: 3
