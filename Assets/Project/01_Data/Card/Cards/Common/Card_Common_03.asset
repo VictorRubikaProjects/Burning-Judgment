@@ -21,9 +21,8 @@ MonoBehaviour:
     <DashMaxDistance>k__BackingField: 0
     <DashAttackRadius>k__BackingField: 0
     <DashSpeed>k__BackingField: 0
-    <PushForce>k__BackingField: 15
+    <PushForce>k__BackingField: 12
     <Weight>k__BackingField: 0
-    <Stability>k__BackingField: 0
     <CriticalChance>k__BackingField: 0
     <CriticalDamage>k__BackingField: 0
     <ComboMultiplier>k__BackingField: 0

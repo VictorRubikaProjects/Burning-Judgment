@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fac852cecb844b4fa6fd348d02ff0c90, type: 3}
-  m_Name: Card_Common_02
+  m_Name: Card_Epic_04
   m_EditorClassIdentifier: Project.Runtime::SO_Card
-  <DisplayName>k__BackingField: ID3
+  <DisplayName>k__BackingField: ID16
   <Description>k__BackingField: J'ai manger plein de caca aujourd'hui j'ai manger
     plein de caca aujourd'hui
   <Icon>k__BackingField: {fileID: 21300000, guid: 9742290cf07cb3948884f7676b55369b, type: 3}
   <IsStackable>k__BackingField: 1
   <Deltas>k__BackingField:
-    <DashMaxDistance>k__BackingField: 0
+    <DashMaxDistance>k__BackingField: 30
     <DashAttackRadius>k__BackingField: 0
     <DashSpeed>k__BackingField: 0
-    <PushForce>k__BackingField: 30
-    <Weight>k__BackingField: -5
-    <Stability>k__BackingField: 0
+    <PushForce>k__BackingField: 0
+    <Weight>k__BackingField: 0
     <CriticalChance>k__BackingField: 0
     <CriticalDamage>k__BackingField: 0
     <ComboMultiplier>k__BackingField: 0
-  <Rarity>k__BackingField: 0
+  <Rarity>k__BackingField: 1
