@@ -192,10 +192,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67ff553ca4c4b849ba76e16110f2206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Project.Runtime::EnemyDasher
+  FeetTransform: {fileID: 2101761769443840877}
   stabilityVisuals: {fileID: 4913355401216015066}
   <Rigidbody>k__BackingField: {fileID: 2573753427026032265}
   <DamagePopUp>k__BackingField: {fileID: 4038700554573661298}
-  <FeetTransform>k__BackingField: {fileID: 2101761769443840877}
   <ColliderEnemy>k__BackingField: {fileID: 4587549439968709237}
   <Animator>k__BackingField: {fileID: 7379640199831696052}
   stats: {fileID: 11400000, guid: 7835063db357ab248ba04f5ce83e8beb, type: 2}

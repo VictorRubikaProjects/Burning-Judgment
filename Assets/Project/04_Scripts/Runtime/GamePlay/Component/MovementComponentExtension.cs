@@ -64,7 +64,20 @@ public static class MovementComponentExtension
             Vector3 moved = ResolveMovement(origin, radius, delta, obstacleLayer, mode, out bool stopped, out ObstacleContact contact);
             Vector3 target = position + moved;
 
-            if (groundCheck != null && !groundCheck.IsGrounded(target)) return false;
+            if (groundCheck != null && !groundCheck.IsGrounded(target))
+            {
+                target = ResolveVoidSlide(
+                    position,
+                    target,
+                    delta,
+                    centerOffset,
+                    radius,
+                    obstacleLayer,
+                    mode,
+                    groundCheck,
+                    out stopped,
+                    out contact);
+            }
 
             rb.MovePosition(target);
             position = target;
@@ -79,6 +92,48 @@ public static class MovementComponentExtension
         }
 
         return true;
+    }
+
+    private static Vector3 ResolveVoidSlide(
+        Vector3 currentPosition,
+        Vector3 candidatePosition,
+        Vector3 delta,
+        Vector3 centerOffset,
+        float radius,
+        LayerMask obstacleLayer,
+        CollisionMode mode,
+        GroundCheckComponent groundCheck,
+        out bool stopped,
+        out ObstacleContact contact)
+    {
+        stopped = false;
+        contact = default;
+
+        Vector3 dropOffset = new Vector3(0f, -2f, 0f);
+
+        if (!Physics.Linecast(candidatePosition + dropOffset, currentPosition + dropOffset, out RaycastHit hit)) return currentPosition;
+
+        Vector3 edgeNormal = Vector3.ProjectOnPlane(hit.normal, Vector3.up);
+        
+        if (edgeNormal.sqrMagnitude < 0.0001f) return currentPosition;
+
+        edgeNormal.Normalize();
+
+        Vector3 towardSafe = Vector3.ProjectOnPlane(currentPosition - candidatePosition, Vector3.up);
+        
+        if (towardSafe.sqrMagnitude > 0.0001f && Vector3.Dot(edgeNormal, towardSafe.normalized) < 0f) edgeNormal = -edgeNormal;
+
+        float towardSafeDot = Vector3.Dot(delta, edgeNormal);
+        
+        Vector3 slideDelta = towardSafeDot < 0f ? Vector3.ProjectOnPlane(delta, edgeNormal) : delta;
+
+        Vector3 origin = currentPosition + centerOffset;
+        Vector3 moved = ResolveMovement(origin, radius, slideDelta, obstacleLayer, mode, out stopped, out contact);
+        Vector3 resolvedTarget = currentPosition + moved;
+
+        if (groundCheck != null && !groundCheck.IsGrounded(resolvedTarget)) return currentPosition;
+
+        return resolvedTarget;
     }
 
     public static float GetZoneMovementMultiplier(Actor actor)
