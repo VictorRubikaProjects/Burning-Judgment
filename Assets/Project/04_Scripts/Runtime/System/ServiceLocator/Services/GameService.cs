@@ -6,6 +6,7 @@ using Event_Bus;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public class GameService : IGameService
 {
@@ -31,9 +32,9 @@ public class GameService : IGameService
     
     private EventBinding<FloorClearedEvent> m_eventBindingFloorCleared;
     
-    private const int CountFloorClearedSpawnNeeded = 3;
-    
     private const float RoundAnnouncementDuration = 2f;
+
+    private float m_pity = 0;
 
     public GameService(SO_EntityPooling entityConfig, AugmentService augmentService, AudioService audioService, RewardTreasureUI rewardCard, FxService fxService)
     {
@@ -70,18 +71,24 @@ public class GameService : IGameService
     {
         CountFloorCleared++;
 
-        bool cardSpawned = CountFloorCleared % CountFloorClearedSpawnNeeded == 0;
+        bool cardSpawned = Random.value > Mathf.Clamp01(0.7f - m_pity);
         float timeWaiting = cardSpawned ? 0.5f : 1.5f;
-        
-        if (cardSpawned)
+
+        if (cardSpawned) 
         {
             Player.SetControlContext(PlayerControlContext.RoundWon);
             
             RewardTreasureUI reward = Object.Instantiate(m_rewardCard);
             CancellationTokenSource ctsReward = new CancellationTokenSource();
             reward.Setup(ctsReward);
+            m_pity = 0f;
 
             await UniTask.WaitUntilCanceled(ctsReward.Token);
+        }
+        else
+        {
+            m_pity += 0.1f;
+            m_pity = Mathf.Clamp01(m_pity);
         }
         
         await UniTask.Delay(TimeSpan.FromSeconds(timeWaiting));
